@@ -18,6 +18,8 @@
 
         public void InitPlugin(TabPage pluginScreenSpace, Label pluginStatusText)
         {
+            pluginScreenSpace.Text = "TTSゆっくり";
+
             lblStatus = pluginStatusText;	// Hand the status label's reference to our local var
 
             // Create some sort of parsing event handler. After the "+=" hit TAB twice and the code will be generated for you.
