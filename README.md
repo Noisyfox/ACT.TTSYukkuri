@@ -8,10 +8,10 @@ ACTのTTSをゆっくりさんに置き換えます
 
 使い方
 --------------
-ACT.TTSYukkuri.dll
-SoundPlayer.exe
-aqtk1-win
-をACTのインストールディレクトリにコピーします
+ACT.TTSYukkuri.dll  
+SoundPlayer.exe  
+aqtk1-win  
+をACTのインストールディレクトリにコピーします  
 その後、プラグインとしてACT.TTSYukkuri.dllを追加してください
 
 
