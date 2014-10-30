@@ -7,13 +7,24 @@
     /// </summary>
     public partial class TTSYukkuriPlugin : IActPluginV1
     {
+        /// <summary>
+        /// フラグインフォーム
+        /// </summary>
         private class FormActMain_newTTS : FormActMain
         {
+            /// <summary>
+            /// コンストラクタ
+            /// </summary>
+            /// <param name="args">プラグインへの引数</param>
             public FormActMain_newTTS(string[] args)
                 : base(args)
             {
             }
 
+            /// <summary>
+            /// TTSを提供する
+            /// </summary>
+            /// <param name="sMessage">読上げるメッセージ</param>
             public void newTTS(string sMessage)
             {
                 const string waitCommand = "/wait";

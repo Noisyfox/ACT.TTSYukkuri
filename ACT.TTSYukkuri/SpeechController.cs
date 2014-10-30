@@ -1,121 +1,73 @@
 ﻿namespace ACT.TTSYukkuri
 {
-    using System;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using System.Threading;
+    using ACT.TTSYukkuri.Properties;
+    using ACT.TTSYukkuri.Sasara;
+    using ACT.TTSYukkuri.Yukkuri;
 
-    public class SpeechController
+    /// <summary>
+    /// スピーチコントローラ
+    /// </summary>
+    public class SpeechController :
+        SpeechControllerBase,
+        ISpeechController
     {
         /// <summary>
-        /// しゃべるスピード
+        /// Lockオブジェクト
         /// </summary>
-        private const ushort SpeechSpeed = 110;
+        private static object lockObject = new object();
 
         /// <summary>
-        /// 唯一のinstance
+        /// シングルトンinstance
         /// </summary>
-        private static SpeechController instance;
+        private static ISpeechController instance;
 
         /// <summary>
-        /// AquesTalk_Synthe
+        /// 現在のTTSタイプ
         /// </summary>
-        /// <param name="koe">読み上げるテスト</param>
-        /// <param name="iSpeed">スピード</param>
-        /// <param name="size">生成したwaveデータのサイズ</param>
-        /// <returns>生成した音声waveデータ</returns>
-        [DllImport(@"aqtk1-win\lib\AquesTalk.dll")]
-        private static extern IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);
+        private static string nowTTSType;
 
         /// <summary>
-        /// AquesTalk_FreeWave
+        /// シングルトンinstanceを返す
         /// </summary>
-        /// <param name="wave">開放する音声waveデータ</param>
-        [DllImport(@"aqtk1-win\lib\AquesTalk.dll")]
-        private static extern void AquesTalk_FreeWave(IntPtr wave);
-
-        /// <summary>
-        /// 唯一のinstance
-        /// </summary>
-        public static SpeechController Default
+        public static ISpeechController Default
         {
             get
             {
-                if (instance == null)
+                lock (lockObject)
                 {
-                    instance = new SpeechController();
-                }
+                    if (instance == null ||
+                        nowTTSType != Settings.Default.TTSType)
+                    {
+                        switch (Settings.Default.TTSType)
+                        {
+                            case TTSType.Yukkuri:
+                                instance = new YukkuriSpeechController();
+                                break;
 
-                return instance;
-            }
-        }
+                            case TTSType.SasaraSato:
+                                instance = new SasaraSpeechController();
+                                break;
+                            
+                            default:
+                                instance = new YukkuriSpeechController();
+                                break;
+                        }
 
-        /// <summary>
-        /// テキストを読み上げる
-        /// </summary>
-        /// <param name="text">読み上げるテキスト</param>
-        public void Speak(
-            string text)
-        {
-            IntPtr wavePtr = IntPtr.Zero;
+                        nowTTSType = Settings.Default.TTSType;
+                    }
 
-            try
-            {
-                // テキストを音声データに変換する
-                uint size = 0;
-                wavePtr = AquesTalk_Synthe(
-                    text,
-                    SpeechSpeed,
-                    ref size);
-
-                if (wavePtr == IntPtr.Zero)
-                {
-                    return;
-                }
-
-                // 生成したwaveデータを読み出す
-                var buff = new byte[size];
-                Marshal.Copy(wavePtr, buff, 0, (int)size);
-
-                // 再生する
-                using (var ms = new MemoryStream(buff))
-                {
-                    SoundPlayerRapper.Play(ms);
-                }
-            }
-            finally
-            {
-                if (wavePtr != IntPtr.Zero)
-                {
-                    AquesTalk_FreeWave(wavePtr);
+                    return instance;
                 }
             }
         }
 
         /// <summary>
-        /// ディレイ後にテキストを読み上げる
+        /// TTSに話してもらう
         /// </summary>
-        /// <param name="text">読み上げるテキスト</param>
-        /// <param name="delay">ディレイ(秒)</param>
-        public void SpeakWithDelay(
-            string text,
-            int delay)
+        /// <param name="text">読上げるテキスト</param>
+        public override void Speak(string text)
         {
-            if (delay == 0)
-            {
-                this.Speak(text);
-                return;
-            }
-
-            var timer = new Timer(new TimerCallback((state) =>
-            {
-                this.Speak(text);
-                (state as Timer).Dispose();
-            }));
-
-            timer.Change(
-                delay * 1000,
-                0);
+            instance.Speak(text);
         }
     }
 }

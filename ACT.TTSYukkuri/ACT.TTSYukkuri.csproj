@@ -37,8 +37,14 @@
       <HintPath>..\ACTv3\Advanced Combat Tracker.exe</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CeVIO.Talk.RemoteService, Version=1.0.5.0, Culture=neutral, PublicKeyToken=c90da69f58ce61df, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\CeVIO.Talk.RemoteService\v4.0_1.0.5.0__c90da69f58ce61df\CeVIO.Talk.RemoteService.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -48,9 +54,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISpeachController.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Replacer.cs" />
+    <Compile Include="Sasara\SasaraSpeechController.cs" />
     <Compile Include="SoundPlayerRapper.cs" />
     <Compile Include="SpeechController.cs" />
+    <Compile Include="SpeechControllerBase.cs" />
+    <Compile Include="Yukkuri\YukkuriSpeechController.cs" />
+    <Compile Include="TTSType.cs" />
+    <Compile Include="TTSYukkuriConfigPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TTSYukkuriConfigPanel.Designer.cs">
+      <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="TTSYukkuriPlugin.FormActMain_newTTS.cs" />
     <Compile Include="TTSYukkuriPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,6 +87,18 @@
       <Project>{52f0a98f-4c38-4612-886e-5114f001d426}</Project>
       <Name>SoundPlayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TTSYukkuriConfigPanel.resx">
+      <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
