@@ -55,6 +55,8 @@
                                 break;
                         }
 
+                        instance.Initialize();
+
                         nowTTSType = TTSYukkuriConfig.Default.TTS;
                     }
 

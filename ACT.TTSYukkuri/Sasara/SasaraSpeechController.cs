@@ -1,7 +1,7 @@
 ﻿namespace ACT.TTSYukkuri.Sasara
 {
     using System.Windows.Forms;
-
+    using ACT.TTSYukkuri.Config;
     using CeVIO.Talk.RemoteService;
 
     /// <summary>
@@ -54,6 +54,12 @@
                 {
                     Talker = new Talker();
                 }
+
+                // 設定をロードする
+                TTSYukkuriConfig.Default.Load();
+
+                // ささらを設定する
+                TTSYukkuriConfig.Default.SetSasara();
             }
         }
 

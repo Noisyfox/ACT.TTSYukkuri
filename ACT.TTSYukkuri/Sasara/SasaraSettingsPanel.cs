@@ -130,7 +130,7 @@
             this.castComboBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Cast;
 
             // ささらを設定する
-            this.SetSasara();
+            TTSYukkuriConfig.Default.SetSasara();
         }
 
         /// <summary>
@@ -218,30 +218,7 @@
             TTSYukkuriConfig.Default.Save();
 
             // ささらを設定する
-            this.SetSasara();
-        }
-
-        /// <summary>
-        /// ささらを設定する
-        /// </summary>
-        private void SetSasara()
-        {
-            this.talker.Cast = TTSYukkuriConfig.Default.SasaraSettings.Cast;
-            this.talker.Volume = TTSYukkuriConfig.Default.SasaraSettings.Onryo;
-            this.talker.Speed = TTSYukkuriConfig.Default.SasaraSettings.Hayasa;
-            this.talker.Tone = TTSYukkuriConfig.Default.SasaraSettings.Takasa;
-            this.talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
-
-            foreach (var componet in TTSYukkuriConfig.Default.SasaraSettings.Components)
-            {
-                var componetOnSasara = this.talker.Components
-                    .Where(x => x.Id == componet.Id).FirstOrDefault();
-
-                if (componetOnSasara != null)
-                {
-                    componetOnSasara.Value = componet.Value;
-                }
-            }
+            TTSYukkuriConfig.Default.SetSasara();
         }
     }
 }
