@@ -1,6 +1,7 @@
 ﻿namespace ACT.TTSYukkuri.Sasara
 {
     using System.Windows.Forms;
+
     using ACT.TTSYukkuri.Config;
     using CeVIO.Talk.RemoteService;
 
