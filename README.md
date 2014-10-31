@@ -9,7 +9,6 @@ ACTのTTSをゆっくりさんに置き換えます
 使い方
 --------------
 ACT.TTSYukkuri.dll  
-ACT.TTSYukkuri.dll.config  
 SoundPlayer.exe  
 aqtk1-win  
 をACTのインストールディレクトリにコピーします  
@@ -19,10 +18,15 @@ aqtk1-win
 /wait 1,ゆっくりです  
 読上げのテキストに上記のように記述すると、トリガー検出から1秒後に「ゆっくりです」を読上げます  
   
+2) TTS対応状況  
+下記のTTSに対応しています  
+・AquesTalk（ゆっくり）  
+・CeVIO Creative Studio（さとうささら）※ただし製品版が必要  
+  
   
 最新リリース
 --------------
-[ACT.TTSYukkuri-v1.2.0.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.2.0/ACT.TTSYukkuri-v1.2.0.zip "ACT.TTSYukkuri-v1.2.0.zip")  
+[ACT.TTSYukkuri-v1.2.1.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.2.1/ACT.TTSYukkuri-v1.2.1.zip "ACT.TTSYukkuri-v1.2.1.zip")  
 
   
   
