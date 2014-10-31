@@ -56,9 +56,6 @@
                     Talker = new Talker();
                 }
 
-                // 設定をロードする
-                TTSYukkuriConfig.Default.Load();
-
                 // ささらを設定する
                 TTSYukkuriConfig.Default.SetSasara();
             }

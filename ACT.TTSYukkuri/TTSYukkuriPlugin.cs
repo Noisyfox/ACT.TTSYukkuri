@@ -4,6 +4,7 @@
     using System.Reflection;
     using System.Windows.Forms;
 
+    using ACT.TTSYukkuri.Config;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -24,6 +25,10 @@
             try
             {
                 pluginScreenSpace.Text = "TTSゆっくり";
+
+                // TTSを初期化する
+                TTSYukkuriConfig.Default.Load();
+                SpeechController.Default.Initialize();
 
                 // 設定Panelを追加する
                 var configPanel = new TTSYukkuriConfigPanel();
@@ -56,6 +61,9 @@
         {
             // Unsubscribe from any events you listen to when exiting!
             Replacer.RestoreFunction(ACT_TTSMethod, originalTTS);
+
+            // 設定を保存する
+            TTSYukkuriConfig.Default.Save();
 
             lblStatus.Text = "Plugin Exited";
         }
