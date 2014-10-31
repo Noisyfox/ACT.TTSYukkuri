@@ -83,7 +83,7 @@
                 // 再生する
                 using (var ms = new MemoryStream(buff))
                 {
-                    SoundPlayerRapper.Play(ms);
+                    SoundPlayerWrapper.Play(ms);
                 }
             }
             finally

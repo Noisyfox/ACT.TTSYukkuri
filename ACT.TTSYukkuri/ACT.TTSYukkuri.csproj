@@ -70,7 +70,7 @@
       <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Sasara\SasaraSpeechController.cs" />
-    <Compile Include="SoundPlayerRapper.cs" />
+    <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
     <Compile Include="SpeechControllerBase.cs" />
     <Compile Include="Yukkuri\YukkuriSpeechController.cs" />

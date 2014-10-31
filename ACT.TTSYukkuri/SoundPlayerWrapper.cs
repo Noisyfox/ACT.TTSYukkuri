@@ -7,7 +7,7 @@
     /// <summary>
     /// DirectXでサウンドを再生する
     /// </summary>
-    public static class SoundPlayerRapper
+    public static class SoundPlayerWrapper
     {
         /// <summary>
         /// サウンド再生する
