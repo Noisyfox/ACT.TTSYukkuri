@@ -54,13 +54,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\SasaraConfig.cs" />
+    <Compile Include="Config\TTSYukkuriConfig.cs" />
     <Compile Include="ISpeachController.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Replacer.cs" />
+    <Compile Include="Sasara\SasaraSettingsDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Sasara\SasaraSettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Sasara\SasaraSettingsPanel.Designer.cs">
+      <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sasara\SasaraSpeechController.cs" />
     <Compile Include="SoundPlayerRapper.cs" />
     <Compile Include="SpeechController.cs" />
@@ -89,15 +97,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Sasara\SasaraSettingsPanel.resx">
+      <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TTSYukkuriConfigPanel.resx">
       <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Include="Sasara\SasaraSettingsDataSet.xsc">
+      <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Sasara\SasaraSettingsDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SasaraSettingsDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Sasara\SasaraSettingsDataSet.xss">
+      <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

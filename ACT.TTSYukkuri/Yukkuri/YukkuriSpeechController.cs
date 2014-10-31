@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Runtime.InteropServices;
+    using System.Windows.Forms;
 
     /// <summary>
     /// ゆっくりスピーチコントローラ
@@ -32,6 +33,25 @@
         /// <param name="wave">開放する音声waveデータ</param>
         [DllImport(@"aqtk1-win\lib\AquesTalk.dll")]
         private static extern void AquesTalk_FreeWave(IntPtr wave);
+
+        /// <summary>
+        /// TTSの設定Panel
+        /// </summary>
+        public override UserControl TTSSettingsPanel
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 初期化する
+        /// </summary>
+        public override void Initialize()
+        {
+            // NO-OP
+        }
 
         /// <summary>
         /// テキストを読み上げる

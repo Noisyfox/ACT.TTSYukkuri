@@ -1,6 +1,8 @@
 ﻿namespace ACT.TTSYukkuri
 {
-    using ACT.TTSYukkuri.Properties;
+    using System.Windows.Forms;
+
+    using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.Sasara;
     using ACT.TTSYukkuri.Yukkuri;
 
@@ -36,9 +38,9 @@
                 lock (lockObject)
                 {
                     if (instance == null ||
-                        nowTTSType != Settings.Default.TTSType)
+                        nowTTSType != TTSYukkuriConfig.Default.TTS)
                     {
-                        switch (Settings.Default.TTSType)
+                        switch (TTSYukkuriConfig.Default.TTS)
                         {
                             case TTSType.Yukkuri:
                                 instance = new YukkuriSpeechController();
@@ -47,18 +49,37 @@
                             case TTSType.SasaraSato:
                                 instance = new SasaraSpeechController();
                                 break;
-                            
+
                             default:
                                 instance = new YukkuriSpeechController();
                                 break;
                         }
 
-                        nowTTSType = Settings.Default.TTSType;
+                        nowTTSType = TTSYukkuriConfig.Default.TTS;
                     }
 
                     return instance;
                 }
             }
+        }
+
+        /// <summary>
+        /// TTSの設定Panel
+        /// </summary>
+        public override UserControl TTSSettingsPanel
+        {
+            get
+            {
+                return SpeechController.Default.TTSSettingsPanel;
+            }
+        }
+
+        /// <summary>
+        /// 初期化する
+        /// </summary>
+        public override void Initialize()
+        {
+            SpeechController.Default.Initialize();
         }
 
         /// <summary>

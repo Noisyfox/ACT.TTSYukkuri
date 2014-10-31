@@ -1,10 +1,22 @@
 ﻿namespace ACT.TTSYukkuri
 {
+    using System.Windows.Forms;
+
     /// <summary>
     /// スピーチコントローラの汎用インターフェース
     /// </summary>
     public interface ISpeechController
     {
+        /// <summary>
+        /// TTSを初期化する
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
+        /// TTSの設定Panel
+        /// </summary>
+        UserControl TTSSettingsPanel { get; }
+
         /// <summary>
         /// TTSに話してもらう
         /// </summary>

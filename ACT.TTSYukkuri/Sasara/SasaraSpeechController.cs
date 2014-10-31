@@ -1,5 +1,7 @@
 ﻿namespace ACT.TTSYukkuri.Sasara
 {
+    using System.Windows.Forms;
+
     using CeVIO.Talk.RemoteService;
 
     /// <summary>
@@ -10,21 +12,48 @@
         ISpeechController
     {
         /// <summary>
-        /// ささらリモートインターフェースクラス
+        /// ロックオブジェクト
         /// </summary>
-        private Talker talker;
+        private static object lockObject = new object();
 
         /// <summary>
-        /// コンストラクタ
+        /// ささらリモートインターフェースクラス
         /// </summary>
-        public SasaraSpeechController()
+        public static Talker Talker
         {
-            this.talker = new Talker();
+            get;
+            private set;
+        }
 
-            // CeVIO Creative Studio を起動する
-            if (!ServiceControl.IsHostStarted)
+
+        /// <summary>
+        /// TTSの設定Panel
+        /// </summary>
+        public override UserControl TTSSettingsPanel
+        {
+            get
             {
-                ServiceControl.StartHost(false);
+                return SasaraSettingsPanel.Default;
+            }
+        }
+
+        /// <summary>
+        /// 初期化する
+        /// </summary>
+        public override void Initialize()
+        {
+            lock (lockObject)
+            {
+                // CeVIO Creative Studio を起動する
+                if (!ServiceControl.IsHostStarted)
+                {
+                    ServiceControl.StartHost(false);
+                }
+
+                if (Talker == null)
+                {
+                    Talker = new Talker();
+                }
             }
         }
 
@@ -35,20 +64,13 @@
         public override void Speak(
             string text)
         {
-            // CeVIO Creative Studio を起動する
-            if (!ServiceControl.IsHostStarted)
+            // 初期化する
+            this.Initialize();
+
+            if (!string.IsNullOrWhiteSpace(Talker.Cast))
             {
-                ServiceControl.StartHost(false);
-            }
-
-            var casts = Talker.AvailableCasts;
-
-            if (casts.Length > 0)
-            {
-                talker.Cast = casts[0];
-
                 // テキストを読上げる
-                talker.Speak(text);
+                Talker.Speak(text);
             }
         }
     }

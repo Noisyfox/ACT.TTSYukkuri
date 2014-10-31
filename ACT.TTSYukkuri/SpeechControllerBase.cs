@@ -1,12 +1,23 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System.Threading;
+    using System.Windows.Forms;
 
     /// <summary>
     /// スピーチコントローラの基底クラス
     /// </summary>
     public abstract class SpeechControllerBase : ISpeechController
     {
+        /// <summary>
+        /// TTSの設定Panel
+        /// </summary>
+        public abstract UserControl TTSSettingsPanel { get; }
+
+        /// <summary>
+        /// TTSを初期化する
+        /// </summary>
+        public abstract void Initialize();
+
         /// <summary>
         /// TTSに話してもらう
         /// </summary>
@@ -26,10 +37,10 @@
                 return;
             }
 
-            var timer = new Timer(new TimerCallback((state) =>
+            var timer = new System.Threading.Timer(new TimerCallback((state) =>
             {
                 this.Speak(text);
-                (state as Timer).Dispose();
+                (state as System.Threading.Timer).Dispose();
             }));
 
             timer.Change(

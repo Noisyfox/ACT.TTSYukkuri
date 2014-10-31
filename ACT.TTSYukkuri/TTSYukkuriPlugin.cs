@@ -21,22 +21,35 @@
             TabPage pluginScreenSpace,
             Label pluginStatusText)
         {
-            pluginScreenSpace.Text = "TTSゆっくり";
+            try
+            {
+                pluginScreenSpace.Text = "TTSゆっくり";
 
-            // 設定Panelを追加する
-            var configPanel = new TTSYukkuriConfigPanel();
-            configPanel.Dock = DockStyle.Fill;
-            pluginScreenSpace.Controls.Add(configPanel);
+                // 設定Panelを追加する
+                var configPanel = new TTSYukkuriConfigPanel();
+                configPanel.Dock = DockStyle.Fill;
+                pluginScreenSpace.Controls.Add(configPanel);
 
-            // Hand the status label's reference to our local var
-            lblStatus = pluginStatusText;
+                // Hand the status label's reference to our local var
+                lblStatus = pluginStatusText;
 
-            // Create some sort of parsing event handler. After the "+=" hit TAB twice and the code will be generated for you.
-            IntPtr new_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain_newTTS).GetMethod("newTTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
-            ACT_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain).GetMethod("TTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
-            Replacer.InsertJumpToFunction(ACT_TTSMethod, new_TTSMethod, out originalTTS);
+                // Create some sort of parsing event handler. After the "+=" hit TAB twice and the code will be generated for you.
+                IntPtr new_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain_newTTS).GetMethod("newTTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
+                ACT_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain).GetMethod("TTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
+                Replacer.InsertJumpToFunction(ACT_TTSMethod, new_TTSMethod, out originalTTS);
 
-            lblStatus.Text = "Plugin Started";
+                lblStatus.Text = "Plugin Started";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    pluginScreenSpace,
+                    "プラグインの初期化中に例外が発生しました。環境を確認してください" + Environment.NewLine + Environment.NewLine +
+                    ex.ToString(),
+                    "TTSゆっくりプラグイン",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+            }
         }
 
         public void DeInitPlugin()

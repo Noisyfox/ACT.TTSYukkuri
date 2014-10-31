@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ttsShuruiComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.ttsSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.SuspendLayout();
             // 
             // label1
@@ -50,7 +51,6 @@
             this.ttsShuruiComboBox.Name = "ttsShuruiComboBox";
             this.ttsShuruiComboBox.Size = new System.Drawing.Size(224, 20);
             this.ttsShuruiComboBox.TabIndex = 1;
-            this.ttsShuruiComboBox.TextChanged += new System.EventHandler(this.ttsShuruiComboBox_TextChanged);
             // 
             // label3
             // 
@@ -60,15 +60,25 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "※注意\r\n「さとう ささら」を使用するには「CeVIO Creative Studio」の製品版が\r\nインストールされている必要があります";
             // 
+            // ttsSettingsGroupBox
+            // 
+            this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 115);
+            this.ttsSettingsGroupBox.Name = "ttsSettingsGroupBox";
+            this.ttsSettingsGroupBox.Size = new System.Drawing.Size(944, 538);
+            this.ttsSettingsGroupBox.TabIndex = 4;
+            this.ttsSettingsGroupBox.TabStop = false;
+            this.ttsSettingsGroupBox.Text = "TTSの設定";
+            // 
             // TTSYukkuriConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ttsSettingsGroupBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.ttsShuruiComboBox);
             this.Controls.Add(this.label1);
             this.Name = "TTSYukkuriConfigPanel";
-            this.Size = new System.Drawing.Size(433, 150);
+            this.Size = new System.Drawing.Size(952, 656);
             this.Load += new System.EventHandler(this.TTSYukkuriConfigPanel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -80,5 +90,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox ttsShuruiComboBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox ttsSettingsGroupBox;
     }
 }

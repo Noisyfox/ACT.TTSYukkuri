@@ -21,7 +21,7 @@
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
         {
             new ComboBoxItem("ゆっくり", TTSType.Yukkuri),
-            new ComboBoxItem("さとう ささら", TTSType.SasaraSato),
+            new ComboBoxItem("CeVIO Creative Studio", TTSType.SasaraSato),
         };
     }
 
@@ -49,5 +49,14 @@
         /// 値用メンバ
         /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// ToString
+        /// </summary>
+        /// <returns>文字列</returns>
+        public override string ToString()
+        {
+            return this.Display;
+        }
     }
 }
