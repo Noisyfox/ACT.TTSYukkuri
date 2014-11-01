@@ -26,7 +26,7 @@ aqtk1-win
   
 最新リリース
 --------------
-[ACT.TTSYukkuri-v1.2.1.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.2.1/ACT.TTSYukkuri-v1.2.1.zip "ACT.TTSYukkuri-v1.2.1.zip")  
+[ACT.TTSYukkuri-v1.2.2.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.2.2/ACT.TTSYukkuri-v1.2.2.zip "ACT.TTSYukkuri-v1.2.2.zip")  
 
   
   
