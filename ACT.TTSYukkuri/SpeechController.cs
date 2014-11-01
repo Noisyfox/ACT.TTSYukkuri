@@ -2,6 +2,7 @@
 {
     using System.Windows.Forms;
 
+    using ACT.TTSYukkuri.Boyomichan;
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.Sasara;
     using ACT.TTSYukkuri.Yukkuri;
@@ -48,6 +49,10 @@
 
                             case TTSType.SasaraSato:
                                 instance = new SasaraSpeechController();
+                                break;
+
+                            case TTSType.Boyomichan:
+                                instance = new BoyomichanSpeechController();
                                 break;
 
                             default:

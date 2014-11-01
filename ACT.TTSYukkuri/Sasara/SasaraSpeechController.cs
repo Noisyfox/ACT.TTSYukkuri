@@ -26,7 +26,6 @@
             private set;
         }
 
-
         /// <summary>
         /// TTSの設定Panel
         /// </summary>

@@ -11,9 +11,14 @@
         public const string Yukkuri = "Yukkuri";
 
         /// <summary>
-        /// Sasara:さとう ささら
+        /// Sasara:CeVIO Creative Studio
         /// </summary>
         public const string SasaraSato = "Sasara";
+
+        /// <summary>
+        /// Boyomichan:棒読みちゃん
+        /// </summary>
+        public const string Boyomichan = "Boyomichan";
 
         /// <summary>
         /// コンボボックスコレクション
@@ -21,6 +26,7 @@
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
         {
             new ComboBoxItem("ゆっくり", TTSType.Yukkuri),
+            new ComboBoxItem("棒読みちゃん(TCPインターフェース)", TTSType.Boyomichan),
             new ComboBoxItem("CeVIO Creative Studio", TTSType.SasaraSato),
         };
     }
