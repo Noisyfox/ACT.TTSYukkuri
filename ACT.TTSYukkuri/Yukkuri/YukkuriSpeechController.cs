@@ -3,9 +3,9 @@
     using System;
     using System.IO;
     using System.Runtime.InteropServices;
-    using System.Text;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
+
     using Microsoft.VisualBasic;
 
     /// <summary>
@@ -117,22 +117,36 @@
         {
             var yomigana = textToConvert;
 
-            var ifelang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
+#if false
+            IFELanguage ifelang = null;
 
-            var hr = ifelang.Open();
-            if (hr != 0)
+            try
             {
-                return yomigana;
-            }
+                ifelang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
 
-            string t;
-            hr = ifelang.GetPhonetic(textToConvert, 1, -1, out t);
-            if (hr != 0)
+                var hr = ifelang.Open();
+                if (hr != 0)
+                {
+                    return yomigana;
+                }
+
+                string t;
+                hr = ifelang.GetPhonetic(textToConvert, 1, -1, out t);
+                if (hr != 0)
+                {
+                    return yomigana;
+                }
+
+                yomigana = t;
+            }
+            finally
             {
-                return yomigana;
+                if (ifelang != null)
+                {
+                    ifelang.Close();
+                }
             }
-
-            yomigana = t;
+#endif
 
             // スペースを置き換える
             yomigana = yomigana.Replace(" ", "、");
