@@ -23,7 +23,16 @@ aqtk1-win
 ・AquesTalk（ゆっくり）  
 ・CeVIO Creative Studio（さとうささら）※ただし製品版が必要  
   
+3) タイムラインでも使いたい  
+[ACTTimelineWithTTSYukkuri-rev02.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/ACTTimeline-rev02/ACTTimelineWithTTSYukkuri-rev02.zip "ACTTimelineWithTTSYukkuri-rev02.zip")  
+こちらの改造版タイムラインをどうぞ  
   
+4) ゆっくりが喋らない？  
+ゆっくりは読めない文字が一文字でも混じっていると文章そのものを読上げません  
+カタカナでも「ディ」「ヴォ」といったような日本語本来にはない発音は読めません  
+ゆっくりが無反応は場合は設定している文章を確認してください  
+  
+      
 最新リリース
 --------------
 [ACT.TTSYukkuri-v1.3.1.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.3.1/ACT.TTSYukkuri-v1.3.1.zip "ACT.TTSYukkuri-v1.3.1.zip")  
