@@ -75,6 +75,12 @@
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
     <Compile Include="SpeechControllerBase.cs" />
+    <Compile Include="Yukkuri\YukkuriSettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Yukkuri\YukkuriSettingsPanel.Designer.cs">
+      <DependentUpon>YukkuriSettingsPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Yukkuri\YukkuriSpeechController.cs" />
     <Compile Include="TTSType.cs" />
     <Compile Include="TTSYukkuriConfigPanel.cs">
@@ -104,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TTSYukkuriConfigPanel.resx">
       <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Yukkuri\YukkuriSettingsPanel.resx">
+      <DependentUpon>YukkuriSettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

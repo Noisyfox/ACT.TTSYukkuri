@@ -81,6 +81,16 @@
         public string TTS { get; set; }
 
         /// <summary>
+        /// ゆっくりのボリューム調整を有効にする
+        /// </summary>
+        public bool EnabledYukkuriVolumeSetting { get; set; }
+
+        /// <summary>
+        /// ゆっくりのボリューム
+        /// </summary>
+        public int YukkuriVolume { get; set; }
+
+        /// <summary>
         /// ささら設定
         /// </summary>
         public SasaraConfig SasaraSettings { get; set; }

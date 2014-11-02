@@ -32,6 +32,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.kanjoDataGridView = new System.Windows.Forms.DataGridView();
+            this.KanjoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AtaiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.castComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,8 +43,6 @@
             this.hayasaTextBox = new System.Windows.Forms.TextBox();
             this.takasaTextBox = new System.Windows.Forms.TextBox();
             this.seishitsuTextBox = new System.Windows.Forms.TextBox();
-            this.KanjoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AtaiColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.kanjoDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,99 +72,10 @@
             this.kanjoDataGridView.Name = "kanjoDataGridView";
             this.kanjoDataGridView.RowHeadersVisible = false;
             this.kanjoDataGridView.RowTemplate.Height = 21;
-            this.kanjoDataGridView.Size = new System.Drawing.Size(296, 201);
+            this.kanjoDataGridView.Size = new System.Drawing.Size(296, 152);
             this.kanjoDataGridView.TabIndex = 1;
             this.kanjoDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.kanjoDataGridView_CellValidated);
             this.kanjoDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.kanjoDataGridView_DataError);
-            // 
-            // castComboBox
-            // 
-            this.castComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.castComboBox.FormattingEnabled = true;
-            this.castComboBox.Location = new System.Drawing.Point(49, 23);
-            this.castComboBox.Name = "castComboBox";
-            this.castComboBox.Size = new System.Drawing.Size(296, 20);
-            this.castComboBox.TabIndex = 2;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 259);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "音量";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 284);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(25, 12);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "早さ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 309);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(25, 12);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "高さ";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 334);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 12);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "声質";
-            // 
-            // onryoTextBox
-            // 
-            this.onryoTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.onryoTextBox.Location = new System.Drawing.Point(49, 256);
-            this.onryoTextBox.MaxLength = 3;
-            this.onryoTextBox.Name = "onryoTextBox";
-            this.onryoTextBox.Size = new System.Drawing.Size(59, 19);
-            this.onryoTextBox.TabIndex = 7;
-            this.onryoTextBox.Text = "0";
-            this.onryoTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // hayasaTextBox
-            // 
-            this.hayasaTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.hayasaTextBox.Location = new System.Drawing.Point(49, 281);
-            this.hayasaTextBox.MaxLength = 3;
-            this.hayasaTextBox.Name = "hayasaTextBox";
-            this.hayasaTextBox.Size = new System.Drawing.Size(59, 19);
-            this.hayasaTextBox.TabIndex = 8;
-            this.hayasaTextBox.Text = "0";
-            this.hayasaTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // takasaTextBox
-            // 
-            this.takasaTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.takasaTextBox.Location = new System.Drawing.Point(49, 306);
-            this.takasaTextBox.MaxLength = 3;
-            this.takasaTextBox.Name = "takasaTextBox";
-            this.takasaTextBox.Size = new System.Drawing.Size(59, 19);
-            this.takasaTextBox.TabIndex = 9;
-            this.takasaTextBox.Text = "0";
-            this.takasaTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // seishitsuTextBox
-            // 
-            this.seishitsuTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.seishitsuTextBox.Location = new System.Drawing.Point(49, 331);
-            this.seishitsuTextBox.MaxLength = 3;
-            this.seishitsuTextBox.Name = "seishitsuTextBox";
-            this.seishitsuTextBox.Size = new System.Drawing.Size(59, 19);
-            this.seishitsuTextBox.TabIndex = 10;
-            this.seishitsuTextBox.Text = "0";
-            this.seishitsuTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // KanjoColumn
             // 
@@ -190,6 +101,95 @@
             this.AtaiColumn.Name = "AtaiColumn";
             this.AtaiColumn.Width = 70;
             // 
+            // castComboBox
+            // 
+            this.castComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.castComboBox.FormattingEnabled = true;
+            this.castComboBox.Location = new System.Drawing.Point(49, 23);
+            this.castComboBox.Name = "castComboBox";
+            this.castComboBox.Size = new System.Drawing.Size(296, 20);
+            this.castComboBox.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 210);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 12);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "音量";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 235);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(25, 12);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "早さ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 260);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 12);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "高さ";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 285);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 12);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "声質";
+            // 
+            // onryoTextBox
+            // 
+            this.onryoTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.onryoTextBox.Location = new System.Drawing.Point(49, 207);
+            this.onryoTextBox.MaxLength = 3;
+            this.onryoTextBox.Name = "onryoTextBox";
+            this.onryoTextBox.Size = new System.Drawing.Size(59, 19);
+            this.onryoTextBox.TabIndex = 7;
+            this.onryoTextBox.Text = "0";
+            this.onryoTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // hayasaTextBox
+            // 
+            this.hayasaTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.hayasaTextBox.Location = new System.Drawing.Point(49, 232);
+            this.hayasaTextBox.MaxLength = 3;
+            this.hayasaTextBox.Name = "hayasaTextBox";
+            this.hayasaTextBox.Size = new System.Drawing.Size(59, 19);
+            this.hayasaTextBox.TabIndex = 8;
+            this.hayasaTextBox.Text = "0";
+            this.hayasaTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // takasaTextBox
+            // 
+            this.takasaTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.takasaTextBox.Location = new System.Drawing.Point(49, 257);
+            this.takasaTextBox.MaxLength = 3;
+            this.takasaTextBox.Name = "takasaTextBox";
+            this.takasaTextBox.Size = new System.Drawing.Size(59, 19);
+            this.takasaTextBox.TabIndex = 9;
+            this.takasaTextBox.Text = "0";
+            this.takasaTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // seishitsuTextBox
+            // 
+            this.seishitsuTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.seishitsuTextBox.Location = new System.Drawing.Point(49, 282);
+            this.seishitsuTextBox.MaxLength = 3;
+            this.seishitsuTextBox.Name = "seishitsuTextBox";
+            this.seishitsuTextBox.Size = new System.Drawing.Size(59, 19);
+            this.seishitsuTextBox.TabIndex = 10;
+            this.seishitsuTextBox.Text = "0";
+            this.seishitsuTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // SasaraSettingsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -206,7 +206,7 @@
             this.Controls.Add(this.kanjoDataGridView);
             this.Controls.Add(this.label1);
             this.Name = "SasaraSettingsPanel";
-            this.Size = new System.Drawing.Size(643, 391);
+            this.Size = new System.Drawing.Size(643, 324);
             this.Load += new System.EventHandler(this.SasaraSettingsPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.kanjoDataGridView)).EndInit();
             this.ResumeLayout(false);

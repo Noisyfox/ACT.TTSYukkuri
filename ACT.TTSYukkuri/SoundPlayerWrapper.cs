@@ -81,6 +81,25 @@
         /// <summary>
         /// サウンドを再生する
         /// </summary>
+        /// <param name="stream">再生するストリーム</param>
+        /// <param name="volume">ボリューム</param>
+        public static void Play(
+            Stream stream,
+            int volume)
+        {
+            var file = Path.GetTempFileName();
+
+            using (var fs = new FileStream(file, FileMode.Open, FileAccess.Write))
+            {
+                stream.CopyTo(fs);
+            }
+
+            PlayCore(file, true, volume);
+        }
+
+        /// <summary>
+        /// サウンドを再生する
+        /// </summary>
         /// <param name="file">再生するサウンドファイル</param>
         public static void Play(
             string file)
@@ -106,6 +125,43 @@
             {
                 FileName = "SoundPlayer.exe",
                 Arguments = file + " " + isFileDelete,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+
+            var p = new Process()
+            {
+                StartInfo = pi
+            };
+
+            p.Exited += (s, e) =>
+            {
+                p.Dispose();
+            };
+
+            p.Start();
+        }
+
+        /// <summary>
+        /// サウンドを再生する
+        /// </summary>
+        /// <param name="file">再生するサウンドファイル</param>
+        /// <param name="isFileDelete">ファイルを削除するか？</param>
+        /// <param name="volume">ボリューム</param>
+        private static void PlayCore(
+            string file,
+            bool isFileDelete,
+            int volume)
+        {
+            if (!File.Exists(file))
+            {
+                return;
+            }
+
+            var pi = new ProcessStartInfo()
+            {
+                FileName = "SoundPlayer.exe",
+                Arguments = file + " " + isFileDelete + " " + volume.ToString(),
                 CreateNoWindow = true,
                 UseShellExecute = false
             };

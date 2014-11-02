@@ -54,15 +54,15 @@
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(3, 57);
+            this.label3.Location = new System.Drawing.Point(3, 50);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(427, 70);
+            this.label3.Size = new System.Drawing.Size(427, 33);
             this.label3.TabIndex = 3;
-            this.label3.Text = "※注意\r\n「さとう ささら」を使用するには「CeVIO Creative Studio」の製品版が\r\nインストールされている必要があります";
+            this.label3.Text = "※注意\r\n「CeVIO Creative Studio」は製品版が必要です";
             // 
             // ttsSettingsGroupBox
             // 
-            this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 115);
+            this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 93);
             this.ttsSettingsGroupBox.Name = "ttsSettingsGroupBox";
             this.ttsSettingsGroupBox.Size = new System.Drawing.Size(944, 538);
             this.ttsSettingsGroupBox.TabIndex = 4;
@@ -78,7 +78,7 @@
             this.Controls.Add(this.ttsShuruiComboBox);
             this.Controls.Add(this.label1);
             this.Name = "TTSYukkuriConfigPanel";
-            this.Size = new System.Drawing.Size(952, 656);
+            this.Size = new System.Drawing.Size(952, 638);
             this.Load += new System.EventHandler(this.TTSYukkuriConfigPanel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

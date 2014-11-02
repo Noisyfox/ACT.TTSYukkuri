@@ -5,8 +5,9 @@
     using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
-
     using Microsoft.VisualBasic;
+
+    using ACT.TTSYukkuri.Config;
 
     /// <summary>
     /// ゆっくりスピーチコントローラ
@@ -44,7 +45,7 @@
         {
             get
             {
-                return null;
+                return YukkuriSettingsPanel.Default;
             }
         }
 
@@ -95,7 +96,14 @@
                 // 再生する
                 using (var ms = new MemoryStream(buff))
                 {
-                    SoundPlayerWrapper.Play(ms);
+                    if (!TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting)
+                    {
+                        SoundPlayerWrapper.Play(ms);
+                    }
+                    else
+                    {
+                        SoundPlayerWrapper.Play(ms, TTSYukkuriConfig.Default.YukkuriVolume);
+                    }
                 }
             }
             finally
