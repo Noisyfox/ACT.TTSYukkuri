@@ -49,11 +49,14 @@
             {
                 MessageBox.Show(
                     pluginScreenSpace,
-                    "プラグインの初期化中に例外が発生しました。環境を確認してください" + Environment.NewLine + Environment.NewLine +
+                    "プラグインの初期化中に例外が発生しました。環境を確認してACTを再起動して下さい" + Environment.NewLine + Environment.NewLine +
                     ex.ToString(),
                     "TTSゆっくりプラグイン",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
+
+                TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
+                TTSYukkuriConfig.Default.Save();
             }
         }
 
