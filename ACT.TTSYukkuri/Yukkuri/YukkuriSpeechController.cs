@@ -17,11 +17,6 @@
         ISpeechController
     {
         /// <summary>
-        /// しゃべるスピード
-        /// </summary>
-        private const ushort SpeechSpeed = 110;
-
-        /// <summary>
         /// AquesTalk_Synthe
         /// </summary>
         /// <param name="koe">読み上げるテスト</param>
@@ -80,7 +75,7 @@
                 uint size = 0;
                 wavePtr = AquesTalk_Synthe(
                     textByYomigana,
-                    SpeechSpeed,
+                    (ushort)TTSYukkuriConfig.Default.YukkuriSpeed,
                     ref size);
 
                 if (wavePtr == IntPtr.Zero ||

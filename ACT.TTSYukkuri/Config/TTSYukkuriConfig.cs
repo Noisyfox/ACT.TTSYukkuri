@@ -81,6 +81,11 @@
         public string TTS { get; set; }
 
         /// <summary>
+        /// ゆっくりのスピード
+        /// </summary>
+        public int YukkuriSpeed { get; set; }
+
+        /// <summary>
         /// ゆっくりのボリューム調整を有効にする
         /// </summary>
         public bool EnabledYukkuriVolumeSetting { get; set; }

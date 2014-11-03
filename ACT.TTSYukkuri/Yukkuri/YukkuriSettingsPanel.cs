@@ -67,9 +67,44 @@
                 this.yukkuriVolumeTextBox.Enabled = false;
             }
 
+            if (TTSYukkuriConfig.Default.YukkuriSpeed == 0)
+            {
+                // デフォは110とする
+                TTSYukkuriConfig.Default.YukkuriSpeed = 110;
+            }
+
+            this.yukkuriSpeedTextBox.Text = TTSYukkuriConfig.Default.YukkuriSpeed.ToString();
+
             this.SaveSettings();
 
             // イベントを定義する
+            this.yukkuriSpeedTextBox.Leave += (s1, e1) =>
+            {
+                var c = s1 as TextBox;
+
+                int i;
+                if (int.TryParse(c.Text, out i))
+                {
+                    if (i <= 50)
+                    {
+                        i = 50;
+                    }
+
+                    if (i >= 300)
+                    {
+                        i = 300;
+                    }
+
+                    c.Text = i.ToString();
+                }
+                else
+                {
+                    c.Text = "110";
+                }
+
+                this.SaveSettings();
+            };
+
             this.enabledYukkuriVolumeSettingCheckBox.CheckedChanged += (s1, e1) =>
             {
                 var c = s1 as CheckBox;
@@ -119,8 +154,11 @@
         /// </summary>
         private void SaveSettings()
         {
+            TTSYukkuriConfig.Default.YukkuriSpeed = int.Parse(this.yukkuriSpeedTextBox.Text);
             TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting = this.enabledYukkuriVolumeSettingCheckBox.Checked;
             TTSYukkuriConfig.Default.YukkuriVolume = int.Parse(this.yukkuriVolumeTextBox.Text);
+
+            TTSYukkuriConfig.Default.Save();
         }
     }
 }

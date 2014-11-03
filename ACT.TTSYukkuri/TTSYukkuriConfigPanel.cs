@@ -80,6 +80,11 @@
                     "TTSゆっくりプラグイン",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
+                
+                // TTSをゆっくりに戻す
+                TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
+                TTSYukkuriConfig.Default.Save();
+                this.ttsShuruiComboBox.SelectedValue = TTSYukkuriConfig.Default.TTS;
             }
         }
     }
