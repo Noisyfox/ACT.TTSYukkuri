@@ -30,6 +30,9 @@
                 TTSYukkuriConfig.Default.Load();
                 SpeechController.Default.Initialize();
 
+                // FF14監視スレッドを初期化する
+                FF14Watcher.Initialize();
+
                 // 設定Panelを追加する
                 var configPanel = new TTSYukkuriConfigPanel();
                 configPanel.Dock = DockStyle.Fill;
@@ -55,6 +58,7 @@
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
 
+                // TTSをゆっくりに戻す
                 TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
                 TTSYukkuriConfig.Default.Save();
             }
@@ -64,6 +68,8 @@
         {
             // Unsubscribe from any events you listen to when exiting!
             Replacer.RestoreFunction(ACT_TTSMethod, originalTTS);
+
+            FF14Watcher.Deinitialize();
 
             // 設定を保存する
             TTSYukkuriConfig.Default.Save();

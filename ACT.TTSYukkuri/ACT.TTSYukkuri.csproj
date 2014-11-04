@@ -42,6 +42,11 @@
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\CeVIO.Talk.RemoteService\v4.0_1.0.5.0__c90da69f58ce61df\CeVIO.Talk.RemoteService.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FFXIV_ACT_Plugin, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ACTv3\FFXIV_ACT_Plugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,8 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boyomichan\BoyomichanSpeechController.cs" />
+    <Compile Include="Config\OptionsConfig.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\TTSYukkuriConfig.cs" />
+    <Compile Include="FF14Watcher.cs" />
+    <Compile Include="FF14Watcher.FF14PluginWrapper.cs" />
+    <Compile Include="FF14Watcher.PartyWatcher.cs" />
     <Compile Include="ISpeachController.cs" />
     <Compile Include="Replacer.cs" />
     <Compile Include="Sasara\SasaraSettingsDataSet.Designer.cs">
@@ -75,6 +84,9 @@
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
     <Compile Include="SpeechControllerBase.cs" />
+    <Compile Include="TTSYukkuriConfigPanel.Options.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Yukkuri\YukkuriSettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

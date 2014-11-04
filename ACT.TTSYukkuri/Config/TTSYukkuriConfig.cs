@@ -71,6 +71,7 @@
         public TTSYukkuriConfig()
         {
             this.SasaraSettings = new SasaraConfig();
+            this.OptionSettings = new OptionsConfig();
 
             this.TTS = TTSType.Yukkuri;
         }
@@ -101,18 +102,26 @@
         public SasaraConfig SasaraSettings { get; set; }
 
         /// <summary>
+        /// オプション設定
+        /// </summary>
+        public OptionsConfig OptionSettings { get; set; }
+
+        /// <summary>
         /// 設定をロードする
         /// </summary>
         public void Load()
         {
-            var file = FilePath;
-
-            if (File.Exists(file))
+            lock (lockObject)
             {
-                using (var sr = new StreamReader(file, new UTF8Encoding(false)))
+                var file = FilePath;
+
+                if (File.Exists(file))
                 {
-                    var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
-                    instance = (TTSYukkuriConfig)xs.Deserialize(sr);
+                    using (var sr = new StreamReader(file, new UTF8Encoding(false)))
+                    {
+                        var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
+                        instance = (TTSYukkuriConfig)xs.Deserialize(sr);
+                    }
                 }
             }
         }
@@ -122,19 +131,22 @@
         /// </summary>
         public void Save()
         {
-            var file = FilePath;
-
-            var dir = Path.GetDirectoryName(file);
-
-            if (!Directory.Exists(dir))
+            lock (lockObject)
             {
-                Directory.CreateDirectory(dir);
-            }
+                var file = FilePath;
 
-            using (var sw = new StreamWriter(file, false, new UTF8Encoding(false)))
-            {
-                var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
-                xs.Serialize(sw, Default);
+                var dir = Path.GetDirectoryName(file);
+
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+
+                using (var sw = new StreamWriter(file, false, new UTF8Encoding(false)))
+                {
+                    var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
+                    xs.Serialize(sw, Default);
+                }
             }
         }
 

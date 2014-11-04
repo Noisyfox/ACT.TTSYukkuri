@@ -43,6 +43,19 @@
         {
             this.ttsShuruiComboBox.SelectedValue = TTSYukkuriConfig.Default.TTS;
             this.LoadTTS();
+
+            // オプションのロードを呼出す
+            this.LoadOptions();
+        }
+
+        /// <summary>
+        /// 設定を保存する
+        /// </summary>
+        private void SaveSettings()
+        {
+            this.SaveSettingsOptions();
+
+            TTSYukkuriConfig.Default.Save();
         }
 
         /// <summary>

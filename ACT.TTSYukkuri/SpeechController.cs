@@ -63,6 +63,9 @@
                         instance.Initialize();
 
                         nowTTSType = TTSYukkuriConfig.Default.TTS;
+
+                        // 監視スレッドにスピークdelegateを与える
+                        FF14Watcher.Default.SpeakDelegate = instance.Speak;
                     }
 
                     return instance;

@@ -17,6 +17,11 @@
         ISpeechController
     {
         /// <summary>
+        /// ロックオブジェクト
+        /// </summary>
+        private static object lockObject = new object();
+
+        /// <summary>
         /// AquesTalk_Synthe
         /// </summary>
         /// <param name="koe">読み上げるテスト</param>
@@ -59,53 +64,56 @@
         public override void Speak(
             string text)
         {
-            IntPtr wavePtr = IntPtr.Zero;
-
-            try
+            lock (lockObject)
             {
-                if (string.IsNullOrWhiteSpace(text))
+                IntPtr wavePtr = IntPtr.Zero;
+
+                try
                 {
-                    return;
-                }
-
-                // よみがなに変換する
-                var textByYomigana = this.ConvertYomigana(text);
-
-                // テキストを音声データに変換する
-                uint size = 0;
-                wavePtr = AquesTalk_Synthe(
-                    textByYomigana,
-                    (ushort)TTSYukkuriConfig.Default.YukkuriSpeed,
-                    ref size);
-
-                if (wavePtr == IntPtr.Zero ||
-                    size <= 0)
-                {
-                    return;
-                }
-
-                // 生成したwaveデータを読み出す
-                var buff = new byte[size];
-                Marshal.Copy(wavePtr, buff, 0, (int)size);
-
-                // 再生する
-                using (var ms = new MemoryStream(buff))
-                {
-                    if (!TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting)
+                    if (string.IsNullOrWhiteSpace(text))
                     {
-                        SoundPlayerWrapper.Play(ms);
+                        return;
                     }
-                    else
+
+                    // よみがなに変換する
+                    var textByYomigana = this.ConvertYomigana(text);
+
+                    // テキストを音声データに変換する
+                    uint size = 0;
+                    wavePtr = AquesTalk_Synthe(
+                        textByYomigana,
+                        (ushort)TTSYukkuriConfig.Default.YukkuriSpeed,
+                        ref size);
+
+                    if (wavePtr == IntPtr.Zero ||
+                        size <= 0)
                     {
-                        SoundPlayerWrapper.Play(ms, TTSYukkuriConfig.Default.YukkuriVolume);
+                        return;
+                    }
+
+                    // 生成したwaveデータを読み出す
+                    var buff = new byte[size];
+                    Marshal.Copy(wavePtr, buff, 0, (int)size);
+
+                    // 再生する
+                    using (var ms = new MemoryStream(buff))
+                    {
+                        if (!TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting)
+                        {
+                            SoundPlayerWrapper.Play(ms);
+                        }
+                        else
+                        {
+                            SoundPlayerWrapper.Play(ms, TTSYukkuriConfig.Default.YukkuriVolume);
+                        }
                     }
                 }
-            }
-            finally
-            {
-                if (wavePtr != IntPtr.Zero)
+                finally
                 {
-                    AquesTalk_FreeWave(wavePtr);
+                    if (wavePtr != IntPtr.Zero)
+                    {
+                        AquesTalk_FreeWave(wavePtr);
+                    }
                 }
             }
         }

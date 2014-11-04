@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.kanjoDataGridView = new System.Windows.Forms.DataGridView();
             this.KanjoColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -80,10 +80,10 @@
             // KanjoColumn
             // 
             this.KanjoColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            this.KanjoColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            this.KanjoColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.KanjoColumn.HeaderText = "感情";
             this.KanjoColumn.MinimumWidth = 200;
             this.KanjoColumn.Name = "KanjoColumn";
@@ -93,8 +93,8 @@
             // AtaiColumn
             // 
             this.AtaiColumn.DataPropertyName = "Value";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.AtaiColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.AtaiColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.AtaiColumn.HeaderText = "値";
             this.AtaiColumn.MaxInputLength = 3;
             this.AtaiColumn.MinimumWidth = 70;
@@ -206,7 +206,7 @@
             this.Controls.Add(this.kanjoDataGridView);
             this.Controls.Add(this.label1);
             this.Name = "SasaraSettingsPanel";
-            this.Size = new System.Drawing.Size(643, 324);
+            this.Size = new System.Drawing.Size(368, 317);
             this.Load += new System.EventHandler(this.SasaraSettingsPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.kanjoDataGridView)).EndInit();
             this.ResumeLayout(false);
