@@ -41,8 +41,16 @@
                 index++;
 
                 // このPTメンバの現在の状態を取得する
-                var hpRate = ((decimal)partyMember.CurrentHP / (decimal)partyMember.MaxHP) * 100m;
-                var mpRate = ((decimal)partyMember.CurrentMP / (decimal)partyMember.MaxMP) * 100m;
+                var hpRate =
+                    partyMember.MaxHP != 0 ?
+                    ((decimal)partyMember.CurrentHP / (decimal)partyMember.MaxHP) * 100m :
+                    0m;
+
+                var mpRate =
+                    partyMember.MaxMP != 0 ?
+                    ((decimal)partyMember.CurrentMP / (decimal)partyMember.MaxMP) * 100m :
+                    0m;
+
                 var tpRate = ((decimal)partyMember.CurrentTP / 1000m) * 100m;
 
                 // このPTメンバの直前の情報を取得する
