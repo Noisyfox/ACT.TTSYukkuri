@@ -148,6 +148,11 @@
                         }
                     }
                 }
+
+                // 今回の状態を保存する
+                previousePartyMember.HPRate = hpRate;
+                previousePartyMember.MPRate = mpRate;
+                previousePartyMember.TPRate = tpRate;
             }
         }
 

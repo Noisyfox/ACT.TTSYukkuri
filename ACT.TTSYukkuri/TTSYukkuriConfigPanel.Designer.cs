@@ -33,16 +33,16 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ttsSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.optionGroupBox = new System.Windows.Forms.GroupBox();
-            this.enableWatchHPCheckBox = new System.Windows.Forms.CheckBox();
-            this.enableWatchMPCheckBox = new System.Windows.Forms.CheckBox();
-            this.enableWatchTPCheckBox = new System.Windows.Forms.CheckBox();
-            this.enableWatchDebuffCheckBox = new System.Windows.Forms.CheckBox();
-            this.HPThresholdTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.MPThresholdTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.TPThresholdTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.MPThresholdTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.HPThresholdTextBox = new System.Windows.Forms.TextBox();
+            this.enableWatchDebuffCheckBox = new System.Windows.Forms.CheckBox();
+            this.enableWatchTPCheckBox = new System.Windows.Forms.CheckBox();
+            this.enableWatchMPCheckBox = new System.Windows.Forms.CheckBox();
+            this.enableWatchHPCheckBox = new System.Windows.Forms.CheckBox();
             this.optionGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +93,7 @@
             this.optionGroupBox.Controls.Add(this.enableWatchTPCheckBox);
             this.optionGroupBox.Controls.Add(this.enableWatchMPCheckBox);
             this.optionGroupBox.Controls.Add(this.enableWatchHPCheckBox);
+            this.optionGroupBox.Enabled = false;
             this.optionGroupBox.Location = new System.Drawing.Point(622, 93);
             this.optionGroupBox.Name = "optionGroupBox";
             this.optionGroupBox.Size = new System.Drawing.Size(720, 538);
@@ -100,65 +101,25 @@
             this.optionGroupBox.TabStop = false;
             this.optionGroupBox.Text = "オプション設定";
             // 
-            // enableWatchHPCheckBox
+            // label5
             // 
-            this.enableWatchHPCheckBox.AutoSize = true;
-            this.enableWatchHPCheckBox.Location = new System.Drawing.Point(6, 33);
-            this.enableWatchHPCheckBox.Name = "enableWatchHPCheckBox";
-            this.enableWatchHPCheckBox.Size = new System.Drawing.Size(152, 16);
-            this.enableWatchHPCheckBox.TabIndex = 0;
-            this.enableWatchHPCheckBox.Text = "PartyのHP低下を監視する";
-            this.enableWatchHPCheckBox.UseVisualStyleBackColor = true;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(71, 213);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(122, 12);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "%以下になったら読上げる";
             // 
-            // enableWatchMPCheckBox
+            // TPThresholdTextBox
             // 
-            this.enableWatchMPCheckBox.AutoSize = true;
-            this.enableWatchMPCheckBox.Location = new System.Drawing.Point(6, 108);
-            this.enableWatchMPCheckBox.Name = "enableWatchMPCheckBox";
-            this.enableWatchMPCheckBox.Size = new System.Drawing.Size(153, 16);
-            this.enableWatchMPCheckBox.TabIndex = 1;
-            this.enableWatchMPCheckBox.Text = "PartyのMP低下を監視する";
-            this.enableWatchMPCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // enableWatchTPCheckBox
-            // 
-            this.enableWatchTPCheckBox.AutoSize = true;
-            this.enableWatchTPCheckBox.Location = new System.Drawing.Point(6, 188);
-            this.enableWatchTPCheckBox.Name = "enableWatchTPCheckBox";
-            this.enableWatchTPCheckBox.Size = new System.Drawing.Size(151, 16);
-            this.enableWatchTPCheckBox.TabIndex = 2;
-            this.enableWatchTPCheckBox.Text = "PartyのTP低下を監視する";
-            this.enableWatchTPCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // enableWatchDebuffCheckBox
-            // 
-            this.enableWatchDebuffCheckBox.AutoSize = true;
-            this.enableWatchDebuffCheckBox.Location = new System.Drawing.Point(6, 271);
-            this.enableWatchDebuffCheckBox.Name = "enableWatchDebuffCheckBox";
-            this.enableWatchDebuffCheckBox.Size = new System.Drawing.Size(141, 16);
-            this.enableWatchDebuffCheckBox.TabIndex = 3;
-            this.enableWatchDebuffCheckBox.Text = "Partyのデバフを監視する";
-            this.enableWatchDebuffCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // HPThresholdTextBox
-            // 
-            this.HPThresholdTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.HPThresholdTextBox.Location = new System.Drawing.Point(6, 55);
-            this.HPThresholdTextBox.MaxLength = 3;
-            this.HPThresholdTextBox.Name = "HPThresholdTextBox";
-            this.HPThresholdTextBox.Size = new System.Drawing.Size(59, 19);
-            this.HPThresholdTextBox.TabIndex = 4;
-            this.HPThresholdTextBox.Text = "0";
-            this.HPThresholdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(71, 58);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(122, 12);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "%以下になったら読上げる";
+            this.TPThresholdTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.TPThresholdTextBox.Location = new System.Drawing.Point(6, 210);
+            this.TPThresholdTextBox.MaxLength = 3;
+            this.TPThresholdTextBox.Name = "TPThresholdTextBox";
+            this.TPThresholdTextBox.Size = new System.Drawing.Size(59, 19);
+            this.TPThresholdTextBox.TabIndex = 8;
+            this.TPThresholdTextBox.Text = "0";
+            this.TPThresholdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label4
             // 
@@ -180,25 +141,65 @@
             this.MPThresholdTextBox.Text = "0";
             this.MPThresholdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label5
+            // label2
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(71, 213);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(122, 12);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "%以下になったら読上げる";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(71, 58);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(122, 12);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "%以下になったら読上げる";
             // 
-            // TPThresholdTextBox
+            // HPThresholdTextBox
             // 
-            this.TPThresholdTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.TPThresholdTextBox.Location = new System.Drawing.Point(6, 210);
-            this.TPThresholdTextBox.MaxLength = 3;
-            this.TPThresholdTextBox.Name = "TPThresholdTextBox";
-            this.TPThresholdTextBox.Size = new System.Drawing.Size(59, 19);
-            this.TPThresholdTextBox.TabIndex = 8;
-            this.TPThresholdTextBox.Text = "0";
-            this.TPThresholdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.HPThresholdTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.HPThresholdTextBox.Location = new System.Drawing.Point(6, 55);
+            this.HPThresholdTextBox.MaxLength = 3;
+            this.HPThresholdTextBox.Name = "HPThresholdTextBox";
+            this.HPThresholdTextBox.Size = new System.Drawing.Size(59, 19);
+            this.HPThresholdTextBox.TabIndex = 4;
+            this.HPThresholdTextBox.Text = "0";
+            this.HPThresholdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // enableWatchDebuffCheckBox
+            // 
+            this.enableWatchDebuffCheckBox.AutoSize = true;
+            this.enableWatchDebuffCheckBox.Location = new System.Drawing.Point(6, 271);
+            this.enableWatchDebuffCheckBox.Name = "enableWatchDebuffCheckBox";
+            this.enableWatchDebuffCheckBox.Size = new System.Drawing.Size(141, 16);
+            this.enableWatchDebuffCheckBox.TabIndex = 3;
+            this.enableWatchDebuffCheckBox.Text = "Partyのデバフを監視する";
+            this.enableWatchDebuffCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // enableWatchTPCheckBox
+            // 
+            this.enableWatchTPCheckBox.AutoSize = true;
+            this.enableWatchTPCheckBox.Location = new System.Drawing.Point(6, 188);
+            this.enableWatchTPCheckBox.Name = "enableWatchTPCheckBox";
+            this.enableWatchTPCheckBox.Size = new System.Drawing.Size(151, 16);
+            this.enableWatchTPCheckBox.TabIndex = 2;
+            this.enableWatchTPCheckBox.Text = "PartyのTP低下を監視する";
+            this.enableWatchTPCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // enableWatchMPCheckBox
+            // 
+            this.enableWatchMPCheckBox.AutoSize = true;
+            this.enableWatchMPCheckBox.Location = new System.Drawing.Point(6, 108);
+            this.enableWatchMPCheckBox.Name = "enableWatchMPCheckBox";
+            this.enableWatchMPCheckBox.Size = new System.Drawing.Size(153, 16);
+            this.enableWatchMPCheckBox.TabIndex = 1;
+            this.enableWatchMPCheckBox.Text = "PartyのMP低下を監視する";
+            this.enableWatchMPCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // enableWatchHPCheckBox
+            // 
+            this.enableWatchHPCheckBox.AutoSize = true;
+            this.enableWatchHPCheckBox.Location = new System.Drawing.Point(6, 33);
+            this.enableWatchHPCheckBox.Name = "enableWatchHPCheckBox";
+            this.enableWatchHPCheckBox.Size = new System.Drawing.Size(152, 16);
+            this.enableWatchHPCheckBox.TabIndex = 0;
+            this.enableWatchHPCheckBox.Text = "PartyのHP低下を監視する";
+            this.enableWatchHPCheckBox.UseVisualStyleBackColor = true;
             // 
             // TTSYukkuriConfigPanel
             // 

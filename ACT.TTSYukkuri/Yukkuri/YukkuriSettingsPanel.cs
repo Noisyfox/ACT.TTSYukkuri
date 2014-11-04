@@ -4,6 +4,7 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
+    using ACT.TTSYukkuri.SoundPlayer;
 
     /// <summary>
     /// ゆっくり設定Panel
@@ -54,6 +55,15 @@
         /// <param name="e">イベント引数</param>
         private void YukkuriSettingsPanel_Load(object sender, EventArgs e)
         {
+            // 再生デバイスコンボボックスを設定する
+            this.mainDeviceComboBox.DisplayMember = "Name";
+            this.mainDeviceComboBox.ValueMember = "Number";
+            this.mainDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
+
+            this.subDeviceComboBox.DisplayMember = "Name";
+            this.subDeviceComboBox.ValueMember = "Number";
+            this.subDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
+
             // 設定をロードする
             this.enabledYukkuriVolumeSettingCheckBox.Checked = TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting;
             this.yukkuriVolumeTextBox.Text = TTSYukkuriConfig.Default.YukkuriVolume.ToString();
@@ -74,6 +84,12 @@
             }
 
             this.yukkuriSpeedTextBox.Text = TTSYukkuriConfig.Default.YukkuriSpeed.ToString();
+
+            this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.YukkuriMainDeviceNo;
+            this.enabledSubDeviceCheckBox.Checked = TTSYukkuriConfig.Default.EnabledYukkuriSubDevice;
+            this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.YukkuriSubDeviceNo;
+
+            this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
 
             this.SaveSettings();
 
@@ -147,6 +163,23 @@
 
                 this.SaveSettings();
             };
+
+            this.mainDeviceComboBox.TextChanged += (s1, e1) =>
+            {
+                this.SaveSettings();
+            };
+
+            this.enabledSubDeviceCheckBox.CheckedChanged += (s1, e1) =>
+            {
+                var c = s1 as CheckBox;
+                this.subDeviceComboBox.Enabled = c.Checked;
+                this.SaveSettings();
+            };
+
+            this.subDeviceComboBox.TextChanged += (s1, e1) =>
+            {
+                this.SaveSettings();
+            };
         }
 
         /// <summary>
@@ -157,6 +190,9 @@
             TTSYukkuriConfig.Default.YukkuriSpeed = int.Parse(this.yukkuriSpeedTextBox.Text);
             TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting = this.enabledYukkuriVolumeSettingCheckBox.Checked;
             TTSYukkuriConfig.Default.YukkuriVolume = int.Parse(this.yukkuriVolumeTextBox.Text);
+            TTSYukkuriConfig.Default.YukkuriMainDeviceNo = (int)this.mainDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.EnabledYukkuriSubDevice = this.enabledSubDeviceCheckBox.Checked;
+            TTSYukkuriConfig.Default.YukkuriSubDeviceNo = (int)this.subDeviceComboBox.SelectedValue;
 
             TTSYukkuriConfig.Default.Save();
         }

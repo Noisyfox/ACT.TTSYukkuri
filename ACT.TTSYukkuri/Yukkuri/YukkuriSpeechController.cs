@@ -5,9 +5,9 @@
     using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
-    using Microsoft.VisualBasic;
 
     using ACT.TTSYukkuri.Config;
+    using Microsoft.VisualBasic;
 
     /// <summary>
     /// ゆっくりスピーチコントローラ
@@ -100,11 +100,31 @@
                     {
                         if (!TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting)
                         {
-                            SoundPlayerWrapper.Play(ms);
+                            SoundPlayerWrapper.Play(
+                                TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
+                                ms);
+
+                            if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
+                            {
+                                SoundPlayerWrapper.Play(
+                                    TTSYukkuriConfig.Default.YukkuriSubDeviceNo,
+                                    ms);
+                            }
                         }
                         else
                         {
-                            SoundPlayerWrapper.Play(ms, TTSYukkuriConfig.Default.YukkuriVolume);
+                            SoundPlayerWrapper.Play(
+                                TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
+                                ms, 
+                                TTSYukkuriConfig.Default.YukkuriVolume);
+
+                            if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
+                            {
+                                SoundPlayerWrapper.Play(
+                                    TTSYukkuriConfig.Default.YukkuriSubDeviceNo,
+                                    ms,
+                                    TTSYukkuriConfig.Default.YukkuriVolume);
+                            }
                         }
                     }
                 }
@@ -128,36 +148,8 @@
         {
             var yomigana = textToConvert;
 
-#if false
-            IFELanguage ifelang = null;
-
-            try
-            {
-                ifelang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
-
-                var hr = ifelang.Open();
-                if (hr != 0)
-                {
-                    return yomigana;
-                }
-
-                string t;
-                hr = ifelang.GetPhonetic(textToConvert, 1, -1, out t);
-                if (hr != 0)
-                {
-                    return yomigana;
-                }
-
-                yomigana = t;
-            }
-            finally
-            {
-                if (ifelang != null)
-                {
-                    ifelang.Close();
-                }
-            }
-#endif
+            // よみがなに変換する
+            yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
 
             // スペースを置き換える
             yomigana = yomigana.Replace(" ", "、");
@@ -228,21 +220,5 @@
 
             return yomigana;
         }
-    }
-
-    /// <summary>
-    /// IFELanguage Interface
-    /// </summary>
-    [ComImport]
-    [Guid("019F7152-E6DB-11d0-83C3-00C04FDDB82E")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IFELanguage
-    {
-        int Open();
-        int Close();
-        int GetJMorphResult(uint dwRequest, uint dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string pwchInput, IntPtr pfCInfo, out object ppResult);
-        int GetConversionModeCaps(ref uint pdwCaps);
-        int GetPhonetic([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
-        int GetConversion([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
     }
 }

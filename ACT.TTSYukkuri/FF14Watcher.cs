@@ -64,8 +64,9 @@
                 };
 
                 instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
-
+#if false
                 instance.watchTimer.Start();
+#endif
             }
         }
 

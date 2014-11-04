@@ -26,6 +26,9 @@
             {
                 pluginScreenSpace.Text = "TTSゆっくり";
 
+                // 漢字変換を初期化する
+                KanjiTranslator.Default.Initialize();
+
                 // TTSを初期化する
                 TTSYukkuriConfig.Default.Load();
                 SpeechController.Default.Initialize();
@@ -69,7 +72,11 @@
             // Unsubscribe from any events you listen to when exiting!
             Replacer.RestoreFunction(ACT_TTSMethod, originalTTS);
 
+            // FF14監視スレッドを開放する
             FF14Watcher.Deinitialize();
+
+            // 漢字変換オブジェクトを開放する
+            KanjiTranslator.Default.Dispose();
 
             // 設定を保存する
             TTSYukkuriConfig.Default.Save();

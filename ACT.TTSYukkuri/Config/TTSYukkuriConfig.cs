@@ -97,6 +97,21 @@
         public int YukkuriVolume { get; set; }
 
         /// <summary>
+        /// ゆっくりメイン再生デバイス番号
+        /// </summary>
+        public int YukkuriMainDeviceNo { get; set; }
+
+        /// <summary>
+        /// ゆっくりサブ再生デバイスを有効にする
+        /// </summary>
+        public bool EnabledYukkuriSubDevice { get; set; }
+        
+        /// <summary>
+        /// ゆっくりサブ再生デバイス番号
+        /// </summary>
+        public int YukkuriSubDeviceNo { get; set; }
+
+        /// <summary>
         /// ささら設定
         /// </summary>
         public SasaraConfig SasaraSettings { get; set; }
