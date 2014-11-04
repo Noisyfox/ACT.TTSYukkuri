@@ -1,9 +1,10 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System.IO;
-    using System.Threading;
+    using System.Windows.Forms;
 
     using ACT.TTSYukkuri.SoundPlayer;
+    using Advanced_Combat_Tracker;
 
     /// <summary>
     /// DirectXでサウンドを再生する
@@ -63,33 +64,15 @@
             {
                 return;
             }
-#if false
-            var pi = new ProcessStartInfo()
-            {
-                FileName = "SoundPlayer.exe",
-                Arguments = file + " " + isFileDelete + " " + volume.ToString(),
-                CreateNoWindow = true,
-                UseShellExecute = false
-            };
 
-            var p = new Process()
+            ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
-                StartInfo = pi
-            };
-
-            p.Exited += (s, e) =>
-            {
-                p.Dispose();
-            };
-
-            p.Start();
-#else
-            NAudioPlayer.Play(
-                deviceNo,
-                file,
-                isFileDelete,
-                volume);
-#endif
+                NAudioPlayer.Play(
+                    deviceNo,
+                    file,
+                    isFileDelete,
+                    volume);
+            });
         }
     }
 }

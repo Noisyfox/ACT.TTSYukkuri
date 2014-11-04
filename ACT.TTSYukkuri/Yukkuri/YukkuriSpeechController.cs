@@ -7,6 +7,7 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
+    using Advanced_Combat_Tracker;
     using Microsoft.VisualBasic;
 
     /// <summary>
@@ -95,36 +96,24 @@
                     var buff = new byte[size];
                     Marshal.Copy(wavePtr, buff, 0, (int)size);
 
-                    // 再生する
+                    // メインデバイスを再生する
                     using (var ms = new MemoryStream(buff))
                     {
-                        if (!TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting)
-                        {
-                            SoundPlayerWrapper.Play(
-                                TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
-                                ms);
+                        SoundPlayerWrapper.Play(
+                            TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
+                            ms,
+                            TTSYukkuriConfig.Default.YukkuriVolume);
+                    }
 
-                            if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
-                            {
-                                SoundPlayerWrapper.Play(
-                                    TTSYukkuriConfig.Default.YukkuriSubDeviceNo,
-                                    ms);
-                            }
-                        }
-                        else
+                    // サブデバイスを再生する
+                    if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
+                    {
+                        using (var ms = new MemoryStream(buff))
                         {
                             SoundPlayerWrapper.Play(
-                                TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
-                                ms, 
+                                TTSYukkuriConfig.Default.YukkuriSubDeviceNo,
+                                ms,
                                 TTSYukkuriConfig.Default.YukkuriVolume);
-
-                            if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
-                            {
-                                SoundPlayerWrapper.Play(
-                                    TTSYukkuriConfig.Default.YukkuriSubDeviceNo,
-                                    ms,
-                                    TTSYukkuriConfig.Default.YukkuriVolume);
-                            }
                         }
                     }
                 }
@@ -148,8 +137,11 @@
         {
             var yomigana = textToConvert;
 
-            // よみがなに変換する
-            yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
+            ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+            {
+                // よみがなに変換する
+                yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
+            });
 
             // スペースを置き換える
             yomigana = yomigana.Replace(" ", "、");
