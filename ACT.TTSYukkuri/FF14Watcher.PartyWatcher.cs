@@ -78,7 +78,7 @@
                 // 読上げ用の名前「ジョブ名＋イニシャル」とする
                 var nameToSpeak =
                     GetJobNameToSpeak(partyMember.Job) +
-                    partyMember.Name.Substring(0, 1);
+                    partyMember.Name.Trim().Substring(0, 1);
 
                 // HPをチェックして読上げる
                 if (TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch)
