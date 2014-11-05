@@ -24,6 +24,7 @@ aqtk1-win
 下記のTTSに対応しています  
 ・AquesTalk（ゆっくり）  
 ・CeVIO Creative Studio（さとうささら）※ただし製品版が必要  
+・棒読みちゃん  
   
   
 3) タイムラインでも使いたい  
