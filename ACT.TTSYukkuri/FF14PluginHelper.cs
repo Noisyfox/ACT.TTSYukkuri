@@ -117,6 +117,8 @@
 
                         combatant.ID = (uint)getValue(temp, "ID");
                         combatant.Name = (string)getValue(temp, "Name");
+                        combatant.type = (byte)getValue(temp, "type");
+                        combatant.Level = (int)getValue(temp, "Level");
 
                         combatant.CurrentHP = (int)getValue(temp, "CurrentHP");
                         combatant.MaxHP = (int)getValue(temp, "MaxHP");
