@@ -169,65 +169,6 @@
             yomigana = yomigana.Replace("!", "。");
             yomigana = yomigana.Replace("！", "。");
 
-            // アルファベットを置き換える
-            var regex2 = new Regex(@"[a-zA-Zａ-ｚＡ-Ｚ]+");
-            yomigana = regex2.Replace(
-                yomigana,
-                (match) =>
-                {
-                    var replacement = match.Value;
-                    replacement = Strings.StrConv(replacement, VbStrConv.Narrow);
-                    replacement = Strings.StrConv(replacement, VbStrConv.Uppercase);
-                    return replacement;
-                });
-
-            yomigana = yomigana.Replace("A", "あるふぁ");
-            yomigana = yomigana.Replace("B", "ぶらぼー");
-            yomigana = yomigana.Replace("C", "ちゃーりー");
-            yomigana = yomigana.Replace("D", "でるた");
-            yomigana = yomigana.Replace("E", "えこー");
-            yomigana = yomigana.Replace("F", "ふぉっくす");
-            yomigana = yomigana.Replace("G", "ごるふ");
-            yomigana = yomigana.Replace("H", "ほてる");
-            yomigana = yomigana.Replace("I", "いんど");
-            yomigana = yomigana.Replace("J", "じゃっく");
-            yomigana = yomigana.Replace("K", "きんぐ");
-            yomigana = yomigana.Replace("L", "らぶ");
-            yomigana = yomigana.Replace("M", "まいく");
-            yomigana = yomigana.Replace("N", "のーべんばー");
-            yomigana = yomigana.Replace("O", "おすかー");
-            yomigana = yomigana.Replace("P", "ぴーたー");
-            yomigana = yomigana.Replace("Q", "くいーん");
-            yomigana = yomigana.Replace("R", "ろじゃー");
-            yomigana = yomigana.Replace("S", "しゅがー");
-            yomigana = yomigana.Replace("T", "たんご");
-            yomigana = yomigana.Replace("U", "ゆにふぉーむ");
-            yomigana = yomigana.Replace("V", "びくたー");
-            yomigana = yomigana.Replace("W", "うぃりあむ");
-            yomigana = yomigana.Replace("X", "えくすれい");
-            yomigana = yomigana.Replace("Y", "やんきー");
-            yomigana = yomigana.Replace("Z", "ぜぶら");
-
-            // 数字を音声記号に置き換える
-            yomigana = yomigana.Replace("０", "0");
-            yomigana = yomigana.Replace("１", "1");
-            yomigana = yomigana.Replace("２", "2");
-            yomigana = yomigana.Replace("３", "3");
-            yomigana = yomigana.Replace("４", "4");
-            yomigana = yomigana.Replace("５", "5");
-            yomigana = yomigana.Replace("６", "6");
-            yomigana = yomigana.Replace("７", "7");
-            yomigana = yomigana.Replace("８", "8");
-            yomigana = yomigana.Replace("９", "9");
-
-            var regex1 = new Regex(@"\d+");
-            yomigana = regex1.Replace(
-                yomigana,
-                (match) =>
-                {
-                    return "<NUMK VAL=" + match.Value + ">";
-                });
-
             // 記号を置き換える
             yomigana = yomigana.Replace("\"", string.Empty);
             yomigana = yomigana.Replace("#", "しゃーぷ");
@@ -258,6 +199,69 @@
             // 半角化した句読点を置き換える
             yomigana = yomigana.Replace("､", "、");
             yomigana = yomigana.Replace("｡", "。");
+
+            // 半角化した長音を置き換える
+            yomigana = yomigana.Replace("-", "ー");
+            yomigana = yomigana.Replace("ｰ", "ー");
+
+            // アルファベットを置き換える
+            var regex2 = new Regex(@"[a-zA-Zａ-ｚＡ-Ｚ]+");
+            yomigana = regex2.Replace(
+                yomigana,
+                (match) =>
+                {
+                    var replacement = match.Value;
+                    replacement = Strings.StrConv(replacement, VbStrConv.Narrow);
+                    replacement = Strings.StrConv(replacement, VbStrConv.Uppercase);
+                    return replacement;
+                });
+
+            yomigana = yomigana.Replace("A", "あ'るふぁ");
+            yomigana = yomigana.Replace("B", "ぶ'らぼー");
+            yomigana = yomigana.Replace("C", "ちゃ'ーりー");
+            yomigana = yomigana.Replace("D", "で'るた");
+            yomigana = yomigana.Replace("E", "え'こー");
+            yomigana = yomigana.Replace("F", "ふぉ'っくす");
+            yomigana = yomigana.Replace("G", "ご'るふ");
+            yomigana = yomigana.Replace("H", "ほ'てる");
+            yomigana = yomigana.Replace("I", "い'んど");
+            yomigana = yomigana.Replace("J", "じゃ'っく");
+            yomigana = yomigana.Replace("K", "き'んぐ");
+            yomigana = yomigana.Replace("L", "ら'ぶ");
+            yomigana = yomigana.Replace("M", "ま'いく");
+            yomigana = yomigana.Replace("N", "のー'べんばー");
+            yomigana = yomigana.Replace("O", "お'すかー");
+            yomigana = yomigana.Replace("P", "ぴー'たー");
+            yomigana = yomigana.Replace("Q", "く'いーん");
+            yomigana = yomigana.Replace("R", "ろ'じゃー");
+            yomigana = yomigana.Replace("S", "しゅ'がー");
+            yomigana = yomigana.Replace("T", "た'んご");
+            yomigana = yomigana.Replace("U", "ゆ'にふぉーむ");
+            yomigana = yomigana.Replace("V", "び'くたー");
+            yomigana = yomigana.Replace("W", "うぃ'りあむ");
+            yomigana = yomigana.Replace("X", "え'くすれい");
+            yomigana = yomigana.Replace("Y", "や'んきー");
+            yomigana = yomigana.Replace("Z", "ぜ'ぶら");
+
+            // 数字を音声記号に置き換える
+            yomigana = yomigana.Replace("０", "0");
+            yomigana = yomigana.Replace("１", "1");
+            yomigana = yomigana.Replace("２", "2");
+            yomigana = yomigana.Replace("３", "3");
+            yomigana = yomigana.Replace("４", "4");
+            yomigana = yomigana.Replace("５", "5");
+            yomigana = yomigana.Replace("６", "6");
+            yomigana = yomigana.Replace("７", "7");
+            yomigana = yomigana.Replace("８", "8");
+            yomigana = yomigana.Replace("９", "9");
+
+            var regex1 = new Regex(@"\d+");
+            yomigana = regex1.Replace(
+                yomigana,
+                (match) =>
+                {
+                    return "<NUMK VAL=" + match.Value + ">";
+                });
 
             return yomigana;
         }

@@ -75,7 +75,7 @@
 
                 // 読上げ用の名前「ジョブ名＋イニシャル」とする
                 var nameToSpeak =
-                    GetJobNameToSpeak(partyMember.Job) +
+                    GetJobNameToSpeak(partyMember.Job) + "/" +
                     partyMember.Name.Trim().Substring(0, 1);
 
                 // HPをチェックして読上げる
@@ -86,9 +86,9 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、えいちぴー" +
+                            "、えいちぴー/" +
                             decimal.ToInt32(hpRate).ToString() +
-                            "ぱーせんと");
+                            "%。");
                     }
                     else
                     {
@@ -96,7 +96,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、せんとうふのう");
+                                "、せんとうふのう。");
                         }
                     }
                 }
@@ -109,9 +109,9 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、えむぴー" +
+                            "、えむぴー/" +
                             decimal.ToInt32(mpRate).ToString() +
-                            "ぱーせんと");
+                            "%。");
                     }
                     else
                     {
@@ -119,7 +119,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、えむぴーなし");
+                                "、えむぴー/な'し。");
                         }
                     }
                 }
@@ -132,9 +132,9 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、てぃぴー" +
+                            "、てぃぴー/" +
                             decimal.ToInt32(tpRate).ToString() +
-                            "ぱーせんと");
+                            "%");
                     }
                     else
                     {
@@ -142,7 +142,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、てぃぴーなし");
+                                "、てぃぴー/な'し。");
                         }
                     }
                 }
