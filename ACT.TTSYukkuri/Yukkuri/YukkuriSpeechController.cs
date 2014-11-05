@@ -190,7 +190,7 @@
             yomigana = yomigana.Replace("G", "じょーじ");
             yomigana = yomigana.Replace("H", "はう");
             yomigana = yomigana.Replace("I", "あいてむ");
-            yomigana = yomigana.Replace("J", "じいぐ");
+            yomigana = yomigana.Replace("J", "じゃっく");
             yomigana = yomigana.Replace("K", "きんぐ");
             yomigana = yomigana.Replace("L", "らぶ");
             yomigana = yomigana.Replace("M", "まいく");
