@@ -44,11 +44,6 @@
       <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\CeVIO.Talk.RemoteService\v4.0_1.0.5.0__c90da69f58ce61df\CeVIO.Talk.RemoteService.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="FFXIV_ACT_Plugin, Version=1.2.2.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\ACTv3\FFXIV_ACT_Plugin.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
       <HintPath>..\NAudio-Release\NAudio.dll</HintPath>
@@ -72,6 +67,7 @@
     <Compile Include="Config\OptionsConfig.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\TTSYukkuriConfig.cs" />
+    <Compile Include="FF14PluginHelper.cs" />
     <Compile Include="FF14Watcher.cs" />
     <Compile Include="FF14Watcher.FF14PluginWrapper.cs" />
     <Compile Include="FF14Watcher.PartyWatcher.cs" />

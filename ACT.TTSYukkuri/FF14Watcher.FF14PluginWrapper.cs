@@ -3,50 +3,36 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using FFXIV_ACT_Plugin.Memory;
-
     /// <summary>
     /// FF14を監視する FF14Pluginラップ部分
     /// </summary>
     public partial class FF14Watcher
     {
         /// <summary>
-        /// 戦闘メンバスキャナ
-        /// </summary>
-        private static ScanCombatants combatantsScanner;
-
-        /// <summary>
-        /// 戦闘メンバスキャナ
-        /// </summary>
-        public static ScanCombatants CombatantsScanner
-        {
-            get
-            {
-                if (combatantsScanner == null)
-                {
-                    combatantsScanner = new ScanCombatants();
-                }
-
-                return combatantsScanner;
-            }
-        }
-
-        /// <summary>
         /// 戦闘メンバリストを取得する
         /// </summary>
         /// <returns>戦闘メンバリスト</returns>
         public List<Combatant> GetCombatantList()
         {
-            return CombatantsScanner.GetCombatantList();
+            return FF14PluginHelper.GetCombatantList();
         }
 
         /// <summary>
         /// プレイヤ情報を取得する
         /// </summary>
         /// <returns>プレイヤ情報</returns>
-        public Player GetPlayer()
+        public Combatant GetPlayer()
         {
-            return CombatantsScanner.GetPlayerData();
+            var list = FF14PluginHelper.GetCombatantList();
+
+            if (list.Count > 0)
+            {
+                return list[0];
+            }
+            else
+            {
+                return new Combatant();
+            }
         }
 
         /// <summary>
@@ -60,7 +46,7 @@
 
             // パーティメンバのIDリストを取得する
             int partyCount;
-            var partyListById = CombatantsScanner.GetCurrentPartyList(out partyCount);
+            var partyListById = FF14PluginHelper.GetCurrentPartyList(out partyCount);
 
             var combatListParty = new List<Combatant>();
 

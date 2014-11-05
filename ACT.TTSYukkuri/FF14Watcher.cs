@@ -64,9 +64,9 @@
                 };
 
                 instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
-#if false
+
+                // 監視を開始する
                 instance.watchTimer.Start();
-#endif
             }
         }
 
@@ -136,11 +136,23 @@
         /// </summary>
         private void WatchCore()
         {
+            // ACTが表示されていなければ何もしない
+            if (!ActGlobals.oFormActMain.Visible)
+            {
+                return;
+            }
+            
+            // FF14Processがなければ何もしない
+            var ff14 = FF14PluginHelper.GetFFXIVProcess;
+            if (ff14 == null)
+            {
+                return;
+            }
+
             // オプションが全部OFFならば何もしない
             if (!TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch &&
                 !TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch &&
-                !TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch &&
-                !TTSYukkuriConfig.Default.OptionSettings.EnabledDebuffWatch)
+                !TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch)
             {
                 return;
             }

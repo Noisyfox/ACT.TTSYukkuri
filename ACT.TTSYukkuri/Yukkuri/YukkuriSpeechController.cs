@@ -96,16 +96,8 @@
                     var buff = new byte[size];
                     Marshal.Copy(wavePtr, buff, 0, (int)size);
 
-                    // メインデバイスを再生する
-                    using (var ms = new MemoryStream(buff))
-                    {
-                        SoundPlayerWrapper.Play(
-                            TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
-                            ms,
-                            TTSYukkuriConfig.Default.YukkuriVolume);
-                    }
-
                     // サブデバイスを再生する
+                    // サブデバイスは専らVoiceChat用であるため先に鳴動させる
                     if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
                     {
                         using (var ms = new MemoryStream(buff))
@@ -115,6 +107,15 @@
                                 ms,
                                 TTSYukkuriConfig.Default.YukkuriVolume);
                         }
+                    }
+
+                    // メインデバイスを再生する
+                    using (var ms = new MemoryStream(buff))
+                    {
+                        SoundPlayerWrapper.Play(
+                            TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
+                            ms,
+                            TTSYukkuriConfig.Default.YukkuriVolume);
                     }
                 }
                 finally
@@ -137,9 +138,9 @@
         {
             var yomigana = textToConvert;
 
+            // IMEでよみがなに変換する
             ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
-                // よみがなに変換する
                 yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
             });
 

@@ -21,6 +21,7 @@
         public void WatchParty()
         {
             // パーティメンバの情報を取得する
+            var player = this.GetPlayer();
             var partyList = this.GetCombatantListParty();
 
             // パーティが自分だけになったら直前のリストをクリアする
@@ -29,16 +30,13 @@
                 this.previouseParyMemberList.Clear();
             }
 
-            int index = 0;
             foreach (var partyMember in partyList)
             {
                 // 自分を除外する
-                if (index == 0)
+                if (partyMember.ID == player.ID)
                 {
                     continue;
                 }
-
-                index++;
 
                 // このPTメンバの現在の状態を取得する
                 var hpRate =
@@ -88,9 +86,9 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、えいちぴー/" +
+                            "、えいちぴー" +
                             decimal.ToInt32(hpRate).ToString() +
-                            "/ぱーせんと");
+                            "ぱーせんと");
                     }
                     else
                     {
@@ -111,9 +109,9 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、えむぴー/" +
+                            "、えむぴー" +
                             decimal.ToInt32(mpRate).ToString() +
-                            "/ぱーせんと");
+                            "ぱーせんと");
                     }
                     else
                     {
@@ -121,7 +119,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、えむぴー/なし");
+                                "、えむぴーなし");
                         }
                     }
                 }
@@ -134,9 +132,9 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、てぃぴー/" +
+                            "、てぃぴー" +
                             decimal.ToInt32(tpRate).ToString() +
-                            "/ぱーせんと");
+                            "ぱーせんと");
                     }
                     else
                     {
@@ -144,7 +142,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、てぃぴー/なし");
+                                "、てぃぴーなし");
                         }
                     }
                 }

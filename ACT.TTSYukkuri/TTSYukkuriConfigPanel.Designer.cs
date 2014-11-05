@@ -39,7 +39,6 @@
             this.MPThresholdTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.HPThresholdTextBox = new System.Windows.Forms.TextBox();
-            this.enableWatchDebuffCheckBox = new System.Windows.Forms.CheckBox();
             this.enableWatchTPCheckBox = new System.Windows.Forms.CheckBox();
             this.enableWatchMPCheckBox = new System.Windows.Forms.CheckBox();
             this.enableWatchHPCheckBox = new System.Windows.Forms.CheckBox();
@@ -89,11 +88,9 @@
             this.optionGroupBox.Controls.Add(this.MPThresholdTextBox);
             this.optionGroupBox.Controls.Add(this.label2);
             this.optionGroupBox.Controls.Add(this.HPThresholdTextBox);
-            this.optionGroupBox.Controls.Add(this.enableWatchDebuffCheckBox);
             this.optionGroupBox.Controls.Add(this.enableWatchTPCheckBox);
             this.optionGroupBox.Controls.Add(this.enableWatchMPCheckBox);
             this.optionGroupBox.Controls.Add(this.enableWatchHPCheckBox);
-            this.optionGroupBox.Enabled = false;
             this.optionGroupBox.Location = new System.Drawing.Point(622, 93);
             this.optionGroupBox.Name = "optionGroupBox";
             this.optionGroupBox.Size = new System.Drawing.Size(720, 538);
@@ -161,16 +158,6 @@
             this.HPThresholdTextBox.Text = "0";
             this.HPThresholdTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // enableWatchDebuffCheckBox
-            // 
-            this.enableWatchDebuffCheckBox.AutoSize = true;
-            this.enableWatchDebuffCheckBox.Location = new System.Drawing.Point(6, 271);
-            this.enableWatchDebuffCheckBox.Name = "enableWatchDebuffCheckBox";
-            this.enableWatchDebuffCheckBox.Size = new System.Drawing.Size(141, 16);
-            this.enableWatchDebuffCheckBox.TabIndex = 3;
-            this.enableWatchDebuffCheckBox.Text = "Partyのデバフを監視する";
-            this.enableWatchDebuffCheckBox.UseVisualStyleBackColor = true;
-            // 
             // enableWatchTPCheckBox
             // 
             this.enableWatchTPCheckBox.AutoSize = true;
@@ -227,7 +214,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox ttsSettingsGroupBox;
         private System.Windows.Forms.GroupBox optionGroupBox;
-        private System.Windows.Forms.CheckBox enableWatchDebuffCheckBox;
         private System.Windows.Forms.CheckBox enableWatchTPCheckBox;
         private System.Windows.Forms.CheckBox enableWatchMPCheckBox;
         private System.Windows.Forms.CheckBox enableWatchHPCheckBox;

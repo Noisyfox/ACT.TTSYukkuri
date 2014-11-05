@@ -21,7 +21,6 @@
             this.HPThresholdTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.HPThreshold.ToString();
             this.MPThresholdTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.MPThreshold.ToString();
             this.TPThresholdTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.TPThreshold.ToString();
-            this.enableWatchDebuffCheckBox.Checked = TTSYukkuriConfig.Default.OptionSettings.EnabledDebuffWatch;
 
             this.HPThresholdTextBox.Enabled = this.enableWatchHPCheckBox.Checked;
             this.MPThresholdTextBox.Enabled = this.enableWatchMPCheckBox.Checked;
@@ -49,8 +48,6 @@
                 this.TPThresholdTextBox.Enabled = (s1 as CheckBox).Checked;
                 this.SaveSettings();
             };
-
-            this.enableWatchDebuffCheckBox.CheckedChanged += (s1, e1) => this.SaveSettings();
         }
 
         /// <summary>
@@ -96,7 +93,6 @@
             TTSYukkuriConfig.Default.OptionSettings.HPThreshold = int.Parse(this.HPThresholdTextBox.Text);
             TTSYukkuriConfig.Default.OptionSettings.MPThreshold = int.Parse(this.MPThresholdTextBox.Text);
             TTSYukkuriConfig.Default.OptionSettings.TPThreshold = int.Parse(this.TPThresholdTextBox.Text);
-            TTSYukkuriConfig.Default.OptionSettings.EnabledDebuffWatch = this.enableWatchDebuffCheckBox.Checked;
         }
     }
 }

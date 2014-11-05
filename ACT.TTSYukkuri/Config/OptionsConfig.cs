@@ -37,10 +37,5 @@
         /// TP読上げのしきい値
         /// </summary>
         public int TPThreshold { get; set; }
-
-        /// <summary>
-        /// デバフの監視を有効にする
-        /// </summary>
-        public bool EnabledDebuffWatch { get; set; }
     }
 }
