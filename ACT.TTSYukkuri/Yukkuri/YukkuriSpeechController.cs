@@ -89,6 +89,9 @@
                     if (wavePtr == IntPtr.Zero ||
                         size <= 0)
                     {
+                        ActGlobals.oFormActMain.WriteExceptionLog(
+                            new Exception(),
+                            "ACT.TTSYukkuri ゆっくりの解析NG 変換前:" + text + " 変換後:" + textByYomigana);
                         return;
                     }
 
