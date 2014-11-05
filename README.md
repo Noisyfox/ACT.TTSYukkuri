@@ -50,6 +50,12 @@ aqtk1-win
 --------------
 [ACT.TTSYukkuri-v1.3.4.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.3.4/ACT.TTSYukkuri-v1.3.4.zip "ACT.TTSYukkuri-v1.3.4.zip")  
 
+
+ライセンス
+--------------
+三条項BSDライセンス  
+Copryright(c) 2014 anoyetta  
+http://choosealicense.com/licenses/bsd-3-clause/  
   
   
 AquesTalk（いわゆる、ゆっくりボイス）
