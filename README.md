@@ -58,6 +58,13 @@ Copryright(c) 2014 anoyetta
 https://github.com/anoyetta/ACT.TTSYukkuri/blob/master/LICENSE  
   
   
+NAudio
+--------------
+本ソフトは、NAudioライブラリを使用しており、その著作権はMark Heath氏に帰属します。  
+配布元:     http://naudio.codeplex.com/  
+ライセンス: http://naudio.codeplex.com/license  
+  
+    
 AquesTalk（いわゆる、ゆっくりボイス）
 --------------
 本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。
