@@ -52,8 +52,13 @@
 
             foreach (var partyMemberId in partyListById)
             {
+                if (partyMemberId == 0)
+                {
+                    continue;
+                }
+
                 var partyMember = (
-                    from x in combatListAll.AsParallel()
+                    from x in combatListAll
                     where
                     x.ID == partyMemberId
                     select

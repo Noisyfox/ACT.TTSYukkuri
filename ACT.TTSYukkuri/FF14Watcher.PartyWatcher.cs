@@ -75,7 +75,7 @@
 
                 // 読上げ用の名前「ジョブ名＋イニシャル」とする
                 var nameToSpeak =
-                    GetJobNameToSpeak(partyMember.Job) + "/" +
+                    GetJobNameToSpeak(partyMember.Job) +
                     partyMember.Name.Trim().Substring(0, 1);
 
                 // HPをチェックして読上げる
@@ -86,7 +86,7 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、えいちぴー/" +
+                            "、えいちぴー" +
                             decimal.ToInt32(hpRate).ToString() +
                             "%。");
                     }
@@ -109,7 +109,7 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、えむぴー/" +
+                            "、えむぴー" +
                             decimal.ToInt32(mpRate).ToString() +
                             "%。");
                     }
@@ -119,7 +119,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、えむぴー/な'し。");
+                                "、えむぴーなし。");
                         }
                     }
                 }
@@ -132,7 +132,7 @@
                     {
                         this.Speak(
                             nameToSpeak +
-                            "、てぃぴー/" +
+                            "、てぃぴー" +
                             decimal.ToInt32(tpRate).ToString() +
                             "%");
                     }
@@ -142,7 +142,7 @@
                         {
                             this.Speak(
                                 nameToSpeak +
-                                "、てぃぴー/な'し。");
+                                "、てぃぴーなし。");
                         }
                     }
                 }

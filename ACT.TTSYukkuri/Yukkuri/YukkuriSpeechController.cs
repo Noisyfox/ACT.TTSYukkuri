@@ -219,6 +219,7 @@
                     return replacement;
                 });
 
+#if false
             yomigana = yomigana.Replace("A", "あ'るふぁ");
             yomigana = yomigana.Replace("B", "ぶ'らぼー");
             yomigana = yomigana.Replace("C", "ちゃ'ーりー");
@@ -245,6 +246,34 @@
             yomigana = yomigana.Replace("X", "え'くすれい");
             yomigana = yomigana.Replace("Y", "や'んきー");
             yomigana = yomigana.Replace("Z", "ぜ'ぶら");
+#else
+            yomigana = yomigana.Replace("A", "えー");
+            yomigana = yomigana.Replace("B", "びー");
+            yomigana = yomigana.Replace("C", "しー");
+            yomigana = yomigana.Replace("D", "でぃ");
+            yomigana = yomigana.Replace("E", "いー");
+            yomigana = yomigana.Replace("F", "えふ");
+            yomigana = yomigana.Replace("G", "じー");
+            yomigana = yomigana.Replace("H", "へいち");
+            yomigana = yomigana.Replace("I", "あい");
+            yomigana = yomigana.Replace("J", "じぇい");
+            yomigana = yomigana.Replace("K", "けー");
+            yomigana = yomigana.Replace("L", "える");
+            yomigana = yomigana.Replace("M", "えむ");
+            yomigana = yomigana.Replace("N", "えぬ");
+            yomigana = yomigana.Replace("O", "おー");
+            yomigana = yomigana.Replace("P", "ぴー");
+            yomigana = yomigana.Replace("Q", "くいーん");
+            yomigana = yomigana.Replace("R", "あーる");
+            yomigana = yomigana.Replace("S", "えす");
+            yomigana = yomigana.Replace("T", "てぃー");
+            yomigana = yomigana.Replace("U", "ゆー");
+            yomigana = yomigana.Replace("V", "ぶい");
+            yomigana = yomigana.Replace("W", "だぶりゅー");
+            yomigana = yomigana.Replace("X", "えっくす");
+            yomigana = yomigana.Replace("Y", "わい");
+            yomigana = yomigana.Replace("Z", "ぜっと");
+#endif
 
             // 数字を音声記号に置き換える
             yomigana = yomigana.Replace("０", "0");
