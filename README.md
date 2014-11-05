@@ -58,4 +58,12 @@ AquesTalk（いわゆる、ゆっくりボイス）
 営利目的での使用は当該ライブラリの使用ライセンスが必要となります。
 
 
-
+謝辞
+--------------
+・GB19xx様  
+https://github.com/GB19xx/ACT.TPMonitor  
+のFF14ヘルパークラスを流用させていただきました  
+  
+・Qofar様  
+https://gist.github.com/Qofar/11364454  
+ACTのTTSメソッドを書き換えるロジックを流用させていただきました  
