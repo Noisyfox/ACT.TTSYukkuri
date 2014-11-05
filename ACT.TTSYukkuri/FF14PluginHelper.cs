@@ -158,9 +158,11 @@
                 partyCount
             };
 
+            var modifiers1 = new ParameterModifier(1);
+            modifiers1[0] = true;
             var modifiers = new ParameterModifier[]
             {
-                new ParameterModifier(1)
+                modifiers1
             };
 
             var items = scanCombatants.GetType().InvokeMember(
