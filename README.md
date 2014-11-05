@@ -55,7 +55,7 @@ aqtk1-win
 --------------
 三条項BSDライセンス  
 Copryright(c) 2014 anoyetta  
-http://choosealicense.com/licenses/bsd-3-clause/  
+https://github.com/anoyetta/ACT.TTSYukkuri/blob/master/LICENSE  
   
   
 AquesTalk（いわゆる、ゆっくりボイス）
