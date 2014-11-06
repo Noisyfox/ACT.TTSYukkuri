@@ -92,29 +92,29 @@
                 var mpTextToSpeak = TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack;
                 var tpTextToSpeak = TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack;
 
-                hpTextToSpeak.Replace("<pcname>", pcname);
-                hpTextToSpeak.Replace("<hp>", hp.ToString());
-                hpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
-                hpTextToSpeak.Replace("<mp>", mp.ToString());
-                hpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
-                hpTextToSpeak.Replace("<tp>", tp.ToString());
-                hpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
+                hpTextToSpeak = hpTextToSpeak.Replace("<pcname>", pcname);
+                hpTextToSpeak = hpTextToSpeak.Replace("<hp>", hp.ToString());
+                hpTextToSpeak = hpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
+                hpTextToSpeak = hpTextToSpeak.Replace("<mp>", mp.ToString());
+                hpTextToSpeak = hpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
+                hpTextToSpeak = hpTextToSpeak.Replace("<tp>", tp.ToString());
+                hpTextToSpeak = hpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
 
-                mpTextToSpeak.Replace("<pcname>", pcname);
-                mpTextToSpeak.Replace("<hp>", hp.ToString());
-                mpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
-                mpTextToSpeak.Replace("<mp>", mp.ToString());
-                mpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
-                mpTextToSpeak.Replace("<tp>", tp.ToString());
-                mpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
+                mpTextToSpeak = mpTextToSpeak.Replace("<pcname>", pcname);
+                mpTextToSpeak = mpTextToSpeak.Replace("<hp>", hp.ToString());
+                mpTextToSpeak = mpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
+                mpTextToSpeak = mpTextToSpeak.Replace("<mp>", mp.ToString());
+                mpTextToSpeak = mpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
+                mpTextToSpeak = mpTextToSpeak.Replace("<tp>", tp.ToString());
+                mpTextToSpeak = mpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
 
-                tpTextToSpeak.Replace("<pcname>", pcname);
-                tpTextToSpeak.Replace("<hp>", hp.ToString());
-                tpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
-                tpTextToSpeak.Replace("<mp>", mp.ToString());
-                tpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
-                tpTextToSpeak.Replace("<tp>", tp.ToString());
-                tpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
+                tpTextToSpeak = tpTextToSpeak.Replace("<pcname>", pcname);
+                tpTextToSpeak = tpTextToSpeak.Replace("<hp>", hp.ToString());
+                tpTextToSpeak = tpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
+                tpTextToSpeak = tpTextToSpeak.Replace("<mp>", mp.ToString());
+                tpTextToSpeak = tpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
+                tpTextToSpeak = tpTextToSpeak.Replace("<tp>", tp.ToString());
+                tpTextToSpeak = tpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
 
                 // HPをチェックして読上げる
                 if (TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch &&

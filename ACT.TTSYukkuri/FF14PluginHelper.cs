@@ -116,6 +116,7 @@
                             });
 
                         combatant.ID = (uint)getValue(temp, "ID");
+                        combatant.Job = (int)getValue(temp, "Job");
                         combatant.Name = (string)getValue(temp, "Name");
                         combatant.type = (byte)getValue(temp, "type");
                         combatant.Level = (int)getValue(temp, "Level");
