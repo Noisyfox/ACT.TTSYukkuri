@@ -67,7 +67,6 @@
 
             this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
 
-
             this.mainDeviceComboBox.TextChanged += (s1, e1) =>
             {
                 this.SaveSettings();

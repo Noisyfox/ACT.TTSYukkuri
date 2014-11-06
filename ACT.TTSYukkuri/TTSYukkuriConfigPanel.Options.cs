@@ -24,6 +24,7 @@
             this.hpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack;
             this.mpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack;
             this.tpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack;
+            this.enabledSelfCheckBox.Checked = TTSYukkuriConfig.Default.OptionSettings.EnableSelf;
 
             this.HPThresholdTextBox.Enabled = this.enableWatchHPCheckBox.Checked;
             this.MPThresholdTextBox.Enabled = this.enableWatchMPCheckBox.Checked;
@@ -55,6 +56,11 @@
             {
                 this.TPThresholdTextBox.Enabled = (s1 as CheckBox).Checked;
                 this.tpTextToSpeakTextBox.Enabled = (s1 as CheckBox).Checked;
+                this.SaveSettings();
+            };
+
+            this.enabledSelfCheckBox.CheckedChanged += (s1, e1) =>
+            {
                 this.SaveSettings();
             };
 
@@ -109,6 +115,7 @@
             TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack = this.hpTextToSpeakTextBox.Text;
             TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack = this.mpTextToSpeakTextBox.Text;
             TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack = this.tpTextToSpeakTextBox.Text;
+            TTSYukkuriConfig.Default.OptionSettings.EnableSelf = this.enabledSelfCheckBox.Checked;
         }
     }
 }

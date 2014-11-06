@@ -62,5 +62,10 @@
         /// TP低下時の読上げテキスト
         /// </summary>
         public string TPTextToSpeack { get; set; }
+
+        /// <summary>
+        /// 自身を検出対象する
+        /// </summary>
+        public bool EnableSelf { get; set; }
     }
 }

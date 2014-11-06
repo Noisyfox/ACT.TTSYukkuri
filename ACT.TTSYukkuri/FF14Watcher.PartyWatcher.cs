@@ -24,18 +24,24 @@
             var player = this.GetPlayer();
             var partyList = this.GetCombatantListParty();
 
-            // パーティが自分だけになったら直前のリストをクリアする
-            if (partyList.Count < 2)
+            // パーティリストに存在しないメンバの前回の状態を消去する
+            foreach (var previouseMember in previouseParyMemberList)
             {
-                this.previouseParyMemberList.Clear();
+                if (!partyList.Any(x => x.ID == previouseMember.ID))
+                {
+                    this.previouseParyMemberList.Remove(previouseMember);
+                }
             }
 
             foreach (var partyMember in partyList)
             {
-                // 自分を除外する
-                if (partyMember.ID == player.ID)
+                if (!TTSYukkuriConfig.Default.OptionSettings.EnableSelf)
                 {
-                    continue;
+                    // 自分を除外する
+                    if (partyMember.ID == player.ID)
+                    {
+                        continue;
+                    }
                 }
 
                 // このPTメンバの現在の状態を取得する

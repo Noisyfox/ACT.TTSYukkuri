@@ -53,6 +53,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.mainDeviceComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.enabledSelfCheckBox = new System.Windows.Forms.CheckBox();
             this.optionGroupBox.SuspendLayout();
             this.saiseiDeviceGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -94,6 +95,7 @@
             // 
             // optionGroupBox
             // 
+            this.optionGroupBox.Controls.Add(this.enabledSelfCheckBox);
             this.optionGroupBox.Controls.Add(this.textBox1);
             this.optionGroupBox.Controls.Add(this.tpTextToSpeakTextBox);
             this.optionGroupBox.Controls.Add(this.mpTextToSpeakTextBox);
@@ -298,6 +300,16 @@
             this.label7.TabIndex = 17;
             this.label7.Text = "メイン再生デバイス";
             // 
+            // enabledSelfCheckBox
+            // 
+            this.enabledSelfCheckBox.AutoSize = true;
+            this.enabledSelfCheckBox.Location = new System.Drawing.Point(6, 301);
+            this.enabledSelfCheckBox.Name = "enabledSelfCheckBox";
+            this.enabledSelfCheckBox.Size = new System.Drawing.Size(180, 16);
+            this.enabledSelfCheckBox.TabIndex = 11;
+            this.enabledSelfCheckBox.Text = "プレイヤー自身も検出対象にする";
+            this.enabledSelfCheckBox.UseVisualStyleBackColor = true;
+            // 
             // TTSYukkuriConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -346,5 +358,6 @@
         private System.Windows.Forms.TextBox mpTextToSpeakTextBox;
         private System.Windows.Forms.TextBox hpTextToSpeakTextBox;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox enabledSelfCheckBox;
     }
 }
