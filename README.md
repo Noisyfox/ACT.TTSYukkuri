@@ -8,9 +8,11 @@ ACTのTTSをゆっくりさんに置き換えます
   
 使い方
 --------------
-ACT.TTSYukkuri.dll  
-SoundPlayer.exe  
 aqtk1-win  
+NAudio.xml  
+ACT.TTSYukkuri.dll  
+NAudio.dll  
+NAudio.WindowsMediaFormat.dll  
 をACTのインストールディレクトリにコピーします  
 その後、プラグインとしてACT.TTSYukkuri.dllを追加してください
   
@@ -37,19 +39,19 @@ aqtk1-win
 文章の中に読めない文字が「一文字でも」混じっていると文章そのものを読みません  
   
 以下、文字の対応状況です  
-漢字 → 読めません  
+漢字 → よめます。ただしIMEで変換できる範囲です  
 ひらがな → よめます  
-カタカナ → 基本的に読めますが「ディ」「ヴォ」といった日本語本来にはない発音は読めません  
+カタカナ → よめます  
 数字 → 読めます  
-記号 → 読めません  
-アルファベット → 一文字ずつフォネティックコードで読上げます。実質使用できません  
+記号 → 一部読めません  
+アルファベット → 英単語としては読めません。「えー」「びー」「しー」という風になります  
 句読点 → 区切りとして読上げに間が開くようになります。読点は多めに入れるほうが自然な読上げになります  
   
 
         
 最新リリース
 --------------
-[ACT.TTSYukkuri-v1.3.4.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.3.4/ACT.TTSYukkuri-v1.3.4.zip "ACT.TTSYukkuri-v1.3.4.zip")  
+[ACT.TTSYukkuri-v1.6.0.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/v1.6.0/ACT.TTSYukkuri-v1.6.0.zip "ACT.TTSYukkuri-v1.6.0.zip")  
 
 
 ライセンス
