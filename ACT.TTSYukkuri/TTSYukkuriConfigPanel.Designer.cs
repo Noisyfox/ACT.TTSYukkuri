@@ -34,6 +34,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ttsSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.optionGroupBox = new System.Windows.Forms.GroupBox();
+            this.enabledSelfCheckBox = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
             this.mpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
@@ -53,7 +54,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.mainDeviceComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.enabledSelfCheckBox = new System.Windows.Forms.CheckBox();
             this.optionGroupBox.SuspendLayout();
             this.saiseiDeviceGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -115,6 +115,16 @@
             this.optionGroupBox.TabIndex = 3;
             this.optionGroupBox.TabStop = false;
             this.optionGroupBox.Text = "オプション設定";
+            // 
+            // enabledSelfCheckBox
+            // 
+            this.enabledSelfCheckBox.AutoSize = true;
+            this.enabledSelfCheckBox.Location = new System.Drawing.Point(6, 293);
+            this.enabledSelfCheckBox.Name = "enabledSelfCheckBox";
+            this.enabledSelfCheckBox.Size = new System.Drawing.Size(180, 16);
+            this.enabledSelfCheckBox.TabIndex = 11;
+            this.enabledSelfCheckBox.Text = "プレイヤー自身も検出対象にする";
+            this.enabledSelfCheckBox.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
@@ -299,16 +309,6 @@
             this.label7.Size = new System.Drawing.Size(93, 12);
             this.label7.TabIndex = 17;
             this.label7.Text = "メイン再生デバイス";
-            // 
-            // enabledSelfCheckBox
-            // 
-            this.enabledSelfCheckBox.AutoSize = true;
-            this.enabledSelfCheckBox.Location = new System.Drawing.Point(6, 301);
-            this.enabledSelfCheckBox.Name = "enabledSelfCheckBox";
-            this.enabledSelfCheckBox.Size = new System.Drawing.Size(180, 16);
-            this.enabledSelfCheckBox.TabIndex = 11;
-            this.enabledSelfCheckBox.Text = "プレイヤー自身も検出対象にする";
-            this.enabledSelfCheckBox.UseVisualStyleBackColor = true;
             // 
             // TTSYukkuriConfigPanel
             // 
