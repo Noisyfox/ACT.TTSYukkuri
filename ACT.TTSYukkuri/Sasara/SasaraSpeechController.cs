@@ -1,5 +1,6 @@
 ﻿namespace ACT.TTSYukkuri.Sasara
 {
+    using System.IO;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
@@ -72,9 +73,43 @@
 
             if (!string.IsNullOrWhiteSpace(Talker.Cast))
             {
-                // テキストを読上げる
-                Talker.Speak(text);
+                // サブデバイスで再生する
+                if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                {
+                    this.SpeakCore(
+                        TTSYukkuriConfig.Default.SubDeviceNo,
+                        text);
+                }
+
+                // メインデバイスで再生する
+                this.SpeakCore(
+                    TTSYukkuriConfig.Default.MainDeviceNo, 
+                    text);
             }
+        }
+
+        /// <summary>
+        /// デバイスを指定して読上げる
+        /// </summary>
+        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="textToSpeak">読上げるテキスト</param>
+        private void SpeakCore(
+            int deviceNo,
+            string textToSpeak)
+        {
+            // 一時ファイルのパスを取得する
+            var file = Path.GetTempFileName();
+
+            // 音声をwaveに出力させる
+            Talker.OutputWaveToFile(
+                textToSpeak,
+                file);
+
+            // サウンドプレイヤで再生する
+            SoundPlayerWrapper.Play(
+                deviceNo,
+                file,
+                (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
         }
     }
 }

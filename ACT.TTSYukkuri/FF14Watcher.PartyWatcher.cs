@@ -39,17 +39,20 @@
                 }
 
                 // このPTメンバの現在の状態を取得する
-                var hpRate =
+                var hp = partyMember.CurrentHP;
+                var hpp =
                     partyMember.MaxHP != 0 ?
                     ((decimal)partyMember.CurrentHP / (decimal)partyMember.MaxHP) * 100m :
                     0m;
 
-                var mpRate =
+                var mp = partyMember.CurrentMP;
+                var mpp =
                     partyMember.MaxMP != 0 ?
                     ((decimal)partyMember.CurrentMP / (decimal)partyMember.MaxMP) * 100m :
                     0m;
 
-                var tpRate = ((decimal)partyMember.CurrentTP / 1000m) * 100m;
+                var tp = partyMember.CurrentTP;
+                var tpp = ((decimal)partyMember.CurrentTP / 1000m) * 100m;
 
                 // このPTメンバの直前の情報を取得する
                 var previousePartyMember = (
@@ -65,92 +68,106 @@
                     {
                         ID = partyMember.ID,
                         Name = partyMember.Name,
-                        HPRate = hpRate,
-                        MPRate = mpRate,
-                        TPRate = tpRate
+                        HPRate = hpp,
+                        MPRate = mpp,
+                        TPRate = tpp
                     };
 
                     this.previouseParyMemberList.Add(previousePartyMember);
                 }
 
                 // 読上げ用の名前「ジョブ名＋イニシャル」とする
-                var nameToSpeak =
+                var pcname =
                     GetJobNameToSpeak(partyMember.Job) +
                     partyMember.Name.Trim().Substring(0, 1);
 
+                // 読上げ用のテキストを編集する
+                var hpTextToSpeak = TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack;
+                var mpTextToSpeak = TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack;
+                var tpTextToSpeak = TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack;
+
+                hpTextToSpeak.Replace("<pcname>", pcname);
+                hpTextToSpeak.Replace("<hp>", hp.ToString());
+                hpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
+                hpTextToSpeak.Replace("<mp>", mp.ToString());
+                hpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
+                hpTextToSpeak.Replace("<tp>", tp.ToString());
+                hpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
+
+                mpTextToSpeak.Replace("<pcname>", pcname);
+                mpTextToSpeak.Replace("<hp>", hp.ToString());
+                mpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
+                mpTextToSpeak.Replace("<mp>", mp.ToString());
+                mpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
+                mpTextToSpeak.Replace("<tp>", tp.ToString());
+                mpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
+
+                tpTextToSpeak.Replace("<pcname>", pcname);
+                tpTextToSpeak.Replace("<hp>", hp.ToString());
+                tpTextToSpeak.Replace("<hpp>", decimal.ToInt32(hpp).ToString());
+                tpTextToSpeak.Replace("<mp>", mp.ToString());
+                tpTextToSpeak.Replace("<mpp>", decimal.ToInt32(mpp).ToString());
+                tpTextToSpeak.Replace("<tp>", tp.ToString());
+                tpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
+
                 // HPをチェックして読上げる
-                if (TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch)
+                if (TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch &&
+                    !string.IsNullOrWhiteSpace(hpTextToSpeak))
                 {
-                    if (hpRate <= (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold &&
+                    if (hpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold &&
                         previousePartyMember.HPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold)
                     {
-                        this.Speak(
-                            nameToSpeak +
-                            "、えいちぴー" +
-                            decimal.ToInt32(hpRate).ToString() +
-                            "%。");
+                        this.Speak(hpTextToSpeak);
                     }
                     else
                     {
-                        if (hpRate <= decimal.Zero && previousePartyMember.HPRate != decimal.Zero)
+                        if (hpp <= decimal.Zero && previousePartyMember.HPRate != decimal.Zero)
                         {
-                            this.Speak(
-                                nameToSpeak +
-                                "、せんとうふのう。");
+                            this.Speak(pcname + "、せんとうふのう。");
                         }
                     }
                 }
 
                 // MPをチェックして読上げる
-                if (TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch)
+                if (TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch &&
+                    !string.IsNullOrWhiteSpace(mpTextToSpeak))
                 {
-                    if (mpRate <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
+                    if (mpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
                         previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold)
                     {
-                        this.Speak(
-                            nameToSpeak +
-                            "、えむぴー" +
-                            decimal.ToInt32(mpRate).ToString() +
-                            "%。");
+                        this.Speak(mpTextToSpeak);
                     }
                     else
                     {
-                        if (mpRate <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
+                        if (mpp <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
                         {
-                            this.Speak(
-                                nameToSpeak +
-                                "、えむぴーなし。");
+                            this.Speak(pcname + "、MPなし。");
                         }
                     }
                 }
 
                 // TPをチェックして読上げる
-                if (TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch)
+                if (TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch &&
+                    !string.IsNullOrWhiteSpace(tpTextToSpeak))
                 {
-                    if (tpRate <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
+                    if (tpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
                         previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold)
                     {
-                        this.Speak(
-                            nameToSpeak +
-                            "、てぃぴー" +
-                            decimal.ToInt32(tpRate).ToString() +
-                            "%");
+                        this.Speak(tpTextToSpeak);
                     }
                     else
                     {
-                        if (tpRate <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
+                        if (tpp <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
                         {
-                            this.Speak(
-                                nameToSpeak +
-                                "、てぃぴーなし。");
+                            this.Speak(pcname + "、TPなし。");
                         }
                     }
                 }
 
                 // 今回の状態を保存する
-                previousePartyMember.HPRate = hpRate;
-                previousePartyMember.MPRate = mpRate;
-                previousePartyMember.TPRate = tpRate;
+                previousePartyMember.HPRate = hpp;
+                previousePartyMember.MPRate = mpp;
+                previousePartyMember.TPRate = tpp;
             }
         }
 

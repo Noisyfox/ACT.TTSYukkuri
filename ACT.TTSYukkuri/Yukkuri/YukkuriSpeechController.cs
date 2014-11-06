@@ -101,12 +101,12 @@
 
                     // サブデバイスを再生する
                     // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-                    if (TTSYukkuriConfig.Default.EnabledYukkuriSubDevice)
+                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
                     {
                         using (var ms = new MemoryStream(buff))
                         {
                             SoundPlayerWrapper.Play(
-                                TTSYukkuriConfig.Default.YukkuriSubDeviceNo,
+                                TTSYukkuriConfig.Default.SubDeviceNo,
                                 ms,
                                 TTSYukkuriConfig.Default.YukkuriVolume);
                         }
@@ -116,7 +116,7 @@
                     using (var ms = new MemoryStream(buff))
                     {
                         SoundPlayerWrapper.Play(
-                            TTSYukkuriConfig.Default.YukkuriMainDeviceNo,
+                            TTSYukkuriConfig.Default.MainDeviceNo,
                             ms,
                             TTSYukkuriConfig.Default.YukkuriVolume);
                     }

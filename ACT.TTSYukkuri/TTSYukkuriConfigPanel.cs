@@ -4,6 +4,7 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
+    using ACT.TTSYukkuri.SoundPlayer;
 
     /// <summary>
     /// TTSゆっくり設定Panel
@@ -28,8 +29,18 @@
 
             this.ttsShuruiComboBox.TextChanged += (s1, e1) =>
             {
-                TTSYukkuriConfig.Default.TTS = (this.ttsShuruiComboBox.SelectedItem as ComboBoxItem).Value;
-                TTSYukkuriConfig.Default.Save();
+                this.SaveSettings();
+
+                // 再生デバイスの選択の使用状況を切り替える
+                if (TTSYukkuriConfig.Default.TTS == TTSType.Boyomichan)
+                {
+                    this.saiseiDeviceGroupBox.Enabled = false;
+                }
+                else
+                {
+                    this.saiseiDeviceGroupBox.Enabled = true;
+                }
+
                 this.LoadTTS();
             };
         }
@@ -41,6 +52,39 @@
         /// <param name="e">イベント引数</param>
         private void TTSYukkuriConfigPanel_Load(object sender, EventArgs e)
         {
+            // 再生デバイスコンボボックスを設定する
+            this.mainDeviceComboBox.DisplayMember = "Name";
+            this.mainDeviceComboBox.ValueMember = "Number";
+            this.mainDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
+
+            this.subDeviceComboBox.DisplayMember = "Name";
+            this.subDeviceComboBox.ValueMember = "Number";
+            this.subDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
+
+            this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceNo;
+            this.enabledSubDeviceCheckBox.Checked = TTSYukkuriConfig.Default.EnabledSubDevice;
+            this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceNo;
+
+            this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
+
+
+            this.mainDeviceComboBox.TextChanged += (s1, e1) =>
+            {
+                this.SaveSettings();
+            };
+
+            this.enabledSubDeviceCheckBox.CheckedChanged += (s1, e1) =>
+            {
+                var c = s1 as CheckBox;
+                this.subDeviceComboBox.Enabled = c.Checked;
+                this.SaveSettings();
+            };
+
+            this.subDeviceComboBox.TextChanged += (s1, e1) =>
+            {
+                this.SaveSettings();
+            };
+
             this.ttsShuruiComboBox.SelectedValue = TTSYukkuriConfig.Default.TTS;
             this.LoadTTS();
 
@@ -53,6 +97,12 @@
         /// </summary>
         private void SaveSettings()
         {
+            TTSYukkuriConfig.Default.TTS = (this.ttsShuruiComboBox.SelectedItem as ComboBoxItem).Value;
+
+            TTSYukkuriConfig.Default.MainDeviceNo = (int)this.mainDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.EnabledSubDevice = this.enabledSubDeviceCheckBox.Checked;
+            TTSYukkuriConfig.Default.SubDeviceNo = (int)this.subDeviceComboBox.SelectedValue;
+
             this.SaveSettingsOptions();
 
             TTSYukkuriConfig.Default.Save();
@@ -93,7 +143,7 @@
                     "TTSゆっくりプラグイン",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
-                
+
                 // TTSをゆっくりに戻す
                 TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
                 TTSYukkuriConfig.Default.Save();

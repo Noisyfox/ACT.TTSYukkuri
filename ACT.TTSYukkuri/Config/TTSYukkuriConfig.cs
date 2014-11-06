@@ -97,19 +97,19 @@
         public int YukkuriVolume { get; set; }
 
         /// <summary>
-        /// ゆっくりメイン再生デバイス番号
+        /// メイン再生デバイス番号
         /// </summary>
-        public int YukkuriMainDeviceNo { get; set; }
+        public int MainDeviceNo { get; set; }
 
         /// <summary>
-        /// ゆっくりサブ再生デバイスを有効にする
+        /// サブ再生デバイスを有効にする
         /// </summary>
-        public bool EnabledYukkuriSubDevice { get; set; }
+        public bool EnabledSubDevice { get; set; }
         
         /// <summary>
-        /// ゆっくりサブ再生デバイス番号
+        /// サブ再生デバイス番号
         /// </summary>
-        public int YukkuriSubDeviceNo { get; set; }
+        public int SubDeviceNo { get; set; }
 
         /// <summary>
         /// ささら設定

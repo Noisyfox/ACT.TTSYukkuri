@@ -30,6 +30,21 @@
         /// サウンドを再生する
         /// </summary>
         /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="file">再生するファイル</param>
+        public static void Play(
+            int deviceNo,
+            string file)
+        {
+            Play(
+                deviceNo,
+                file,
+                100);
+        }
+
+        /// <summary>
+        /// サウンドを再生する
+        /// </summary>
+        /// <param name="deviceNo">デバイス番号</param>
         /// <param name="stream">再生するストリーム</param>
         /// <param name="volume">ボリューム</param>
         public static void Play(
@@ -44,6 +59,20 @@
                 stream.CopyTo(fs);
             }
 
+            PlayCore(deviceNo, file, true, volume);
+        }
+
+        /// <summary>
+        /// サウンドを再生する
+        /// </summary>
+        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="file">再生するファイル</param>
+        /// <param name="volume">ボリューム</param>
+        public static void Play(
+            int deviceNo,
+            string file,
+            int volume)
+        {
             PlayCore(deviceNo, file, true, volume);
         }
 
