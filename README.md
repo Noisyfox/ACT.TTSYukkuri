@@ -57,7 +57,7 @@ NAudio.WindowsMediaFormat.dll
 ライセンス
 --------------
 三条項BSDライセンス  
-Copryright(c) 2014 anoyetta  
+Copryright (c) 2014, anoyetta  
 https://github.com/anoyetta/ACT.TTSYukkuri/blob/master/LICENSE  
   
   
