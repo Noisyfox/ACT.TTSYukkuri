@@ -34,6 +34,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.ttsSettingsGroupBox = new System.Windows.Forms.GroupBox();
             this.optionGroupBox = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
+            this.mpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
+            this.hpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.TPThresholdTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -49,10 +53,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.mainDeviceComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.hpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
-            this.mpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
-            this.tpTextToSpeakTextBox = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.optionGroupBox.SuspendLayout();
             this.saiseiDeviceGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -113,6 +113,40 @@
             this.optionGroupBox.TabIndex = 3;
             this.optionGroupBox.TabStop = false;
             this.optionGroupBox.Text = "オプション設定";
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.textBox1.Location = new System.Drawing.Point(417, 24);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(297, 242);
+            this.textBox1.TabIndex = 10;
+            this.textBox1.TabStop = false;
+            this.textBox1.Text = resources.GetString("textBox1.Text");
+            // 
+            // tpTextToSpeakTextBox
+            // 
+            this.tpTextToSpeakTextBox.Location = new System.Drawing.Point(6, 247);
+            this.tpTextToSpeakTextBox.Name = "tpTextToSpeakTextBox";
+            this.tpTextToSpeakTextBox.Size = new System.Drawing.Size(405, 19);
+            this.tpTextToSpeakTextBox.TabIndex = 8;
+            // 
+            // mpTextToSpeakTextBox
+            // 
+            this.mpTextToSpeakTextBox.Location = new System.Drawing.Point(6, 156);
+            this.mpTextToSpeakTextBox.Name = "mpTextToSpeakTextBox";
+            this.mpTextToSpeakTextBox.Size = new System.Drawing.Size(405, 19);
+            this.mpTextToSpeakTextBox.TabIndex = 5;
+            // 
+            // hpTextToSpeakTextBox
+            // 
+            this.hpTextToSpeakTextBox.Location = new System.Drawing.Point(6, 71);
+            this.hpTextToSpeakTextBox.Name = "hpTextToSpeakTextBox";
+            this.hpTextToSpeakTextBox.Size = new System.Drawing.Size(405, 19);
+            this.hpTextToSpeakTextBox.TabIndex = 2;
             // 
             // label5
             // 
@@ -263,40 +297,6 @@
             this.label7.Size = new System.Drawing.Size(93, 12);
             this.label7.TabIndex = 17;
             this.label7.Text = "メイン再生デバイス";
-            // 
-            // hpTextToSpeakTextBox
-            // 
-            this.hpTextToSpeakTextBox.Location = new System.Drawing.Point(6, 71);
-            this.hpTextToSpeakTextBox.Name = "hpTextToSpeakTextBox";
-            this.hpTextToSpeakTextBox.Size = new System.Drawing.Size(405, 19);
-            this.hpTextToSpeakTextBox.TabIndex = 2;
-            // 
-            // mpTextToSpeakTextBox
-            // 
-            this.mpTextToSpeakTextBox.Location = new System.Drawing.Point(6, 156);
-            this.mpTextToSpeakTextBox.Name = "mpTextToSpeakTextBox";
-            this.mpTextToSpeakTextBox.Size = new System.Drawing.Size(405, 19);
-            this.mpTextToSpeakTextBox.TabIndex = 5;
-            // 
-            // tpTextToSpeakTextBox
-            // 
-            this.tpTextToSpeakTextBox.Location = new System.Drawing.Point(6, 247);
-            this.tpTextToSpeakTextBox.Name = "tpTextToSpeakTextBox";
-            this.tpTextToSpeakTextBox.Size = new System.Drawing.Size(405, 19);
-            this.tpTextToSpeakTextBox.TabIndex = 8;
-            // 
-            // textBox1
-            // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.textBox1.Location = new System.Drawing.Point(417, 24);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(297, 242);
-            this.textBox1.TabIndex = 10;
-            this.textBox1.TabStop = false;
-            this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // TTSYukkuriConfigPanel
             // 

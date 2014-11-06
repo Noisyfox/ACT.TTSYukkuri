@@ -129,9 +129,13 @@
 &lt;tpp&gt;     TPの割合。百分率
 
 例)
-&lt;pcname&gt;、HP&lt;hpp&gt;%。（モンクA、HP40%。）
-&lt;pcname&gt;、MP&lt;mpp&gt;%。（白魔道士B、MP40%。）
-&lt;pcname&gt;、TP&lt;tpp&gt;%。（竜騎士C、TP40%。）
-</value>
+&lt;pcname&gt;、HP&lt;hpp&gt;%。
+→「モンクA、HP40%。」
+
+&lt;pcname&gt;、MP&lt;mpp&gt;%。
+→「白魔道士B、MP40%。」
+
+&lt;pcname&gt;、TP&lt;tpp&gt;%。
+→「竜騎士C、TP40%。」</value>
   </data>
 </root>
