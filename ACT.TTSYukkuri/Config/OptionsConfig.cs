@@ -13,9 +13,9 @@
         /// </summary>
         public OptionsConfig()
         {
-            this.HPTextToSpeack = "<pcname>、<hpp>%。";
-            this.MPTextToSpeack = "<pcname>、<mpp>%。";
-            this.TPTextToSpeack = "<pcname>、<tpp>%。";
+            this.HPTextToSpeack = "<pcname>、HP<hpp>%。";
+            this.MPTextToSpeack = "<pcname>、MP<mpp>%。";
+            this.TPTextToSpeack = "<pcname>、TP<tpp>%。";
         }
 
         /// <summary>
