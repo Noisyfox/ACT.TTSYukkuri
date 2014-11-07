@@ -51,7 +51,7 @@ NAudio.WindowsMediaFormat.dll
         
 最新リリース
 --------------
-[こちらからダウンロードしてください](https://github.com/anoyetta/ACT.TTSYukkuri/releases/latest)  
+*[こちらからダウンロードしてください](https://github.com/anoyetta/ACT.TTSYukkuri/releases/latest)*  
 
 
 ライセンス
