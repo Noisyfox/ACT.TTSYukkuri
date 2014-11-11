@@ -9,7 +9,6 @@ ACTのTTSをゆっくりさんに置き換えます
 使い方
 --------------
 aqtk1-win  
-NAudio.xml  
 ACT.TTSYukkuri.dll  
 NAudio.dll  
 NAudio.WindowsMediaFormat.dll  
