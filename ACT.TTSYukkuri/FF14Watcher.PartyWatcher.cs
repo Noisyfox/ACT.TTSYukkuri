@@ -135,37 +135,43 @@
                 }
 
                 // MPをチェックして読上げる
-                if (TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch &&
-                    !string.IsNullOrWhiteSpace(mpTextToSpeak))
+                if (hp > 0)
                 {
-                    if (mpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
-                        previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold)
+                    if (TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch &&
+                        !string.IsNullOrWhiteSpace(mpTextToSpeak))
                     {
-                        this.Speak(mpTextToSpeak);
-                    }
-                    else
-                    {
-                        if (mpp <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
+                        if (mpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
+                            previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold)
                         {
-                            this.Speak(pcname + "、MPなし。");
+                            this.Speak(mpTextToSpeak);
+                        }
+                        else
+                        {
+                            if (mpp <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
+                            {
+                                this.Speak(pcname + "、MPなし。");
+                            }
                         }
                     }
                 }
 
                 // TPをチェックして読上げる
-                if (TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch &&
-                    !string.IsNullOrWhiteSpace(tpTextToSpeak))
+                if (hp > 0)
                 {
-                    if (tpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
-                        previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold)
+                    if (TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch &&
+                        !string.IsNullOrWhiteSpace(tpTextToSpeak))
                     {
-                        this.Speak(tpTextToSpeak);
-                    }
-                    else
-                    {
-                        if (tpp <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
+                        if (tpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
+                            previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold)
                         {
-                            this.Speak(pcname + "、TPなし。");
+                            this.Speak(tpTextToSpeak);
+                        }
+                        else
+                        {
+                            if (tpp <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
+                            {
+                                this.Speak(pcname + "、TPなし。");
+                            }
                         }
                     }
                 }

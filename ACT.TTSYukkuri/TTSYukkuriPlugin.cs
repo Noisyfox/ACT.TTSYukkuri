@@ -16,6 +16,15 @@
         private byte[] originalTTS;
         private IntPtr ACT_TTSMethod;
 
+        /// <summary>
+        /// 設定Panel（設定タブ）
+        /// </summary>
+        public static TTSYukkuriConfigPanel ConfigPanel
+        {
+            get;
+            private set;
+        }
+
         #region IActPluginV1 Members
 
         public void InitPlugin(
@@ -37,9 +46,9 @@
                 FF14Watcher.Initialize();
 
                 // 設定Panelを追加する
-                var configPanel = new TTSYukkuriConfigPanel();
-                configPanel.Dock = DockStyle.Fill;
-                pluginScreenSpace.Controls.Add(configPanel);
+                ConfigPanel = new TTSYukkuriConfigPanel();
+                ConfigPanel.Dock = DockStyle.Fill;
+                pluginScreenSpace.Controls.Add(ConfigPanel);
 
                 // Hand the status label's reference to our local var
                 lblStatus = pluginStatusText;
