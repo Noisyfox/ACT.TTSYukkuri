@@ -54,19 +54,19 @@
                 if (instance == null)
                 {
                     instance = new FF14Watcher();
+
+                    instance.watchTimer = new Timer()
+                    {
+                        Interval = 600,
+                        AutoReset = false,
+                        Enabled = false
+                    };
+
+                    instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
+
+                    // 監視を開始する
+                    instance.watchTimer.Start();
                 }
-
-                instance.watchTimer = new Timer()
-                {
-                    Interval = 600,
-                    AutoReset = true,
-                    Enabled = false
-                };
-
-                instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
-
-                // 監視を開始する
-                instance.watchTimer.Start();
             }
         }
 
@@ -116,8 +116,13 @@
         /// <param name="e">イベント引数</param>
         private void watchTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            var timer = sender as Timer;
+
             lock (lockObject)
             {
+                // タイマーを止める
+                timer.Stop();
+
                 try
                 {
                     this.WatchCore();
@@ -128,6 +133,9 @@
                         ex,
                         "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
                 }
+
+                // タイマーを再開する
+                timer.Start();
             }
         }
 
