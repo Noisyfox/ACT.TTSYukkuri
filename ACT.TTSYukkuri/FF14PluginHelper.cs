@@ -178,16 +178,7 @@
 
             partyCount = (int)args[0];
 
-            FieldInfo fi;
-
-            var getValue = new Func<object, string, object>(
-                (obj, fieldName) =>
-                {
-                    fi = obj.GetType().GetField(fieldName, BindingFlags.Public | BindingFlags.Instance);
-                    return fi.GetValue(obj);
-                });
-
-            fi = items.GetType().GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField);
+            var fi = items.GetType().GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField);
             var itemsInner = fi.GetValue(items);
 
             if (itemsInner.GetType().IsArray)
