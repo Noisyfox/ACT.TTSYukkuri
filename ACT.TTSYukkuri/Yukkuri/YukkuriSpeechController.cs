@@ -254,7 +254,7 @@
             yomigana = yomigana.Replace("E", "いー");
             yomigana = yomigana.Replace("F", "えふ");
             yomigana = yomigana.Replace("G", "じー");
-            yomigana = yomigana.Replace("H", "へいち");
+            yomigana = yomigana.Replace("H", "えいち");
             yomigana = yomigana.Replace("I", "あい");
             yomigana = yomigana.Replace("J", "じぇい");
             yomigana = yomigana.Replace("K", "けー");
@@ -263,7 +263,7 @@
             yomigana = yomigana.Replace("N", "えぬ");
             yomigana = yomigana.Replace("O", "おー");
             yomigana = yomigana.Replace("P", "ぴー");
-            yomigana = yomigana.Replace("Q", "くいーん");
+            yomigana = yomigana.Replace("Q", "きゅー");
             yomigana = yomigana.Replace("R", "あーる");
             yomigana = yomigana.Replace("S", "えす");
             yomigana = yomigana.Replace("T", "てぃー");
