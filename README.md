@@ -82,3 +82,7 @@ https://github.com/GB19xx/ACT.TPMonitor
 ・Qofar様  
 https://gist.github.com/Qofar/11364454  
 ACTのTTSメソッドを書き換えるロジックを流用させていただきました  
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/anoyetta/act.ttsyukkuri/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
