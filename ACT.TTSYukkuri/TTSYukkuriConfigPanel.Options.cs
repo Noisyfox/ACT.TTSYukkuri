@@ -88,9 +88,12 @@
             this.mpTextToSpeakTextBox.Leave += (s1, e1) => this.SaveSettings();
             this.tpTextToSpeakTextBox.Leave += (s1, e1) => this.SaveSettings();
 
-            this.watchTargetsHPCheckedListBox.ItemCheck += (s1, e1) => this.SaveSettings();
-            this.watchTargetsMPCheckedListBox.ItemCheck += (s1, e1) => this.SaveSettings();
-            this.watchTargetsTPCheckedListBox.ItemCheck += (s1, e1) => this.SaveSettings();
+            this.watchTargetsHPCheckedListBox.SelectedIndexChanged += (s1, e1) => this.SaveSettings();
+            this.watchTargetsMPCheckedListBox.SelectedIndexChanged += (s1, e1) => this.SaveSettings();
+            this.watchTargetsTPCheckedListBox.SelectedIndexChanged += (s1, e1) => this.SaveSettings();
+            this.watchTargetsHPCheckedListBox.DoubleClick += (s1, e1) => this.SaveSettings();
+            this.watchTargetsMPCheckedListBox.DoubleClick += (s1, e1) => this.SaveSettings();
+            this.watchTargetsTPCheckedListBox.DoubleClick += (s1, e1) => this.SaveSettings();
         }
 
         /// <summary>
