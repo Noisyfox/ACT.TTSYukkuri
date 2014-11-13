@@ -67,6 +67,7 @@
     <Compile Include="Config\OptionsConfig.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\TTSYukkuriConfig.cs" />
+    <Compile Include="Config\WatchTargets.cs" />
     <Compile Include="FF14PluginHelper.cs" />
     <Compile Include="FF14Watcher.cs" />
     <Compile Include="FF14Watcher.FF14PluginWrapper.cs" />

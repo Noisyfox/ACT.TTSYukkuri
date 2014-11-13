@@ -24,7 +24,26 @@
             this.hpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack;
             this.mpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack;
             this.tpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack;
-            this.enabledSelfCheckBox.Checked = TTSYukkuriConfig.Default.OptionSettings.EnableSelf;
+
+            var array = new bool[0];
+
+            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP.ItemArray;
+            for (int i = 0; i < array.Length; i++)
+            {
+                this.watchTargetsHPCheckedListBox.SetItemChecked(i, array[i]);
+            }
+
+            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP.ItemArray;
+            for (int i = 0; i < array.Length; i++)
+            {
+                this.watchTargetsMPCheckedListBox.SetItemChecked(i, array[i]);
+            }
+
+            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP.ItemArray;
+            for (int i = 0; i < array.Length; i++)
+            {
+                this.watchTargetsTPCheckedListBox.SetItemChecked(i, array[i]);
+            }
 
             this.HPThresholdTextBox.Enabled = this.enableWatchHPCheckBox.Checked;
             this.MPThresholdTextBox.Enabled = this.enableWatchMPCheckBox.Checked;
@@ -32,6 +51,9 @@
             this.hpTextToSpeakTextBox.Enabled = this.enableWatchHPCheckBox.Checked;
             this.mpTextToSpeakTextBox.Enabled = this.enableWatchMPCheckBox.Checked;
             this.tpTextToSpeakTextBox.Enabled = this.enableWatchTPCheckBox.Checked;
+            this.watchTargetsHPCheckedListBox.Enabled = this.enableWatchHPCheckBox.Checked;
+            this.watchTargetsMPCheckedListBox.Enabled = this.enableWatchMPCheckBox.Checked;
+            this.watchTargetsTPCheckedListBox.Enabled = this.enableWatchTPCheckBox.Checked;
 
             // イベントを定義する
             this.HPThresholdTextBox.Leave += (s1, e1) => this.ValidateThresholdTextBox(s1);
@@ -42,6 +64,7 @@
             {
                 this.HPThresholdTextBox.Enabled = (s1 as CheckBox).Checked;
                 this.hpTextToSpeakTextBox.Enabled = (s1 as CheckBox).Checked;
+                this.watchTargetsHPCheckedListBox.Enabled = (s1 as CheckBox).Checked;
                 this.SaveSettings();
             };
 
@@ -49,6 +72,7 @@
             {
                 this.MPThresholdTextBox.Enabled = (s1 as CheckBox).Checked;
                 this.mpTextToSpeakTextBox.Enabled = (s1 as CheckBox).Checked;
+                this.watchTargetsMPCheckedListBox.Enabled = (s1 as CheckBox).Checked;
                 this.SaveSettings();
             };
 
@@ -56,17 +80,17 @@
             {
                 this.TPThresholdTextBox.Enabled = (s1 as CheckBox).Checked;
                 this.tpTextToSpeakTextBox.Enabled = (s1 as CheckBox).Checked;
-                this.SaveSettings();
-            };
-
-            this.enabledSelfCheckBox.CheckedChanged += (s1, e1) =>
-            {
+                this.watchTargetsTPCheckedListBox.Enabled = (s1 as CheckBox).Checked;
                 this.SaveSettings();
             };
 
             this.hpTextToSpeakTextBox.Leave += (s1, e1) => this.SaveSettings();
             this.mpTextToSpeakTextBox.Leave += (s1, e1) => this.SaveSettings();
             this.tpTextToSpeakTextBox.Leave += (s1, e1) => this.SaveSettings();
+
+            this.watchTargetsHPCheckedListBox.ItemCheck += (s1, e1) => this.SaveSettings();
+            this.watchTargetsMPCheckedListBox.ItemCheck += (s1, e1) => this.SaveSettings();
+            this.watchTargetsTPCheckedListBox.ItemCheck += (s1, e1) => this.SaveSettings();
         }
 
         /// <summary>
@@ -115,7 +139,32 @@
             TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack = this.hpTextToSpeakTextBox.Text;
             TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack = this.mpTextToSpeakTextBox.Text;
             TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack = this.tpTextToSpeakTextBox.Text;
-            TTSYukkuriConfig.Default.OptionSettings.EnableSelf = this.enabledSelfCheckBox.Checked;
+
+            var array = new bool[0];
+
+            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP.ItemArray;
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = this.watchTargetsHPCheckedListBox.GetItemChecked(i);
+            }
+
+            TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP.ItemArray = array;
+
+            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP.ItemArray;
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = this.watchTargetsMPCheckedListBox.GetItemChecked(i);
+            }
+
+            TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP.ItemArray = array;
+
+            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP.ItemArray;
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = this.watchTargetsTPCheckedListBox.GetItemChecked(i);
+            }
+
+            TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP.ItemArray = array;
         }
     }
 }

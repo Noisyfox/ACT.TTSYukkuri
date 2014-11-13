@@ -35,15 +35,6 @@
 
             foreach (var partyMember in partyList)
             {
-                if (!TTSYukkuriConfig.Default.OptionSettings.EnableSelf)
-                {
-                    // 自分を除外する
-                    if (partyMember.ID == player.ID)
-                    {
-                        continue;
-                    }
-                }
-
                 // このPTメンバの現在の状態を取得する
                 var hp = partyMember.CurrentHP;
                 var hpp =
@@ -120,16 +111,19 @@
                 if (TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch &&
                     !string.IsNullOrWhiteSpace(hpTextToSpeak))
                 {
-                    if (hpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold &&
-                        previousePartyMember.HPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold)
+                    if (this.IsWatchTarget(partyMember, player, "HP"))
                     {
-                        this.Speak(hpTextToSpeak);
-                    }
-                    else
-                    {
-                        if (hpp <= decimal.Zero && previousePartyMember.HPRate != decimal.Zero)
+                        if (hpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold &&
+                            previousePartyMember.HPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold)
                         {
-                            this.Speak(pcname + "、せんとうふのう。");
+                            this.Speak(hpTextToSpeak);
+                        }
+                        else
+                        {
+                            if (hpp <= decimal.Zero && previousePartyMember.HPRate != decimal.Zero)
+                            {
+                                this.Speak(pcname + "、せんとうふのう。");
+                            }
                         }
                     }
                 }
@@ -140,16 +134,19 @@
                     if (TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch &&
                         !string.IsNullOrWhiteSpace(mpTextToSpeak))
                     {
-                        if (mpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
-                            previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold)
+                        if (this.IsWatchTarget(partyMember, player, "MP"))
                         {
-                            this.Speak(mpTextToSpeak);
-                        }
-                        else
-                        {
-                            if (mpp <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
+                            if (mpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
+                                previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold)
                             {
-                                this.Speak(pcname + "、MPなし。");
+                                this.Speak(mpTextToSpeak);
+                            }
+                            else
+                            {
+                                if (mpp <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
+                                {
+                                    this.Speak(pcname + "、MPなし。");
+                                }
                             }
                         }
                     }
@@ -161,16 +158,19 @@
                     if (TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch &&
                         !string.IsNullOrWhiteSpace(tpTextToSpeak))
                     {
-                        if (tpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
-                            previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold)
+                        if (this.IsWatchTarget(partyMember, player, "TP"))
                         {
-                            this.Speak(tpTextToSpeak);
-                        }
-                        else
-                        {
-                            if (tpp <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
+                            if (tpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
+                                previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold)
                             {
-                                this.Speak(pcname + "、TPなし。");
+                                this.Speak(tpTextToSpeak);
+                            }
+                            else
+                            {
+                                if (tpp <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
+                                {
+                                    this.Speak(pcname + "、TPなし。");
+                                }
                             }
                         }
                     }
@@ -181,6 +181,78 @@
                 previousePartyMember.MPRate = mpp;
                 previousePartyMember.TPRate = tpp;
             }
+        }
+
+        /// <summary>
+        /// 監視対象か？
+        /// </summary>
+        /// <param name="targetInfo">監視候補の情報</param>
+        /// <param name="playerInfo">プレイヤの情報</param>
+        /// <param name="targetParameter">対象とするParameter</param>
+        /// <returns>監視対象か？</returns>
+        private bool IsWatchTarget(
+            Combatant targetInfo,
+            Combatant playerInfo,
+            string targetParameter)
+        {
+            var r = false;
+
+            var watchTarget = default(WatchTargets);
+            switch (targetParameter.ToUpper())
+            {
+                case "HP": watchTarget = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP; break;
+                case "MP": watchTarget = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP; break;
+                case "TP": watchTarget = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP; break;
+                default:
+                    return r;
+            }
+
+            switch (targetInfo.Job)
+            {
+                case 0: r = false; break;
+                case 1: r = watchTarget.EnabledKnight; break;
+                case 2: r = watchTarget.EnabledMonk; break;
+                case 3: r = watchTarget.EnabledSenshi; break;
+                case 4: r = watchTarget.EnabledRyukishi; break;
+                case 5: r = watchTarget.EnabledGinyushijin; break;
+                case 6: r = watchTarget.EnabledShiromadoshi; break;
+                case 7: r = watchTarget.EnabledKuromadoshi; break;
+
+                case 8: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 9: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 10: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 11: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 12: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 13: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 14: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 15: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 16: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 17: r = watchTarget.EnabledGathererAndCrafter; break;
+                case 18: r = watchTarget.EnabledGathererAndCrafter; break;
+
+                case 19: r = watchTarget.EnabledKnight; break;
+                case 20: r = watchTarget.EnabledMonk; break;
+                case 21: r = watchTarget.EnabledSenshi; break;
+                case 22: r = watchTarget.EnabledRyukishi; break;
+                case 23: r = watchTarget.EnabledGinyushijin; break;
+                case 24: r = watchTarget.EnabledShiromadoshi; break;
+                case 25: r = watchTarget.EnabledKuromadoshi; break;
+                case 26: r = watchTarget.EnabledShokanshi; break;
+                case 27: r = watchTarget.EnabledShokanshi; break;
+                case 28: r = watchTarget.EnabledGakusha; break;
+                case 29: r = watchTarget.EnabledNinja; break;
+                case 30: r = watchTarget.EnabledNinja; break;
+
+                default: r = false; break;
+            }
+
+            // 自分自身か？
+            if (targetInfo.ID == playerInfo.ID)
+            {
+                r &= watchTarget.EnabledSelf;
+            }
+
+            return r;
         }
 
         /// <summary>

@@ -16,6 +16,9 @@
             this.HPTextToSpeack = "<pcname>、HP<hpp>%。";
             this.MPTextToSpeack = "<pcname>、MP<mpp>%。";
             this.TPTextToSpeack = "<pcname>、TP<tpp>%。";
+            this.WatchTargetsHP = new WatchTargets();
+            this.WatchTargetsMP = new WatchTargets();
+            this.WatchTargetsTP = new WatchTargets();
         }
 
         /// <summary>
@@ -64,8 +67,18 @@
         public string TPTextToSpeack { get; set; }
 
         /// <summary>
-        /// 自身を検出対象する
+        /// HPの監視対象
         /// </summary>
-        public bool EnableSelf { get; set; }
+        public WatchTargets WatchTargetsHP { get; set; }
+
+        /// <summary>
+        /// MPの監視対象
+        /// </summary>
+        public WatchTargets WatchTargetsMP { get; set; }
+
+        /// <summary>
+        /// TPの監視対象
+        /// </summary>
+        public WatchTargets WatchTargetsTP { get; set; }
     }
 }
