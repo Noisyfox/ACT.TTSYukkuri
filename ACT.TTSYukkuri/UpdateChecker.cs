@@ -18,6 +18,9 @@
         /// </summary>
         public const string LastestReleaseUrl = "https://github.com/anoyetta/ACT.TTSYukkuri/releases/latest";
 
+        /// <summary>
+        /// 製品名
+        /// </summary>
         public static string ProductName
         {
             get
