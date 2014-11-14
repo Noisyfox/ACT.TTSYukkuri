@@ -58,6 +58,9 @@
                 ACT_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain).GetMethod("TTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
                 Replacer.InsertJumpToFunction(ACT_TTSMethod, new_TTSMethod, out originalTTS);
 
+                // アップデートを確認する
+                this.Update();
+
                 lblStatus.Text = "Plugin Started";
             }
             catch (Exception ex)
@@ -94,5 +97,25 @@
         }
 
         #endregion
+
+        /// <summary>
+        /// アップデートを行う
+        /// </summary>
+        private void Update()
+        {
+            if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDatetime).TotalHours > 6d)
+            {
+                var message = UpdateChecker.Update();
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    ActGlobals.oFormActMain.WriteExceptionLog(
+                        new Exception(),
+                        message);
+                }
+
+                TTSYukkuriConfig.Default.LastUpdateDatetime = DateTime.Now;
+                TTSYukkuriConfig.Default.Save();
+            }
+        }
     }
 }

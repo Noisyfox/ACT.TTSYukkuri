@@ -94,6 +94,7 @@
     <Compile Include="TTSYukkuriConfigPanel.Options.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UpdateChecker.cs" />
     <Compile Include="Yukkuri\YukkuriSettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -129,6 +130,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Sasara\SasaraSettingsDataSet.xsc">
       <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
     </None>

@@ -70,11 +70,18 @@
         /// </summary>
         public TTSYukkuriConfig()
         {
+            this.LastUpdateDatetime = DateTime.Now;
+
             this.SasaraSettings = new SasaraConfig();
             this.OptionSettings = new OptionsConfig();
 
             this.TTS = TTSType.Yukkuri;
         }
+
+        /// <summary>
+        /// 最終アップデート日時
+        /// </summary>
+        public DateTime LastUpdateDatetime { get; set; }
 
         /// <summary>
         /// TTSの種類
