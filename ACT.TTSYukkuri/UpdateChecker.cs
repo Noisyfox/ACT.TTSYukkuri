@@ -16,7 +16,7 @@
         /// <summary>
         /// 最終リリースのURL
         /// </summary>
-        public const string LastestReleaseUrl = "https://github.com/anoyetta/ACT.TTSYukkuri/releases/latest";
+        public const string LastestReleaseUrl = @"https://github.com/anoyetta/ACT.TTSYukkuri/releases/latest";
 
         /// <summary>
         /// 製品名
