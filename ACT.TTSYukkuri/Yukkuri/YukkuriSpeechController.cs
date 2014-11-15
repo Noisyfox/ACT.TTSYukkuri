@@ -144,6 +144,7 @@
             // IMEでよみがなに変換する
             ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
+                KanjiTranslator.Default.Initialize();
                 yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
             });
 

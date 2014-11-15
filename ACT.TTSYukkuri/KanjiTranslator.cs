@@ -49,21 +49,24 @@
         /// </summary>
         public void Initialize()
         {
-            if (this.ifelang == null)
+            lock (lockObject)
             {
-                this.ifelang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
-
-                var hr = ifelang.Open();
-                if (hr != 0)
+                if (this.ifelang == null)
                 {
-                    ActGlobals.oFormActMain.WriteInfoLog(
-                        "ACT.TTSYukkuri IFELANG IMEに接続できません");
+                    this.ifelang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
 
-                    this.ifelang = null;
+                    var hr = ifelang.Open();
+                    if (hr != 0)
+                    {
+                        ActGlobals.oFormActMain.WriteInfoLog(
+                            "ACT.TTSYukkuri IFELANG IMEに接続できません");
+
+                        this.ifelang = null;
+                    }
+
+                    ActGlobals.oFormActMain.WriteDebugLog(
+                        "ACT.TTSYukkuri IFELANG 接続OK");
                 }
-
-                ActGlobals.oFormActMain.WriteDebugLog(
-                    "ACT.TTSYukkuri IFELANG 接続OK");
             }
         }
 
