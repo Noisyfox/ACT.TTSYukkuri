@@ -108,7 +108,7 @@
                             SoundPlayerWrapper.Play(
                                 TTSYukkuriConfig.Default.SubDeviceNo,
                                 ms,
-                                TTSYukkuriConfig.Default.YukkuriVolume);
+                                TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
                         }
                     }
 
@@ -118,7 +118,7 @@
                         SoundPlayerWrapper.Play(
                             TTSYukkuriConfig.Default.MainDeviceNo,
                             ms,
-                            TTSYukkuriConfig.Default.YukkuriVolume);
+                            TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
                     }
                 }
                 finally
@@ -144,7 +144,6 @@
             // IMEでよみがなに変換する
             ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
-                KanjiTranslator.Default.Initialize();
                 yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
             });
 

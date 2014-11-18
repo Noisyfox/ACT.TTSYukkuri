@@ -25,6 +25,17 @@
             private set;
         }
 
+        /// <summary>
+        /// テキストを読上げる
+        /// </summary>
+        /// <param name="textToSpeak">読上げるテキスト</param>
+        public void Speak(
+            string textToSpeak)
+        {
+            SpeechController.Default.Speak(
+                textToSpeak);
+        }
+
         #region IActPluginV1 Members
 
         public void InitPlugin(

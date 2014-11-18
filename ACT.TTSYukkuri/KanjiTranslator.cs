@@ -21,11 +21,6 @@
         private static KanjiTranslator instance;
 
         /// <summary>
-        /// IFE言語オブジェクト
-        /// </summary>
-        private IFELanguage ifelang;
-
-        /// <summary>
         /// シングルトンinstance
         /// </summary>
         public static KanjiTranslator Default
@@ -45,23 +40,32 @@
         }
 
         /// <summary>
+        /// IFE言語オブジェクト
+        /// </summary>
+        public IFELanguage IFELang
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// 初期化する
         /// </summary>
         public void Initialize()
         {
             lock (lockObject)
             {
-                if (this.ifelang == null)
+                if (this.IFELang == null)
                 {
-                    this.ifelang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
+                    this.IFELang = Activator.CreateInstance(Type.GetTypeFromProgID("MSIME.Japan")) as IFELanguage;
 
-                    var hr = ifelang.Open();
+                    var hr = IFELang.Open();
                     if (hr != 0)
                     {
                         ActGlobals.oFormActMain.WriteInfoLog(
                             "ACT.TTSYukkuri IFELANG IMEに接続できません");
 
-                        this.ifelang = null;
+                        this.IFELang = null;
                     }
 
                     ActGlobals.oFormActMain.WriteDebugLog(
@@ -80,10 +84,12 @@
         {
             var yomigana = text;
 
-            if (this.ifelang != null)
+            var ifelang = this.IFELang;
+
+            if (ifelang != null)
             {
                 string t;
-                var hr = this.ifelang.GetPhonetic(text, 1, -1, out t);
+                var hr = ifelang.GetPhonetic(text, 1, -1, out t);
                 if (hr != 0)
                 {
                     ActGlobals.oFormActMain.WriteInfoLog(
@@ -92,10 +98,10 @@
                     return yomigana;
                 }
 
+                yomigana = t;
+
                 ActGlobals.oFormActMain.WriteDebugLog(
                     "ACT.TTSYukkuri IFELANG 変換前:" + text + ", 変換後:" + yomigana);
-
-                yomigana = t;
             }
 
             return yomigana;
@@ -106,10 +112,10 @@
         /// </summary>
         public void Dispose()
         {
-            if (this.ifelang != null)
+            if (this.IFELang != null)
             {
-                this.ifelang.Close();
-                this.ifelang = null;
+                this.IFELang.Close();
+                this.IFELang = null;
             }
 
             GC.SuppressFinalize(this);
