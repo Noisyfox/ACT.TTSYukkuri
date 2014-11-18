@@ -29,8 +29,7 @@ NAudio.WindowsMediaFormat.dll
   
   
 3) タイムラインでも使いたい  
-[ACTTimelineWithTTSYukkuri-rev02.zip](https://github.com/anoyetta/ACT.TTSYukkuri/releases/download/ACTTimeline-rev02/ACTTimelineWithTTSYukkuri-rev02.zip "ACTTimelineWithTTSYukkuri-rev02.zip")  
-こちらの改造版タイムラインをどうぞ  
+**[こちらの改造版タイムラインをどうぞ](https://github.com/anoyetta/ACT.TTSYukkuri/releases/tag/ACTTimeline-rev03)**  
   
   
 4) ゆっくりが喋らない？  
