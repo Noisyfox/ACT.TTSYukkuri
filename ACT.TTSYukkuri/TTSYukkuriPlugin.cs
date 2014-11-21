@@ -1,10 +1,12 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System;
+    using System.IO;
     using System.Reflection;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
+    using ACT.TTSYukkuri.SoundPlayer;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -32,8 +34,35 @@
         public void Speak(
             string textToSpeak)
         {
-            SpeechController.Default.Speak(
-                textToSpeak);
+            if (string.IsNullOrWhiteSpace(textToSpeak))
+            {
+                return;
+            }
+
+            // ファイルか？
+            if (File.Exists(textToSpeak))
+            {
+                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                {
+                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                    {
+                        NAudioPlayer.Play(
+                            TTSYukkuriConfig.Default.SubDeviceNo,
+                            textToSpeak,
+                            false);
+                    }
+
+                    NAudioPlayer.Play(
+                        TTSYukkuriConfig.Default.MainDeviceNo,
+                        textToSpeak,
+                        false);
+                });
+            }
+            else
+            {
+                SpeechController.Default.Speak(
+                    textToSpeak);
+            }
         }
 
         #region IActPluginV1 Members
