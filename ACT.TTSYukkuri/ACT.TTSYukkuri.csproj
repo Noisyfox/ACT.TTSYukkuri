@@ -64,6 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boyomichan\BoyomichanSpeechController.cs" />
+    <Compile Include="Boyomichan\BoyomiSettingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Boyomichan\BoyomiSettingPanel.Designer.cs">
+      <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config\OptionsConfig.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\TTSYukkuriConfig.cs" />
@@ -119,6 +125,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Boyomichan\BoyomiSettingPanel.resx">
+      <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Sasara\SasaraSettingsPanel.resx">
       <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
     </EmbeddedResource>

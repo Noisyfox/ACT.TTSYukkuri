@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
+    using System.Collections.Generic;
 
     using ACT.TTSYukkuri.Sasara;
 
@@ -73,6 +74,7 @@
             this.LastUpdateDatetime = DateTime.Now;
 
             this.SasaraSettings = new SasaraConfig();
+            this.BoyomiServer = new List<string>();
             this.OptionSettings = new OptionsConfig();
 
             this.TTS = TTSType.Yukkuri;
@@ -122,6 +124,11 @@
         /// ささら設定
         /// </summary>
         public SasaraConfig SasaraSettings { get; set; }
+
+        /// <summary>
+        /// 棒読み設定(サーバ, ポート)
+        /// </summary>
+        public List<string> BoyomiServer { get; set; }
 
         /// <summary>
         /// オプション設定

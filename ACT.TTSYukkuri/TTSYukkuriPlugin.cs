@@ -39,7 +39,16 @@
                 return;
             }
 
-            // ファイルか？
+            // ファイルじゃない？
+            if (!textToSpeak.EndsWith(".wav"))
+            {
+                // 喋って終わる
+                SpeechController.Default.Speak(
+                    textToSpeak);
+
+                return;
+            }
+
             if (File.Exists(textToSpeak))
             {
                 ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
@@ -60,8 +69,31 @@
             }
             else
             {
-                SpeechController.Default.Speak(
-                    textToSpeak);
+                // ACTのパスを取得する
+                var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var waveDir = Path.Combine(
+                    baseDir,
+                    @"resources\wav");
+
+                var wave = Path.Combine(waveDir, textToSpeak);
+                if (File.Exists(wave))
+                {
+                    ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                    {
+                        if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                        {
+                            NAudioPlayer.Play(
+                                TTSYukkuriConfig.Default.SubDeviceNo,
+                                textToSpeak,
+                                false);
+                        }
+
+                        NAudioPlayer.Play(
+                            TTSYukkuriConfig.Default.MainDeviceNo,
+                            textToSpeak,
+                            false);
+                    });
+                }
             }
         }
 
