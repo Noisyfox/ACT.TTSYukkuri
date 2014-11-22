@@ -17,6 +17,11 @@
         private UserControl ttsSettingsPanel;
 
         /// <summary>
+        /// ロード完了
+        /// </summary>
+        private bool Loaded;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public TTSYukkuriConfigPanel()
@@ -29,19 +34,22 @@
 
             this.ttsShuruiComboBox.TextChanged += (s1, e1) =>
             {
-                this.SaveSettings();
-
-                // 再生デバイスの選択の使用状況を切り替える
-                if (TTSYukkuriConfig.Default.TTS == TTSType.Boyomichan)
+                if (this.Loaded)
                 {
-                    this.saiseiDeviceGroupBox.Enabled = false;
-                }
-                else
-                {
-                    this.saiseiDeviceGroupBox.Enabled = true;
-                }
+                    this.SaveSettings();
 
-                this.LoadTTS();
+                    // 再生デバイスの選択の使用状況を切り替える
+                    if (TTSYukkuriConfig.Default.TTS == TTSType.Boyomichan)
+                    {
+                        this.saiseiDeviceGroupBox.Enabled = false;
+                    }
+                    else
+                    {
+                        this.saiseiDeviceGroupBox.Enabled = true;
+                    }
+
+                    this.LoadTTS();
+                }
             };
         }
 
@@ -89,6 +97,8 @@
 
             // オプションのロードを呼出す
             this.LoadOptions();
+
+            this.Loaded = true;
         }
 
         /// <summary>
