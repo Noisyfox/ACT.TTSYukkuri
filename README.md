@@ -50,6 +50,7 @@ TimeLineから普通にwaveを鳴らすとTTSYukkuri経由ではなくTimeLine�
 TimeLine本体には再生デバイスを選ぶ機能がないため、既定のデバイスでの再生となります  
 下記の例のようにwave再生の指定を変更してTTSYukkuri経由で再生するように変更してください  
 <pre>
+例) TTSYukkuri経由でwaveを再生させる
 alertall アトミックレイ before 1 speak "TTSYukkuri" "se_maoudamashii_chime10.wav"
 ※ ゆっくりに喋らせる文字列としてファイル名を指定します
 </pre>
