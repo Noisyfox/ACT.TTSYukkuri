@@ -84,13 +84,13 @@
                         {
                             NAudioPlayer.Play(
                                 TTSYukkuriConfig.Default.SubDeviceNo,
-                                textToSpeak,
+                                wave,
                                 false);
                         }
 
                         NAudioPlayer.Play(
                             TTSYukkuriConfig.Default.MainDeviceNo,
-                            textToSpeak,
+                            wave,
                             false);
                     });
                 }
