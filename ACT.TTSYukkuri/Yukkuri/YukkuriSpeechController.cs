@@ -158,6 +158,8 @@
 
             yomigana = yomigana.Replace("フュ", "ヒュ");
 
+            yomigana = yomigana.Replace("・", "'");
+
             // ひらがなに戻す
             yomigana = Strings.StrConv(yomigana, VbStrConv.Hiragana);
 
