@@ -4,6 +4,7 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
+    using Advanced_Combat_Tracker;
     using CeVIO.Talk.RemoteService;
 
     /// <summary>
@@ -13,11 +14,6 @@
         SpeechControllerBase,
         ISpeechController
     {
-        /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
         /// <summary>
         /// ささらリモートインターフェースクラス
         /// </summary>
@@ -43,7 +39,26 @@
         /// </summary>
         public override void Initialize()
         {
-            lock (lockObject)
+            if (ActGlobals.oFormActMain.InvokeRequired)
+            {
+                ActGlobals.oFormActMain.BeginInvoke((MethodInvoker)delegate
+                {
+                    // CeVIO Creative Studio を起動する
+                    if (!ServiceControl.IsHostStarted)
+                    {
+                        ServiceControl.StartHost(false);
+                    }
+
+                    if (Talker == null)
+                    {
+                        Talker = new Talker();
+                    }
+
+                    // ささらを設定する
+                    TTSYukkuriConfig.Default.SetSasara();
+                });
+            }
+            else
             {
                 // CeVIO Creative Studio を起動する
                 if (!ServiceControl.IsHostStarted)
@@ -68,23 +83,50 @@
         public override void Speak(
             string text)
         {
-            // 初期化する
-            this.Initialize();
-
-            if (!string.IsNullOrWhiteSpace(Talker.Cast))
+            if (ActGlobals.oFormActMain.InvokeRequired)
             {
-                // サブデバイスで再生する
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                ActGlobals.oFormActMain.BeginInvoke((MethodInvoker)delegate
                 {
+                    // 初期化する
+                    this.Initialize();
+
+                    if (!string.IsNullOrWhiteSpace(Talker.Cast))
+                    {
+                        // サブデバイスで再生する
+                        if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                        {
+                            this.SpeakCore(
+                                TTSYukkuriConfig.Default.SubDeviceNo,
+                                text);
+                        }
+
+                        // メインデバイスで再生する
+                        this.SpeakCore(
+                            TTSYukkuriConfig.Default.MainDeviceNo,
+                            text);
+                    }
+                });
+            }
+            else
+            {
+                // 初期化する
+                this.Initialize();
+
+                if (!string.IsNullOrWhiteSpace(Talker.Cast))
+                {
+                    // サブデバイスで再生する
+                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                    {
+                        this.SpeakCore(
+                            TTSYukkuriConfig.Default.SubDeviceNo,
+                            text);
+                    }
+
+                    // メインデバイスで再生する
                     this.SpeakCore(
-                        TTSYukkuriConfig.Default.SubDeviceNo,
+                        TTSYukkuriConfig.Default.MainDeviceNo,
                         text);
                 }
-
-                // メインデバイスで再生する
-                this.SpeakCore(
-                    TTSYukkuriConfig.Default.MainDeviceNo, 
-                    text);
             }
         }
 

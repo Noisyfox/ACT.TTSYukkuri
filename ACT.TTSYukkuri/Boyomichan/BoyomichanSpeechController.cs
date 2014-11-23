@@ -6,6 +6,7 @@
     using System.Text;
     using System.Windows.Forms;
 
+    using ACT.TTSYukkuri.Config;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -18,12 +19,12 @@
         /// <summary>
         /// 棒読みちゃんサーバ
         /// </summary>
-        private const string BoyomichanServer = "127.0.0.1";
+        public const string BoyomichanServer = "127.0.0.1";
 
         /// <summary>
         /// 棒読みちゃんサーバのポート
         /// </summary>
-        private const int BoyomichanServicePort = 50001;
+        public const int BoyomichanServicePort = 50001;
 
         /// <summary>
         /// 棒読みちゃんへのCommand 0:メッセージ読上げ
@@ -62,7 +63,7 @@
         {
             get
             {
-                return null;
+                return BoyomiSettingPanel.Default;
             }
         }
 
@@ -86,7 +87,15 @@
 
             try
             {
-                using (var tcp = new TcpClient(BoyomichanServer, BoyomichanServicePort))
+                var server = TTSYukkuriConfig.Default.BoyomiServer.Count > 0 ?
+                    TTSYukkuriConfig.Default.BoyomiServer[0] :
+                    BoyomichanServer;
+
+                var port = TTSYukkuriConfig.Default.BoyomiServer.Count > 1 ?
+                    int.Parse(TTSYukkuriConfig.Default.BoyomiServer[1]) :
+                    BoyomichanServicePort;
+
+                using (var tcp = new TcpClient(server, port))
                 using (var ns = tcp.GetStream())
                 using (var bw = new BinaryWriter(ns))
                 {

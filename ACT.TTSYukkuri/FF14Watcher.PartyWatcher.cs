@@ -1,9 +1,9 @@
 ﻿namespace ACT.TTSYukkuri
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using ACT.TTSYukkuri.Config;
+    using System;
+using System.Collections.Generic;
+using System.Linq;
+using ACT.TTSYukkuri.Config;
 
     /// <summary>
     /// FF14を監視する パーティメンバ監視部分
@@ -14,6 +14,21 @@
         /// 直前のパーティメンバ情報
         /// </summary>
         private List<PreviousPartyMemberStatus> previouseParyMemberList = new List<PreviousPartyMemberStatus>();
+
+        /// <summary>
+        /// 最後のHP通知日時
+        /// </summary>
+        private DateTime lastHPNotice = DateTime.MinValue;
+
+        /// <summary>
+        /// 最後のMP通知日時
+        /// </summary>
+        private DateTime lastMPNotice = DateTime.MinValue;
+
+        /// <summary>
+        /// 最後のMP通知日時
+        /// </summary>
+        private DateTime lastTPNotice = DateTime.MinValue;
 
         /// <summary>
         /// パーティを監視する
@@ -116,13 +131,18 @@
                         if (hpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold &&
                             previousePartyMember.HPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.HPThreshold)
                         {
-                            this.Speak(hpTextToSpeak);
+                            if ((DateTime.Now - this.lastHPNotice).TotalSeconds >= 6.0d)
+                            {
+                                this.Speak(hpTextToSpeak);
+                                this.lastHPNotice = DateTime.Now;
+                            }
                         }
                         else
                         {
                             if (hpp <= decimal.Zero && previousePartyMember.HPRate != decimal.Zero)
                             {
                                 this.Speak(pcname + "、せんとうふのう。");
+                                this.lastHPNotice = DateTime.Now;
                             }
                         }
                     }
@@ -139,13 +159,18 @@
                             if (mpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold &&
                                 previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.MPThreshold)
                             {
-                                this.Speak(mpTextToSpeak);
+                                if ((DateTime.Now - this.lastMPNotice).TotalSeconds >= 6.0d)
+                                {
+                                    this.Speak(mpTextToSpeak);
+                                    this.lastMPNotice = DateTime.Now;
+                                }
                             }
                             else
                             {
                                 if (mpp <= decimal.Zero && previousePartyMember.MPRate != decimal.Zero)
                                 {
                                     this.Speak(pcname + "、MPなし。");
+                                    this.lastMPNotice = DateTime.Now;
                                 }
                             }
                         }
@@ -163,13 +188,18 @@
                             if (tpp <= (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold &&
                                 previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.OptionSettings.TPThreshold)
                             {
-                                this.Speak(tpTextToSpeak);
+                                if ((DateTime.Now - this.lastTPNotice).TotalSeconds >= 6.0d)
+                                {
+                                    this.Speak(tpTextToSpeak);
+                                    this.lastTPNotice = DateTime.Now;
+                                }
                             }
                             else
                             {
                                 if (tpp <= decimal.Zero && previousePartyMember.TPRate != decimal.Zero)
                                 {
                                     this.Speak(pcname + "、TPなし。");
+                                    this.lastTPNotice = DateTime.Now;
                                 }
                             }
                         }
