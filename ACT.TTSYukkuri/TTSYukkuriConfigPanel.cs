@@ -93,6 +93,15 @@
             };
 
             this.ttsShuruiComboBox.SelectedValue = TTSYukkuriConfig.Default.TTS;
+            if (TTSYukkuriConfig.Default.TTS == TTSType.Boyomichan)
+            {
+                this.saiseiDeviceGroupBox.Enabled = false;
+            }
+            else
+            {
+                this.saiseiDeviceGroupBox.Enabled = true;
+            }
+
             this.LoadTTS();
 
             // オプションのロードを呼出す
