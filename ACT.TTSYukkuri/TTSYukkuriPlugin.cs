@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
@@ -39,44 +40,19 @@
                 return;
             }
 
-            // ファイルじゃない？
-            if (!textToSpeak.EndsWith(".wav"))
+            Task.Run(() =>
             {
-                // 喋って終わる
-                SpeechController.Default.Speak(
-                    textToSpeak);
-
-                return;
-            }
-
-            if (File.Exists(textToSpeak))
-            {
-                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                // ファイルじゃない？
+                if (!textToSpeak.EndsWith(".wav"))
                 {
-                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                    {
-                        NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.SubDeviceNo,
-                            textToSpeak,
-                            false);
-                    }
+                    // 喋って終わる
+                    SpeechController.Default.Speak(
+                        textToSpeak);
 
-                    NAudioPlayer.Play(
-                        TTSYukkuriConfig.Default.MainDeviceNo,
-                        textToSpeak,
-                        false);
-                });
-            }
-            else
-            {
-                // ACTのパスを取得する
-                var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                var waveDir = Path.Combine(
-                    baseDir,
-                    @"resources\wav");
+                    return;
+                }
 
-                var wave = Path.Combine(waveDir, textToSpeak);
-                if (File.Exists(wave))
+                if (File.Exists(textToSpeak))
                 {
                     ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
                     {
@@ -84,17 +60,48 @@
                         {
                             NAudioPlayer.Play(
                                 TTSYukkuriConfig.Default.SubDeviceNo,
-                                wave,
+                                textToSpeak,
                                 false);
                         }
 
                         NAudioPlayer.Play(
                             TTSYukkuriConfig.Default.MainDeviceNo,
-                            wave,
+                            textToSpeak,
                             false);
                     });
                 }
-            }
+                else
+                {
+                    // ACTのパスを取得する
+                    var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                    var waveDir = Path.Combine(
+                        baseDir,
+                        @"resources\wav");
+
+                    var wave = Path.Combine(waveDir, textToSpeak);
+                    if (File.Exists(wave))
+                    {
+                        ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                        {
+                            if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                            {
+                                NAudioPlayer.Play(
+                                    TTSYukkuriConfig.Default.SubDeviceNo,
+                                    wave,
+                                    false);
+                            }
+
+                            NAudioPlayer.Play(
+                                TTSYukkuriConfig.Default.MainDeviceNo,
+                                wave,
+                                false);
+                        });
+                    }
+                }
+            }).ContinueWith((t) =>
+            {
+                t.Dispose();
+            });
         }
 
         #region IActPluginV1 Members
