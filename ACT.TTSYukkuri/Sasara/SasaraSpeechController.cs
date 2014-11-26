@@ -41,7 +41,7 @@
         {
             if (ActGlobals.oFormActMain.InvokeRequired)
             {
-                ActGlobals.oFormActMain.BeginInvoke((MethodInvoker)delegate
+                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
                 {
                     // CeVIO Creative Studio を起動する
                     if (!ServiceControl.IsHostStarted)
@@ -85,7 +85,7 @@
         {
             if (ActGlobals.oFormActMain.InvokeRequired)
             {
-                ActGlobals.oFormActMain.BeginInvoke((MethodInvoker)delegate
+                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
                 {
                     // 初期化する
                     this.Initialize();

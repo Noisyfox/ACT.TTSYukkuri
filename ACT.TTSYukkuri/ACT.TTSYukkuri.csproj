@@ -139,7 +139,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Sasara\SasaraSettingsDataSet.xsc">
       <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
     </None>

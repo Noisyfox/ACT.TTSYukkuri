@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
@@ -39,6 +40,8 @@
                 return;
             }
 
+            Task.Run(() =>
+            {
             // ファイルじゃない？
             if (!textToSpeak.EndsWith(".wav"))
             {
@@ -99,6 +102,10 @@
                     });
                 }
             }
+            }).ContinueWith((t) =>
+            {
+                t.Dispose();
+            });
         }
 
         #region IActPluginV1 Members
