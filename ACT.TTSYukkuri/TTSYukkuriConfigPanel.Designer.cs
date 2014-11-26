@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TTSYukkuriConfigPanel));
             this.label1 = new System.Windows.Forms.Label();
             this.ttsShuruiComboBox = new System.Windows.Forms.ComboBox();
@@ -67,6 +68,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.WaveVolTrackBar = new System.Windows.Forms.TrackBar();
             this.label11 = new System.Windows.Forms.Label();
+            this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.optionGroupBox.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.watchHPTabPage.SuspendLayout();
@@ -502,6 +504,7 @@
             this.WaveVolTrackBar.TabIndex = 22;
             this.WaveVolTrackBar.TickFrequency = 10;
             this.WaveVolTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.ToolTip.SetToolTip(this.WaveVolTrackBar, "外部から呼び出した時のwaveサウンドの再生ボリュームです\r\nTTSの音量設定は各種「TTSの設定」から調整してください");
             // 
             // label11
             // 
@@ -511,6 +514,11 @@
             this.label11.Size = new System.Drawing.Size(76, 12);
             this.label11.TabIndex = 23;
             this.label11.Text = "waveボリューム";
+            // 
+            // ToolTip
+            // 
+            this.ToolTip.IsBalloon = true;
+            this.ToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
             // TTSYukkuriConfigPanel
             // 
@@ -583,5 +591,6 @@
         private System.Windows.Forms.CheckedListBox watchTargetsTPCheckedListBox;
         private System.Windows.Forms.TrackBar WaveVolTrackBar;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ToolTip ToolTip;
     }
 }
