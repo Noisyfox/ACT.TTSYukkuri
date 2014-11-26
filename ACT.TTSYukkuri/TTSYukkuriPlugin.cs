@@ -58,13 +58,15 @@
                         NAudioPlayer.Play(
                             TTSYukkuriConfig.Default.SubDeviceNo,
                             textToSpeak,
-                            false);
+                            false,
+                            TTSYukkuriConfig.Default.WaveVolume);
                     }
 
                     NAudioPlayer.Play(
                         TTSYukkuriConfig.Default.MainDeviceNo,
                         textToSpeak,
-                        false);
+                        false,
+                        TTSYukkuriConfig.Default.WaveVolume);
                 });
             }
             else
@@ -85,13 +87,15 @@
                             NAudioPlayer.Play(
                                 TTSYukkuriConfig.Default.SubDeviceNo,
                                 wave,
-                                false);
+                                false,
+                                TTSYukkuriConfig.Default.WaveVolume);
                         }
 
                         NAudioPlayer.Play(
                             TTSYukkuriConfig.Default.MainDeviceNo,
                             wave,
-                            false);
+                            false,
+                            TTSYukkuriConfig.Default.WaveVolume);
                     });
                 }
             }

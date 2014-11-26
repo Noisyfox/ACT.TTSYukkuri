@@ -72,6 +72,7 @@
             this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceNo;
             this.enabledSubDeviceCheckBox.Checked = TTSYukkuriConfig.Default.EnabledSubDevice;
             this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceNo;
+            this.WaveVolTrackBar.Value = TTSYukkuriConfig.Default.WaveVolume;
 
             this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
 
@@ -88,6 +89,11 @@
             };
 
             this.subDeviceComboBox.TextChanged += (s1, e1) =>
+            {
+                this.SaveSettings();
+            };
+
+            this.WaveVolTrackBar.ValueChanged += (s1, e1) =>
             {
                 this.SaveSettings();
             };
@@ -120,6 +126,7 @@
             TTSYukkuriConfig.Default.MainDeviceNo = (int)this.mainDeviceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.EnabledSubDevice = this.enabledSubDeviceCheckBox.Checked;
             TTSYukkuriConfig.Default.SubDeviceNo = (int)this.subDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.WaveVolume = (int)this.WaveVolTrackBar.Value;
 
             this.SaveSettingsOptions();
 

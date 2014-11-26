@@ -77,6 +77,8 @@
             this.BoyomiServer = new List<string>();
             this.OptionSettings = new OptionsConfig();
 
+            this.WaveVolume = 100;
+
             this.TTS = TTSType.Yukkuri;
         }
 
@@ -119,6 +121,11 @@
         /// サブ再生デバイス番号
         /// </summary>
         public int SubDeviceNo { get; set; }
+
+        /// <summary>
+        /// Wave再生時のボリューム
+        /// </summary>
+        public int WaveVolume { get; set; }
 
         /// <summary>
         /// ささら設定
