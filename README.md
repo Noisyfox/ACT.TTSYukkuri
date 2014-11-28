@@ -89,3 +89,9 @@ https://github.com/GB19xx/ACT.TPMonitor
 ・Qofar様  
 https://gist.github.com/Qofar/11364454  
 ACTのTTSメソッドを書き換えるロジックを流用させていただきました  
+  
+  
+問合せ
+--------------
+不具合報告、要望、質問及び最新版情報などはTwitterにて  
+GitHubと連動しているためツイートは少々五月蠅いかもしれません  
