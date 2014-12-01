@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
+    using ACT.TTSInterface;
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.SoundPlayer;
     using Advanced_Combat_Tracker;
@@ -13,7 +14,9 @@
     /// <summary>
     /// TTSゆっくりプラグイン
     /// </summary>
-    public partial class TTSYukkuriPlugin : IActPluginV1
+    public partial class TTSYukkuriPlugin :
+        IActPluginV1,
+        ITTS
     {
         private Label lblStatus;
         private byte[] originalTTS;
@@ -42,46 +45,17 @@
 
             Task.Run(() =>
             {
-            // ファイルじゃない？
-            if (!textToSpeak.EndsWith(".wav"))
-            {
-                // 喋って終わる
-                SpeechController.Default.Speak(
-                    textToSpeak);
-
-                return;
-            }
-
-            if (File.Exists(textToSpeak))
-            {
-                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                // ファイルじゃない？
+                if (!textToSpeak.EndsWith(".wav"))
                 {
-                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                    {
-                        NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.SubDeviceNo,
-                            textToSpeak,
-                            false,
-                            TTSYukkuriConfig.Default.WaveVolume);
-                    }
+                    // 喋って終わる
+                    SpeechController.Default.Speak(
+                        textToSpeak);
 
-                    NAudioPlayer.Play(
-                        TTSYukkuriConfig.Default.MainDeviceNo,
-                        textToSpeak,
-                        false,
-                        TTSYukkuriConfig.Default.WaveVolume);
-                });
-            }
-            else
-            {
-                // ACTのパスを取得する
-                var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                var waveDir = Path.Combine(
-                    baseDir,
-                    @"resources\wav");
+                    return;
+                }
 
-                var wave = Path.Combine(waveDir, textToSpeak);
-                if (File.Exists(wave))
+                if (File.Exists(textToSpeak))
                 {
                     ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
                     {
@@ -89,19 +63,48 @@
                         {
                             NAudioPlayer.Play(
                                 TTSYukkuriConfig.Default.SubDeviceNo,
-                                wave,
+                                textToSpeak,
                                 false,
                                 TTSYukkuriConfig.Default.WaveVolume);
                         }
 
                         NAudioPlayer.Play(
                             TTSYukkuriConfig.Default.MainDeviceNo,
-                            wave,
+                            textToSpeak,
                             false,
                             TTSYukkuriConfig.Default.WaveVolume);
                     });
                 }
-            }
+                else
+                {
+                    // ACTのパスを取得する
+                    var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                    var waveDir = Path.Combine(
+                        baseDir,
+                        @"resources\wav");
+
+                    var wave = Path.Combine(waveDir, textToSpeak);
+                    if (File.Exists(wave))
+                    {
+                        ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                        {
+                            if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                            {
+                                NAudioPlayer.Play(
+                                    TTSYukkuriConfig.Default.SubDeviceNo,
+                                    wave,
+                                    false,
+                                    TTSYukkuriConfig.Default.WaveVolume);
+                            }
+
+                            NAudioPlayer.Play(
+                                TTSYukkuriConfig.Default.MainDeviceNo,
+                                wave,
+                                false,
+                                TTSYukkuriConfig.Default.WaveVolume);
+                        });
+                    }
+                }
             }).ContinueWith((t) =>
             {
                 t.Dispose();
