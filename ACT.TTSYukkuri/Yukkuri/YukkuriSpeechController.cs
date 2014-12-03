@@ -157,6 +157,7 @@
             yomigana = yomigana.Replace("ヴォ", "ボ");
 
             yomigana = yomigana.Replace("フュ", "ヒュ");
+            yomigana = yomigana.Replace("スェ", "スエ");
 
             yomigana = yomigana.Replace("・", "'");
 
