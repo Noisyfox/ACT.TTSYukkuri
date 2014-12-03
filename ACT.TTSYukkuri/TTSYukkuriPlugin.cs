@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows.Forms;
@@ -21,6 +22,46 @@
         private Label lblStatus;
         private byte[] originalTTS;
         private IntPtr ACT_TTSMethod;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public TTSYukkuriPlugin()
+        {
+            // このDLLの配置場所とACT標準のPluginディレクトリも解決の対象にする
+            AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
+            {
+                const string thisName = "ACT.TTSYukkuri.dll";
+
+                var thisDirectory = ActGlobals.oFormActMain.ActPlugins
+                    .Where(x => x.pluginFile.Name.ToLower() == thisName.ToLower())
+                    .Select(x => Path.GetDirectoryName(x.pluginFile.FullName))
+                    .FirstOrDefault();
+
+                var pluginDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    @"Advanced Combat Tracker\Plugins");
+
+                var values = e.Name.Split(',');
+                if (values.Length > 0)
+                {
+                    var path1 = Path.Combine(thisDirectory, values[0] + ".dll");
+                    var path2 = Path.Combine(pluginDirectory, values[0] + ".dll");
+
+                    if (File.Exists(path1))
+                    {
+                        return Assembly.LoadFile(path1);
+                    }
+
+                    if (File.Exists(path2))
+                    {
+                        return Assembly.LoadFile(path2);
+                    }
+                }
+
+                return null;
+            };
+        }
 
         /// <summary>
         /// 設定Panel（設定タブ）
