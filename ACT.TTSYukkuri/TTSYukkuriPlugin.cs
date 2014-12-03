@@ -33,30 +33,36 @@
             {
                 const string thisName = "ACT.TTSYukkuri.dll";
 
-                var thisDirectory = ActGlobals.oFormActMain.ActPlugins
-                    .Where(x => x.pluginFile.Name.ToLower() == thisName.ToLower())
-                    .Select(x => Path.GetDirectoryName(x.pluginFile.FullName))
-                    .FirstOrDefault();
-
-                var pluginDirectory = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    @"Advanced Combat Tracker\Plugins");
-
-                var values = e.Name.Split(',');
-                if (values.Length > 0)
+                try
                 {
-                    var path1 = Path.Combine(thisDirectory, values[0] + ".dll");
-                    var path2 = Path.Combine(pluginDirectory, values[0] + ".dll");
+                    var thisDirectory = ActGlobals.oFormActMain.ActPlugins
+                        .Where(x => x.pluginFile.Name.ToLower() == thisName.ToLower())
+                        .Select(x => Path.GetDirectoryName(x.pluginFile.FullName))
+                        .FirstOrDefault();
+
+                    var pluginDirectory = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        @"Advanced Combat Tracker\Plugins");
+
+                    var asm = new AssemblyName(e.Name);
+                    var path1 = Path.Combine(thisDirectory, asm.Name + ".dll");
+                    var path2 = Path.Combine(pluginDirectory, asm.Name + ".dll");
 
                     if (File.Exists(path1))
                     {
-                        return Assembly.LoadFile(path1);
+                        return Assembly.LoadFrom(path1);
                     }
 
                     if (File.Exists(path2))
                     {
-                        return Assembly.LoadFile(path2);
+                        return Assembly.LoadFrom(path2);
                     }
+                }
+                catch (Exception ex)
+                {
+                    ActGlobals.oFormActMain.WriteExceptionLog(
+                        ex,
+                        "ACT.TTSYukkuri Assemblyの解決で例外が発生しました");
                 }
 
                 return null;
