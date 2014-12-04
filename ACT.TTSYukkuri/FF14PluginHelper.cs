@@ -45,6 +45,11 @@
                 {
                     Initialize();
 
+                    if (plugin == null)
+                    {
+                        return null;
+                    }
+
                     FieldInfo fi = plugin.GetType().GetField("_Memory", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
                     var memory = fi.GetValue(plugin);
                     if (memory == null) return null;
@@ -70,6 +75,11 @@
         {
             Initialize();
 
+            if (plugin == null)
+            {
+                return null;
+            }
+
             FieldInfo fi = plugin.GetType().GetField("_Memory", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
             var memory = fi.GetValue(plugin);
             if (memory == null) return null;
@@ -92,6 +102,16 @@
             var result = new List<Combatant>();
             try
             {
+                if (plugin == null)
+                {
+                    return result;
+                }
+
+                if (GetFFXIVProcess == null)
+                {
+                    return result;
+                }
+
                 var scanCombatants = GetScanCombatants();
                 if (scanCombatants == null) return null;
 
