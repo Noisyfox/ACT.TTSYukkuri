@@ -2,12 +2,10 @@
 {
     using System;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
-    using ACT.TTSInterface;
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.SoundPlayer;
     using Advanced_Combat_Tracker;
@@ -16,8 +14,7 @@
     /// TTSゆっくりプラグイン
     /// </summary>
     public partial class TTSYukkuriPlugin :
-        IActPluginV1,
-        ITTS
+        IActPluginV1
     {
         private Label lblStatus;
         private byte[] originalTTS;
@@ -31,14 +28,10 @@
             // このDLLの配置場所とACT標準のPluginディレクトリも解決の対象にする
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
             {
-                const string thisName = "ACT.TTSYukkuri.dll";
-
                 try
                 {
-                    var thisDirectory = ActGlobals.oFormActMain.ActPlugins
-                        .Where(x => x.pluginFile.Name.ToLower() == thisName.ToLower())
-                        .Select(x => Path.GetDirectoryName(x.pluginFile.FullName))
-                        .FirstOrDefault();
+                    var thisDirectory = ActGlobals.oFormActMain.PluginGetSelfData(this)
+                        .pluginFile.DirectoryName;
 
                     var pluginDirectory = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
