@@ -30,7 +30,7 @@
         /// <summary>
         /// 監視タイマー
         /// </summary>
-        private Timer watchTimer;
+        private System.Windows.Forms.Timer watchTimer;
 
         /// <summary>
         /// シングルトンインスタンス
@@ -55,14 +55,32 @@
                 {
                     instance = new FF14Watcher();
 
-                    instance.watchTimer = new Timer()
+                    instance.watchTimer = new System.Windows.Forms.Timer()
                     {
                         Interval = 600,
-                        AutoReset = false,
                         Enabled = false
                     };
 
-                    instance.watchTimer.Elapsed += instance.watchTimer_Elapsed;
+                    instance.watchTimer.Tick += (s, e) =>
+                    {
+                        lock (lockObject)
+                        {
+                            try
+                            {
+                                if (instance.watchTimer != null &&
+                                    instance.watchTimer.Enabled)
+                                {
+                                    instance.WatchCore();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ActGlobals.oFormActMain.WriteExceptionLog(
+                                    ex,
+                                    "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
+                            }
+                        }
+                    };
 
                     // 監視を開始する
                     instance.watchTimer.Start();
@@ -106,36 +124,6 @@
             if (this.SpeakDelegate != null)
             {
                 this.SpeakDelegate(textToSpeak);
-            }
-        }
-
-        /// <summary>
-        /// 監視タイマー Elapsed
-        /// </summary>
-        /// <param name="sender">イベント発声元</param>
-        /// <param name="e">イベント引数</param>
-        private void watchTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            var timer = sender as Timer;
-
-            lock (lockObject)
-            {
-                // タイマーを止める
-                timer.Stop();
-
-                try
-                {
-                    this.WatchCore();
-                }
-                catch (Exception ex)
-                {
-                    ActGlobals.oFormActMain.WriteExceptionLog(
-                        ex,
-                        "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
-                }
-
-                // タイマーを再開する
-                timer.Start();
             }
         }
 

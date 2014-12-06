@@ -1,9 +1,10 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System;
-using System.Collections.Generic;
-using System.Linq;
-using ACT.TTSYukkuri.Config;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using ACT.TTSYukkuri.Config;
 
     /// <summary>
     /// FF14を監視する パーティメンバ監視部分
@@ -40,12 +41,18 @@ using ACT.TTSYukkuri.Config;
             var partyList = this.GetCombatantListParty();
 
             // パーティリストに存在しないメンバの前回の状態を消去する
+            var removeList = new List<PreviousPartyMemberStatus>();
             foreach (var previouseMember in previouseParyMemberList)
             {
                 if (!partyList.Any(x => x.ID == previouseMember.ID))
                 {
-                    this.previouseParyMemberList.Remove(previouseMember);
+                    removeList.Add(previouseMember);
                 }
+            }
+
+            foreach (var removeMember in removeList)
+            {
+                this.previouseParyMemberList.Remove(removeMember);
             }
 
             foreach (var partyMember in partyList)
