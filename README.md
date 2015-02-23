@@ -87,11 +87,7 @@ AquesTalk（いわゆる、ゆっくりボイス）
 https://github.com/GB19xx/ACT.TPMonitor  
 のFF14ヘルパークラスを流用させていただきました  
   
-・Qofar様  
-https://gist.github.com/Qofar/11364454  
-ACTのTTSメソッドを書き換えるロジックを流用させていただきました  
-  
-  
+    
 お問合せ
 --------------
 不具合報告、要望、質問及び最新版情報などはTwitterにて  
