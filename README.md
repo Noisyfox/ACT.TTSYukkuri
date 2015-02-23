@@ -8,10 +8,11 @@ ACTのTTSをゆっくりさんに置き換えます
   
 使い方
 --------------
-aqtk1-win  
 ACT.TTSYukkuri.dll  
+ACT.TTSYukkuri.TTSServer.Core.dll  
+ACT.TTSYukkuri.TTSServer.exe  
+AquesTalk.dll  
 NAudio.dll  
-NAudio.WindowsMediaFormat.dll  
 をACTのインストールディレクトリにコピーします  
 その後、プラグインとしてACT.TTSYukkuri.dllを追加してください
   
