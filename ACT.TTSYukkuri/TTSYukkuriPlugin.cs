@@ -21,7 +21,11 @@
 
         private FormActMain.PlayTtsDelegate originalTTSDelegate;
 
-        public static string PluginDirectory { get; private set; }
+        public static string PluginDirectory
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// コンストラクタ
@@ -44,8 +48,6 @@
                         {
                             return Assembly.LoadFrom(path1);
                         }
-
-                        PluginDirectory = thisDirectory;
                     }
 
                     var pluginDirectory = Path.Combine(
@@ -223,6 +225,12 @@
             try
             {
                 pluginScreenSpace.Text = "TTSゆっくり";
+
+                var plugin = ActGlobals.oFormActMain.PluginGetSelfData(this);
+                if (plugin != null)
+                {
+                    TTSYukkuriPlugin.PluginDirectory = plugin.pluginFile.DirectoryName;
+                }
 
                 // 漢字変換を初期化する
                 KanjiTranslator.Default.Initialize();

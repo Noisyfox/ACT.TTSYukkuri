@@ -34,7 +34,6 @@
 
         public static void Start()
         {
-#if !DEBUG
             var pi = new ProcessStartInfo(ServerProcessPath)
             {
                 CreateNoWindow = true,
@@ -43,7 +42,7 @@
             };
 
             ServerProcess = Process.Start(pi);
-#endif
+
             var channel = new IpcClientChannel();
             ChannelServices.RegisterChannel(channel, true);
 
