@@ -8,6 +8,7 @@
 
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.SoundPlayer;
+    using ACT.TTSYukkuri.TTSServer;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -17,8 +18,10 @@
         IActPluginV1
     {
         private Label lblStatus;
-        private byte[] originalTTS;
-        private IntPtr ACT_TTSMethod;
+
+        private FormActMain.PlayTtsDelegate originalTTSDelegate;
+
+        public static string PluginDirectory { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -41,6 +44,8 @@
                         {
                             return Assembly.LoadFrom(path1);
                         }
+
+                        PluginDirectory = thisDirectory;
                     }
 
                     var pluginDirectory = Path.Combine(
@@ -72,6 +77,61 @@
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// ACT本体の置き換え用のメソッド
+        /// </summary>
+        /// <param name="textToSpeak">読上げるテキスト</param>
+        public void SpeakForActMain(
+            string textToSpeak)
+        {
+            const string waitCommand = "/wait";
+
+            try
+            {
+                // waitなし？
+                if (!textToSpeak.StartsWith(waitCommand))
+                {
+                    SpeechController.Default.Speak(textToSpeak);
+                }
+                else
+                {
+                    var values = textToSpeak.Split(',');
+
+                    // 分割できない？
+                    if (values.Length < 2)
+                    {
+                        // 普通に読上げて終わる
+                        SpeechController.Default.Speak(textToSpeak);
+                        return;
+                    }
+
+                    var command = values[0].Trim();
+                    var message = values[1].Trim();
+
+                    // 秒数を取り出す
+                    var delayAsText = command.Replace(waitCommand, string.Empty);
+                    int delay = 0;
+                    if (!int.TryParse(delayAsText, out delay))
+                    {
+                        // 普通に読上げて終わる
+                        SpeechController.Default.Speak(textToSpeak);
+                        return;
+                    }
+
+                    // ディレイをかけて読上げる
+                    SpeechController.Default.SpeakWithDelay(
+                        message,
+                        delay);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActGlobals.oFormActMain.WriteExceptionLog(
+                    ex,
+                    "TTSYukkuri newTTSで例外が発生しました。");
+            }
         }
 
         /// <summary>
@@ -167,6 +227,14 @@
                 // 漢字変換を初期化する
                 KanjiTranslator.Default.Initialize();
 
+                // TTSサーバを開始する
+                TTSServerController.Start();
+
+                Application.ApplicationExit += (s, e) =>
+                {
+                    TTSServerController.End();
+                };
+
                 // TTSを初期化する
                 TTSYukkuriConfig.Default.Load();
                 SpeechController.Default.Initialize();
@@ -182,10 +250,10 @@
                 // Hand the status label's reference to our local var
                 lblStatus = pluginStatusText;
 
-                // Create some sort of parsing event handler. After the "+=" hit TAB twice and the code will be generated for you.
-                IntPtr new_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain_newTTS).GetMethod("newTTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
-                ACT_TTSMethod = Replacer.GetFunctionPointer(typeof(FormActMain).GetMethod("TTS", BindingFlags.Instance | BindingFlags.Public).MethodHandle);
-                Replacer.InsertJumpToFunction(ACT_TTSMethod, new_TTSMethod, out originalTTS);
+                // TTSメソッドを置き換える
+                this.originalTTSDelegate = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
+                ActGlobals.oFormActMain.PlayTtsMethod =
+                    new FormActMain.PlayTtsDelegate(this.SpeakForActMain);
 
                 // アップデートを確認する
                 this.Update();
@@ -210,14 +278,20 @@
 
         public void DeInitPlugin()
         {
-            // Unsubscribe from any events you listen to when exiting!
-            Replacer.RestoreFunction(ACT_TTSMethod, originalTTS);
+            // 置き換えたTTSメソッドを元に戻す
+            if (this.originalTTSDelegate != null)
+            {
+                ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
+            }
 
             // FF14監視スレッドを開放する
             FF14Watcher.Deinitialize();
 
             // 漢字変換オブジェクトを開放する
             KanjiTranslator.Default.Dispose();
+
+            // TTSサーバを終了する
+            TTSServerController.End();
 
             // 設定を保存する
             TTSYukkuriConfig.Default.Save();

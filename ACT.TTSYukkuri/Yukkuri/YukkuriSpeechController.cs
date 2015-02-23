@@ -1,12 +1,12 @@
 ﻿namespace ACT.TTSYukkuri.Yukkuri
 {
-    using System;
     using System.IO;
-    using System.Runtime.InteropServices;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
+    using ACT.TTSYukkuri.TTSServer;
+    using ACT.TTSYukkuri.TTSServer.Core;
     using Advanced_Combat_Tracker;
     using Microsoft.VisualBasic;
 
@@ -21,23 +21,6 @@
         /// ロックオブジェクト
         /// </summary>
         private static object lockObject = new object();
-
-        /// <summary>
-        /// AquesTalk_Synthe
-        /// </summary>
-        /// <param name="koe">読み上げるテスト</param>
-        /// <param name="iSpeed">スピード</param>
-        /// <param name="size">生成したwaveデータのサイズ</param>
-        /// <returns>生成した音声waveデータ</returns>
-        [DllImport(@"aqtk1-win\lib\AquesTalk.dll")]
-        private static extern IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);
-
-        /// <summary>
-        /// AquesTalk_FreeWave
-        /// </summary>
-        /// <param name="wave">開放する音声waveデータ</param>
-        [DllImport(@"aqtk1-win\lib\AquesTalk.dll")]
-        private static extern void AquesTalk_FreeWave(IntPtr wave);
 
         /// <summary>
         /// TTSの設定Panel
@@ -67,66 +50,44 @@
         {
             lock (lockObject)
             {
-                IntPtr wavePtr = IntPtr.Zero;
-
-                try
+                if (string.IsNullOrWhiteSpace(text))
                 {
-                    if (string.IsNullOrWhiteSpace(text))
-                    {
-                        return;
-                    }
-
-                    // よみがなに変換する
-                    var textByYomigana = this.ConvertYomigana(text);
-
-                    // テキストを音声データに変換する
-                    uint size = 0;
-                    wavePtr = AquesTalk_Synthe(
-                        textByYomigana,
-                        (ushort)TTSYukkuriConfig.Default.YukkuriSpeed,
-                        ref size);
-
-                    if (wavePtr == IntPtr.Zero ||
-                        size <= 0)
-                    {
-                        ActGlobals.oFormActMain.WriteExceptionLog(
-                            new Exception(),
-                            "ACT.TTSYukkuri ゆっくりの解析NG 変換前:" + text + " 変換後:" + textByYomigana);
-                        return;
-                    }
-
-                    // 生成したwaveデータを読み出す
-                    var buff = new byte[size];
-                    Marshal.Copy(wavePtr, buff, 0, (int)size);
-
-                    // サブデバイスを再生する
-                    // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                    {
-                        using (var ms = new MemoryStream(buff))
-                        {
-                            SoundPlayerWrapper.Play(
-                                TTSYukkuriConfig.Default.SubDeviceNo,
-                                ms,
-                                TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
-                        }
-                    }
-
-                    // メインデバイスを再生する
-                    using (var ms = new MemoryStream(buff))
-                    {
-                        SoundPlayerWrapper.Play(
-                            TTSYukkuriConfig.Default.MainDeviceNo,
-                            ms,
-                            TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
-                    }
+                    return;
                 }
-                finally
+
+                // よみがなに変換する
+                var textByYomigana = this.ConvertYomigana(text);
+
+                // サーバに送信する
+                var e = new TTSMessage.SpeakEventArg()
                 {
-                    if (wavePtr != IntPtr.Zero)
-                    {
-                        AquesTalk_FreeWave(wavePtr);
-                    }
+                    TTSType = TTSTEngineType.Yukkuri,
+                    TextToSpeack = textByYomigana,
+                    SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
+                    WaveFile = Path.GetTempFileName()
+                };
+
+                TTSServerController.Message.Speak(e);
+
+                // サブデバイスを再生する
+                // サブデバイスは専らVoiceChat用であるため先に鳴動させる
+                if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                {
+                    SoundPlayerWrapper.Play(
+                        TTSYukkuriConfig.Default.SubDeviceNo,
+                        e.WaveFile,
+                        TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
+                }
+
+                // メインデバイスを再生する
+                SoundPlayerWrapper.Play(
+                    TTSYukkuriConfig.Default.MainDeviceNo,
+                    e.WaveFile,
+                    TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
+
+                if (File.Exists(e.WaveFile))
+                {
+                    File.Delete(e.WaveFile);
                 }
             }
         }

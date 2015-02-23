@@ -73,7 +73,7 @@
             string file,
             int volume)
         {
-            PlayCore(deviceNo, file, true, volume);
+            PlayCore(deviceNo, file, false, volume);
         }
 
         /// <summary>

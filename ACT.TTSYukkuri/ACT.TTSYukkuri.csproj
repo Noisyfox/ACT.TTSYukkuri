@@ -37,22 +37,16 @@
   <ItemGroup>
     <Reference Include="Advanced Combat Tracker">
       <HintPath>..\..\ACTv3\Advanced Combat Tracker.exe</HintPath>
-    </Reference>
-    <Reference Include="CeVIO.Talk.RemoteService, Version=1.0.5.0, Culture=neutral, PublicKeyToken=c90da69f58ce61df, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\CeVIO.Talk.RemoteService\v4.0_1.0.5.0__c90da69f58ce61df\CeVIO.Talk.RemoteService.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio">
       <HintPath>..\NAudio-Release\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio.WindowsMediaFormat">
-      <HintPath>..\NAudio-Release\NAudio.WindowsMediaFormat.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -79,7 +73,11 @@
     <Compile Include="FF14Watcher.PartyWatcher.cs" />
     <Compile Include="ISpeachController.cs" />
     <Compile Include="KanjiTranslator.cs" />
-    <Compile Include="Replacer.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sasara\SasaraSettingsDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -96,6 +94,7 @@
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
     <Compile Include="SpeechControllerBase.cs" />
+    <Compile Include="TTSServer\TTSServerController.cs" />
     <Compile Include="TTSYukkuriConfigPanel.Options.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -114,18 +113,16 @@
     <Compile Include="TTSYukkuriConfigPanel.Designer.cs">
       <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TTSYukkuriPlugin.FormActMain_newTTS.cs" />
     <Compile Include="TTSYukkuriPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="aqtk1-win\lib\AquesTalk.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Boyomichan\BoyomiSettingPanel.resx">
       <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Sasara\SasaraSettingsPanel.resx">
       <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
@@ -150,7 +147,16 @@
       <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ACT.TTSYukkuri.TTSServer.Core\ACT.TTSYukkuri.TTSServer.Core.csproj">
+      <Project>{5e73b99c-8fb8-4b3a-9fd0-c4179cd86036}</Project>
+      <Name>ACT.TTSYukkuri.TTSServer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACT.TTSYukkuri.TTSServer\ACT.TTSYukkuri.TTSServer.csproj">
+      <Project>{644cb459-8361-4bb0-ab7f-f630b81be3f7}</Project>
+      <Name>ACT.TTSYukkuri.TTSServer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

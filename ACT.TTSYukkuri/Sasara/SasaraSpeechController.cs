@@ -4,8 +4,8 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using Advanced_Combat_Tracker;
-    using CeVIO.Talk.RemoteService;
+    using ACT.TTSYukkuri.TTSServer;
+    using ACT.TTSYukkuri.TTSServer.Core;
 
     /// <summary>
     /// さとうささらスピーチコントローラ
@@ -15,13 +15,9 @@
         ISpeechController
     {
         /// <summary>
-        /// ささらリモートインターフェースクラス
+        /// ロックオブジェクト
         /// </summary>
-        public static Talker Talker
-        {
-            get;
-            private set;
-        }
+        private static object lockObject = new object();
 
         /// <summary>
         /// TTSの設定Panel
@@ -39,41 +35,8 @@
         /// </summary>
         public override void Initialize()
         {
-            if (ActGlobals.oFormActMain.InvokeRequired)
-            {
-                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
-                {
-                    // CeVIO Creative Studio を起動する
-                    if (!ServiceControl.IsHostStarted)
-                    {
-                        ServiceControl.StartHost(false);
-                    }
-
-                    if (Talker == null)
-                    {
-                        Talker = new Talker();
-                    }
-
-                    // ささらを設定する
-                    TTSYukkuriConfig.Default.SetSasara();
-                });
-            }
-            else
-            {
-                // CeVIO Creative Studio を起動する
-                if (!ServiceControl.IsHostStarted)
-                {
-                    ServiceControl.StartHost(false);
-                }
-
-                if (Talker == null)
-                {
-                    Talker = new Talker();
-                }
-
-                // ささらを設定する
-                TTSYukkuriConfig.Default.SetSasara();
-            }
+            TTSServerController.Message.StartSasara();
+            TTSYukkuriConfig.Default.SetSasara();
         }
 
         /// <summary>
@@ -83,75 +46,41 @@
         public override void Speak(
             string text)
         {
-            if (ActGlobals.oFormActMain.InvokeRequired)
-            {
-                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
-                {
-                    // 初期化する
-                    this.Initialize();
-
-                    if (!string.IsNullOrWhiteSpace(Talker.Cast))
-                    {
-                        // サブデバイスで再生する
-                        if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                        {
-                            this.SpeakCore(
-                                TTSYukkuriConfig.Default.SubDeviceNo,
-                                text);
-                        }
-
-                        // メインデバイスで再生する
-                        this.SpeakCore(
-                            TTSYukkuriConfig.Default.MainDeviceNo,
-                            text);
-                    }
-                });
-            }
-            else
+            lock (lockObject)
             {
                 // 初期化する
                 this.Initialize();
 
-                if (!string.IsNullOrWhiteSpace(Talker.Cast))
+                // 音声waveファイルを生成する
+                var e = new TTSMessage.SpeakEventArg()
                 {
-                    // サブデバイスで再生する
-                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                    {
-                        this.SpeakCore(
-                            TTSYukkuriConfig.Default.SubDeviceNo,
-                            text);
-                    }
+                    TTSType = TTSTEngineType.CeVIO,
+                    TextToSpeack = text,
+                    WaveFile = Path.GetTempFileName()
+                };
 
-                    // メインデバイスで再生する
-                    this.SpeakCore(
-                        TTSYukkuriConfig.Default.MainDeviceNo,
-                        text);
+                TTSServerController.Message.Speak(e);
+
+                // サブデバイスで再生する
+                if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                {
+                    SoundPlayerWrapper.Play(
+                        TTSYukkuriConfig.Default.SubDeviceNo,
+                        e.WaveFile,
+                        (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
+                }
+
+                // メインデバイスで再生する
+                SoundPlayerWrapper.Play(
+                    TTSYukkuriConfig.Default.MainDeviceNo,
+                    e.WaveFile,
+                    (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
+
+                if (File.Exists(e.WaveFile))
+                {
+                    File.Delete(e.WaveFile);
                 }
             }
-        }
-
-        /// <summary>
-        /// デバイスを指定して読上げる
-        /// </summary>
-        /// <param name="deviceNo">デバイス番号</param>
-        /// <param name="textToSpeak">読上げるテキスト</param>
-        private void SpeakCore(
-            int deviceNo,
-            string textToSpeak)
-        {
-            // 一時ファイルのパスを取得する
-            var file = Path.GetTempFileName();
-
-            // 音声をwaveに出力させる
-            Talker.OutputWaveToFile(
-                textToSpeak,
-                file);
-
-            // サウンドプレイヤで再生する
-            SoundPlayerWrapper.Play(
-                deviceNo,
-                file,
-                (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
         }
     }
 }

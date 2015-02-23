@@ -1,13 +1,14 @@
 ﻿namespace ACT.TTSYukkuri.Config
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
-    using System.Collections.Generic;
 
-    using ACT.TTSYukkuri.Sasara;
+    using ACT.TTSYukkuri.TTSServer;
+    using ACT.TTSYukkuri.TTSServer.Core;
 
     /// <summary>
     /// TTSYukkuri設定
@@ -116,7 +117,7 @@
         /// サブ再生デバイスを有効にする
         /// </summary>
         public bool EnabledSubDevice { get; set; }
-        
+
         /// <summary>
         /// サブ再生デバイス番号
         /// </summary>
@@ -191,7 +192,7 @@
         /// </summary>
         public void SetSasara()
         {
-            var talker = SasaraSpeechController.Talker;
+            var talker = new SasaraSettings();
 
             talker.Cast = TTSYukkuriConfig.Default.SasaraSettings.Cast;
             talker.Volume = TTSYukkuriConfig.Default.SasaraSettings.Onryo;
@@ -199,16 +200,24 @@
             talker.Tone = TTSYukkuriConfig.Default.SasaraSettings.Takasa;
             talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
 
-            foreach (var componet in TTSYukkuriConfig.Default.SasaraSettings.Components)
+            var components = new List<SasaraTalkerComponent>();
+            foreach (var c in TTSYukkuriConfig.Default.SasaraSettings.Components)
             {
-                var componetOnSasara = talker.Components
-                    .Where(x => x.Id == componet.Id).FirstOrDefault();
-
-                if (componetOnSasara != null)
+                components.Add(new SasaraTalkerComponent()
                 {
-                    componetOnSasara.Value = componet.Value;
-                }
+                    Id = c.Id,
+                    Name = c.Name,
+                    Value = c.Value
+                });
             }
+
+            talker.Components = components.ToArray();
+
+            // ささらに反映する
+            TTSServerController.Message.SetSasaraSettings(new TTSMessage.SasaraSettingsEventArg()
+            {
+                Settings = talker
+            });
         }
     }
 }

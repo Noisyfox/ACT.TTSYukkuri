@@ -6,7 +6,8 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using CeVIO.Talk.RemoteService;
+    using ACT.TTSYukkuri.TTSServer;
+    using ACT.TTSYukkuri.TTSServer.Core;
 
     /// <summary>
     /// ささらTTS設定Panel
@@ -24,14 +25,14 @@
         private static SasaraSettingsPanel instance;
 
         /// <summary>
-        /// ささらリモートインターフェースクラス
-        /// </summary>
-        private Talker talker;
-
-        /// <summary>
         /// 感情componentテーブル
         /// </summary>
         private SasaraSettingsDataSet.SasaraComponentsDataTable componentsTable = new SasaraSettingsDataSet.SasaraComponentsDataTable();
+
+        /// <summary>
+        /// さららTalker設定
+        /// </summary>
+        private SasaraSettings talker;
 
         /// <summary>
         /// シングルトンinstance
@@ -67,27 +68,44 @@
         /// <param name="e">イベント引数</param>
         private void SasaraSettingsPanel_Load(object sender, EventArgs e)
         {
-            this.talker = SasaraSpeechController.Talker;
+            this.talker = TTSServerController.Message.GetSasaraSettings();
 
             // キャストコンボボックスを設定する
-            var casts = Talker.AvailableCasts;
+            var casts = this.talker.AvailableCasts;
             this.castComboBox.Items.AddRange(casts);
             this.castComboBox.TextChanged += (s1, e1) =>
             {
                 this.talker.Cast = this.castComboBox.Text;
 
+                TTSServerController.Message.SetSasaraSettings(new TTSMessage.SasaraSettingsEventArg() 
+                {
+                    Settings = this.talker
+                });
+
+                this.talker = TTSServerController.Message.GetSasaraSettings();
+
                 var components = this.talker.Components;
-                for (int i = 0; i < components.Count; i++)
+                for (int i = 0; i < components.Length; i++)
                 {
                     var c = components[i];
 
-                    if (!this.componentsTable.Any(x => x.Id == c.Id))
+                    var component = this.componentsTable
+                        .Where(x => x.Id == c.Id)
+                        .FirstOrDefault();
+
+                    if (component == null)
                     {
                         this.componentsTable.AddSasaraComponentsRow(
                             c.Id,
                             c.Name,
                             c.Value,
                             this.talker.Cast);
+                    }
+                    else
+                    {
+                        component.Name = c.Name;
+                        component.Value = c.Value;
+                        component.Cast = this.talker.Cast;
                     }
                 }
 

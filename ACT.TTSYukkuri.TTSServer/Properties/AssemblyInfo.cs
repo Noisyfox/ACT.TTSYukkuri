@@ -1,17 +1,17 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("ACT.TTSYukkuri")]
+[assembly: AssemblyTitle("ACT.TTSYukkuri.TTSServer")]
 [assembly: AssemblyDescription("https://github.com/anoyetta/ACT.TTSYukkuri")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("anoyetta")]
-[assembly: AssemblyProduct("ACT.TTSYukkuri")]
-[assembly: AssemblyCopyright("Copyright (c) 2014, anoyetta")]
+[assembly: AssemblyProduct("ACT.TTSYukkuri.TTSServer")]
+[assembly: AssemblyCopyright("Copyright (c) 2015, anoyetta")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
-[assembly: Guid("fc5518a8-181b-43b2-bc12-298484b2919c")]
+[assembly: Guid("5f7f6a98-0c35-4b52-b714-dcac9b04f366")]
 
-[assembly: AssemblyVersion("1.7.0.1")]
-[assembly: AssemblyFileVersion("1.7.0.1")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
