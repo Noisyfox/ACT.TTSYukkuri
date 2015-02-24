@@ -25,7 +25,7 @@ namespace ACT.TTSYukkuri.TTSServer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3.7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.1")]
         public float SasaraGain {
             get {
                 return ((float)(this["SasaraGain"]));

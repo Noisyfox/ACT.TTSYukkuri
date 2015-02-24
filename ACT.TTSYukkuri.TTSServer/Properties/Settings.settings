@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SasaraGain" Type="System.Single" Scope="Application">
-      <Value Profile="(Default)">3.7</Value>
+      <Value Profile="(Default)">2.1</Value>
     </Setting>
   </Settings>
 </SettingsFile>
