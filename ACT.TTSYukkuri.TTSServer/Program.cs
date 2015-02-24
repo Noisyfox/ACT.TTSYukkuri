@@ -11,6 +11,7 @@
 
     using ACT.TTSYukkuri.TTSServer.Core;
     using CeVIO.Talk.RemoteService;
+    using NAudio.Wave;
 
     public static class Program
     {
@@ -129,9 +130,27 @@
 
                 message_OnStartSasara();
 
+                var tempWave = Path.GetTempFileName();
+
                 talker.OutputWaveToFile(
                     e.TextToSpeack,
-                    e.WaveFile);
+                    tempWave);
+
+                // ささらは音量が小さめなので増幅する
+                using (var reader = new WaveFileReader(tempWave))
+                {
+                    var prov = new VolumeWaveProvider16(reader);
+                    prov.Volume = 3.0f;
+
+                    WaveFileWriter.CreateWaveFile(
+                        e.WaveFile,
+                        prov);
+                }
+
+                if (File.Exists(tempWave))
+                {
+                    File.Delete(tempWave);
+                }
             }
         }
 
