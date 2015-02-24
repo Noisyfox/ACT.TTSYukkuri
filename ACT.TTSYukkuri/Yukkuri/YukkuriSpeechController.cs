@@ -1,5 +1,6 @@
 ﻿namespace ACT.TTSYukkuri.Yukkuri
 {
+    using System;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
@@ -21,6 +22,16 @@
         /// ロックオブジェクト
         /// </summary>
         private static object lockObject = new object();
+
+        /// <summary>
+        /// 正規表現A-Z
+        /// </summary>
+        private static Regex regexAZ = new Regex(@"[a-zA-Zａ-ｚＡ-Ｚ]+", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 正規表現Num
+        /// </summary>
+        private static Regex regexNum = new Regex(@"\d+", RegexOptions.Compiled);
 
         /// <summary>
         /// TTSの設定Panel
@@ -55,19 +66,28 @@
                     return;
                 }
 
-                // よみがなに変換する
-                var textByYomigana = this.ConvertYomigana(text);
+                // 今回の再生データをMD5化したものからwaveファイルの名称を作る
+                var wave = ("Yukkuri" + TTSYukkuriConfig.Default.YukkuriSpeed.ToString() + text).GetMD5() + ".wav";
+                wave = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    @"anoyetta\ACT\" + wave);
 
-                // サーバに送信する
-                var e = new TTSMessage.SpeakEventArg()
+                if (!File.Exists(wave))
                 {
-                    TTSType = TTSTEngineType.Yukkuri,
-                    TextToSpeack = textByYomigana,
-                    SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
-                    WaveFile = Path.GetTempFileName()
-                };
+                    // よみがなに変換する
+                    var textByYomigana = this.ConvertYomigana(text);
 
-                TTSServerController.Message.Speak(e);
+                    // サーバに送信する
+                    var e = new TTSMessage.SpeakEventArg()
+                    {
+                        TTSType = TTSTEngineType.Yukkuri,
+                        TextToSpeack = textByYomigana,
+                        SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
+                        WaveFile = wave
+                    };
+
+                    TTSServerController.Message.Speak(e);
+                }
 
                 // サブデバイスを再生する
                 // サブデバイスは専らVoiceChat用であるため先に鳴動させる
@@ -75,20 +95,15 @@
                 {
                     SoundPlayerWrapper.Play(
                         TTSYukkuriConfig.Default.SubDeviceNo,
-                        e.WaveFile,
+                        wave,
                         TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
                 }
 
                 // メインデバイスを再生する
                 SoundPlayerWrapper.Play(
                     TTSYukkuriConfig.Default.MainDeviceNo,
-                    e.WaveFile,
+                    wave,
                     TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
-
-                if (File.Exists(e.WaveFile))
-                {
-                    File.Delete(e.WaveFile);
-                }
             }
         }
 
@@ -172,8 +187,7 @@
             yomigana = yomigana.Replace("ｰ", "ー");
 
             // アルファベットを置き換える
-            var regex2 = new Regex(@"[a-zA-Zａ-ｚＡ-Ｚ]+");
-            yomigana = regex2.Replace(
+            yomigana = regexAZ.Replace(
                 yomigana,
                 (match) =>
                 {
@@ -251,8 +265,7 @@
             yomigana = yomigana.Replace("８", "8");
             yomigana = yomigana.Replace("９", "9");
 
-            var regex1 = new Regex(@"\d+");
-            yomigana = regex1.Replace(
+            yomigana = regexNum.Replace(
                 yomigana,
                 (match) =>
                 {

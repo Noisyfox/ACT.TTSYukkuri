@@ -94,6 +94,7 @@
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
     <Compile Include="SpeechControllerBase.cs" />
+    <Compile Include="StringExtension.cs" />
     <Compile Include="TTSServer\TTSServerController.cs" />
     <Compile Include="TTSYukkuriConfigPanel.Options.cs">
       <SubType>UserControl</SubType>

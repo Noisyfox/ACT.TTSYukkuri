@@ -20,6 +20,8 @@
 
         private static Talker talker;
 
+        private static IpcServerChannel channel;
+
         [DllImport(YukkuriDll)]
         private static extern IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);
 
@@ -28,7 +30,7 @@
 
         public static void Main(string[] args)
         {
-            var channel = new IpcServerChannel("TTSYukkuriChannel");
+            channel = new IpcServerChannel("TTSYukkuriChannel");
 
             ChannelServices.RegisterChannel(channel, true);
 
@@ -49,6 +51,12 @@
         private static void message_OnEnd()
         {
             message_OnCloseSasara();
+
+            if (channel != null)
+            {
+                ChannelServices.UnregisterChannel(channel);
+                channel = null;
+            }
         }
 
         private static void message_OnSpeak(TTSMessage.SpeakEventArg e)
@@ -145,6 +153,11 @@
             if (ServiceControl.IsHostStarted)
             {
                 ServiceControl.CloseHost();
+            }
+
+            if (talker != null)
+            {
+                talker = null;
             }
         }
 

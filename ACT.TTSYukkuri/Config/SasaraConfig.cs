@@ -1,6 +1,7 @@
 ﻿namespace ACT.TTSYukkuri.Config
 {
     using System;
+    using System.Text;
 
     using ACT.TTSYukkuri.Sasara;
 
@@ -53,5 +54,29 @@
         /// 声質
         /// </summary>
         public uint Seishitsu { get; set; }
+
+        /// <summary>
+        /// 内容をMD5化する
+        /// </summary>
+        /// <returns></returns>
+        public string GetMD5()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(this.Cast);
+            sb.AppendLine(this.Onryo.ToString());
+            sb.AppendLine(this.Hayasa.ToString());
+            sb.AppendLine(this.Takasa.ToString());
+            sb.AppendLine(this.Seishitsu.ToString());
+
+            if (this.Components != null)
+            {
+                foreach (var c in this.Components)
+                {
+                    sb.AppendLine(c.Id + c.Name + c.Value.ToString());
+                }
+            }
+
+            return sb.ToString().GetMD5();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace ACT.TTSYukkuri.Sasara
 {
+    using System;
     using System.IO;
     using System.Windows.Forms;
 
@@ -48,38 +49,47 @@
         {
             lock (lockObject)
             {
-                // 初期化する
-                this.Initialize();
-
-                // 音声waveファイルを生成する
-                var e = new TTSMessage.SpeakEventArg()
+                if (string.IsNullOrWhiteSpace(text))
                 {
-                    TTSType = TTSTEngineType.CeVIO,
-                    TextToSpeack = text,
-                    WaveFile = Path.GetTempFileName()
-                };
+                    return;
+                }
 
-                TTSServerController.Message.Speak(e);
+                // 今回の再生データをMD5化したものからwaveファイルの名称を作る
+                var wave = ("Sasara" + TTSYukkuriConfig.Default.SasaraSettings.GetMD5() + text).GetMD5() + ".wav";
+                wave = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    @"anoyetta\ACT\" + wave);
+
+                if (!File.Exists(wave))
+                {
+                    // 初期化する
+                    this.Initialize();
+
+                    // 音声waveファイルを生成する
+                    var e = new TTSMessage.SpeakEventArg()
+                    {
+                        TTSType = TTSTEngineType.CeVIO,
+                        TextToSpeack = text,
+                        WaveFile = wave
+                    };
+
+                    TTSServerController.Message.Speak(e);
+                }
 
                 // サブデバイスで再生する
                 if (TTSYukkuriConfig.Default.EnabledSubDevice)
                 {
                     SoundPlayerWrapper.Play(
                         TTSYukkuriConfig.Default.SubDeviceNo,
-                        e.WaveFile,
+                        wave,
                         (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
                 }
 
                 // メインデバイスで再生する
                 SoundPlayerWrapper.Play(
                     TTSYukkuriConfig.Default.MainDeviceNo,
-                    e.WaveFile,
+                    wave,
                     (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
-
-                if (File.Exists(e.WaveFile))
-                {
-                    File.Delete(e.WaveFile);
-                }
             }
         }
     }

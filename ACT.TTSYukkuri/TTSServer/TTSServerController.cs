@@ -4,11 +4,14 @@
     using System.Diagnostics;
     using System.Runtime.Remoting.Channels;
     using System.Runtime.Remoting.Channels.Ipc;
+    using System.Threading;
 
     using ACT.TTSYukkuri.TTSServer.Core;
 
     public static class TTSServerController
     {
+        private static IpcClientChannel channel;
+
         public static TTSMessage Message
         {
             get;
@@ -43,10 +46,12 @@
 
             ServerProcess = Process.Start(pi);
 
-            var channel = new IpcClientChannel();
+            channel = new IpcClientChannel();
             ChannelServices.RegisterChannel(channel, true);
 
             Message = (TTSMessage)Activator.GetObject(typeof(TTSMessage), "ipc://TTSYukkuriChannel/message");
+
+            Thread.Sleep(500);
         }
 
         public static void End()
@@ -55,6 +60,12 @@
             {
                 Message.End();
                 Message = null;
+
+                if (channel != null)
+                {
+                    ChannelServices.UnregisterChannel(channel);
+                    channel = null;
+                }
             }
 
             if (ServerProcess != null)
