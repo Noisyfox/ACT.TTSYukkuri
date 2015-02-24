@@ -10,6 +10,7 @@
     using System.Runtime.Remoting.Channels.Ipc;
 
     using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer.Properties;
     using CeVIO.Talk.RemoteService;
     using NAudio.Wave;
 
@@ -140,7 +141,7 @@
                 using (var reader = new WaveFileReader(tempWave))
                 {
                     var prov = new VolumeWaveProvider16(reader);
-                    prov.Volume = 3.0f;
+                    prov.Volume = Settings.Default.SasaraGain;
 
                     WaveFileWriter.CreateWaveFile(
                         e.WaveFile,
