@@ -11,6 +11,7 @@ ACTのTTSをゆっくりさんに置き換えます
 ACT.TTSYukkuri.dll  
 ACT.TTSYukkuri.TTSServer.Core.dll  
 ACT.TTSYukkuri.TTSServer.exe  
+ACT.TTSYukkuri.TTSServer.exe.config  
 AquesTalk.dll  
 NAudio.dll  
 をACTのインストールディレクトリにコピーします  
