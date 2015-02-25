@@ -286,25 +286,34 @@
 
         public void DeInitPlugin()
         {
-            // 置き換えたTTSメソッドを元に戻す
-            if (this.originalTTSDelegate != null)
+            try
             {
-                ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
+                // 置き換えたTTSメソッドを元に戻す
+                if (this.originalTTSDelegate != null)
+                {
+                    ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
+                }
+
+                // FF14監視スレッドを開放する
+                FF14Watcher.Deinitialize();
+
+                // 漢字変換オブジェクトを開放する
+                KanjiTranslator.Default.Dispose();
+
+                // 設定を保存する
+                TTSYukkuriConfig.Default.Save();
+
+                // TTSサーバを終了する
+                TTSServerController.End();
+
+                lblStatus.Text = "Plugin Exited";
             }
-
-            // FF14監視スレッドを開放する
-            FF14Watcher.Deinitialize();
-
-            // 漢字変換オブジェクトを開放する
-            KanjiTranslator.Default.Dispose();
-
-            // TTSサーバを終了する
-            TTSServerController.End();
-
-            // 設定を保存する
-            TTSYukkuriConfig.Default.Save();
-
-            lblStatus.Text = "Plugin Exited";
+            catch (Exception ex)
+            {
+                ActGlobals.oFormActMain.WriteExceptionLog(
+                    ex,
+                    "TTSゆっくりプラグインの終了時に例外が発生しました。");
+            }
         }
 
         #endregion

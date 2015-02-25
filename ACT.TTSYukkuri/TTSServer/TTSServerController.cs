@@ -37,6 +37,17 @@
 
         public static void Start()
         {
+            // ゾンビプロセスがいたら殺す
+            var ps = Process.GetProcessesByName("ACT.TTSYukkuri.TTSServer");
+            if (ps != null)
+            {
+                foreach (var p in ps)
+                {
+                    p.Kill();
+                    p.Dispose();
+                }
+            }
+
             var pi = new ProcessStartInfo(ServerProcessPath)
             {
                 CreateNoWindow = true,

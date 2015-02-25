@@ -37,7 +37,8 @@
   <ItemGroup>
     <Reference Include="CeVIO.Talk.RemoteService, Version=1.0.5.0, Culture=neutral, PublicKeyToken=c90da69f58ce61df, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\Microsoft.NET\assembly\GAC_32\CeVIO.Talk.RemoteService\v4.0_1.0.5.0__c90da69f58ce61df\CeVIO.Talk.RemoteService.dll</HintPath>
+      <HintPath>..\packages\CeVIO.Talk.RemoteService.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NAudio, Version=1.7.2.19, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -60,6 +61,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SasaraController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -70,15 +72,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AquesTalk.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ACT.TTSYukkuri.TTSServer.Core\ACT.TTSYukkuri.TTSServer.Core.csproj">
       <Project>{5e73b99c-8fb8-4b3a-9fd0-c4179cd86036}</Project>
       <Name>ACT.TTSYukkuri.TTSServer.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AquesTalk.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
