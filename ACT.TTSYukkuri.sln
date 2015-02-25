@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT.TTSYukkuri", "ACT.TTSYukkuri\ACT.TTSYukkuri.csproj", "{9A615561-6CEC-4857-870F-88F6FF07764C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{644CB459-8361-4BB0-AB7F-F630B81BE3F7} = {644CB459-8361-4BB0-AB7F-F630B81BE3F7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT.TTSYukkuri.TTSServer", "ACT.TTSYukkuri.TTSServer\ACT.TTSYukkuri.TTSServer.csproj", "{644CB459-8361-4BB0-AB7F-F630B81BE3F7}"
 EndProject

@@ -1,7 +1,6 @@
 ﻿namespace ACT.TTSYukkuri.TTSServer
 {
     using System;
-    using System.IO;
     using System.Runtime.InteropServices;
     using System.Runtime.Remoting;
     using System.Runtime.Remoting.Channels;
@@ -11,19 +10,11 @@
 
     public static class Program
     {
-        private const string YukkuriDll = @"AquesTalk.dll";
-
         private static object lockObject = new object();
 
         private static IpcServerChannel channel;
 
         private static bool isSasaraStarted;
-
-        [DllImport(YukkuriDll)]
-        private static extern IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);
-
-        [DllImport(YukkuriDll)]
-        private static extern void AquesTalk_FreeWave(IntPtr wave);
 
         public static void Main(string[] args)
         {
@@ -57,6 +48,8 @@
                     channel = null;
                 }
 
+                YukkuriController.Default.Free();
+
                 if (isSasaraStarted)
                 {
                     SasaraController.Default.CloseSasara();
@@ -87,44 +80,10 @@
         {
             lock (lockObject)
             {
-                IntPtr wavePtr = IntPtr.Zero;
-
-                try
-                {
-                    if (string.IsNullOrWhiteSpace(e.TextToSpeack))
-                    {
-                        return;
-                    }
-
-                    // テキストを音声データに変換する
-                    uint size = 0;
-                    wavePtr = AquesTalk_Synthe(
-                        e.TextToSpeack,
-                        (ushort)e.SpeakSpeed,
-                        ref size);
-
-                    if (wavePtr == IntPtr.Zero ||
-                        size <= 0)
-                    {
-                        return;
-                    }
-
-                    // 生成したwaveデータを読み出す
-                    var buff = new byte[size];
-                    Marshal.Copy(wavePtr, buff, 0, (int)size);
-
-                    using (var fs = new FileStream(e.WaveFile, FileMode.Create, FileAccess.Write))
-                    {
-                        fs.Write(buff, 0, buff.Length);
-                    }
-                }
-                finally
-                {
-                    if (wavePtr != IntPtr.Zero)
-                    {
-                        AquesTalk_FreeWave(wavePtr);
-                    }
-                }
+                YukkuriController.Default.OutputWaveToFile(
+                    e.TextToSpeack,
+                    (ushort)e.SpeakSpeed,
+                    e.WaveFile);
             }
         }
 

@@ -37,6 +37,7 @@
 
         public static void Start()
         {
+#if !DEBUG
             // ゾンビプロセスがいたら殺す
             var ps = Process.GetProcessesByName("ACT.TTSYukkuri.TTSServer");
             if (ps != null)
@@ -56,7 +57,7 @@
             };
 
             ServerProcess = Process.Start(pi);
-
+#endif
             channel = new IpcClientChannel();
             ChannelServices.RegisterChannel(channel, true);
 
