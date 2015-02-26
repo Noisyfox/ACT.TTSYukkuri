@@ -8,6 +8,7 @@ ACTのTTSをゆっくりさんに置き換えます
   
 使い方
 --------------
+OpenJTalk\  
 ACT.TTSYukkuri.dll  
 ACT.TTSYukkuri.TTSServer.Core.dll  
 ACT.TTSYukkuri.TTSServer.exe  
