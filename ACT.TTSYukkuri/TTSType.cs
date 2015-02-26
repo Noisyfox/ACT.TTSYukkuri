@@ -21,11 +21,17 @@
         public const string Boyomichan = "Boyomichan";
 
         /// <summary>
+        /// OpenJTalk:Open JTalk
+        /// </summary>
+        public const string OpenJTalk = "OpenJTalk";
+
+        /// <summary>
         /// コンボボックスコレクション
         /// </summary>
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
         {
             new ComboBoxItem("ゆっくり", TTSType.Yukkuri),
+            new ComboBoxItem("Open JTalk", TTSType.OpenJTalk),
             new ComboBoxItem("棒読みちゃん(TCPインターフェース)", TTSType.Boyomichan),
             new ComboBoxItem("CeVIO Creative Studio", TTSType.SasaraSato),
         };

@@ -64,6 +64,7 @@
     <Compile Include="Boyomichan\BoyomiSettingPanel.Designer.cs">
       <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config\OpenJTalkConfig.cs" />
     <Compile Include="Config\OptionsConfig.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\TTSYukkuriConfig.cs" />
@@ -74,6 +75,13 @@
     <Compile Include="FF14Watcher.PartyWatcher.cs" />
     <Compile Include="ISpeachController.cs" />
     <Compile Include="KanjiTranslator.cs" />
+    <Compile Include="OpenJTalk\OpenJTalkSettingsPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OpenJTalk\OpenJTalkSettingsPanel.Designer.cs">
+      <DependentUpon>OpenJTalkSettingsPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenJTalk\OpenJTalkSpeechController.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -122,6 +130,9 @@
     <EmbeddedResource Include="Boyomichan\BoyomiSettingPanel.resx">
       <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OpenJTalk\OpenJTalkSettingsPanel.resx">
+      <DependentUpon>OpenJTalkSettingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -137,6 +148,42 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="OpenJTalk\dic\char.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\dic\matrix.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\dic\sys.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\dic\unk.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\man_m001.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\mei_angry.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\mei_bashful.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\mei_happy.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\mei_normal.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\mei_sad.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\type-alpha.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="OpenJTalk\voice\type-beta.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Sasara\SasaraSettingsDataSet.xsc">
       <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
@@ -155,6 +202,25 @@
       <Project>{5e73b99c-8fb8-4b3a-9fd0-c4179cd86036}</Project>
       <Name>ACT.TTSYukkuri.TTSServer.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="OpenJTalk\dic\left-id.def">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\dic\pos-id.def">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\dic\rewrite.def">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\dic\right-id.def">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\open_jtalk.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\opne_jtalk_usage.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

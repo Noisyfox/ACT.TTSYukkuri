@@ -77,6 +77,7 @@
             this.SasaraSettings = new SasaraConfig();
             this.BoyomiServer = new List<string>();
             this.OptionSettings = new OptionsConfig();
+            this.OpenJTalkSettings = new OpenJTalkConfig();
 
             this.WaveVolume = 100;
 
@@ -137,6 +138,11 @@
         /// 棒読み設定(サーバ, ポート)
         /// </summary>
         public List<string> BoyomiServer { get; set; }
+
+        /// <summary>
+        /// OpenJTalk設定
+        /// </summary>
+        public OpenJTalkConfig OpenJTalkSettings { get; set; }
 
         /// <summary>
         /// オプション設定
