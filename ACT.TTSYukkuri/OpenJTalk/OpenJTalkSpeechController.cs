@@ -1,6 +1,7 @@
 ﻿namespace ACT.TTSYukkuri.OpenJTalk
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Text;
@@ -30,6 +31,11 @@
         }
 
         /// <summary>
+        /// ユーザ辞書
+        /// </summary>
+        private List<KeyValuePair<string, string>> userDictionary = new List<KeyValuePair<string, string>>();
+
+        /// <summary>
         /// 初期化する
         /// </summary>
         public override void Initialize()
@@ -50,6 +56,9 @@
                 {
                     return;
                 }
+
+                // テキストをユーザ辞書で置き換える
+                text = this.ReplaceByUserDictionary(text);
 
                 // 現在の条件からwaveファイル名を生成する
                 var wave = Path.Combine(
@@ -108,8 +117,9 @@
                 File.Delete(waveTemp);
             }
 
-            var tone = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Tone / 100f;
+            var volume = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Volume / 100f;
             var speed = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Speed / 100f;
+            var tone = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Tone / 100f;
 
             var textFile = Path.GetTempFileName();
             File.WriteAllText(textFile, textToSpeak, Encoding.GetEncoding("Shift_JIS"));
@@ -119,8 +129,11 @@
                 "-x " + "\"" + dic + "\"",
                 "-m " + "\"" + voice + "\"",
                 "-ow " + "\"" + waveTemp + "\"",
-                "-b " + tone.ToString("N1"),
+                "-g " + volume.ToString("N1"),
                 "-r " + speed.ToString("N1"),
+#if false
+                "-a " + tone.ToString("N1"),
+#endif
                 textFile
             };
 
@@ -159,20 +172,95 @@
                 File.Delete(textFile);
             }
 
-            using (var reader = new WaveFileReader(waveTemp))
-            {
-                var prov = new VolumeWaveProvider16(reader);
-                prov.Volume = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Gain / 100f;
+            var gain = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Gain / 100f;
 
-                WaveFileWriter.CreateWaveFile(
-                    wave,
-                    prov);
+            if (gain != 1.0f)
+            {
+                using (var reader = new WaveFileReader(waveTemp))
+                {
+                    var prov = new VolumeWaveProvider16(reader);
+                    prov.Volume = gain;
+
+                    WaveFileWriter.CreateWaveFile(
+                        wave,
+                        prov);
+                }
+            }
+            else
+            {
+                File.Move(waveTemp, wave);
             }
 
             if (File.Exists(waveTemp))
             {
                 File.Delete(waveTemp);
             }
+        }
+
+        /// <summary>
+        /// ユーザ辞書で置換する
+        /// </summary>
+        /// <param name="textToSpeak">
+        /// Text to Speak</param>
+        /// <returns>
+        /// 置換後のText to Speak</returns>
+        private string ReplaceByUserDictionary(
+            string textToSpeak)
+        {
+            var t = textToSpeak;
+
+            var openJTalkDir = TTSYukkuriConfig.Default.OpenJTalkSettings.OpenJTalkDirectory;
+            if (string.IsNullOrWhiteSpace(openJTalkDir))
+            {
+                openJTalkDir = "OpenJTalk";
+            }
+
+            var userDic = Path.Combine(
+                openJTalkDir,
+                @"dic\user_dictionary.txt");
+
+            if (!File.Exists(userDic))
+            {
+                return t;
+            }
+
+            if (this.userDictionary.Count < 1)
+            {
+                using (var sr = new StreamReader(userDic, new UTF8Encoding(false)))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var line = sr.ReadLine().Trim();
+
+                        if (string.IsNullOrWhiteSpace(line))
+                        {
+                            continue;
+                        }
+
+                        if (line.StartsWith("#"))
+                        {
+                            continue;
+                        }
+
+                        var words = line.Split('\t');
+                        if (words.Length < 2)
+                        {
+                            continue;
+                        }
+
+                        this.userDictionary.Add(new KeyValuePair<string, string>(
+                            words[0].Trim(),
+                            words[1].Trim()));
+                    }
+                }
+            }
+
+            foreach (var item in this.userDictionary)
+            {
+                t = t.Replace(item.Key, item.Value);
+            }
+
+            return t;
         }
     }
 }

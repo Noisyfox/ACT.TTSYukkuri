@@ -22,6 +22,8 @@
             }
         }
 
+        private bool dontSave = false;
+
         public OpenJTalkSettingsPanel()
         {
             this.InitializeComponent();
@@ -51,6 +53,12 @@
                 this.ToneTextBox.Text = (s as TrackBar).Value.ToString();
                 this.SaveSettings();
             };
+
+            // Tone設定は封印する
+            this.ToneTrackBar.Visible = false;
+            this.ToneTextBox.Visible = false;
+            this.ToneBarLabel.Visible = false;
+            this.ToneValueLabel.Visible = false;
         }
 
         private void OpenJTalkSettingsPanel_Load(object sender, EventArgs e)
@@ -77,19 +85,28 @@
 
             this.DefaultButton.Click += (s1, e1) =>
             {
-                TTSYukkuriConfig.Default.OpenJTalkSettings.SetDefault();
+                try
+                {
+                    this.dontSave = true;
 
-                this.VoiceComboBox.SelectedValue = TTSYukkuriConfig.Default.OpenJTalkSettings.Voice;
+                    TTSYukkuriConfig.Default.OpenJTalkSettings.SetDefault();
 
-                this.GainTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Gain;
-                this.VolumeTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Volume;
-                this.SpeedTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Speed;
-                this.ToneTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Tone;
+                    this.VoiceComboBox.SelectedValue = TTSYukkuriConfig.Default.OpenJTalkSettings.Voice;
 
-                this.GainTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Gain.ToString();
-                this.VolumeTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Volume.ToString();
-                this.SpeedTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Speed.ToString();
-                this.ToneTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Tone.ToString();
+                    this.GainTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Gain;
+                    this.VolumeTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Volume;
+                    this.SpeedTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Speed;
+                    this.ToneTrackBar.Value = TTSYukkuriConfig.Default.OpenJTalkSettings.Tone;
+
+                    this.GainTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Gain.ToString();
+                    this.VolumeTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Volume.ToString();
+                    this.SpeedTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Speed.ToString();
+                    this.ToneTextBox.Text = TTSYukkuriConfig.Default.OpenJTalkSettings.Tone.ToString();
+                }
+                finally
+                {
+                    this.dontSave = false;
+                }
 
                 this.SaveSettings();
             };
@@ -100,6 +117,11 @@
         /// </summary>
         private void SaveSettings()
         {
+            if (this.dontSave)
+            {
+                return;
+            }
+
             TTSYukkuriConfig.Default.OpenJTalkSettings.Voice = (string)this.VoiceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.OpenJTalkSettings.Gain = this.GainTrackBar.Value;
             TTSYukkuriConfig.Default.OpenJTalkSettings.Volume = this.VolumeTrackBar.Value;

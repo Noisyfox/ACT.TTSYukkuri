@@ -36,14 +36,14 @@
             this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
             this.SpeedTrackBar = new System.Windows.Forms.TrackBar();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.ToneBarLabel = new System.Windows.Forms.Label();
             this.ToneTrackBar = new System.Windows.Forms.TrackBar();
             this.GainTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.VolumeTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.ToneValueLabel = new System.Windows.Forms.Label();
             this.SpeedTextBox = new System.Windows.Forms.TextBox();
             this.ToneTextBox = new System.Windows.Forms.TextBox();
             this.DefaultButton = new System.Windows.Forms.Button();
@@ -121,13 +121,13 @@
             // 
             this.SpeedTrackBar.LargeChange = 20;
             this.SpeedTrackBar.Location = new System.Drawing.Point(118, 57);
-            this.SpeedTrackBar.Maximum = 200;
-            this.SpeedTrackBar.Minimum = 50;
+            this.SpeedTrackBar.Maximum = 400;
+            this.SpeedTrackBar.Minimum = 1;
             this.SpeedTrackBar.Name = "SpeedTrackBar";
             this.SpeedTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.SpeedTrackBar.Size = new System.Drawing.Size(45, 167);
             this.SpeedTrackBar.TabIndex = 6;
-            this.SpeedTrackBar.TickFrequency = 10;
+            this.SpeedTrackBar.TickFrequency = 20;
             this.SpeedTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.SpeedTrackBar.Value = 100;
             // 
@@ -140,14 +140,14 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Speed";
             // 
-            // label5
+            // ToneBarLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(174, 227);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 12);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Tone";
+            this.ToneBarLabel.AutoSize = true;
+            this.ToneBarLabel.Location = new System.Drawing.Point(174, 227);
+            this.ToneBarLabel.Name = "ToneBarLabel";
+            this.ToneBarLabel.Size = new System.Drawing.Size(30, 12);
+            this.ToneBarLabel.TabIndex = 8;
+            this.ToneBarLabel.Text = "Tone";
             // 
             // ToneTrackBar
             // 
@@ -214,14 +214,14 @@
             this.label8.TabIndex = 14;
             this.label8.Text = "Speed";
             // 
-            // label9
+            // ToneValueLabel
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(239, 122);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(30, 12);
-            this.label9.TabIndex = 15;
-            this.label9.Text = "Tone";
+            this.ToneValueLabel.AutoSize = true;
+            this.ToneValueLabel.Location = new System.Drawing.Point(239, 122);
+            this.ToneValueLabel.Name = "ToneValueLabel";
+            this.ToneValueLabel.Size = new System.Drawing.Size(30, 12);
+            this.ToneValueLabel.TabIndex = 15;
+            this.ToneValueLabel.Text = "Tone";
             // 
             // SpeedTextBox
             // 
@@ -283,14 +283,14 @@
             this.Controls.Add(this.DefaultButton);
             this.Controls.Add(this.ToneTextBox);
             this.Controls.Add(this.SpeedTextBox);
-            this.Controls.Add(this.label9);
+            this.Controls.Add(this.ToneValueLabel);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.VolumeTextBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.GainTextBox);
             this.Controls.Add(this.ToneTrackBar);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.ToneBarLabel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.SpeedTrackBar);
             this.Controls.Add(this.VolumeTrackBar);
@@ -320,14 +320,14 @@
         private System.Windows.Forms.TrackBar VolumeTrackBar;
         private System.Windows.Forms.TrackBar SpeedTrackBar;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label ToneBarLabel;
         private System.Windows.Forms.TrackBar ToneTrackBar;
         private System.Windows.Forms.TextBox GainTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox VolumeTextBox;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label ToneValueLabel;
         private System.Windows.Forms.TextBox SpeedTextBox;
         private System.Windows.Forms.TextBox ToneTextBox;
         private System.Windows.Forms.Button DefaultButton;
