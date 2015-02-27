@@ -119,7 +119,7 @@
 
             var volume = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Volume / 100f;
             var speed = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Speed / 100f;
-            var tone = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Tone / 100f;
+            var pitch = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Pitch / 10f;
 
             var textFile = Path.GetTempFileName();
             File.WriteAllText(textFile, textToSpeak, Encoding.GetEncoding("Shift_JIS"));
@@ -131,9 +131,7 @@
                 "-ow " + "\"" + waveTemp + "\"",
                 "-g " + volume.ToString("N1"),
                 "-r " + speed.ToString("N1"),
-#if false
-                "-a " + tone.ToString("N1"),
-#endif
+                "-fm " + pitch.ToString("N1"),
                 textFile
             };
 

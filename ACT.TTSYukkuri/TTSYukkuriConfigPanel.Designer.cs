@@ -107,6 +107,8 @@
             // 
             // ttsSettingsGroupBox
             // 
+            this.ttsSettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 126);
             this.ttsSettingsGroupBox.Name = "ttsSettingsGroupBox";
             this.ttsSettingsGroupBox.Size = new System.Drawing.Size(463, 505);
@@ -116,6 +118,9 @@
             // 
             // optionGroupBox
             // 
+            this.optionGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.optionGroupBox.Controls.Add(this.tabControl);
             this.optionGroupBox.Location = new System.Drawing.Point(474, 126);
             this.optionGroupBox.Name = "optionGroupBox";
@@ -126,6 +131,9 @@
             // 
             // tabControl
             // 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.watchHPTabPage);
             this.tabControl.Controls.Add(this.watchMPTabPage);
             this.tabControl.Controls.Add(this.watchTPTabPage);
@@ -436,6 +444,8 @@
             // 
             // saiseiDeviceGroupBox
             // 
+            this.saiseiDeviceGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.saiseiDeviceGroupBox.Controls.Add(this.enabledSubDeviceCheckBox);
             this.saiseiDeviceGroupBox.Controls.Add(this.subDeviceComboBox);
             this.saiseiDeviceGroupBox.Controls.Add(this.label6);

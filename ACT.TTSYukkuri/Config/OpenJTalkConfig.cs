@@ -23,7 +23,7 @@
 
         public int Speed { get; set; }
 
-        public int Tone { get; set; }
+        public int Pitch { get; set; }
 
         public void SetDefault()
         {
@@ -31,7 +31,7 @@
             this.Gain = 100;
             this.Volume = 100;
             this.Speed = 100;
-            this.Tone = 50;
+            this.Pitch = 0;
         }
 
         [XmlIgnore]
@@ -104,7 +104,7 @@
             t += this.Gain.ToString();
             t += this.Volume.ToString();
             t += this.Speed.ToString();
-            t += this.Tone.ToString();
+            t += this.Pitch.ToString();
 
             return t;
         }
