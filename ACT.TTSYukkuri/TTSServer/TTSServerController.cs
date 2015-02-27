@@ -1,6 +1,6 @@
 ﻿#if DEBUG
 // マルチスタートアップでデバッグするときの定義
-// #define MULTI_START_DEBUG
+#define MULTI_START_DEBUG
 #endif
 
 namespace ACT.TTSYukkuri.TTSServer
