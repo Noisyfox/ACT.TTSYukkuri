@@ -74,6 +74,8 @@
             this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceNo;
             this.WaveVolTrackBar.Value = TTSYukkuriConfig.Default.WaveVolume;
 
+            this.WaveCacheClearCheckBox.Checked = TTSYukkuriConfig.Default.WaveCacheClearEnable;
+
             this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
 
             this.mainDeviceComboBox.TextChanged += (s1, e1) =>
@@ -94,6 +96,11 @@
             };
 
             this.WaveVolTrackBar.ValueChanged += (s1, e1) =>
+            {
+                this.SaveSettings();
+            };
+
+            this.WaveCacheClearCheckBox.CheckStateChanged += (s1, e1) =>
             {
                 this.SaveSettings();
             };
@@ -127,6 +134,7 @@
             TTSYukkuriConfig.Default.EnabledSubDevice = this.enabledSubDeviceCheckBox.Checked;
             TTSYukkuriConfig.Default.SubDeviceNo = (int)this.subDeviceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.WaveVolume = (int)this.WaveVolTrackBar.Value;
+            TTSYukkuriConfig.Default.WaveCacheClearEnable = this.WaveCacheClearCheckBox.Checked;
 
             this.SaveSettingsOptions();
 

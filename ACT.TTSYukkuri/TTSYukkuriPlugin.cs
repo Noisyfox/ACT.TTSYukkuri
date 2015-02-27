@@ -271,7 +271,7 @@
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    pluginScreenSpace,
+                    ActGlobals.oFormActMain,
                     "プラグインの初期化中に例外が発生しました。環境を確認してACTを再起動して下さい" + Environment.NewLine + Environment.NewLine +
                     ex.ToString(),
                     "TTSゆっくりプラグイン",
@@ -305,6 +305,22 @@
 
                 // TTSサーバを終了する
                 TTSServerController.End();
+
+                // TTS用waveファイルを削除する？
+                if (TTSYukkuriConfig.Default.WaveCacheClearEnable)
+                {
+                    var appdir = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        @"anoyetta\ACT");
+
+                    if (Directory.Exists(appdir))
+                    {
+                        foreach (var file in Directory.GetFiles(appdir, "*.wav"))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+                }
 
                 lblStatus.Text = "Plugin Exited";
             }

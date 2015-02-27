@@ -101,12 +101,6 @@
                             c.Value,
                             this.talker.Cast);
                     }
-                    else
-                    {
-                        component.Name = c.Name;
-                        component.Value = c.Value;
-                        component.Cast = this.talker.Cast;
-                    }
                 }
 
                 this.kanjoDataGridView.AutoGenerateColumns = false;

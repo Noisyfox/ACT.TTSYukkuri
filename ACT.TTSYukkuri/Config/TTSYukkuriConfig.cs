@@ -150,6 +150,11 @@
         public OptionsConfig OptionSettings { get; set; }
 
         /// <summary>
+        /// 終了時にキャッシュしたwaveファイルを削除する
+        /// </summary>
+        public bool WaveCacheClearEnable { get; set; }
+
+        /// <summary>
         /// 設定をロードする
         /// </summary>
         public void Load()

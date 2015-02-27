@@ -69,6 +69,7 @@
             this.WaveVolTrackBar = new System.Windows.Forms.TrackBar();
             this.label11 = new System.Windows.Forms.Label();
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.WaveCacheClearCheckBox = new System.Windows.Forms.CheckBox();
             this.optionGroupBox.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.watchHPTabPage.SuspendLayout();
@@ -520,10 +521,21 @@
             this.ToolTip.IsBalloon = true;
             this.ToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
+            // WaveCacheClearCheckBox
+            // 
+            this.WaveCacheClearCheckBox.AutoSize = true;
+            this.WaveCacheClearCheckBox.Location = new System.Drawing.Point(5, 89);
+            this.WaveCacheClearCheckBox.Name = "WaveCacheClearCheckBox";
+            this.WaveCacheClearCheckBox.Size = new System.Drawing.Size(275, 16);
+            this.WaveCacheClearCheckBox.TabIndex = 24;
+            this.WaveCacheClearCheckBox.Text = "終了時にキャッシュしたTTS用waveファイルを削除する";
+            this.WaveCacheClearCheckBox.UseVisualStyleBackColor = true;
+            // 
             // TTSYukkuriConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.WaveCacheClearCheckBox);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.saiseiDeviceGroupBox);
             this.Controls.Add(this.WaveVolTrackBar);
@@ -592,5 +604,6 @@
         private System.Windows.Forms.TrackBar WaveVolTrackBar;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ToolTip ToolTip;
+        private System.Windows.Forms.CheckBox WaveCacheClearCheckBox;
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace ACT.TTSYukkuri.TTSServer
+﻿#if DEBUG
+// マルチスタートアップでデバッグするときの定義
+// #define MULTI_START_DEBUG
+#endif
+
+namespace ACT.TTSYukkuri.TTSServer
 {
     using System;
     using System.Diagnostics;
@@ -37,7 +42,7 @@
 
         public static void Start()
         {
-#if !DEBUG
+#if !MULTI_START_DEBUG
             // ゾンビプロセスがいたら殺す
             var ps = Process.GetProcessesByName("ACT.TTSYukkuri.TTSServer");
             if (ps != null)
@@ -63,7 +68,29 @@
 
             Message = (TTSMessage)Activator.GetObject(typeof(TTSMessage), "ipc://TTSYukkuriChannel/message");
 
-            Thread.Sleep(500);
+            // 通信の確立を待つ
+            var ready = false;
+            var retryCount = 0;
+            while (!ready)
+            {
+                try
+                {
+                    Thread.Sleep(200);
+                    ready = Message.IsReady();
+                }
+                catch (Exception ex)
+                {
+                    retryCount++;
+
+                    if (retryCount >= 6)
+                    {
+                        Message = null;
+                        throw new Exception(
+                            "TT制御プロセスへの接続がタイムアウトしました。",
+                            ex);
+                    }
+                }
+            }
         }
 
         public static void End()

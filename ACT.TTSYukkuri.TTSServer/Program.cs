@@ -25,6 +25,7 @@
             var message = new TTSMessage();
             RemotingServices.Marshal(message, "message", typeof(TTSMessage));
 
+            message.OnIsReady += () => { return true; };
             message.OnSpeak += message_OnSpeak;
             message.OnGetSasaraSettings += message_OnGetSasaraSettings;
             message.OnSetSasaraSettings += message_OnSetSasaraSettings;

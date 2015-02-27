@@ -31,6 +31,20 @@
             public SasaraSettings Settings { get; set; }
         }
 
+        public delegate bool OnIsReadyDelegate();
+
+        public event OnIsReadyDelegate OnIsReady;
+
+        public bool IsReady()
+        {
+            if (this.OnIsReady != null)
+            {
+                return this.OnIsReady();
+            }
+
+            return false;
+        }
+
         public delegate void OnSpeakDelegate(SpeakEventArg e);
 
         public event OnSpeakDelegate OnSpeak;
@@ -76,9 +90,9 @@
         public void StartSasara()
         {
             if (this.OnStartSasara != null)
-	        {
+            {
                 this.OnStartSasara();
-	        }
+            }
         }
 
         public delegate void OnCloseSasaraDelegate();
@@ -100,9 +114,9 @@
         public void End()
         {
             if (this.OnEnd != null)
-	        {
+            {
                 this.OnEnd();
-	        }
+            }
         }
     }
 
