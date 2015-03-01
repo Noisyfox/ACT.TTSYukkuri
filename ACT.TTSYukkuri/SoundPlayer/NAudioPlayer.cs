@@ -14,7 +14,7 @@
         /// <summary>
         /// デバイスごとの再生デバイスリスト
         /// </summary>
-        private static Dictionary<Guid, DirectSoundOut> players = new Dictionary<Guid, DirectSoundOut>();
+        private static Dictionary<int, WaveOut> players = new Dictionary<int, WaveOut>();
 
         /// <summary>
         /// 再生デバイスを列挙する
@@ -24,17 +24,15 @@
         {
             var list = new List<PlayDevice>();
 
-            var i = 0;
-            foreach (var device in DirectSoundOut.Devices)
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
             {
+                var capabilities = WaveOut.GetCapabilities(i);
                 list.Add(new PlayDevice()
                 {
-                    Guid = device.Guid,
-                    Name = device.ModuleName,
-                    Description = device.Description,
+                    Number = i,
+                    Name = capabilities.ProductName,
+                    Description = capabilities.ProductName,
                 });
-
-                i++;
             }
 
             return list;
@@ -43,16 +41,16 @@
         /// <summary>
         /// 再生する
         /// </summary>
-        /// <param name="deviceID">再生デバイスID</param>
+        /// <param name="deviceNo">再生デバイス番号</param>
         /// <param name="waveFile">wavファイル</param>
         /// <param name="isDelete">再生後に削除する</param>
         public static void Play(
-            Guid deviceID,
+            int deviceNo,
             string waveFile,
             bool isDelete)
         {
             Play(
-                deviceID,
+                deviceNo,
                 waveFile,
                 isDelete,
                 100);
@@ -61,21 +59,25 @@
         /// <summary>
         /// 再生する
         /// </summary>
-        /// <param name="deviceNo">再生デバイスID</param>
+        /// <param name="deviceNo">再生デバイス番号</param>
         /// <param name="waveFile">wavファイル</param>
         /// <param name="isDelete">再生後に削除する</param>
         /// <param name="volume">ボリューム</param>
         public static void Play(
-            Guid deviceID,
+            int deviceNo,
             string waveFile,
             bool isDelete,
             int volume)
         {
-            var player = players.ContainsKey(deviceID) ?
-                players[deviceID] :
-                new DirectSoundOut(deviceID, 200);
+            var player = players.ContainsKey(deviceNo) ?
+                players[deviceNo] :
+                new WaveOut()
+                {
+                    DeviceNumber = deviceNo,
+                    DesiredLatency = 200
+                };
 
-            var r = new AudioFileReader(waveFile);
+            var r = new WaveFileReader(waveFile);
 
             player.Volume = ((float)volume / 100f);
             player.Init(r);
@@ -115,6 +117,11 @@
     /// </summary>
     public class PlayDevice
     {
+        /// <summary>
+        /// デバイス番号
+        /// </summary>
+        public int Number { get; set; }
+
         /// <summary>
         /// デバイスのGUID
         /// </summary>

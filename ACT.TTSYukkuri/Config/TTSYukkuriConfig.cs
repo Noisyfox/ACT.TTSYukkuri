@@ -112,7 +112,7 @@
         /// <summary>
         /// メイン再生デバイスID
         /// </summary>
-        public Guid MainDeviceID { get; set; }
+        public int MainDeviceNo { get; set; }
 
         /// <summary>
         /// サブ再生デバイスを有効にする
@@ -122,7 +122,7 @@
         /// <summary>
         /// サブ再生デバイスID
         /// </summary>
-        public Guid SubDeviceID { get; set; }
+        public int SubDeviceNo { get; set; }
 
         /// <summary>
         /// Wave再生時のボリューム

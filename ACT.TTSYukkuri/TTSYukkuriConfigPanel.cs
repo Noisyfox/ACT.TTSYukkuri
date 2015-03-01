@@ -69,25 +69,9 @@
             this.subDeviceComboBox.ValueMember = "Guid";
             this.subDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
 
-            if (TTSYukkuriConfig.Default.MainDeviceID != null)
-            {
-                this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceID;
-            }
-            else
-            {
-                this.mainDeviceComboBox.SelectedIndex = 0;
-            }
-
+            this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceNo;
             this.enabledSubDeviceCheckBox.Checked = TTSYukkuriConfig.Default.EnabledSubDevice;
-
-            if (TTSYukkuriConfig.Default.SubDeviceID != null)
-            {
-                this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceID;
-            }
-            else
-            {
-                this.subDeviceComboBox.SelectedIndex = 0;
-            }
+            this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceNo;
 
             this.WaveVolTrackBar.Value = TTSYukkuriConfig.Default.WaveVolume;
 
@@ -147,9 +131,9 @@
         {
             TTSYukkuriConfig.Default.TTS = (this.ttsShuruiComboBox.SelectedItem as ComboBoxItem).Value;
 
-            TTSYukkuriConfig.Default.MainDeviceID = (Guid)this.mainDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.MainDeviceNo = (int)this.mainDeviceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.EnabledSubDevice = this.enabledSubDeviceCheckBox.Checked;
-            TTSYukkuriConfig.Default.SubDeviceID = (Guid)this.subDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.SubDeviceNo = (int)this.subDeviceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.WaveVolume = (int)this.WaveVolTrackBar.Value;
             TTSYukkuriConfig.Default.WaveCacheClearEnable = this.WaveCacheClearCheckBox.Checked;
 

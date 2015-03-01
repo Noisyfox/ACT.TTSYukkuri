@@ -77,14 +77,14 @@
                 if (TTSYukkuriConfig.Default.EnabledSubDevice)
                 {
                     SoundPlayerWrapper.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
+                        TTSYukkuriConfig.Default.SubDeviceNo,
                         wave,
                         TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
                 }
 
                 // メインデバイスを再生する
                 SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
+                    TTSYukkuriConfig.Default.MainDeviceNo,
                     wave,
                     TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
             }
