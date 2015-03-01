@@ -62,11 +62,11 @@
         {
             // 再生デバイスコンボボックスを設定する
             this.mainDeviceComboBox.DisplayMember = "Description";
-            this.mainDeviceComboBox.ValueMember = "Guid";
+            this.mainDeviceComboBox.ValueMember = "Number";
             this.mainDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
 
             this.subDeviceComboBox.DisplayMember = "Description";
-            this.subDeviceComboBox.ValueMember = "Guid";
+            this.subDeviceComboBox.ValueMember = "Number";
             this.subDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
 
             this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceNo;
