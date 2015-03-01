@@ -82,10 +82,10 @@
         }
 
         /// <summary>
-        /// ACT本体の置き換え用のメソッド
+        /// TTSを読上げる
         /// </summary>
         /// <param name="textToSpeak">読上げるテキスト</param>
-        public void SpeakForActMain(
+        public void SpeakTTS(
             string textToSpeak)
         {
             const string waitCommand = "/wait";
@@ -154,8 +154,7 @@
                 if (!textToSpeak.EndsWith(".wav"))
                 {
                     // 喋って終わる
-                    SpeechController.Default.Speak(
-                        textToSpeak);
+                    this.SpeakTTS(textToSpeak);
 
                     return;
                 }
@@ -167,14 +166,14 @@
                         if (TTSYukkuriConfig.Default.EnabledSubDevice)
                         {
                             NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.SubDeviceNo,
+                                TTSYukkuriConfig.Default.SubDeviceID,
                                 textToSpeak,
                                 false,
                                 TTSYukkuriConfig.Default.WaveVolume);
                         }
 
                         NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.MainDeviceNo,
+                            TTSYukkuriConfig.Default.MainDeviceID,
                             textToSpeak,
                             false,
                             TTSYukkuriConfig.Default.WaveVolume);
@@ -196,14 +195,14 @@
                             if (TTSYukkuriConfig.Default.EnabledSubDevice)
                             {
                                 NAudioPlayer.Play(
-                                    TTSYukkuriConfig.Default.SubDeviceNo,
+                                    TTSYukkuriConfig.Default.SubDeviceID,
                                     wave,
                                     false,
                                     TTSYukkuriConfig.Default.WaveVolume);
                             }
 
                             NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.MainDeviceNo,
+                                TTSYukkuriConfig.Default.MainDeviceID,
                                 wave,
                                 false,
                                 TTSYukkuriConfig.Default.WaveVolume);
@@ -261,7 +260,7 @@
                 // TTSメソッドを置き換える
                 this.originalTTSDelegate = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
                 ActGlobals.oFormActMain.PlayTtsMethod =
-                    new FormActMain.PlayTtsDelegate(this.SpeakForActMain);
+                    new FormActMain.PlayTtsDelegate(this.Speak);
 
                 // アップデートを確認する
                 this.Update();
@@ -321,6 +320,9 @@
                         }
                     }
                 }
+
+                // プレイヤを開放する
+                NAudioPlayer.DisposePlayers();
 
                 lblStatus.Text = "Plugin Exited";
             }

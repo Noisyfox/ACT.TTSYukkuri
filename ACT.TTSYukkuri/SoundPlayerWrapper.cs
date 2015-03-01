@@ -1,5 +1,6 @@
 ﻿namespace ACT.TTSYukkuri
 {
+    using System;
     using System.IO;
     using System.Windows.Forms;
 
@@ -14,14 +15,14 @@
         /// <summary>
         /// サウンドを再生する
         /// </summary>
-        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="deviceID">デバイスID</param>
         /// <param name="stream">再生するストリーム</param>
         public static void Play(
-            int deviceNo,
+            Guid deviceID,
             Stream stream)
         {
             Play(
-                deviceNo,
+                deviceID,
                 stream,
                 100);
         }
@@ -29,14 +30,14 @@
         /// <summary>
         /// サウンドを再生する
         /// </summary>
-        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="deviceID">デバイスID</param>
         /// <param name="file">再生するファイル</param>
         public static void Play(
-            int deviceNo,
+            Guid deviceID,
             string file)
         {
             Play(
-                deviceNo,
+                deviceID,
                 file,
                 100);
         }
@@ -44,11 +45,11 @@
         /// <summary>
         /// サウンドを再生する
         /// </summary>
-        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="deviceID">デバイスID</param>
         /// <param name="stream">再生するストリーム</param>
         /// <param name="volume">ボリューム</param>
         public static void Play(
-            int deviceNo,
+            Guid deviceID,
             Stream stream,
             int volume)
         {
@@ -59,32 +60,32 @@
                 stream.CopyTo(fs);
             }
 
-            PlayCore(deviceNo, file, true, volume);
+            PlayCore(deviceID, file, true, volume);
         }
 
         /// <summary>
         /// サウンドを再生する
         /// </summary>
-        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="deviceID">デバイスID</param>
         /// <param name="file">再生するファイル</param>
         /// <param name="volume">ボリューム</param>
         public static void Play(
-            int deviceNo,
+            Guid deviceID,
             string file,
             int volume)
         {
-            PlayCore(deviceNo, file, false, volume);
+            PlayCore(deviceID, file, false, volume);
         }
 
         /// <summary>
         /// サウンドを再生する
         /// </summary>
-        /// <param name="deviceNo">デバイス番号</param>
+        /// <param name="deviceID">デバイスID</param>
         /// <param name="file">再生するサウンドファイル</param>
         /// <param name="isFileDelete">ファイルを削除するか？</param>
         /// <param name="volume">ボリューム</param>
         private static void PlayCore(
-            int deviceNo,
+            Guid deviceID,
             string file,
             bool isFileDelete,
             int volume)
@@ -97,7 +98,7 @@
             ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
                 NAudioPlayer.Play(
-                    deviceNo,
+                    deviceID,
                     file,
                     isFileDelete,
                     volume);

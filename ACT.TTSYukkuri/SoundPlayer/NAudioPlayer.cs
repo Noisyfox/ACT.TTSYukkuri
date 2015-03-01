@@ -1,5 +1,6 @@
 ﻿namespace ACT.TTSYukkuri.SoundPlayer
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -11,6 +12,11 @@
     public partial class NAudioPlayer
     {
         /// <summary>
+        /// デバイスごとの再生デバイスリスト
+        /// </summary>
+        private static Dictionary<Guid, DirectSoundOut> players = new Dictionary<Guid, DirectSoundOut>();
+
+        /// <summary>
         /// 再生デバイスを列挙する
         /// </summary>
         /// <returns>再生デバイスのリスト</returns>
@@ -18,14 +24,17 @@
         {
             var list = new List<PlayDevice>();
 
-            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            var i = 0;
+            foreach (var device in DirectSoundOut.Devices)
             {
-                var capabilities = WaveOut.GetCapabilities(i);
                 list.Add(new PlayDevice()
                 {
-                    Number = i,
-                    Name = capabilities.ProductName
+                    Guid = device.Guid,
+                    Name = device.ModuleName,
+                    Description = device.Description,
                 });
+
+                i++;
             }
 
             return list;
@@ -34,16 +43,16 @@
         /// <summary>
         /// 再生する
         /// </summary>
-        /// <param name="deviceNo">再生デバイス番号</param>
+        /// <param name="deviceID">再生デバイスID</param>
         /// <param name="waveFile">wavファイル</param>
         /// <param name="isDelete">再生後に削除する</param>
         public static void Play(
-            int deviceNo,
+            Guid deviceID,
             string waveFile,
             bool isDelete)
         {
             Play(
-                deviceNo,
+                deviceID,
                 waveFile,
                 isDelete,
                 100);
@@ -52,30 +61,27 @@
         /// <summary>
         /// 再生する
         /// </summary>
-        /// <param name="deviceNo">再生デバイス番号</param>
+        /// <param name="deviceNo">再生デバイスID</param>
         /// <param name="waveFile">wavファイル</param>
         /// <param name="isDelete">再生後に削除する</param>
         /// <param name="volume">ボリューム</param>
         public static void Play(
-            int deviceNo,
+            Guid deviceID,
             string waveFile,
             bool isDelete,
             int volume)
         {
-            var player = new WaveOut()
-            {
-                DeviceNumber = deviceNo,
-                DesiredLatency = 200,
-                Volume = ((float)volume / 100f),
-            } as IWavePlayer;
+            var player = players.ContainsKey(deviceID) ?
+                players[deviceID] :
+                new DirectSoundOut(deviceID, 200);
 
-            var wr = new WaveFileReader(waveFile);
+            var r = new AudioFileReader(waveFile);
 
-            player.Init(wr);
+            player.Volume = ((float)volume / 100f);
+            player.Init(r);
             player.PlaybackStopped += (s, e) =>
             {
-                (s as IWavePlayer).Dispose();
-                wr.Dispose();
+                r.Dispose();
 
                 if (isDelete)
                 {
@@ -86,6 +92,22 @@
             // 再生する
             player.Play();
         }
+
+        /// <summary>
+        /// プレイヤを開放する
+        /// </summary>
+        public static void DisposePlayers()
+        {
+            if (players != null)
+            {
+                foreach (var p in players.Values)
+                {
+                    p.Dispose();
+                }
+
+                players.Clear();
+            }
+        }
     }
 
     /// <summary>
@@ -94,9 +116,9 @@
     public class PlayDevice
     {
         /// <summary>
-        /// デバイスNo
+        /// デバイスのGUID
         /// </summary>
-        public int Number { get; set; }
+        public Guid Guid { get; set; }
 
         /// <summary>
         /// デバイス名
@@ -104,12 +126,17 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Description
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// ToString()
         /// </summary>
         /// <returns>デバイスの名称</returns>
         public override string ToString()
         {
-            return this.Name;
+            return this.Description;
         }
     }
 }

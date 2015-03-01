@@ -110,9 +110,9 @@
         public int YukkuriVolume { get; set; }
 
         /// <summary>
-        /// メイン再生デバイス番号
+        /// メイン再生デバイスID
         /// </summary>
-        public int MainDeviceNo { get; set; }
+        public Guid MainDeviceID { get; set; }
 
         /// <summary>
         /// サブ再生デバイスを有効にする
@@ -120,9 +120,9 @@
         public bool EnabledSubDevice { get; set; }
 
         /// <summary>
-        /// サブ再生デバイス番号
+        /// サブ再生デバイスID
         /// </summary>
-        public int SubDeviceNo { get; set; }
+        public Guid SubDeviceID { get; set; }
 
         /// <summary>
         /// Wave再生時のボリューム
