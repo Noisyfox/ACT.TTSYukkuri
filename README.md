@@ -26,6 +26,7 @@ NAudio.dll
 2) TTS対応状況  
 下記のTTSに対応しています  
 ・AquesTalk（ゆっくり）  
+・Open JTalk（MEI）  
 ・CeVIO Creative Studio（さとうささら）※ただし製品版が必要  
 ・棒読みちゃん  
   
