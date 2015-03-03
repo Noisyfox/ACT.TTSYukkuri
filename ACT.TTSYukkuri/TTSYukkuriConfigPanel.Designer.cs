@@ -61,6 +61,8 @@
             this.TPThresholdTextBox = new System.Windows.Forms.TextBox();
             this.enableWatchTPCheckBox = new System.Windows.Forms.CheckBox();
             this.saiseiDeviceGroupBox = new System.Windows.Forms.GroupBox();
+            this.PlayerComboBox = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.enabledSubDeviceCheckBox = new System.Windows.Forms.CheckBox();
             this.subDeviceComboBox = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -112,7 +114,7 @@
             this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 126);
             this.ttsSettingsGroupBox.Name = "ttsSettingsGroupBox";
             this.ttsSettingsGroupBox.Size = new System.Drawing.Size(463, 505);
-            this.ttsSettingsGroupBox.TabIndex = 1;
+            this.ttsSettingsGroupBox.TabIndex = 3;
             this.ttsSettingsGroupBox.TabStop = false;
             this.ttsSettingsGroupBox.Text = "TTSの設定";
             // 
@@ -446,6 +448,8 @@
             // 
             this.saiseiDeviceGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.saiseiDeviceGroupBox.Controls.Add(this.PlayerComboBox);
+            this.saiseiDeviceGroupBox.Controls.Add(this.label12);
             this.saiseiDeviceGroupBox.Controls.Add(this.enabledSubDeviceCheckBox);
             this.saiseiDeviceGroupBox.Controls.Add(this.subDeviceComboBox);
             this.saiseiDeviceGroupBox.Controls.Add(this.label6);
@@ -454,17 +458,41 @@
             this.saiseiDeviceGroupBox.Location = new System.Drawing.Point(474, 3);
             this.saiseiDeviceGroupBox.Name = "saiseiDeviceGroupBox";
             this.saiseiDeviceGroupBox.Size = new System.Drawing.Size(720, 117);
-            this.saiseiDeviceGroupBox.TabIndex = 2;
+            this.saiseiDeviceGroupBox.TabIndex = 4;
             this.saiseiDeviceGroupBox.TabStop = false;
             this.saiseiDeviceGroupBox.Text = "再生デバイス";
+            // 
+            // PlayerComboBox
+            // 
+            this.PlayerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PlayerComboBox.FormattingEnabled = true;
+            this.PlayerComboBox.Location = new System.Drawing.Point(105, 14);
+            this.PlayerComboBox.Name = "PlayerComboBox";
+            this.PlayerComboBox.Size = new System.Drawing.Size(306, 20);
+            this.PlayerComboBox.TabIndex = 0;
+            this.ToolTip.SetToolTip(this.PlayerComboBox, "WaveOut → 遅延(中), 音質(中) Windowsの伝統的なAPIで再生します。\r\nDirectSound → 遅延(小), 音質(低)\r\nWASAPI" +
+        " → 遅延(小), 音質(中+) Windows7以降の新APIで再生します。オススメ\r\nASIO → 遅延(小), 音質(高) ASIO対応の高級デバイスでの" +
+        "み動作します\r\n");
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(8, 20);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(53, 12);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "再生方式";
+            this.ToolTip.SetToolTip(this.label12, "WaveOut → 遅延(中), 音質(中) Windowsの伝統的なAPIで再生します。\r\nDirectSound → 遅延(小), 音質(低)\r\nWASAPI" +
+        " → 遅延(小), 音質(中+) Windows7以降の新APIで再生します。オススメ\r\nASIO → 遅延(小), 音質(高) ASIO対応の高級デバイスでの" +
+        "み動作します\r\n");
             // 
             // enabledSubDeviceCheckBox
             // 
             this.enabledSubDeviceCheckBox.AutoSize = true;
-            this.enabledSubDeviceCheckBox.Location = new System.Drawing.Point(8, 52);
+            this.enabledSubDeviceCheckBox.Location = new System.Drawing.Point(8, 68);
             this.enabledSubDeviceCheckBox.Name = "enabledSubDeviceCheckBox";
             this.enabledSubDeviceCheckBox.Size = new System.Drawing.Size(166, 16);
-            this.enabledSubDeviceCheckBox.TabIndex = 21;
+            this.enabledSubDeviceCheckBox.TabIndex = 2;
             this.enabledSubDeviceCheckBox.Text = "サブ再生デバイスを有効にする";
             this.enabledSubDeviceCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -472,15 +500,15 @@
             // 
             this.subDeviceComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.subDeviceComboBox.FormattingEnabled = true;
-            this.subDeviceComboBox.Location = new System.Drawing.Point(105, 70);
+            this.subDeviceComboBox.Location = new System.Drawing.Point(105, 86);
             this.subDeviceComboBox.Name = "subDeviceComboBox";
             this.subDeviceComboBox.Size = new System.Drawing.Size(306, 20);
-            this.subDeviceComboBox.TabIndex = 1;
+            this.subDeviceComboBox.TabIndex = 3;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 73);
+            this.label6.Location = new System.Drawing.Point(6, 89);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(86, 12);
             this.label6.TabIndex = 19;
@@ -490,15 +518,15 @@
             // 
             this.mainDeviceComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.mainDeviceComboBox.FormattingEnabled = true;
-            this.mainDeviceComboBox.Location = new System.Drawing.Point(105, 18);
+            this.mainDeviceComboBox.Location = new System.Drawing.Point(105, 40);
             this.mainDeviceComboBox.Name = "mainDeviceComboBox";
             this.mainDeviceComboBox.Size = new System.Drawing.Size(306, 20);
-            this.mainDeviceComboBox.TabIndex = 0;
+            this.mainDeviceComboBox.TabIndex = 1;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 21);
+            this.label7.Location = new System.Drawing.Point(6, 43);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(93, 12);
             this.label7.TabIndex = 17;
@@ -512,7 +540,7 @@
             this.WaveVolTrackBar.Name = "WaveVolTrackBar";
             this.WaveVolTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.WaveVolTrackBar.Size = new System.Drawing.Size(45, 93);
-            this.WaveVolTrackBar.TabIndex = 22;
+            this.WaveVolTrackBar.TabIndex = 2;
             this.WaveVolTrackBar.TickFrequency = 10;
             this.WaveVolTrackBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.ToolTip.SetToolTip(this.WaveVolTrackBar, "外部から呼び出した時のwaveサウンドの再生ボリュームです\r\nTTSの音量設定は各種「TTSの設定」から調整してください");
@@ -537,7 +565,7 @@
             this.WaveCacheClearCheckBox.Location = new System.Drawing.Point(5, 89);
             this.WaveCacheClearCheckBox.Name = "WaveCacheClearCheckBox";
             this.WaveCacheClearCheckBox.Size = new System.Drawing.Size(275, 16);
-            this.WaveCacheClearCheckBox.TabIndex = 24;
+            this.WaveCacheClearCheckBox.TabIndex = 1;
             this.WaveCacheClearCheckBox.Text = "終了時にキャッシュしたTTS用waveファイルを削除する";
             this.WaveCacheClearCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -615,5 +643,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ToolTip ToolTip;
         private System.Windows.Forms.CheckBox WaveCacheClearCheckBox;
+        private System.Windows.Forms.ComboBox PlayerComboBox;
+        private System.Windows.Forms.Label label12;
     }
 }

@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
 
+    using ACT.TTSYukkuri.SoundPlayer;
     using ACT.TTSYukkuri.TTSServer;
     using ACT.TTSYukkuri.TTSServer.Core;
 
@@ -82,6 +82,8 @@
             this.WaveVolume = 100;
 
             this.TTS = TTSType.Yukkuri;
+
+            this.Player = WavePlayers.WASAPI;
         }
 
         /// <summary>
@@ -112,7 +114,7 @@
         /// <summary>
         /// メイン再生デバイスID
         /// </summary>
-        public int MainDeviceNo { get; set; }
+        public string MainDeviceID { get; set; }
 
         /// <summary>
         /// サブ再生デバイスを有効にする
@@ -122,7 +124,7 @@
         /// <summary>
         /// サブ再生デバイスID
         /// </summary>
-        public int SubDeviceNo { get; set; }
+        public string SubDeviceID { get; set; }
 
         /// <summary>
         /// Wave再生時のボリューム
@@ -153,6 +155,11 @@
         /// 終了時にキャッシュしたwaveファイルを削除する
         /// </summary>
         public bool WaveCacheClearEnable { get; set; }
+
+        /// <summary>
+        /// 再生方式
+        /// </summary>
+        public WavePlayers Player { get; set; }
 
         /// <summary>
         /// 設定をロードする

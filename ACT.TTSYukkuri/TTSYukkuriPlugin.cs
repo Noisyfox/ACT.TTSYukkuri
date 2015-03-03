@@ -166,14 +166,14 @@
                         if (TTSYukkuriConfig.Default.EnabledSubDevice)
                         {
                             NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.SubDeviceNo,
+                                TTSYukkuriConfig.Default.SubDeviceID,
                                 textToSpeak,
                                 false,
                                 TTSYukkuriConfig.Default.WaveVolume);
                         }
 
                         NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.MainDeviceNo,
+                            TTSYukkuriConfig.Default.MainDeviceID,
                             textToSpeak,
                             false,
                             TTSYukkuriConfig.Default.WaveVolume);
@@ -195,14 +195,14 @@
                             if (TTSYukkuriConfig.Default.EnabledSubDevice)
                             {
                                 NAudioPlayer.Play(
-                                    TTSYukkuriConfig.Default.SubDeviceNo,
+                                    TTSYukkuriConfig.Default.SubDeviceID,
                                     wave,
                                     false,
                                     TTSYukkuriConfig.Default.WaveVolume);
                             }
 
                             NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.MainDeviceNo,
+                                TTSYukkuriConfig.Default.MainDeviceID,
                                 wave,
                                 false,
                                 TTSYukkuriConfig.Default.WaveVolume);

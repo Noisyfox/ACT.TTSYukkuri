@@ -1,6 +1,7 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System;
+    using System.Linq;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
@@ -60,29 +61,15 @@
         /// <param name="e">イベント引数</param>
         private void TTSYukkuriConfigPanel_Load(object sender, EventArgs e)
         {
-            // 再生デバイスコンボボックスを設定する
-            this.mainDeviceComboBox.DisplayMember = "Description";
-            this.mainDeviceComboBox.ValueMember = "Number";
-            this.mainDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
+            this.PlayerComboBox.DataSource = Enum.GetValues(typeof(WavePlayers));
+            this.PlayerComboBox.SelectedItem = TTSYukkuriConfig.Default.Player;
 
-            this.subDeviceComboBox.DisplayMember = "Description";
-            this.subDeviceComboBox.ValueMember = "Number";
-            this.subDeviceComboBox.DataSource = NAudioPlayer.EnumlateDevices();
-
-            this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceNo;
+            this.EnumrateDevices();
             this.enabledSubDeviceCheckBox.Checked = TTSYukkuriConfig.Default.EnabledSubDevice;
-            this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceNo;
-
-            this.WaveVolTrackBar.Value = TTSYukkuriConfig.Default.WaveVolume;
-
-            this.WaveCacheClearCheckBox.Checked = TTSYukkuriConfig.Default.WaveCacheClearEnable;
-
             this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
 
-            this.mainDeviceComboBox.TextChanged += (s1, e1) =>
-            {
-                this.SaveSettings();
-            };
+            this.WaveVolTrackBar.Value = TTSYukkuriConfig.Default.WaveVolume;
+            this.WaveCacheClearCheckBox.Checked = TTSYukkuriConfig.Default.WaveCacheClearEnable;
 
             this.enabledSubDeviceCheckBox.CheckedChanged += (s1, e1) =>
             {
@@ -91,9 +78,31 @@
                 this.SaveSettings();
             };
 
+            this.PlayerComboBox.SelectedIndexChanged += (s1, e1) =>
+            {
+                if ((s1 as Control).Enabled)
+                {
+                    TTSYukkuriConfig.Default.Player = (WavePlayers)this.PlayerComboBox.SelectedItem;
+                    this.EnumrateDevices();
+                    this.SaveSettings();
+                    (s1 as Control).Focus();
+                }
+            };
+
+            this.mainDeviceComboBox.TextChanged += (s1, e1) =>
+            {
+                if ((s1 as Control).Enabled)
+                {
+                    this.SaveSettings();
+                }
+            };
+
             this.subDeviceComboBox.TextChanged += (s1, e1) =>
             {
-                this.SaveSettings();
+                if ((s1 as Control).Enabled)
+                {
+                    this.SaveSettings();
+                }
             };
 
             this.WaveVolTrackBar.ValueChanged += (s1, e1) =>
@@ -101,7 +110,7 @@
                 this.SaveSettings();
             };
 
-            this.WaveCacheClearCheckBox.CheckStateChanged += (s1, e1) =>
+            this.WaveCacheClearCheckBox.CheckedChanged += (s1, e1) =>
             {
                 this.SaveSettings();
             };
@@ -125,15 +134,76 @@
         }
 
         /// <summary>
+        /// 再生デバイスを列挙する
+        /// </summary>
+        private void EnumrateDevices()
+        {
+            try
+            {
+                this.PlayerComboBox.Enabled = false;
+                this.mainDeviceComboBox.Enabled = false;
+                this.subDeviceComboBox.Enabled = false;
+
+                var devices = NAudioPlayer.EnumlateDevices();
+
+                // 再生デバイスコンボボックスを設定する
+                this.mainDeviceComboBox.DisplayMember = "Name";
+                this.mainDeviceComboBox.ValueMember = "ID";
+                this.mainDeviceComboBox.DataSource = devices.ToArray();
+
+                this.subDeviceComboBox.DisplayMember = "Name";
+                this.subDeviceComboBox.ValueMember = "ID";
+                this.subDeviceComboBox.DataSource = devices.ToArray();
+
+                var defaultDeviceID = devices
+                    .Select(x => x.ID)
+                    .FirstOrDefault() ?? string.Empty;
+
+                if (string.IsNullOrWhiteSpace(TTSYukkuriConfig.Default.MainDeviceID))
+                {
+                    TTSYukkuriConfig.Default.MainDeviceID = defaultDeviceID;
+                }
+
+                if (string.IsNullOrWhiteSpace(TTSYukkuriConfig.Default.SubDeviceID))
+                {
+                    TTSYukkuriConfig.Default.SubDeviceID = defaultDeviceID;
+                }
+
+                if (devices.Count > 0)
+                {
+                    this.mainDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.MainDeviceID;
+                    this.subDeviceComboBox.SelectedValue = TTSYukkuriConfig.Default.SubDeviceID;
+
+                    if (string.IsNullOrWhiteSpace(this.mainDeviceComboBox.Text))
+                    {
+                        this.mainDeviceComboBox.SelectedIndex = 0;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(this.subDeviceComboBox.Text))
+                    {
+                        this.subDeviceComboBox.SelectedIndex = 0;
+                    }
+                }
+            }
+            finally
+            {
+                this.PlayerComboBox.Enabled = true;
+                this.mainDeviceComboBox.Enabled = true;
+                this.subDeviceComboBox.Enabled = this.enabledSubDeviceCheckBox.Checked;
+            }
+        }
+
+        /// <summary>
         /// 設定を保存する
         /// </summary>
         private void SaveSettings()
         {
             TTSYukkuriConfig.Default.TTS = (this.ttsShuruiComboBox.SelectedItem as ComboBoxItem).Value;
 
-            TTSYukkuriConfig.Default.MainDeviceNo = (int)this.mainDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.Player = (WavePlayers)this.PlayerComboBox.SelectedItem;
+            TTSYukkuriConfig.Default.MainDeviceID = (string)this.mainDeviceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.EnabledSubDevice = this.enabledSubDeviceCheckBox.Checked;
-            TTSYukkuriConfig.Default.SubDeviceNo = (int)this.subDeviceComboBox.SelectedValue;
+            TTSYukkuriConfig.Default.SubDeviceID = (string)this.subDeviceComboBox.SelectedValue;
             TTSYukkuriConfig.Default.WaveVolume = (int)this.WaveVolTrackBar.Value;
             TTSYukkuriConfig.Default.WaveCacheClearEnable = this.WaveCacheClearCheckBox.Checked;
 

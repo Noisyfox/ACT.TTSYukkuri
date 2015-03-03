@@ -80,14 +80,14 @@
                 if (TTSYukkuriConfig.Default.EnabledSubDevice)
                 {
                     SoundPlayerWrapper.Play(
-                        TTSYukkuriConfig.Default.SubDeviceNo,
+                        TTSYukkuriConfig.Default.SubDeviceID,
                         wave,
                         (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
                 }
 
                 // メインデバイスで再生する
                 SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.MainDeviceNo,
+                    TTSYukkuriConfig.Default.MainDeviceID,
                     wave,
                     (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
             }
