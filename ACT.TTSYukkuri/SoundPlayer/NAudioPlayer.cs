@@ -156,9 +156,12 @@
             bool isDelete,
             int volume)
         {
+            var volumeAsFloat = ((float)volume / 100f);
+
             try
             {
                 IWavePlayer player = null;
+                IWaveProvider provider = null;
 
                 switch (TTSYukkuriConfig.Default.Player)
                 {
@@ -194,16 +197,21 @@
                     return;
                 }
 
-                var reader = new AudioFileReader(waveFile)
+                provider = new AudioFileReader(waveFile)
                 {
-                    Volume = ((float)volume / 100f)
+                    Volume = volumeAsFloat
                 };
 
-                player.Init(reader);
+                player.Init(provider);
                 player.PlaybackStopped += (s, e) =>
                 {
                     player.Dispose();
-                    reader.Dispose();
+
+                    var file = provider as IDisposable;
+                    if (file != null)
+                    {
+                        file.Dispose();
+                    }
 
                     if (isDelete)
                     {
