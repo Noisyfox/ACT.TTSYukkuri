@@ -78,6 +78,7 @@
             this.BoyomiServer = new List<string>();
             this.OptionSettings = new OptionsConfig();
             this.OpenJTalkSettings = new OpenJTalkConfig();
+            this.HOYASettings = new HOYAConfig();
 
             this.WaveVolume = 100;
 
@@ -145,6 +146,11 @@
         /// OpenJTalk設定
         /// </summary>
         public OpenJTalkConfig OpenJTalkSettings { get; set; }
+
+        /// <summary>
+        /// HOYA VoiceTextWebAPI 設定
+        /// </summary>
+        public HOYAConfig HOYASettings { get; set; }
 
         /// <summary>
         /// オプション設定

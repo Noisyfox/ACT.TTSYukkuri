@@ -4,6 +4,7 @@
 
     using ACT.TTSYukkuri.Boyomichan;
     using ACT.TTSYukkuri.Config;
+    using ACT.TTSYukkuri.HOYA;
     using ACT.TTSYukkuri.OpenJTalk;
     using ACT.TTSYukkuri.Sasara;
     using ACT.TTSYukkuri.Yukkuri;
@@ -58,6 +59,10 @@
 
                             case TTSType.OpenJTalk:
                                 instance = new OpenJTalkSpeechController();
+                                break;
+
+                            case TTSType.HOYA:
+                                instance = new HOYASpeechController();
                                 break;
 
                             default:

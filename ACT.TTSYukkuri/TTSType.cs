@@ -26,12 +26,18 @@
         public const string OpenJTalk = "OpenJTalk";
 
         /// <summary>
+        /// HOYA:HOYA
+        /// </summary>
+        public const string HOYA = "HOYA";
+
+        /// <summary>
         /// コンボボックスコレクション
         /// </summary>
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
         {
             new ComboBoxItem("ゆっくり", TTSType.Yukkuri),
             new ComboBoxItem("Open JTalk", TTSType.OpenJTalk),
+            new ComboBoxItem("HOYA VoiceText Web API", TTSType.HOYA),
             new ComboBoxItem("棒読みちゃん(TCPインターフェース)", TTSType.Boyomichan),
             new ComboBoxItem("CeVIO Creative Studio", TTSType.SasaraSato),
         };
