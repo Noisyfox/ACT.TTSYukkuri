@@ -19,11 +19,13 @@ NAudio.dll
   
   
 ### ディレイ読上げ  
+***
 /wait 1,ゆっくりです  
 読上げのテキストに上記のように記述すると、トリガー検出から1秒後に「ゆっくりです」を読上げます  
   
   
 ### TTS対応状況  
+***
 下記のTTSに対応しています  
   
 #### AquesTalk（ゆっくり）  
@@ -67,10 +69,12 @@ VOICEROIDには外部のアプリケーションから呼出す機能(API)があ
   
   
 ### タイムラインでも使いたい  
+***
 **[こちらの改造版タイムラインをどうぞ](https://github.com/anoyetta/ACT.TTSYukkuri/releases/tag/ACTTimeline-rev03)**  
   
   
 ### ゆっくりが喋らない？  
+***
 ゆっくりは読める文字に制限があります  
 文章の中に読めない文字が「一文字でも」混じっていると文章そのものを読みません  
   
@@ -85,6 +89,7 @@ VOICEROIDには外部のアプリケーションから呼出す機能(API)があ
   
   
 ### TimeLineから使った時にwaveが既定のデバイスからしかならない  
+***
 TimeLineから普通にwaveを鳴らすとTTSYukkuri経由ではなくTimeLine本体がwaveを再生します  
 TimeLine本体には再生デバイスを選ぶ機能がないため、既定のデバイスでの再生となります  
 下記の例のようにwave再生の指定を変更してTTSYukkuri経由で再生するように変更してください  
@@ -96,6 +101,7 @@ alertall アトミックレイ before 1 speak "TTSYukkuri" "se_maoudamashii_chim
 
 
 ### 再生方式について  
+***
 環境に合わせて再生方式を選べるようになっています
 
 #### WaveOut  
