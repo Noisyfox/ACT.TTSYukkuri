@@ -99,7 +99,7 @@ alertall アトミックレイ before 1 speak "TTSYukkuri" "se_maoudamashii_chim
 
 ・WaveOut  
 　Windowsの伝統的なAPIによる再生。  
-　可もなく不可もなくといったところ、ほぼどの環境でも動作すると思われる。  
+　可もなく不可もなくといったところ。ほとんどの環境で動作すると思われる。  
   
 ・DirectSound  
 　Windowsのゲーム用のAPIによる再生。  
