@@ -148,71 +148,59 @@
                 return;
             }
 
-            Task.Run(() =>
+            // ファイルじゃない？
+            if (!textToSpeak.EndsWith(".wav"))
             {
-                // ファイルじゃない？
-                if (!textToSpeak.EndsWith(".wav"))
-                {
-                    // 喋って終わる
-                    this.SpeakTTS(textToSpeak);
+                // 喋って終わる
+                this.SpeakTTS(textToSpeak);
 
-                    return;
+                return;
+            }
+
+            if (File.Exists(textToSpeak))
+            {
+                if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                {
+                    NAudioPlayer.Play(
+                        TTSYukkuriConfig.Default.SubDeviceID,
+                        textToSpeak,
+                        false,
+                        TTSYukkuriConfig.Default.WaveVolume);
                 }
 
-                if (File.Exists(textToSpeak))
-                {
-                    ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
-                    {
-                        if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                        {
-                            NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.SubDeviceID,
-                                textToSpeak,
-                                false,
-                                TTSYukkuriConfig.Default.WaveVolume);
-                        }
+                NAudioPlayer.Play(
+                    TTSYukkuriConfig.Default.MainDeviceID,
+                    textToSpeak,
+                    false,
+                    TTSYukkuriConfig.Default.WaveVolume);
+            }
+            else
+            {
+                // ACTのパスを取得する
+                var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var waveDir = Path.Combine(
+                    baseDir,
+                    @"resources\wav");
 
+                var wave = Path.Combine(waveDir, textToSpeak);
+                if (File.Exists(wave))
+                {
+                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                    {
                         NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.MainDeviceID,
-                            textToSpeak,
+                            TTSYukkuriConfig.Default.SubDeviceID,
+                            wave,
                             false,
                             TTSYukkuriConfig.Default.WaveVolume);
-                    });
-                }
-                else
-                {
-                    // ACTのパスを取得する
-                    var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                    var waveDir = Path.Combine(
-                        baseDir,
-                        @"resources\wav");
-
-                    var wave = Path.Combine(waveDir, textToSpeak);
-                    if (File.Exists(wave))
-                    {
-                        ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
-                        {
-                            if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                            {
-                                NAudioPlayer.Play(
-                                    TTSYukkuriConfig.Default.SubDeviceID,
-                                    wave,
-                                    false,
-                                    TTSYukkuriConfig.Default.WaveVolume);
-                            }
-
-                            NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.MainDeviceID,
-                                wave,
-                                false,
-                                TTSYukkuriConfig.Default.WaveVolume);
-                        });
                     }
+
+                    NAudioPlayer.Play(
+                        TTSYukkuriConfig.Default.MainDeviceID,
+                        wave,
+                        false,
+                        TTSYukkuriConfig.Default.WaveVolume);
                 }
-            }).ContinueWith((t) =>
-            {
-                t.Dispose();
-            });
+            }
         }
 
         #region IActPluginV1 Members
