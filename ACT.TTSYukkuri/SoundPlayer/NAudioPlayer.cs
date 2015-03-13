@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
 
     using ACT.TTSYukkuri.Config;
@@ -28,7 +29,9 @@
         /// <summary>
         /// プレイヤのレイテンシ
         /// </summary>
-        private const int PlayerLatency = 128;
+        private const int PlayerLatencyWaveOut = 128;
+        private const int PlayerLatencyDirectSoundOut = 40;
+        private const int PlayerLatencyWasapiOut = 80;
 
         /// <summary>
         /// Device Enumrator
@@ -156,6 +159,8 @@
             bool isDelete,
             int volume)
         {
+            var sw = Stopwatch.StartNew();
+
             var volumeAsFloat = ((float)volume / 100f);
 
             try
@@ -169,14 +174,14 @@
                         player = new WaveOut()
                         {
                             DeviceNumber = int.Parse(deviceID),
-                            DesiredLatency = PlayerLatency,
+                            DesiredLatency = PlayerLatencyWaveOut,
                         };
                         break;
 
                     case WavePlayers.DirectSound:
                         player = new DirectSoundOut(
                             Guid.Parse(deviceID),
-                            PlayerLatency);
+                            PlayerLatencyDirectSoundOut);
                         break;
 
                     case WavePlayers.WASAPI:
@@ -184,7 +189,7 @@
                             deviceEnumrator.GetDevice(deviceID),
                             AudioClientShareMode.Shared,
                             false,
-                            PlayerLatency);
+                            PlayerLatencyWasapiOut);
                         break;
 
                     case WavePlayers.ASIO:
@@ -227,6 +232,14 @@
                 ActGlobals.oFormActMain.WriteExceptionLog(
                     ex,
                     "サウンドの再生で例外が発生しました。");
+            }
+            finally
+            {
+                sw.Stop();
+                Debug.WriteLine(
+                    "PlaySound ({0}) -> {1:N0} ticks",
+                    TTSYukkuriConfig.Default.Player,
+                    sw.ElapsedTicks);
             }
         }
 

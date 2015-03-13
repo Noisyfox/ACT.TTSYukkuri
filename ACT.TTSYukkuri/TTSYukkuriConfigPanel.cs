@@ -38,17 +38,6 @@
                 if (this.Loaded)
                 {
                     this.SaveSettings();
-
-                    // 再生デバイスの選択の使用状況を切り替える
-                    if (TTSYukkuriConfig.Default.TTS == TTSType.Boyomichan)
-                    {
-                        this.saiseiDeviceGroupBox.Enabled = false;
-                    }
-                    else
-                    {
-                        this.saiseiDeviceGroupBox.Enabled = true;
-                    }
-
                     this.LoadTTS();
                 }
             };
@@ -116,14 +105,6 @@
             };
 
             this.ttsShuruiComboBox.SelectedValue = TTSYukkuriConfig.Default.TTS;
-            if (TTSYukkuriConfig.Default.TTS == TTSType.Boyomichan)
-            {
-                this.saiseiDeviceGroupBox.Enabled = false;
-            }
-            else
-            {
-                this.saiseiDeviceGroupBox.Enabled = true;
-            }
 
             this.LoadTTS();
 

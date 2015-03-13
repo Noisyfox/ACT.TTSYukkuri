@@ -203,9 +203,6 @@
                             TTSYukkuriConfig.Default.WaveVolume);
                     }
                 }
-            }).ContinueWith((t) =>
-            {
-                t.Dispose();
             });
         }
 
@@ -299,6 +296,9 @@
                 // TTSサーバを終了する
                 TTSServerController.End();
 
+                // プレイヤを開放する
+                NAudioPlayer.DisposePlayers();
+
                 // TTS用waveファイルを削除する？
                 if (TTSYukkuriConfig.Default.WaveCacheClearEnable)
                 {
@@ -310,13 +310,16 @@
                     {
                         foreach (var file in Directory.GetFiles(appdir, "*.wav"))
                         {
-                            File.Delete(file);
+                            try
+                            {
+                                File.Delete(file);
+                            }
+                            catch
+                            {
+                            }
                         }
                     }
                 }
-
-                // プレイヤを開放する
-                NAudioPlayer.DisposePlayers();
 
                 lblStatus.Text = "Plugin Exited";
             }
