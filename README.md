@@ -164,3 +164,4 @@ https://github.com/GB19xx/ACT.TPMonitor
 --------------
 不具合報告、要望、質問及び最新版情報などはTwitterにて  
 GitHubと連動しているためツイートは少々五月蠅いかもしれません  
+https://twitter.com/anoyetta  
