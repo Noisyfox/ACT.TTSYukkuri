@@ -69,6 +69,7 @@ namespace ACT.TTSYukkuri.TTSServer
             Message = (TTSMessage)Activator.GetObject(typeof(TTSMessage), "ipc://TTSYukkuriChannel/message");
 
             // 通信の確立を待つ
+            // 200ms x 150 = 30s
             var ready = false;
             var retryCount = 0;
             while (!ready)
@@ -82,7 +83,7 @@ namespace ACT.TTSYukkuri.TTSServer
                 {
                     retryCount++;
 
-                    if (retryCount >= 6)
+                    if (retryCount >= 150)
                     {
                         Message = null;
                         throw new Exception(

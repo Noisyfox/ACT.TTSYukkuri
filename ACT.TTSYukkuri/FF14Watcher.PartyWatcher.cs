@@ -280,6 +280,10 @@
                 case 29: r = watchTarget.EnabledNinja; break;
                 case 30: r = watchTarget.EnabledNinja; break;
 
+                case 31: r = watchTarget.EnabledDarkKnight; break;
+                case 32: r = watchTarget.EnabledAstrologian; break;
+                case 33: r = watchTarget.EnabledMachinist; break;
+
                 default: r = false; break;
             }
 
