@@ -67,7 +67,7 @@ VOICEROIDには外部のアプリケーションから呼出す機能(API)があ
   
     
 #### タイムラインでも使いたい  
-**[こちらの改造版タイムラインをどうぞ](https://github.com/anoyetta/ACT.TTSYukkuri/releases/tag/ACTTimeline-rev03)**  
+**[こちらの改造版タイムラインをどうぞ](https://github.com/anoyetta/act_timeline/releases)**  
   
     
 #### ゆっくりが喋らない？  
