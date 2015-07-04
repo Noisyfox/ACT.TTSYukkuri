@@ -189,9 +189,9 @@
             "黒魔道士・呪術士",
             "召喚士・巴術士",
             "ギャザラー・クラフター",
+            "機工士",
             "暗黒騎士",
-            "占星術師",
-            "機工士"});
+            "占星術師"});
             this.watchTargetsHPCheckedListBox.Location = new System.Drawing.Point(6, 101);
             this.watchTargetsHPCheckedListBox.Name = "watchTargetsHPCheckedListBox";
             this.watchTargetsHPCheckedListBox.Size = new System.Drawing.Size(405, 336);
@@ -292,9 +292,9 @@
             "黒魔道士・呪術士",
             "召喚士・巴術士",
             "ギャザラー・クラフター",
+            "機工士",
             "暗黒騎士",
-            "占星術師",
-            "機工士"});
+            "占星術師"});
             this.watchTargetsMPCheckedListBox.Location = new System.Drawing.Point(6, 101);
             this.watchTargetsMPCheckedListBox.Name = "watchTargetsMPCheckedListBox";
             this.watchTargetsMPCheckedListBox.Size = new System.Drawing.Size(405, 336);
@@ -394,9 +394,9 @@
             "黒魔道士・呪術士",
             "召喚士・巴術士",
             "ギャザラー・クラフター",
+            "機工士",
             "暗黒騎士",
-            "占星術師",
-            "機工士"});
+            "占星術師"});
             this.watchTargetsTPCheckedListBox.Location = new System.Drawing.Point(6, 101);
             this.watchTargetsTPCheckedListBox.Name = "watchTargetsTPCheckedListBox";
             this.watchTargetsTPCheckedListBox.Size = new System.Drawing.Size(405, 336);

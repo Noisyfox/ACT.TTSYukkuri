@@ -45,14 +45,14 @@
         /// <summary>ギャザラー・クラフター</summary>
         public bool EnabledGathererAndCrafter { get; set; }
 
+        /// <summary>機工士</summary>
+        public bool EnabledMachinist { get; set; }
+
         /// <summary>暗黒騎士</summary>
         public bool EnabledDarkKnight { get; set; }
 
         /// <summary>占星術師</summary>
         public bool EnabledAstrologian { get; set; }
-
-        /// <summary>機工士</summary>
-        public bool EnabledMachinist { get; set; }
 
         /// <summary>
         /// 要素を配列で設定、取得します
@@ -76,9 +76,9 @@
                     this.EnabledKuromadoshi,
                     this.EnabledShokanshi,
                     this.EnabledGathererAndCrafter,
+                    this.EnabledMachinist,
                     this.EnabledDarkKnight,
                     this.EnabledAstrologian,
-                    this.EnabledMachinist,
                 };
             }
 
@@ -96,9 +96,9 @@
                 this.EnabledKuromadoshi = value.Length > 9 ? value[9] : this.EnabledKuromadoshi;
                 this.EnabledShokanshi = value.Length > 10 ? value[10] : this.EnabledShokanshi;
                 this.EnabledGathererAndCrafter = value.Length > 11 ? value[11] : this.EnabledGathererAndCrafter;
-                this.EnabledDarkKnight = value.Length > 12 ? value[12] : this.EnabledDarkKnight;
-                this.EnabledAstrologian = value.Length > 13 ? value[13] : this.EnabledAstrologian;
-                this.EnabledMachinist = value.Length > 14 ? value[14] : this.EnabledMachinist;
+                this.EnabledMachinist = value.Length > 12 ? value[12] : this.EnabledMachinist;
+                this.EnabledDarkKnight = value.Length > 13 ? value[13] : this.EnabledDarkKnight;
+                this.EnabledAstrologian = value.Length > 14 ? value[14] : this.EnabledAstrologian;
             }
         }
     }

@@ -280,9 +280,9 @@
                 case 29: r = watchTarget.EnabledNinja; break;
                 case 30: r = watchTarget.EnabledNinja; break;
 
-                case 31: r = watchTarget.EnabledDarkKnight; break;
-                case 32: r = watchTarget.EnabledAstrologian; break;
-                case 33: r = watchTarget.EnabledMachinist; break;
+                case 31: r = watchTarget.EnabledMachinist; break;
+                case 32: r = watchTarget.EnabledDarkKnight; break;
+                case 33: r = watchTarget.EnabledAstrologian; break;
 
                 default: r = false; break;
             }
@@ -290,7 +290,7 @@
             // 自分自身か？
             if (targetInfo.ID == playerInfo.ID)
             {
-                r &= watchTarget.EnabledSelf;
+                r = watchTarget.EnabledSelf;
             }
 
             return r;
