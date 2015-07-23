@@ -145,6 +145,12 @@
                     return "そうけんし";
                 case 30:
                     return "にんじゃ";
+                case 31:
+                    return "きこうし";
+                case 32:
+                    return "あんこくきし";
+                case 33:
+                    return "せんせいじゅつし";
                 default:
                     return jobId.ToString();
             }
