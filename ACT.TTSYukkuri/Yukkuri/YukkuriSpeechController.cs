@@ -59,52 +59,49 @@
         public override void Speak(
             string text)
         {
-            lock (lockObject)
+            if (string.IsNullOrWhiteSpace(text))
             {
-                if (string.IsNullOrWhiteSpace(text))
+                return;
+            }
+
+            // 今回の再生データをMD5化したものからwaveファイルの名称を作る
+            var wave = ("Yukkuri" + TTSYukkuriConfig.Default.YukkuriSpeed.ToString() + text).GetMD5() + ".wav";
+            wave = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                @"anoyetta\ACT\" + wave);
+
+            if (!File.Exists(wave))
+            {
+                // よみがなに変換する
+                var textByYomigana = this.ConvertYomigana(text);
+
+                // サーバに送信する
+                var e = new TTSMessage.SpeakEventArg()
                 {
-                    return;
-                }
+                    TTSType = TTSTEngineType.Yukkuri,
+                    TextToSpeack = textByYomigana,
+                    SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
+                    WaveFile = wave
+                };
 
-                // 今回の再生データをMD5化したものからwaveファイルの名称を作る
-                var wave = ("Yukkuri" + TTSYukkuriConfig.Default.YukkuriSpeed.ToString() + text).GetMD5() + ".wav";
-                wave = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    @"anoyetta\ACT\" + wave);
+                TTSServerController.Message.Speak(e);
+            }
 
-                if (!File.Exists(wave))
-                {
-                    // よみがなに変換する
-                    var textByYomigana = this.ConvertYomigana(text);
-
-                    // サーバに送信する
-                    var e = new TTSMessage.SpeakEventArg()
-                    {
-                        TTSType = TTSTEngineType.Yukkuri,
-                        TextToSpeack = textByYomigana,
-                        SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
-                        WaveFile = wave
-                    };
-
-                    TTSServerController.Message.Speak(e);
-                }
-
-                // サブデバイスを再生する
-                // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                {
-                    SoundPlayerWrapper.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
-                        wave,
-                        TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
-                }
-
-                // メインデバイスを再生する
+            // サブデバイスを再生する
+            // サブデバイスは専らVoiceChat用であるため先に鳴動させる
+            if (TTSYukkuriConfig.Default.EnabledSubDevice)
+            {
                 SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
+                    TTSYukkuriConfig.Default.SubDeviceID,
                     wave,
                     TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
             }
+
+            // メインデバイスを再生する
+            SoundPlayerWrapper.Play(
+                TTSYukkuriConfig.Default.MainDeviceID,
+                wave,
+                TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
         }
 
         /// <summary>

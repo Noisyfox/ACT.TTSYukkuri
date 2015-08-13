@@ -47,50 +47,47 @@
         public override void Speak(
             string text)
         {
-            lock (lockObject)
+            if (string.IsNullOrWhiteSpace(text))
             {
-                if (string.IsNullOrWhiteSpace(text))
+                return;
+            }
+
+            // 今回の再生データをMD5化したものからwaveファイルの名称を作る
+            var wave = ("Sasara" + TTSYukkuriConfig.Default.SasaraSettings.GetMD5() + text).GetMD5() + ".wav";
+            wave = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                @"anoyetta\ACT\" + wave);
+
+            if (!File.Exists(wave))
+            {
+                // 初期化する
+                this.Initialize();
+
+                // 音声waveファイルを生成する
+                var e = new TTSMessage.SpeakEventArg()
                 {
-                    return;
-                }
+                    TTSType = TTSTEngineType.CeVIO,
+                    TextToSpeack = text,
+                    WaveFile = wave
+                };
 
-                // 今回の再生データをMD5化したものからwaveファイルの名称を作る
-                var wave = ("Sasara" + TTSYukkuriConfig.Default.SasaraSettings.GetMD5() + text).GetMD5() + ".wav";
-                wave = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    @"anoyetta\ACT\" + wave);
+                TTSServerController.Message.Speak(e);
+            }
 
-                if (!File.Exists(wave))
-                {
-                    // 初期化する
-                    this.Initialize();
-
-                    // 音声waveファイルを生成する
-                    var e = new TTSMessage.SpeakEventArg()
-                    {
-                        TTSType = TTSTEngineType.CeVIO,
-                        TextToSpeack = text,
-                        WaveFile = wave
-                    };
-
-                    TTSServerController.Message.Speak(e);
-                }
-
-                // サブデバイスで再生する
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                {
-                    SoundPlayerWrapper.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
-                        wave,
-                        (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
-                }
-
-                // メインデバイスで再生する
+            // サブデバイスで再生する
+            if (TTSYukkuriConfig.Default.EnabledSubDevice)
+            {
                 SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
+                    TTSYukkuriConfig.Default.SubDeviceID,
                     wave,
                     (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
             }
+
+            // メインデバイスで再生する
+            SoundPlayerWrapper.Play(
+                TTSYukkuriConfig.Default.MainDeviceID,
+                wave,
+                (int)TTSYukkuriConfig.Default.SasaraSettings.Onryo);
         }
     }
 }

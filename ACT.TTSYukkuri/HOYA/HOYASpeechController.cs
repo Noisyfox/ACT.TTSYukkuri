@@ -42,47 +42,44 @@
         public override void Speak(
             string text)
         {
-            lock (lockObject)
+            if (string.IsNullOrWhiteSpace(text))
             {
-                if (string.IsNullOrWhiteSpace(text))
+                return;
+            }
+
+            // 現在の条件からwaveファイル名を生成する
+            var wave = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                @"anoyetta\ACT\" + ("HOYA" + TTSYukkuriConfig.Default.HOYASettings.ToString() + text).GetMD5() + ".wav");
+
+            if (!File.Exists(wave))
+            {
+                if (string.IsNullOrWhiteSpace(
+                    TTSYukkuriConfig.Default.HOYASettings.APIKey))
                 {
                     return;
                 }
 
-                // 現在の条件からwaveファイル名を生成する
-                var wave = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    @"anoyetta\ACT\" + ("HOYA" + TTSYukkuriConfig.Default.HOYASettings.ToString() + text).GetMD5() + ".wav");
+                this.CreateWave(
+                    text,
+                    wave);
+            }
 
-                if (!File.Exists(wave))
-                {
-                    if (string.IsNullOrWhiteSpace(
-                        TTSYukkuriConfig.Default.HOYASettings.APIKey))
-                    {
-                        return;
-                    }
-
-                    this.CreateWave(
-                        text,
-                        wave);
-                }
-
-                // サブデバイスを再生する
-                // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                {
-                    SoundPlayerWrapper.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
-                        wave,
-                        100);
-                }
-
-                // メインデバイスを再生する
+            // サブデバイスを再生する
+            // サブデバイスは専らVoiceChat用であるため先に鳴動させる
+            if (TTSYukkuriConfig.Default.EnabledSubDevice)
+            {
                 SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
+                    TTSYukkuriConfig.Default.SubDeviceID,
                     wave,
                     100);
             }
+
+            // メインデバイスを再生する
+            SoundPlayerWrapper.Play(
+                TTSYukkuriConfig.Default.MainDeviceID,
+                wave,
+                100);
         }
 
         /// <summary>

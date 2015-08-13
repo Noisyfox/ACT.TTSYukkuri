@@ -50,44 +50,41 @@
         public override void Speak(
             string text)
         {
-            lock (lockObject)
+            if (string.IsNullOrWhiteSpace(text))
             {
-                if (string.IsNullOrWhiteSpace(text))
-                {
-                    return;
-                }
+                return;
+            }
 
-                // テキストをユーザ辞書で置き換える
-                text = this.ReplaceByUserDictionary(text);
+            // テキストをユーザ辞書で置き換える
+            text = this.ReplaceByUserDictionary(text);
 
-                // 現在の条件からwaveファイル名を生成する
-                var wave = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    @"anoyetta\ACT\" + ("OpenJTalk" + TTSYukkuriConfig.Default.OpenJTalkSettings.ToString() + text).GetMD5() + ".wav");
+            // 現在の条件からwaveファイル名を生成する
+            var wave = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                @"anoyetta\ACT\" + ("OpenJTalk" + TTSYukkuriConfig.Default.OpenJTalkSettings.ToString() + text).GetMD5() + ".wav");
 
-                if (!File.Exists(wave))
-                {
-                    this.CreateWave(
-                        text,
-                        wave);
-                }
+            if (!File.Exists(wave))
+            {
+                this.CreateWave(
+                    text,
+                    wave);
+            }
 
-                // サブデバイスを再生する
-                // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                {
-                    SoundPlayerWrapper.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
-                        wave,
-                        TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
-                }
-
-                // メインデバイスを再生する
+            // サブデバイスを再生する
+            // サブデバイスは専らVoiceChat用であるため先に鳴動させる
+            if (TTSYukkuriConfig.Default.EnabledSubDevice)
+            {
                 SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
+                    TTSYukkuriConfig.Default.SubDeviceID,
                     wave,
                     TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
             }
+
+            // メインデバイスを再生する
+            SoundPlayerWrapper.Play(
+                TTSYukkuriConfig.Default.MainDeviceID,
+                wave,
+                TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
         }
 
         /// <summary>
