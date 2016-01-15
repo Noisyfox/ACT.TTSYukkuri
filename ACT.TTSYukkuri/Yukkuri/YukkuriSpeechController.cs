@@ -128,6 +128,7 @@
             yomigana = yomigana.Replace("ヴィ", "ビ");
             yomigana = yomigana.Replace("ヴェ", "ベ");
             yomigana = yomigana.Replace("ヴォ", "ボ");
+            yomigana = yomigana.Replace("ヴ", "ブ");
 
             yomigana = yomigana.Replace("フュ", "ヒュ");
             yomigana = yomigana.Replace("スェ", "スエ");
