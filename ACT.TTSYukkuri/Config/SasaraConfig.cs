@@ -23,6 +23,7 @@
             this.Hayasa = 50;
             this.Takasa = 50;
             this.Seishitsu = 50;
+            this.Yokuyo = 50;
         }
 
         /// <summary>
@@ -56,6 +57,11 @@
         public uint Seishitsu { get; set; }
 
         /// <summary>
+        /// 抑揚
+        /// </summary>
+        public uint Yokuyo { get; set; }
+
+        /// <summary>
         /// 内容をMD5化する
         /// </summary>
         /// <returns></returns>
@@ -67,6 +73,7 @@
             sb.AppendLine(this.Hayasa.ToString());
             sb.AppendLine(this.Takasa.ToString());
             sb.AppendLine(this.Seishitsu.ToString());
+            sb.AppendLine(this.Yokuyo.ToString());
 
             if (this.Components != null)
             {

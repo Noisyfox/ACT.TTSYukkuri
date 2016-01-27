@@ -133,11 +133,17 @@
                 this.ValidateParameter(s1 as TextBox);
             };
 
+            this.yokuyoTextBox.Leave += (s1, e1) =>
+            {
+                this.ValidateParameter(s1 as TextBox);
+            };
+
             // 設定をロードする
             this.onryoTextBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Onryo.ToString();
             this.hayasaTextBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Hayasa.ToString();
             this.takasaTextBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Takasa.ToString();
             this.seishitsuTextBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu.ToString();
+            this.yokuyoTextBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Yokuyo.ToString();
             this.componentsTable = TTSYukkuriConfig.Default.SasaraSettings.Components;
             this.castComboBox.Text = TTSYukkuriConfig.Default.SasaraSettings.Cast;
 
@@ -222,6 +228,7 @@
             TTSYukkuriConfig.Default.SasaraSettings.Hayasa = uint.Parse(this.hayasaTextBox.Text);
             TTSYukkuriConfig.Default.SasaraSettings.Takasa = uint.Parse(this.takasaTextBox.Text);
             TTSYukkuriConfig.Default.SasaraSettings.Seishitsu = uint.Parse(this.seishitsuTextBox.Text);
+            TTSYukkuriConfig.Default.SasaraSettings.Yokuyo = uint.Parse(this.yokuyoTextBox.Text);
 
             TTSYukkuriConfig.Default.SasaraSettings.Cast = this.castComboBox.Text;
             TTSYukkuriConfig.Default.SasaraSettings.Components = this.componentsTable;

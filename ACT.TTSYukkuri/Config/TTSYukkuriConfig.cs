@@ -223,6 +223,7 @@
             talker.Speed = TTSYukkuriConfig.Default.SasaraSettings.Hayasa;
             talker.Tone = TTSYukkuriConfig.Default.SasaraSettings.Takasa;
             talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
+            talker.ToneScale = TTSYukkuriConfig.Default.SasaraSettings.Yokuyo;
 
             var components = new List<SasaraTalkerComponent>();
             foreach (var c in TTSYukkuriConfig.Default.SasaraSettings.Components)

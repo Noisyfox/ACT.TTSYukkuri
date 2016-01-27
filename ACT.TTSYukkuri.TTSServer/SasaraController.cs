@@ -99,6 +99,7 @@
             settings.Tone = talker.Tone;
             settings.Alpha = talker.Alpha;
             settings.Cast = talker.Cast;
+            settings.ToneScale = talker.ToneScale;
             settings.AvailableCasts = Talker.AvailableCasts;
 
             var compornents = new List<SasaraTalkerComponent>();
@@ -132,13 +133,15 @@
                 talker.Volume != settings.Volume ||
                 talker.Speed != settings.Speed ||
                 talker.Tone != settings.Tone ||
-                talker.Alpha != settings.Alpha)
+                talker.Alpha != settings.Alpha ||
+                talker.ToneScale != settings.ToneScale)
             {
                 talker.Cast = settings.Cast;
                 talker.Volume = settings.Volume;
                 talker.Speed = settings.Speed;
                 talker.Tone = settings.Tone;
                 talker.Alpha = settings.Alpha;
+                talker.ToneScale = settings.ToneScale;
             }
 
             if (settings.Components != null)

@@ -43,6 +43,8 @@
             this.hayasaTextBox = new System.Windows.Forms.TextBox();
             this.takasaTextBox = new System.Windows.Forms.TextBox();
             this.seishitsuTextBox = new System.Windows.Forms.TextBox();
+            this.yokuyoTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.kanjoDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -190,10 +192,32 @@
             this.seishitsuTextBox.Text = "0";
             this.seishitsuTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // yokuyoTextBox
+            // 
+            this.yokuyoTextBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.yokuyoTextBox.Location = new System.Drawing.Point(49, 307);
+            this.yokuyoTextBox.MaxLength = 3;
+            this.yokuyoTextBox.Name = "yokuyoTextBox";
+            this.yokuyoTextBox.Size = new System.Drawing.Size(59, 19);
+            this.yokuyoTextBox.TabIndex = 12;
+            this.yokuyoTextBox.Text = "0";
+            this.yokuyoTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 310);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 12);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "抑揚";
+            // 
             // SasaraSettingsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.yokuyoTextBox);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.seishitsuTextBox);
             this.Controls.Add(this.takasaTextBox);
             this.Controls.Add(this.hayasaTextBox);
@@ -206,7 +230,7 @@
             this.Controls.Add(this.kanjoDataGridView);
             this.Controls.Add(this.label1);
             this.Name = "SasaraSettingsPanel";
-            this.Size = new System.Drawing.Size(368, 317);
+            this.Size = new System.Drawing.Size(368, 345);
             this.Load += new System.EventHandler(this.SasaraSettingsPanel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.kanjoDataGridView)).EndInit();
             this.ResumeLayout(false);
@@ -229,5 +253,7 @@
         private System.Windows.Forms.TextBox seishitsuTextBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn KanjoColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn AtaiColumn;
+        private System.Windows.Forms.TextBox yokuyoTextBox;
+        private System.Windows.Forms.Label label6;
     }
 }
