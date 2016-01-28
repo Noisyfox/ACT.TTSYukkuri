@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Runtime.InteropServices;
 
     using ACT.TTSYukkuri.TTSServer.Properties;
@@ -41,7 +42,15 @@
 
             if (!File.Exists(DllName))
             {
-                File.WriteAllBytes(DllName, Resources.AquesTalk);
+                var dllArchivesName = DllName.Replace(".dll", ".zip");
+                File.WriteAllBytes(dllArchivesName, Resources.AquesTalkZip);
+
+                using (var zip = ZipFile.OpenRead(dllArchivesName))
+                {
+                    zip.ExtractToDirectory(Path.GetDirectoryName(DllName));
+                }
+
+                File.Delete(dllArchivesName);
             }
 
             this.lib = new UnmanagedLibrary(DllName);
