@@ -47,11 +47,6 @@
                 this.lib.Dispose();
                 this.lib = null;
             }
-
-            if (File.Exists(DllName))
-            {
-                File.Delete(DllName);
-            }
         }
 
         public void OutputWaveToFile(
