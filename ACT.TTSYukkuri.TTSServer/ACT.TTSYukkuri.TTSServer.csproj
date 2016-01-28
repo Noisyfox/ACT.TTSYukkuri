@@ -79,7 +79,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Resources\AquesTalk.zip" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ACT.TTSYukkuri.TTSServer.Core\ACT.TTSYukkuri.TTSServer.Core.csproj">
@@ -94,7 +93,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AquesTalk.dll" />
+    <Content Include="AquesTalk.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

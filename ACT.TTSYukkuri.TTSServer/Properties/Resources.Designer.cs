@@ -59,15 +59,5 @@ namespace ACT.TTSYukkuri.TTSServer.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   型 System.Byte[] のローカライズされたリソースを検索します。
-        /// </summary>
-        internal static byte[] AquesTalkZip {
-            get {
-                object obj = ResourceManager.GetObject("AquesTalkZip", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }
