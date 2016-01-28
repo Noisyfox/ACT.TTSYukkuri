@@ -19,6 +19,7 @@ ACT.TTSYukkuri.TTSServer.Core.dll
 ACT.TTSYukkuri.TTSServer.exe  
 ACT.TTSYukkuri.TTSServer.exe.config  
 NAudio.dll  
+AquesTalk.dll  
 をACTのインストールディレクトリにコピーします  
 その後、プラグインとしてACT.TTSYukkuri.dllを追加してください
   
