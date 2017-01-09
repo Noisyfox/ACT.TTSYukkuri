@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 #endregion
 
-
 namespace ACT.TTSYukkuri.TTSServer
 {
     /// <summary>
@@ -83,7 +82,6 @@ namespace ACT.TTSYukkuri.TTSServer
         }
 
         #endregion
-
 
         /// <summary>
         /// Constructor to load a dll and be responsible for freeing it.
@@ -149,7 +147,6 @@ namespace ACT.TTSYukkuri.TTSServer
 
             return (TDelegate)o;
         }
-
 
         #region IDisposable Members
 
