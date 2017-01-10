@@ -12,20 +12,9 @@
         ISpeechController
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// TTSの設定Panel
         /// </summary>
-        public override UserControl TTSSettingsPanel
-        {
-            get
-            {
-                return HOYASettingsPanel.Default;
-            }
-        }
+        public override UserControl TTSSettingsPanel => HOYASettingsPanel.Default;
 
         /// <summary>
         /// 初期化する
@@ -52,17 +41,20 @@
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 @"anoyetta\ACT\" + ("HOYA" + TTSYukkuriConfig.Default.HOYASettings.ToString() + text).GetMD5() + ".wav");
 
-            if (!File.Exists(wave))
+            lock (this)
             {
-                if (string.IsNullOrWhiteSpace(
-                    TTSYukkuriConfig.Default.HOYASettings.APIKey))
+                if (!File.Exists(wave))
                 {
-                    return;
-                }
+                    if (string.IsNullOrWhiteSpace(
+                        TTSYukkuriConfig.Default.HOYASettings.APIKey))
+                    {
+                        return;
+                    }
 
-                this.CreateWave(
-                    text,
-                    wave);
+                    this.CreateWave(
+                        text,
+                        wave);
+                }
             }
 
             // サブデバイスを再生する

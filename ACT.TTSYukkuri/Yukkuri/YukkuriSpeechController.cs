@@ -19,11 +19,6 @@
         ISpeechController
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// 正規表現A-Z
         /// </summary>
         private static Regex regexAZ = new Regex(@"[a-zA-Zａ-ｚＡ-Ｚ]+", RegexOptions.Compiled);
@@ -64,19 +59,22 @@
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 @"anoyetta\ACT\" + wave);
 
-            if (!File.Exists(wave))
+            lock (this)
             {
-                // よみがなに変換する
-                var textByYomigana = this.ConvertYomigana(text);
-
-                // サーバに送信する
-                TTSClient.Instance.Channel.Speak(new Speak()
+                if (!File.Exists(wave))
                 {
-                    TTSEngine = TTSEngine.Yukkuri,
-                    TextToSpeak = textByYomigana,
-                    SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
-                    WaveFileName = wave
-                });
+                    // よみがなに変換する
+                    var textByYomigana = this.ConvertYomigana(text);
+
+                    // サーバに送信する
+                    TTSClient.Instance.Channel.Speak(new Speak()
+                    {
+                        TTSEngine = TTSEngine.Yukkuri,
+                        TextToSpeak = textByYomigana,
+                        SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
+                        WaveFileName = wave
+                    });
+                }
             }
 
             // サブデバイスを再生する

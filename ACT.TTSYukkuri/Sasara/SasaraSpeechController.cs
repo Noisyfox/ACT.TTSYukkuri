@@ -16,11 +16,6 @@
         ISpeechController
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// TTSの設定Panel
         /// </summary>
         public override UserControl TTSSettingsPanel => SasaraSettingsPanel.Default;
@@ -52,18 +47,21 @@
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 @"anoyetta\ACT\" + wave);
 
-            if (!File.Exists(wave))
+            lock (this)
             {
-                // 初期化する
-                this.Initialize();
-
-                // 音声waveファイルを生成する
-                TTSClient.Instance.Channel.Speak(new Speak()
+                if (!File.Exists(wave))
                 {
-                    TTSEngine = TTSEngine.CeVIO,
-                    TextToSpeak = text,
-                    WaveFileName = wave
-                });
+                    // 初期化する
+                    this.Initialize();
+
+                    // 音声waveファイルを生成する
+                    TTSClient.Instance.Channel.Speak(new Speak()
+                    {
+                        TTSEngine = TTSEngine.CeVIO,
+                        TextToSpeak = text,
+                        WaveFileName = wave
+                    });
+                }
             }
 
             // サブデバイスで再生する

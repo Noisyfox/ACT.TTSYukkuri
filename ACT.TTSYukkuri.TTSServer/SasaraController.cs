@@ -13,18 +13,7 @@
     {
         private static SasaraController instance;
 
-        public static SasaraController Default
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new SasaraController();
-                }
-
-                return instance;
-            }
-        }
+        public static SasaraController Default => instance ?? (instance = new SasaraController());
 
         private Talker talker;
 

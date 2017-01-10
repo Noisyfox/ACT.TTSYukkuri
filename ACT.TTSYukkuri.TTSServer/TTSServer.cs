@@ -8,31 +8,26 @@
     public class TTSServer :
         TTSServerBase<TTSServer>
     {
-        private static object lockObject = new object();
-
         private bool isSasaraStarted;
 
         public override void Speak(Speak speakModel)
         {
-            lock (lockObject)
+            switch (speakModel.TTSEngine)
             {
-                switch (speakModel.TTSEngine)
-                {
-                    case TTSEngine.Yukkuri:
-                        YukkuriController.Default.OutputWaveToFile(
-                            speakModel.TextToSpeak,
-                            (ushort)speakModel.SpeakSpeed,
-                            speakModel.WaveFileName);
-                        break;
+                case TTSEngine.Yukkuri:
+                    YukkuriController.Default.OutputWaveToFile(
+                        speakModel.TextToSpeak,
+                        (ushort)speakModel.SpeakSpeed,
+                        speakModel.WaveFileName);
+                    break;
 
-                    case TTSEngine.CeVIO:
-                        SasaraController.Default.OutputWaveToFile(
-                            speakModel.TextToSpeak,
-                            speakModel.WaveFileName);
+                case TTSEngine.CeVIO:
+                    SasaraController.Default.OutputWaveToFile(
+                        speakModel.TextToSpeak,
+                        speakModel.WaveFileName);
 
-                        isSasaraStarted = true;
-                        break;
-                }
+                    isSasaraStarted = true;
+                    break;
             }
         }
 
@@ -51,20 +46,14 @@
 
         public override void StartSasara()
         {
-            lock (lockObject)
-            {
-                SasaraController.Default.StartSasara();
-                isSasaraStarted = true;
-            }
+            SasaraController.Default.StartSasara();
+            isSasaraStarted = true;
         }
 
         public override void EndSasara()
         {
-            lock (lockObject)
-            {
-                SasaraController.Default.CloseSasara();
-                isSasaraStarted = false;
-            }
+            SasaraController.Default.CloseSasara();
+            isSasaraStarted = false;
         }
 
         public override void End()
@@ -77,8 +66,7 @@
 
                 if (this.isSasaraStarted)
                 {
-                    SasaraController.Default.CloseSasara();
-                    isSasaraStarted = false;
+                    this.EndSasara();
                 }
             }
             catch (Exception ex)

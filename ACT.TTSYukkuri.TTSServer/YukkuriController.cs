@@ -11,18 +11,7 @@
 
         private static YukkuriController instance;
 
-        public static YukkuriController Default
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new YukkuriController();
-                }
-
-                return instance;
-            }
-        }
+        public static YukkuriController Default => instance ?? (instance = new YukkuriController());
 
         private readonly string DllName = "AquesTalk.dll";
 

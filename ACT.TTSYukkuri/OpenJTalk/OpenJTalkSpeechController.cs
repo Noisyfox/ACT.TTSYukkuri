@@ -15,20 +15,9 @@
         ISpeechController
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// TTSの設定Panel
         /// </summary>
-        public override UserControl TTSSettingsPanel
-        {
-            get
-            {
-                return OpenJTalkSettingsPanel.Default;
-            }
-        }
+        public override UserControl TTSSettingsPanel => OpenJTalkSettingsPanel.Default;
 
         /// <summary>
         /// ユーザ辞書
@@ -63,11 +52,14 @@
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 @"anoyetta\ACT\" + ("OpenJTalk" + TTSYukkuriConfig.Default.OpenJTalkSettings.ToString() + text).GetMD5() + ".wav");
 
-            if (!File.Exists(wave))
+            lock (this)
             {
-                this.CreateWave(
-                    text,
-                    wave);
+                if (!File.Exists(wave))
+                {
+                    this.CreateWave(
+                        text,
+                        wave);
+                }
             }
 
             // サブデバイスを再生する
