@@ -78,6 +78,7 @@
                 if (this.isSasaraStarted)
                 {
                     SasaraController.Default.CloseSasara();
+                    isSasaraStarted = false;
                 }
             }
             catch (Exception ex)
