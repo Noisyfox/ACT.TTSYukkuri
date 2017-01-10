@@ -7,8 +7,8 @@
     using System.Xml.Serialization;
 
     using ACT.TTSYukkuri.SoundPlayer;
-    using ACT.TTSYukkuri.TTSServer;
     using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer.Core.Models;
 
     /// <summary>
     /// TTSYukkuri設定
@@ -239,10 +239,7 @@
             talker.Components = components.ToArray();
 
             // ささらに反映する
-            TTSServerController.Message.SetSasaraSettings(new TTSMessage.SasaraSettingsEventArg()
-            {
-                Settings = talker
-            });
+            TTSClient.Instance.Channel.SetSasaraSettings(talker);
         }
     }
 }

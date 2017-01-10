@@ -4,7 +4,7 @@
     using System.IO;
     using System.Linq;
 
-    using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer.Core.Models;
     using ACT.TTSYukkuri.TTSServer.Properties;
     using CeVIO.Talk.RemoteService;
     using NAudio.Wave;

@@ -5,8 +5,8 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.TTSServer;
     using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer.Core.Models;
 
     /// <summary>
     /// さとうささらスピーチコントローラ
@@ -36,7 +36,7 @@
         /// </summary>
         public override void Initialize()
         {
-            TTSServerController.Message.StartSasara();
+            TTSClient.Instance.Channel.StartSasara();
             TTSYukkuriConfig.Default.SetSasara();
         }
 
@@ -64,14 +64,12 @@
                 this.Initialize();
 
                 // 音声waveファイルを生成する
-                var e = new TTSMessage.SpeakEventArg()
+                TTSClient.Instance.Channel.Speak(new Speak()
                 {
-                    TTSType = TTSTEngineType.CeVIO,
-                    TextToSpeack = text,
-                    WaveFile = wave
-                };
-
-                TTSServerController.Message.Speak(e);
+                    TTSEngine = TTSEngine.CeVIO,
+                    TextToSpeak = text,
+                    WaveFileName = wave
+                });
             }
 
             // サブデバイスで再生する

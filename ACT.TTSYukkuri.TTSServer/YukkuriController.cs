@@ -4,8 +4,6 @@
     using System.IO;
     using System.Runtime.InteropServices;
 
-    using ACT.TTSYukkuri.TTSServer.Properties;
-
     public class YukkuriController
     {
         private delegate IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);

@@ -5,40 +5,19 @@
 
 namespace ACT.TTSYukkuri.TTSServer
 {
-    using System;
     using System.Diagnostics;
-    using System.Runtime.Remoting.Channels;
-    using System.Runtime.Remoting.Channels.Ipc;
-    using System.Threading;
+    using System.IO;
 
     using ACT.TTSYukkuri.TTSServer.Core;
 
     public static class TTSServerController
     {
-        private static IpcClientChannel channel;
+        private static Process serverProcess;
 
-        public static TTSMessage Message
-        {
-            get;
-            private set;
-        }
-
-        private static Process ServerProcess { get; set; }
-
-        private static string ServerProcessPath
-        {
-            get
-            {
-                var p = string.Empty;
-
-                var dir = TTSYukkuriPlugin.PluginDirectory;
-                p = System.IO.Path.Combine(
-                    dir,
-                    @"ACT.TTSYukkuri.TTSServer.exe");
-
-                return p;
-            }
-        }
+        private static string ServerProcessPath =>
+            Path.Combine(
+                TTSYukkuriPlugin.PluginDirectory,
+                @"ACT.TTSYukkuri.TTSServer.exe");
 
         public static void Start()
         {
@@ -61,62 +40,28 @@ namespace ACT.TTSYukkuri.TTSServer
                 WindowStyle = ProcessWindowStyle.Hidden,
             };
 
-            ServerProcess = Process.Start(pi);
+            serverProcess = Process.Start(pi);
 #endif
-            channel = new IpcClientChannel();
-            ChannelServices.RegisterChannel(channel, true);
-
-            Message = (TTSMessage)Activator.GetObject(typeof(TTSMessage), "ipc://TTSYukkuriChannel/message");
-
-            // 通信の確立を待つ
-            // 200ms x 150 = 30s
-            var ready = false;
-            var retryCount = 0;
-            while (!ready)
-            {
-                try
-                {
-                    Thread.Sleep(200);
-                    ready = Message.IsReady();
-                }
-                catch (Exception ex)
-                {
-                    retryCount++;
-
-                    if (retryCount >= 150)
-                    {
-                        Message = null;
-                        throw new Exception(
-                            "TT制御プロセスへの接続がタイムアウトしました。",
-                            ex);
-                    }
-                }
-            }
+            // TTSサービスへ接続する
+            TTSClient.Instance.Open();
         }
 
         public static void End()
         {
-            if (Message != null)
+            if (TTSClient.Instance.Channel != null)
             {
-                Message.End();
-                Message = null;
-
-                if (channel != null)
-                {
-                    ChannelServices.UnregisterChannel(channel);
-                    channel = null;
-                }
+                TTSClient.Instance.Channel.End();
             }
 
-            if (ServerProcess != null)
+            if (serverProcess != null)
             {
-                if (!ServerProcess.HasExited)
+                if (!serverProcess.HasExited)
                 {
-                    ServerProcess.Kill();
+                    serverProcess.Kill();
                 }
 
-                ServerProcess.Dispose();
-                ServerProcess = null;
+                serverProcess.Dispose();
+                serverProcess = null;
             }
         }
     }

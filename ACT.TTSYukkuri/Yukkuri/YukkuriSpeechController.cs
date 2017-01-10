@@ -6,8 +6,8 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.TTSServer;
     using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer.Core.Models;
     using Advanced_Combat_Tracker;
     using Microsoft.VisualBasic;
 
@@ -76,15 +76,13 @@
                 var textByYomigana = this.ConvertYomigana(text);
 
                 // サーバに送信する
-                var e = new TTSMessage.SpeakEventArg()
+                TTSClient.Instance.Channel.Speak(new Speak()
                 {
-                    TTSType = TTSTEngineType.Yukkuri,
-                    TextToSpeack = textByYomigana,
+                    TTSEngine = TTSEngine.Yukkuri,
+                    TextToSpeak = textByYomigana,
                     SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
-                    WaveFile = wave
-                };
-
-                TTSServerController.Message.Speak(e);
+                    WaveFileName = wave
+                });
             }
 
             // サブデバイスを再生する

@@ -8,7 +8,7 @@
 
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.SoundPlayer;
-    using ACT.TTSYukkuri.TTSServer;
+    using ACT.TTSYukkuri.TTSServer.Core;
     using Advanced_Combat_Tracker;
 
     /// <summary>
@@ -226,11 +226,11 @@
                 KanjiTranslator.Default.Initialize();
 
                 // TTSサーバを開始する
-                TTSServerController.Start();
+                TTSClient.Instance.Open();
 
                 Application.ApplicationExit += (s, e) =>
                 {
-                    TTSServerController.End();
+                    TTSClient.Instance.Channel.End();
                 };
 
                 // TTSを初期化する
@@ -294,7 +294,7 @@
                 TTSYukkuriConfig.Default.Save();
 
                 // TTSサーバを終了する
-                TTSServerController.End();
+                TTSClient.Instance.Channel.End();
 
                 // プレイヤを開放する
                 NAudioPlayer.DisposePlayers();

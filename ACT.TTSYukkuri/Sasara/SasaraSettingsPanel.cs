@@ -8,6 +8,7 @@
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.TTSServer;
     using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer.Core.Models;
 
     /// <summary>
     /// ささらTTS設定Panel
@@ -68,7 +69,7 @@
         /// <param name="e">イベント引数</param>
         private void SasaraSettingsPanel_Load(object sender, EventArgs e)
         {
-            this.talker = TTSServerController.Message.GetSasaraSettings();
+            this.talker = TTSClient.Instance.Channel.GetSasaraSettings();
 
             // キャストコンボボックスを設定する
             var casts = this.talker.AvailableCasts;
@@ -77,12 +78,9 @@
             {
                 this.talker.Cast = this.castComboBox.Text;
 
-                TTSServerController.Message.SetSasaraSettings(new TTSMessage.SasaraSettingsEventArg() 
-                {
-                    Settings = this.talker
-                });
+                TTSClient.Instance.Channel.SetSasaraSettings(this.talker);
 
-                this.talker = TTSServerController.Message.GetSasaraSettings();
+                this.talker = TTSClient.Instance.Channel.GetSasaraSettings();
 
                 var components = this.talker.Components;
                 for (int i = 0; i < components.Length; i++)

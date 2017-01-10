@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ACT.TTSYukkuri.TTSServer.Core</RootNamespace>
     <AssemblyName>ACT.TTSYukkuri.TTSServer.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,8 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\SasaraTalkerComponent.cs" />
+    <Compile Include="Models\Speak.cs" />
+    <Compile Include="Models\TTSEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TTSMessage.cs" />
+    <Compile Include="Models\SasaraSettings.cs" />
+    <Compile Include="TTSClient.cs" />
+    <Compile Include="TTSServerBase.cs" />
+    <Compile Include="ITTSServerContract.cs" />
+    <Compile Include="TTSServerConstants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
