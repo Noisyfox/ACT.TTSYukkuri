@@ -23,13 +23,7 @@
         /// <summary>
         /// TTSの設定Panel
         /// </summary>
-        public override UserControl TTSSettingsPanel
-        {
-            get
-            {
-                return SasaraSettingsPanel.Default;
-            }
-        }
+        public override UserControl TTSSettingsPanel => SasaraSettingsPanel.Default;
 
         /// <summary>
         /// 初期化する

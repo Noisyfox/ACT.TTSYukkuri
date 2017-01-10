@@ -36,13 +36,7 @@
         /// <summary>
         /// TTSの設定Panel
         /// </summary>
-        public override UserControl TTSSettingsPanel
-        {
-            get
-            {
-                return YukkuriSettingsPanel.Default;
-            }
-        }
+        public override UserControl TTSSettingsPanel => YukkuriSettingsPanel.Default;
 
         /// <summary>
         /// 初期化する
