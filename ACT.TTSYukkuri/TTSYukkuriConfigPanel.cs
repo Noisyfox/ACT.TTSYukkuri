@@ -41,6 +41,12 @@
                     this.LoadTTS();
                 }
             };
+
+            this.PlayTestButton.Click += (s, e) =>
+            {
+                TTSYukkuriPlugin.Instance.Speak(
+                    this.TestTTSTextBox.Text);
+            };
         }
 
         /// <summary>

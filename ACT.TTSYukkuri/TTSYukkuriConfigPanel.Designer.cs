@@ -72,6 +72,10 @@
             this.label11 = new System.Windows.Forms.Label();
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.WaveCacheClearCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.TestTTSTextBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.PlayTestButton = new System.Windows.Forms.Button();
             this.optionGroupBox.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.watchHPTabPage.SuspendLayout();
@@ -79,6 +83,7 @@
             this.watchTPTabPage.SuspendLayout();
             this.saiseiDeviceGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaveVolTrackBar)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -111,9 +116,9 @@
             // 
             this.ttsSettingsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 126);
+            this.ttsSettingsGroupBox.Location = new System.Drawing.Point(5, 194);
             this.ttsSettingsGroupBox.Name = "ttsSettingsGroupBox";
-            this.ttsSettingsGroupBox.Size = new System.Drawing.Size(463, 505);
+            this.ttsSettingsGroupBox.Size = new System.Drawing.Size(463, 437);
             this.ttsSettingsGroupBox.TabIndex = 3;
             this.ttsSettingsGroupBox.TabStop = false;
             this.ttsSettingsGroupBox.Text = "TTSの設定";
@@ -578,10 +583,48 @@
             this.WaveCacheClearCheckBox.Text = "終了時にキャッシュしたTTS用waveファイルを削除する";
             this.WaveCacheClearCheckBox.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.PlayTestButton);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.TestTTSTextBox);
+            this.groupBox1.Location = new System.Drawing.Point(5, 126);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(463, 62);
+            this.groupBox1.TabIndex = 24;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "テスト";
+            // 
+            // TestTTSTextBox
+            // 
+            this.TestTTSTextBox.Location = new System.Drawing.Point(9, 35);
+            this.TestTTSTextBox.Name = "TestTTSTextBox";
+            this.TestTTSTextBox.Size = new System.Drawing.Size(396, 19);
+            this.TestTTSTextBox.TabIndex = 0;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(7, 19);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(76, 12);
+            this.label13.TabIndex = 1;
+            this.label13.Text = "Text to speak";
+            // 
+            // PlayTestButton
+            // 
+            this.PlayTestButton.Location = new System.Drawing.Point(408, 33);
+            this.PlayTestButton.Name = "PlayTestButton";
+            this.PlayTestButton.Size = new System.Drawing.Size(49, 23);
+            this.PlayTestButton.TabIndex = 2;
+            this.PlayTestButton.Text = "Play";
+            this.PlayTestButton.UseVisualStyleBackColor = true;
+            // 
             // TTSYukkuriConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.WaveCacheClearCheckBox);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.saiseiDeviceGroupBox);
@@ -605,6 +648,8 @@
             this.saiseiDeviceGroupBox.ResumeLayout(false);
             this.saiseiDeviceGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaveVolTrackBar)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -654,5 +699,9 @@
         private System.Windows.Forms.CheckBox WaveCacheClearCheckBox;
         private System.Windows.Forms.ComboBox PlayerComboBox;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox TestTTSTextBox;
+        private System.Windows.Forms.Button PlayTestButton;
     }
 }

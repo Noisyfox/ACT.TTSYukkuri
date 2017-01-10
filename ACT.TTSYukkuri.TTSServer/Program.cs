@@ -6,13 +6,10 @@
 
     public static class Program
     {
-        private static TTSServer server;
-
         public static void Main(string[] args)
         {
             // WCFサービスホストを開始する
-            server = new TTSServer();
-            server.OpenServer();
+            TTSServer.Instance.OpenServer();
 
             Console.WriteLine(
                 $"TTSServer opened. uri:{TTSServerConstants.ServiceEndPointUri}");
@@ -21,7 +18,7 @@
             Console.ReadLine();
 
             // WCFサービスホストを終了する
-            server.End();
+            TTSServer.Instance.End();
 
             Console.WriteLine(
                 "TTSServer closed.");

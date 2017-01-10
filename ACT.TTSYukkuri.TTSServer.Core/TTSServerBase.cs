@@ -18,6 +18,10 @@
 
         #endregion
 
+        protected TTSServerBase()
+        {
+        }
+
         public ServiceHost Host { get; private set; }
 
         public bool IsReady()

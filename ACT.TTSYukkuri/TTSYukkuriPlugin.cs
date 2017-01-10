@@ -27,6 +27,8 @@
             private set;
         }
 
+        public static TTSYukkuriPlugin Instance { get; private set; }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -70,6 +72,8 @@
 
                 return null;
             };
+
+            Instance = this;
         }
 
         /// <summary>
@@ -227,11 +231,6 @@
 
                 // TTSサーバを開始する
                 TTSClient.Instance.Open();
-
-                Application.ApplicationExit += (s, e) =>
-                {
-                    TTSClient.Instance.Channel.End();
-                };
 
                 // TTSを初期化する
                 TTSYukkuriConfig.Default.Load();
