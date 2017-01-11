@@ -9,7 +9,7 @@ ACTのTTSをゆっくりさんに置き換えます
 使い方
 --------------
 1) 準備  
-**[.NET Framework 4.6](https://www.microsoft.com/ja-jp/download/details.aspx?id=48130)** をインストールします。  
+**[.NET Framework 4.6.2](https://www.microsoft.com/ja-jp/download/details.aspx?id=53344)** をインストールします。  
 ※TTSYukkuri の動作には. NET Framework 4.6 以降が必要です。  
 
 2) インストール  
