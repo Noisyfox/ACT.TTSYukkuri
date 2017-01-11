@@ -1,5 +1,5 @@
-﻿// #if DEBUG
-#if !DEBUG
+﻿#if DEBUG
+// #if !DEBUG
 // マルチスタートアップでデバッグするときの定義
 #define MULTI_START_DEBUG
 #endif
