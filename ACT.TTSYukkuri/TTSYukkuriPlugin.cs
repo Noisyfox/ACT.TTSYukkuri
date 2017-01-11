@@ -10,6 +10,7 @@
     using ACT.TTSYukkuri.SoundPlayer;
     using ACT.TTSYukkuri.TTSServer.Core;
     using Advanced_Combat_Tracker;
+    using TTSServer;
 
     /// <summary>
     /// TTSゆっくりプラグイン
@@ -230,7 +231,7 @@
                 KanjiTranslator.Default.Initialize();
 
                 // TTSサーバを開始する
-                TTSClient.Instance.Open();
+                TTSServerController.Start();
 
                 // TTSを初期化する
                 TTSYukkuriConfig.Default.Load();
@@ -293,7 +294,7 @@
                 TTSYukkuriConfig.Default.Save();
 
                 // TTSサーバを終了する
-                TTSClient.Instance.Channel.End();
+                TTSServerController.End();
 
                 // プレイヤを開放する
                 NAudioPlayer.DisposePlayers();

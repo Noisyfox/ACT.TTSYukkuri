@@ -1,4 +1,5 @@
-﻿#if DEBUG
+﻿// #if DEBUG
+#if !DEBUG
 // マルチスタートアップでデバッグするときの定義
 #define MULTI_START_DEBUG
 #endif
@@ -35,9 +36,11 @@ namespace ACT.TTSYukkuri.TTSServer
 
             var pi = new ProcessStartInfo(ServerProcessPath)
             {
+#if !DEBUG
                 CreateNoWindow = true,
-                UseShellExecute = false,
                 WindowStyle = ProcessWindowStyle.Hidden,
+#endif
+                UseShellExecute = false,
             };
 
             serverProcess = Process.Start(pi);

@@ -11,11 +11,6 @@
     public partial class YukkuriSettingsPanel : UserControl
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// シングルトンinstance
         /// </summary>
         private static YukkuriSettingsPanel instance;
@@ -23,21 +18,7 @@
         /// <summary>
         /// シングルトンinstance
         /// </summary>
-        public static YukkuriSettingsPanel Default
-        {
-            get
-            {
-                lock (lockObject)
-                {
-                    if (instance == null)
-                    {
-                        instance = new YukkuriSettingsPanel();
-                    }
-
-                    return instance;
-                }
-            }
-        }
+        public static YukkuriSettingsPanel Default => instance ?? (instance = new YukkuriSettingsPanel());
 
         /// <summary>
         /// コンストラクタ
