@@ -8,9 +8,8 @@
 
     using ACT.TTSYukkuri.Config;
     using ACT.TTSYukkuri.SoundPlayer;
-    using ACT.TTSYukkuri.TTSServer.Core;
+    using ACT.TTSYukkuri.TTSServer;
     using Advanced_Combat_Tracker;
-    using TTSServer;
 
     /// <summary>
     /// TTSゆっくりプラグイン

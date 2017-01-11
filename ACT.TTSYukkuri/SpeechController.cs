@@ -86,13 +86,7 @@
         /// <summary>
         /// TTSの設定Panel
         /// </summary>
-        public override UserControl TTSSettingsPanel
-        {
-            get
-            {
-                return SpeechController.Default.TTSSettingsPanel;
-            }
-        }
+        public override UserControl TTSSettingsPanel => SpeechController.Default.TTSSettingsPanel;
 
         /// <summary>
         /// 初期化する
