@@ -6,8 +6,10 @@
 
 namespace ACT.TTSYukkuri.TTSServer
 {
+    using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Threading;
 
     using ACT.TTSYukkuri.TTSServer.Core;
 
@@ -44,6 +46,7 @@ namespace ACT.TTSYukkuri.TTSServer
             };
 
             serverProcess = Process.Start(pi);
+            Thread.Sleep(1000);
 #endif
             // TTSサービスへ接続する
             TTSClient.Instance.Open();

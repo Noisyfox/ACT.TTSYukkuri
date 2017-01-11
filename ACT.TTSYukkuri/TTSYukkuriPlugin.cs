@@ -226,11 +226,11 @@
                     TTSYukkuriPlugin.PluginDirectory = plugin.pluginFile.DirectoryName;
                 }
 
-                // 漢字変換を初期化する
-                KanjiTranslator.Default.Initialize();
-
                 // TTSサーバを開始する
                 TTSServerController.Start();
+
+                // 漢字変換を初期化する
+                KanjiTranslator.Default.Initialize();
 
                 // TTSを初期化する
                 TTSYukkuriConfig.Default.Load();
