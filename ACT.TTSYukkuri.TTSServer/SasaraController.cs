@@ -56,19 +56,26 @@
 
             var tempWave = Path.GetTempFileName();
 
-            talker.OutputWaveToFile(
+            var stat = talker.OutputWaveToFile(
                 textToSpeak,
                 tempWave);
 
-            // ささらは音量が小さめなので増幅する
-            using (var reader = new WaveFileReader(tempWave))
+            if (stat)
             {
-                var prov = new VolumeWaveProvider16(reader);
-                prov.Volume = Settings.Default.SasaraGain;
+#if DEBUG
+                File.Copy(tempWave, "Sasara.wave", true);
+#endif
 
-                WaveFileWriter.CreateWaveFile(
-                    waveFile,
-                    prov);
+                // ささらは音量が小さめなので増幅する
+                using (var reader = new WaveFileReader(tempWave))
+                {
+                    var prov = new VolumeWaveProvider16(reader);
+                    prov.Volume = Settings.Default.SasaraGain;
+
+                    WaveFileWriter.CreateWaveFile(
+                        waveFile,
+                        prov);
+                }
             }
 
             if (File.Exists(tempWave))
