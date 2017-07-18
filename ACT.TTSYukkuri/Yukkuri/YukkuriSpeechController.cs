@@ -57,7 +57,7 @@
             var wave = ("Yukkuri" + TTSYukkuriConfig.Default.YukkuriSpeed.ToString() + text).GetMD5() + ".wav";
             wave = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\tts cache" + wave);
+                @"anoyetta\ACT\tts cache\" + wave);
 
             if (!Directory.Exists(Path.GetDirectoryName(wave)))
             {

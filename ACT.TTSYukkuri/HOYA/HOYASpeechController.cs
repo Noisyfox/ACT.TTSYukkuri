@@ -39,7 +39,7 @@
             // 現在の条件からwaveファイル名を生成する
             var wave = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\tts cache" + ("HOYA" + TTSYukkuriConfig.Default.HOYASettings.ToString() + text).GetMD5() + ".wav");
+                @"anoyetta\ACT\tts cache\" + ("HOYA" + TTSYukkuriConfig.Default.HOYASettings.ToString() + text).GetMD5() + ".wav");
 
             if (!Directory.Exists(Path.GetDirectoryName(wave)))
             {
