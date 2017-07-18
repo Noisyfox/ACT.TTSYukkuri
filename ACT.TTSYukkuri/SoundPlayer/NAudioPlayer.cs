@@ -26,17 +26,27 @@
     /// </summary>
     public partial class NAudioPlayer
     {
+        private const int PlayerLatencyDirectSoundOut = 40;
+
+        private const int PlayerLatencyWasapiOut = 80;
+
         /// <summary>
         /// プレイヤのレイテンシ
         /// </summary>
         private const int PlayerLatencyWaveOut = 128;
-        private const int PlayerLatencyDirectSoundOut = 40;
-        private const int PlayerLatencyWasapiOut = 80;
 
         /// <summary>
         /// Device Enumrator
         /// </summary>
         private static MMDeviceEnumerator deviceEnumrator = new MMDeviceEnumerator();
+
+        /// <summary>
+        /// プレイヤを開放する
+        /// </summary>
+        public static void DisposePlayers()
+        {
+            // NO-OP
+        }
 
         /// <summary>
         /// 再生デバイスを列挙する
@@ -63,20 +73,19 @@
         }
 
         /// <summary>
-        /// WaveOutから再生デバイスを列挙する
+        /// WasapiOutから再生デバイスを列挙する
         /// </summary>
         /// <returns>再生デバイスのリスト</returns>
-        public static List<PlayDevice> EnumlateDevicesByWaveOut()
+        public static List<PlayDevice> EnumlateDevicesByAsioOut()
         {
             var list = new List<PlayDevice>();
 
-            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            foreach (var name in AsioOut.GetDriverNames())
             {
-                var capabilities = WaveOut.GetCapabilities(i);
                 list.Add(new PlayDevice()
                 {
-                    ID = i.ToString(),
-                    Name = capabilities.ProductName,
+                    ID = name,
+                    Name = name,
                 });
             }
 
@@ -125,21 +134,21 @@
             return list;
         }
 
-
         /// <summary>
-        /// WasapiOutから再生デバイスを列挙する
+        /// WaveOutから再生デバイスを列挙する
         /// </summary>
         /// <returns>再生デバイスのリスト</returns>
-        public static List<PlayDevice> EnumlateDevicesByAsioOut()
+        public static List<PlayDevice> EnumlateDevicesByWaveOut()
         {
             var list = new List<PlayDevice>();
 
-            foreach (var name in AsioOut.GetDriverNames())
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
             {
+                var capabilities = WaveOut.GetCapabilities(i);
                 list.Add(new PlayDevice()
                 {
-                    ID = name,
-                    Name = name,
+                    ID = i.ToString(),
+                    Name = capabilities.ProductName,
                 });
             }
 
@@ -241,14 +250,6 @@
                     TTSYukkuriConfig.Default.Player,
                     sw.ElapsedTicks);
             }
-        }
-
-        /// <summary>
-        /// プレイヤを開放する
-        /// </summary>
-        public static void DisposePlayers()
-        {
-            // NO-OP
         }
     }
 

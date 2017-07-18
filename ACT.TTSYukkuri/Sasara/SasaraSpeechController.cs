@@ -45,7 +45,12 @@
             var wave = ("Sasara" + TTSYukkuriConfig.Default.SasaraSettings.GetMD5() + text).GetMD5() + ".wav";
             wave = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\" + wave);
+                @"anoyetta\ACT\tts cache" + wave);
+
+            if (!Directory.Exists(Path.GetDirectoryName(wave)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(wave));
+            }
 
             lock (this)
             {

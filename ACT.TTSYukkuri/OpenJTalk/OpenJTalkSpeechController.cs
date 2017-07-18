@@ -15,14 +15,14 @@
         ISpeechController
     {
         /// <summary>
-        /// TTSの設定Panel
-        /// </summary>
-        public override UserControl TTSSettingsPanel => OpenJTalkSettingsPanel.Default;
-
-        /// <summary>
         /// ユーザ辞書
         /// </summary>
         private List<KeyValuePair<string, string>> userDictionary = new List<KeyValuePair<string, string>>();
+
+        /// <summary>
+        /// TTSの設定Panel
+        /// </summary>
+        public override UserControl TTSSettingsPanel => OpenJTalkSettingsPanel.Default;
 
         /// <summary>
         /// 初期化する
@@ -50,7 +50,12 @@
             // 現在の条件からwaveファイル名を生成する
             var wave = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\" + ("OpenJTalk" + TTSYukkuriConfig.Default.OpenJTalkSettings.ToString() + text).GetMD5() + ".wav");
+                @"anoyetta\ACT\tts cache" + ("OpenJTalk" + TTSYukkuriConfig.Default.OpenJTalkSettings.ToString() + text).GetMD5() + ".wav");
+
+            if (!Directory.Exists(Path.GetDirectoryName(wave)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(wave));
+            }
 
             lock (this)
             {
