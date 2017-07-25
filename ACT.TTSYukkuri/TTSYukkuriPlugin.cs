@@ -303,7 +303,7 @@
                 {
                     var appdir = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        @"anoyetta\ACT");
+                        @"anoyetta\ACT\tts cache");
 
                     if (Directory.Exists(appdir))
                     {
