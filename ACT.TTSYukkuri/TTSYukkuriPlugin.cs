@@ -226,6 +226,9 @@
                     TTSYukkuriPlugin.PluginDirectory = plugin.pluginFile.DirectoryName;
                 }
 
+                // TTSのキャッシュを移行する
+                this.MigrateTTSCache();
+
                 // TTSサーバを開始する
                 TTSServerController.Start();
 
@@ -349,6 +352,35 @@
 
                 TTSYukkuriConfig.Default.LastUpdateDatetime = DateTime.Now;
                 TTSYukkuriConfig.Default.Save();
+            }
+        }
+
+        /// <summary>
+        /// TTSのキャッシュ(waveファイル)をマイグレーションする
+        /// </summary>
+        private void MigrateTTSCache()
+        {
+            var oldCacheDir = Path.Combine(
+                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                 @"anoyetta\ACT");
+
+            var newCacheDir = Path.Combine(
+                oldCacheDir,
+                "tts cache");
+
+            foreach (var file in Directory.EnumerateFiles(
+                oldCacheDir, "*.wav", SearchOption.TopDirectoryOnly))
+            {
+                var dest = Path.Combine(
+                    newCacheDir,
+                    Path.GetFileName(file));
+
+                if (File.Exists(dest))
+                {
+                    File.Delete(dest);
+                }
+
+                File.Move(file, dest);
             }
         }
     }
