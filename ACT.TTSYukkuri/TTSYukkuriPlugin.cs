@@ -368,6 +368,11 @@
                 oldCacheDir,
                 "tts cache");
 
+            if (!Directory.Exists(newCacheDir))
+            {
+                Directory.CreateDirectory(newCacheDir);
+            }
+
             foreach (var file in Directory.EnumerateFiles(
                 oldCacheDir, "*.wav", SearchOption.TopDirectoryOnly))
             {
