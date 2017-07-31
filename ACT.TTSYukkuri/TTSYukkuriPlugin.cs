@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
@@ -20,14 +21,6 @@
         private Label lblStatus;
 
         private FormActMain.PlayTtsDelegate originalTTSDelegate;
-
-        public static string PluginDirectory
-        {
-            get;
-            private set;
-        }
-
-        public static TTSYukkuriPlugin Instance { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -85,59 +78,12 @@
             private set;
         }
 
-        /// <summary>
-        /// TTSを読上げる
-        /// </summary>
-        /// <param name="textToSpeak">読上げるテキスト</param>
-        public void SpeakTTS(
-            string textToSpeak)
+        public static TTSYukkuriPlugin Instance { get; private set; }
+
+        public static string PluginDirectory
         {
-            const string waitCommand = "/wait";
-
-            try
-            {
-                // waitなし？
-                if (!textToSpeak.StartsWith(waitCommand))
-                {
-                    SpeechController.Default.Speak(textToSpeak);
-                }
-                else
-                {
-                    var values = textToSpeak.Split(',');
-
-                    // 分割できない？
-                    if (values.Length < 2)
-                    {
-                        // 普通に読上げて終わる
-                        SpeechController.Default.Speak(textToSpeak);
-                        return;
-                    }
-
-                    var command = values[0].Trim();
-                    var message = values[1].Trim();
-
-                    // 秒数を取り出す
-                    var delayAsText = command.Replace(waitCommand, string.Empty);
-                    int delay = 0;
-                    if (!int.TryParse(delayAsText, out delay))
-                    {
-                        // 普通に読上げて終わる
-                        SpeechController.Default.Speak(textToSpeak);
-                        return;
-                    }
-
-                    // ディレイをかけて読上げる
-                    SpeechController.Default.SpeakWithDelay(
-                        message,
-                        delay);
-                }
-            }
-            catch (Exception ex)
-            {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "TTSYukkuri newTTSで例外が発生しました。");
-            }
+            get;
+            private set;
         }
 
         /// <summary>
@@ -210,8 +156,121 @@
             });
         }
 
+        /// <summary>
+        /// TTSを読上げる
+        /// </summary>
+        /// <param name="textToSpeak">読上げるテキスト</param>
+        public void SpeakTTS(
+            string textToSpeak)
+        {
+            const string waitCommand = "/wait";
+
+            try
+            {
+                // waitなし？
+                if (!textToSpeak.StartsWith(waitCommand))
+                {
+                    SpeechController.Default.Speak(textToSpeak);
+                }
+                else
+                {
+                    var values = textToSpeak.Split(',');
+
+                    // 分割できない？
+                    if (values.Length < 2)
+                    {
+                        // 普通に読上げて終わる
+                        SpeechController.Default.Speak(textToSpeak);
+                        return;
+                    }
+
+                    var command = values[0].Trim();
+                    var message = values[1].Trim();
+
+                    // 秒数を取り出す
+                    var delayAsText = command.Replace(waitCommand, string.Empty);
+                    int delay = 0;
+                    if (!int.TryParse(delayAsText, out delay))
+                    {
+                        // 普通に読上げて終わる
+                        SpeechController.Default.Speak(textToSpeak);
+                        return;
+                    }
+
+                    // ディレイをかけて読上げる
+                    SpeechController.Default.SpeakWithDelay(
+                        message,
+                        delay);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActGlobals.oFormActMain.WriteExceptionLog(
+                    ex,
+                    "TTSYukkuri newTTSで例外が発生しました。");
+            }
+        }
+
         #region IActPluginV1 Members
 
+        public void DeInitPlugin()
+        {
+            try
+            {
+                // 置き換えたTTSメソッドを元に戻す
+                if (this.originalTTSDelegate != null)
+                {
+                    ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
+                }
+
+                // FF14監視スレッドを開放する
+                FF14Watcher.Deinitialize();
+
+                // 漢字変換オブジェクトを開放する
+                KanjiTranslator.Default.Dispose();
+
+                // 設定を保存する
+                TTSYukkuriConfig.Default.Save();
+
+                // TTSサーバを終了する
+                TTSServerController.End();
+
+                // プレイヤを開放する
+                NAudioPlayer.DisposePlayers();
+
+                // TTS用waveファイルを削除する？
+                if (TTSYukkuriConfig.Default.WaveCacheClearEnable)
+                {
+                    var appdir = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        @"anoyetta\ACT\tts cache");
+
+                    if (Directory.Exists(appdir))
+                    {
+                        foreach (var file in Directory.GetFiles(appdir, "*.wav"))
+                        {
+                            try
+                            {
+                                File.Delete(file);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                }
+
+                lblStatus.Text = "Plugin Exited";
+            }
+            catch (Exception ex)
+            {
+                ActGlobals.oFormActMain.WriteExceptionLog(
+                    ex,
+                    "TTSゆっくりプラグインの終了時に例外が発生しました。");
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void InitPlugin(
             TabPage pluginScreenSpace,
             Label pluginStatusText)
@@ -276,84 +335,7 @@
             }
         }
 
-        public void DeInitPlugin()
-        {
-            try
-            {
-                // 置き換えたTTSメソッドを元に戻す
-                if (this.originalTTSDelegate != null)
-                {
-                    ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
-                }
-
-                // FF14監視スレッドを開放する
-                FF14Watcher.Deinitialize();
-
-                // 漢字変換オブジェクトを開放する
-                KanjiTranslator.Default.Dispose();
-
-                // 設定を保存する
-                TTSYukkuriConfig.Default.Save();
-
-                // TTSサーバを終了する
-                TTSServerController.End();
-
-                // プレイヤを開放する
-                NAudioPlayer.DisposePlayers();
-
-                // TTS用waveファイルを削除する？
-                if (TTSYukkuriConfig.Default.WaveCacheClearEnable)
-                {
-                    var appdir = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        @"anoyetta\ACT\tts cache");
-
-                    if (Directory.Exists(appdir))
-                    {
-                        foreach (var file in Directory.GetFiles(appdir, "*.wav"))
-                        {
-                            try
-                            {
-                                File.Delete(file);
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
-                }
-
-                lblStatus.Text = "Plugin Exited";
-            }
-            catch (Exception ex)
-            {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "TTSゆっくりプラグインの終了時に例外が発生しました。");
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// アップデートを行う
-        /// </summary>
-        private void Update()
-        {
-            if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDatetime).TotalHours > 6d)
-            {
-                var message = UpdateChecker.Update();
-                if (!string.IsNullOrWhiteSpace(message))
-                {
-                    ActGlobals.oFormActMain.WriteExceptionLog(
-                        new Exception(),
-                        message);
-                }
-
-                TTSYukkuriConfig.Default.LastUpdateDatetime = DateTime.Now;
-                TTSYukkuriConfig.Default.Save();
-            }
-        }
+        #endregion IActPluginV1 Members
 
         /// <summary>
         /// TTSのキャッシュ(waveファイル)をマイグレーションする
@@ -381,6 +363,26 @@
                 }
 
                 File.Move(file, dest);
+            }
+        }
+
+        /// <summary>
+        /// アップデートを行う
+        /// </summary>
+        private void Update()
+        {
+            if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDatetime).TotalHours > 6d)
+            {
+                var message = UpdateChecker.Update();
+                if (!string.IsNullOrWhiteSpace(message))
+                {
+                    ActGlobals.oFormActMain.WriteExceptionLog(
+                        new Exception(),
+                        message);
+                }
+
+                TTSYukkuriConfig.Default.LastUpdateDatetime = DateTime.Now;
+                TTSYukkuriConfig.Default.Save();
             }
         }
     }
