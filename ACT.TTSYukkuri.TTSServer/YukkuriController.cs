@@ -6,33 +6,30 @@
 
     public class YukkuriController
     {
-        private delegate IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);
-        private delegate void AquesTalk_FreeWave(IntPtr wave);
+        #region Singleton
 
-        private static YukkuriController instance;
+        private static YukkuriController instance = new YukkuriController();
 
-        public static YukkuriController Default => instance ?? (instance = new YukkuriController());
+        public static YukkuriController Default => instance;
+
+        #endregion Singleton
 
         private readonly string DllName = "AquesTalk.dll";
 
-        private UnmanagedLibrary lib;
+        private UnmanagedLibrary aquesTalkLib;
+        private AquesTalk_FreeWave FreeWaveDelegate;
+        private AquesTalk_Synthe SynthesizeDelegate;
 
-        private void Initialize()
-        {
-            if (IsModuleLoaded("AquesTalk"))
-            {
-                return;
-            }
+        private delegate void AquesTalk_FreeWave(IntPtr wave);
 
-            this.lib = new UnmanagedLibrary(DllName);
-        }
+        private delegate IntPtr AquesTalk_Synthe(string koe, ushort iSpeed, ref uint size);
 
         public void Free()
         {
-            if (this.lib != null)
+            if (this.aquesTalkLib != null)
             {
-                this.lib.Dispose();
-                this.lib = null;
+                this.aquesTalkLib.Dispose();
+                this.aquesTalkLib = null;
             }
         }
 
@@ -48,11 +45,8 @@
 
             this.Initialize();
 
-            var synthesize = lib.GetUnmanagedFunction<AquesTalk_Synthe>("AquesTalk_Synthe");
-            var freeWave = lib.GetUnmanagedFunction<AquesTalk_FreeWave>("AquesTalk_FreeWave");
-
-            if (synthesize == null ||
-                freeWave == null)
+            if (this.SynthesizeDelegate == null ||
+                this.FreeWaveDelegate == null)
             {
                 return;
             }
@@ -63,7 +57,7 @@
             {
                 // テキストを音声データに変換する
                 uint size = 0;
-                wavePtr = synthesize(
+                wavePtr = this.SynthesizeDelegate.Invoke(
                     textToSpeak,
                     speed,
                     ref size);
@@ -87,21 +81,47 @@
             {
                 if (wavePtr != IntPtr.Zero)
                 {
-                    freeWave(wavePtr);
+                    this.FreeWaveDelegate.Invoke(wavePtr);
+                }
+            }
+        }
+
+        private void Initialize()
+        {
+            if (!YukkuriController.IsModuleLoaded("AquesTalk"))
+            {
+                this.aquesTalkLib = new UnmanagedLibrary(DllName);
+            }
+
+            if (this.aquesTalkLib != null)
+            {
+                if (this.SynthesizeDelegate == null)
+                {
+                    this.SynthesizeDelegate =
+                        this.aquesTalkLib.GetUnmanagedFunction<AquesTalk_Synthe>("AquesTalk_Synthe");
+                }
+
+                if (this.FreeWaveDelegate == null)
+                {
+                    this.FreeWaveDelegate =
+                        this.aquesTalkLib.GetUnmanagedFunction<AquesTalk_FreeWave>("AquesTalk_FreeWave");
                 }
             }
         }
 
         #region IsModuleLoaded
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string moduleName);
+
         /// <summary>
-        /// Check whether or not the specified module is loaded in the 
+        /// Check whether or not the specified module is loaded in the
         /// current process.
         /// </summary>
         /// <param name="moduleName">the module name</param>
         /// <returns>
-        /// The function returns true if the specified module is loaded in 
-        /// the current process. If the module is not loaded, the function 
+        /// The function returns true if the specified module is loaded in
+        /// the current process. If the module is not loaded, the function
         /// returns false.
         /// </returns>
         private static bool IsModuleLoaded(string moduleName)
@@ -111,9 +131,6 @@
             return (hMod != IntPtr.Zero);
         }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetModuleHandle(string moduleName);
-
-        #endregion
+        #endregion IsModuleLoaded
     }
 }

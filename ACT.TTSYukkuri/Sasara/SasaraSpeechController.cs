@@ -56,15 +56,13 @@
             {
                 if (!File.Exists(wave))
                 {
-                    // 初期化する
-                    this.Initialize();
-
                     // 音声waveファイルを生成する
                     TTSClient.Instance.Channel.Speak(new Speak()
                     {
                         TTSEngine = TTSEngine.CeVIO,
                         TextToSpeak = text,
-                        WaveFileName = wave
+                        WaveFileName = wave,
+                        Settings = TTSYukkuriConfig.Default.GetSasaraSettings(),
                     });
                 }
             }

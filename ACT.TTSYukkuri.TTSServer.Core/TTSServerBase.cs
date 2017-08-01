@@ -12,17 +12,31 @@
     {
         #region Singleton
 
-        private static T instance;
+        private static T instance = new T();
 
-        public static T Instance => instance ?? (instance = new T());
+        public static T Instance => instance;
 
-        #endregion
+        #endregion Singleton
 
         protected TTSServerBase()
         {
         }
 
         public ServiceHost Host { get; private set; }
+
+        public void CloseServer()
+        {
+            if (this.IsReady())
+            {
+                this.Host.Close();
+            }
+        }
+
+        public abstract void End();
+
+        public abstract void EndSasara();
+
+        public abstract SasaraSettings GetSasaraSettings();
 
         public bool IsReady()
         {
@@ -34,18 +48,6 @@
 
             return false;
         }
-
-        public abstract void Speak(Speak speakModel);
-
-        public abstract SasaraSettings GetSasaraSettings();
-
-        public abstract void SetSasaraSettings(SasaraSettings settings);
-
-        public abstract void StartSasara();
-
-        public abstract void EndSasara();
-
-        public abstract void End();
 
         public void OpenServer()
         {
@@ -61,12 +63,10 @@
             this.Host.Open();
         }
 
-        public void CloseServer()
-        {
-            if (this.IsReady())
-            {
-                this.Host.Close();
-            }
-        }
+        public abstract void SetSasaraSettings(SasaraSettings settings);
+
+        public abstract void Speak(Speak speakModel);
+
+        public abstract void StartSasara();
     }
 }

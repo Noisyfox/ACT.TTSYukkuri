@@ -12,11 +12,6 @@
     public partial class FF14Watcher
     {
         /// <summary>
-        /// 直前のパーティメンバ情報
-        /// </summary>
-        private List<PreviousPartyMemberStatus> previouseParyMemberList = new List<PreviousPartyMemberStatus>();
-
-        /// <summary>
         /// 最後のHP通知日時
         /// </summary>
         private DateTime lastHPNotice = DateTime.MinValue;
@@ -30,6 +25,11 @@
         /// 最後のMP通知日時
         /// </summary>
         private DateTime lastTPNotice = DateTime.MinValue;
+
+        /// <summary>
+        /// 直前のパーティメンバ情報
+        /// </summary>
+        private List<PreviousPartyMemberStatus> previouseParyMemberList = new List<PreviousPartyMemberStatus>();
 
         /// <summary>
         /// パーティを監視する
@@ -284,6 +284,9 @@
                 case 32: r = watchTarget.EnabledDarkKnight; break;
                 case 33: r = watchTarget.EnabledAstrologian; break;
 
+                case 34: r = watchTarget.EnabledSamurai; break;
+                case 35: r = watchTarget.EnabledRedmage; break;
+
                 default: r = false; break;
             }
 
@@ -302,24 +305,24 @@
         private class PreviousPartyMemberStatus
         {
             /// <summary>
-            /// ID
-            /// </summary>
-            public uint ID { get; set; }
-
-            /// <summary>
-            /// 名前
-            /// </summary>
-            public string Name { get; set; }
-
-            /// <summary>
             /// HP率
             /// </summary>
             public decimal HPRate { get; set; }
 
             /// <summary>
+            /// ID
+            /// </summary>
+            public uint ID { get; set; }
+
+            /// <summary>
             /// MP率
             /// </summary>
             public decimal MPRate { get; set; }
+
+            /// <summary>
+            /// 名前
+            /// </summary>
+            public string Name { get; set; }
 
             /// <summary>
             /// TP率

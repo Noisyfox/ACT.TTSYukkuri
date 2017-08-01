@@ -10,66 +10,9 @@
     {
         private static object lockObject = new object();
         private static object plugin;
-        private static object pluginMemory;
         private static dynamic pluginConfig;
+        private static object pluginMemory;
         private static dynamic pluginScancombat;
-
-        public static void Initialize()
-        {
-            lock (lockObject)
-            {
-                if (!ActGlobals.oFormActMain.Visible)
-                {
-                    return;
-                }
-
-                if (plugin == null)
-                {
-                    foreach (var item in ActGlobals.oFormActMain.ActPlugins)
-                    {
-                        if (item.pluginFile.Name.ToUpper() == "FFXIV_ACT_Plugin.dll".ToUpper() &&
-                            item.lblPluginStatus.Text.ToUpper() == "FFXIV Plugin Started.".ToUpper())
-                        {
-                            plugin = item.pluginObj;
-                            break;
-                        }
-                    }
-                }
-
-                if (plugin != null)
-                {
-                    FieldInfo fi;
-
-                    if (pluginMemory == null)
-                    {
-                        fi = plugin.GetType().GetField("_Memory", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-                        pluginMemory = fi.GetValue(plugin);
-                    }
-
-                    if (pluginMemory == null)
-                    {
-                        return;
-                    }
-
-                    if (pluginConfig == null)
-                    {
-                        fi = pluginMemory.GetType().GetField("_config", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-                        pluginConfig = fi.GetValue(pluginMemory);
-                    }
-
-                    if (pluginConfig == null)
-                    {
-                        return;
-                    }
-
-                    if (pluginScancombat == null)
-                    {
-                        fi = pluginConfig.GetType().GetField("ScanCombatants", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-                        pluginScancombat = fi.GetValue(pluginConfig);
-                    }
-                }
-            }
-        }
 
         public static Process GetFFXIVProcess
         {
@@ -78,15 +21,7 @@
                 try
                 {
                     Initialize();
-
-                    if (pluginConfig == null)
-                    {
-                        return null;
-                    }
-
-                    var process = pluginConfig.Process;
-
-                    return (Process)process;
+                    return (Process)pluginConfig?.Process;
                 }
                 catch
                 {
@@ -101,17 +36,9 @@
 
             var result = new List<Combatant>();
 
-            if (plugin == null)
-            {
-                return result;
-            }
-
-            if (GetFFXIVProcess == null)
-            {
-                return result;
-            }
-
-            if (pluginScancombat == null)
+            if (plugin == null ||
+                GetFFXIVProcess == null ||
+                pluginScancombat == null)
             {
                 return result;
             }
@@ -152,17 +79,9 @@
             var partyList = new List<uint>();
             partyCount = 0;
 
-            if (plugin == null)
-            {
-                return partyList;
-            }
-
-            if (GetFFXIVProcess == null)
-            {
-                return partyList;
-            }
-
-            if (pluginScancombat == null)
+            if (plugin == null ||
+                GetFFXIVProcess == null ||
+                pluginScancombat == null)
             {
                 return partyList;
             }
@@ -172,21 +91,84 @@
 
             return partyList;
         }
+
+        public static void Initialize()
+        {
+            lock (lockObject)
+            {
+                if (!ActGlobals.oFormActMain.Visible)
+                {
+                    return;
+                }
+
+                if (plugin == null)
+                {
+                    foreach (var item in ActGlobals.oFormActMain.ActPlugins)
+                    {
+                        if (item.pluginFile.Name.ToUpper().Contains("FFXIV_ACT_Plugin.dll".ToUpper()) &&
+                            item.lblPluginStatus.Text.ToUpper().Contains("FFXIV Plugin Started.".ToUpper()))
+                        {
+                            plugin = item.pluginObj;
+                            break;
+                        }
+                    }
+                }
+
+                if (plugin != null)
+                {
+                    FieldInfo fi;
+
+                    if (pluginMemory == null)
+                    {
+                        fi = plugin.GetType().GetField(
+                            "_Memory",
+                            BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
+                        pluginMemory = fi.GetValue(plugin);
+                    }
+
+                    if (pluginMemory == null)
+                    {
+                        return;
+                    }
+
+                    if (pluginConfig == null)
+                    {
+                        fi = pluginMemory.GetType().GetField(
+                            "_config",
+                            BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
+                        pluginConfig = fi.GetValue(pluginMemory);
+                    }
+
+                    if (pluginConfig == null)
+                    {
+                        return;
+                    }
+
+                    if (pluginScancombat == null)
+                    {
+                        fi = pluginConfig.GetType().GetField(
+                            "ScanCombatants",
+                            BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
+                        pluginScancombat = fi.GetValue(pluginConfig);
+                    }
+                }
+            }
+        }
     }
 
     public class Combatant
     {
+        public int CurrentHP;
+        public int CurrentMP;
+        public int CurrentTP;
         public uint ID;
-        public uint OwnerID;
-        public int Order;
-        public byte type;
         public int Job;
         public int Level;
-        public string Name;
-        public int CurrentHP;
         public int MaxHP;
-        public int CurrentMP;
         public int MaxMP;
-        public int CurrentTP;
+        public string Name;
+        public int Order;
+        public uint OwnerID;
+        public byte type;
     }
 }

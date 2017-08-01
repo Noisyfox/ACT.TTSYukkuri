@@ -7,11 +7,11 @@
     {
         #region Singleton
 
-        private static TTSClient instance;
+        private static TTSClient instance = new TTSClient();
 
-        public static TTSClient Instance => instance ?? (instance = new TTSClient());
+        public static TTSClient Instance => instance;
 
-        #endregion
+        #endregion Singleton
 
         private ITTSServerContract channel;
 

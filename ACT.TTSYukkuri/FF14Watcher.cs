@@ -1,7 +1,7 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System;
-    using System.Timers;
+    using System.Threading;
 
     using ACT.TTSYukkuri.Config;
     using Advanced_Combat_Tracker;
@@ -18,19 +18,17 @@
     public partial class FF14Watcher
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// シングルトンインスタンス
         /// </summary>
         private static FF14Watcher instance;
 
         /// <summary>
-        /// 監視タイマー
+        /// ロックオブジェクト
         /// </summary>
-        private System.Windows.Forms.Timer watchTimer;
+        private static object lockObject = new object();
+
+        private Thread watchThread;
+        private bool watchThreadRunning;
 
         /// <summary>
         /// シングルトンインスタンス
@@ -45,63 +43,30 @@
         }
 
         /// <summary>
-        /// 初期化する
+        /// スピークdelegate
         /// </summary>
-        public static void Initialize()
-        {
-            lock (lockObject)
-            {
-                if (instance == null)
-                {
-                    instance = new FF14Watcher();
-
-                    instance.watchTimer = new System.Windows.Forms.Timer()
-                    {
-                        Interval = 600,
-                        Enabled = false
-                    };
-
-                    instance.watchTimer.Tick += (s, e) =>
-                    {
-                        lock (lockObject)
-                        {
-                            try
-                            {
-                                if (instance.watchTimer != null &&
-                                    instance.watchTimer.Enabled)
-                                {
-                                    instance.WatchCore();
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                ActGlobals.oFormActMain.WriteExceptionLog(
-                                    ex,
-                                    "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
-                            }
-                        }
-                    };
-
-                    // 監視を開始する
-                    instance.watchTimer.Start();
-                }
-            }
-        }
+        public Speak SpeakDelegate { get; set; }
 
         /// <summary>
         /// 後片付けをする
         /// </summary>
         public static void Deinitialize()
         {
+            instance.watchThreadRunning = false;
+
             lock (lockObject)
             {
                 if (instance != null)
                 {
-                    if (instance.watchTimer != null)
+                    if (instance.watchThread != null)
                     {
-                        instance.watchTimer.Stop();
-                        instance.watchTimer.Dispose();
-                        instance.watchTimer = null;
+                        instance.watchThread.Join(TimeSpan.FromSeconds(1));
+                        if (instance.watchThread.IsAlive)
+                        {
+                            instance.watchThread.Abort();
+                        }
+
+                        instance.watchThread = null;
                     }
 
                     instance = null;
@@ -110,9 +75,21 @@
         }
 
         /// <summary>
-        /// スピークdelegate
+        /// 初期化する
         /// </summary>
-        public Speak SpeakDelegate { get; set; }
+        public static void Initialize()
+        {
+            lock (lockObject)
+            {
+                if (instance != null)
+                {
+                    return;
+                }
+
+                instance = new FF14Watcher();
+                instance.Start();
+            }
+        }
 
         /// <summary>
         /// スピーク
@@ -121,9 +98,45 @@
         public void Speak(
             string textToSpeak)
         {
-            if (this.SpeakDelegate != null)
+            this.SpeakDelegate?.Invoke(textToSpeak);
+        }
+
+        private void Start()
+        {
+            lock (lockObject)
             {
-                this.SpeakDelegate(textToSpeak);
+                if (this.watchThread != null &&
+                    this.watchThread.IsAlive)
+                {
+                    return;
+                }
+
+                this.watchThread = new Thread(() =>
+                {
+                    while (this.watchThreadRunning)
+                    {
+                        try
+                        {
+                            this.WatchCore();
+                        }
+                        catch (ThreadAbortException)
+                        {
+                            this.watchThreadRunning = false;
+                            return;
+                        }
+                        catch (Exception ex)
+                        {
+                            ActGlobals.oFormActMain.WriteExceptionLog(
+                                ex,
+                                "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
+                        }
+
+                        Thread.Sleep(400);
+                    }
+                });
+
+                this.watchThreadRunning = true;
+                this.watchThread.Start();
             }
         }
 
@@ -137,10 +150,9 @@
             {
                 return;
             }
-            
+
             // FF14Processがなければ何もしない
-            var ff14 = FF14PluginHelper.GetFFXIVProcess;
-            if (ff14 == null)
+            if (FF14PluginHelper.GetFFXIVProcess == null)
             {
                 return;
             }

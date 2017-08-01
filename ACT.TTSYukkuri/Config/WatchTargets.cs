@@ -9,11 +9,47 @@
     [Serializable]
     public class WatchTargets
     {
-        /// <summary>自分</summary>
-        public bool EnabledSelf { get; set; }
+        /// <summary>占星術師</summary>
+        public bool EnabledAstrologian { get; set; }
+
+        /// <summary>暗黒騎士</summary>
+        public bool EnabledDarkKnight { get; set; }
+
+        /// <summary>学者</summary>
+        public bool EnabledGakusha { get; set; }
+
+        /// <summary>ギャザラー・クラフター</summary>
+        public bool EnabledGathererAndCrafter { get; set; }
+
+        /// <summary>吟遊詩人・弓術士</summary>
+        public bool EnabledGinyushijin { get; set; }
 
         /// <summary>ナイト・剣術士</summary>
         public bool EnabledKnight { get; set; }
+
+        /// <summary>黒魔道士・呪術士</summary>
+        public bool EnabledKuromadoshi { get; set; }
+
+        /// <summary>機工士</summary>
+        public bool EnabledMachinist { get; set; }
+
+        /// <summary>モンク・格闘士</summary>
+        public bool EnabledMonk { get; set; }
+
+        /// <summary>忍者・双剣士</summary>
+        public bool EnabledNinja { get; set; }
+
+        /// <summary>赤魔道士</summary>
+        public bool EnabledRedmage { get; set; }
+
+        /// <summary>竜騎士・槍術士</summary>
+        public bool EnabledRyukishi { get; set; }
+
+        /// <summary>侍</summary>
+        public bool EnabledSamurai { get; set; }
+
+        /// <summary>自分</summary>
+        public bool EnabledSelf { get; set; }
 
         /// <summary>戦士・斧術士</summary>
         public bool EnabledSenshi { get; set; }
@@ -21,38 +57,8 @@
         /// <summary>白魔道士・幻術士</summary>
         public bool EnabledShiromadoshi { get; set; }
 
-        /// <summary>学者</summary>
-        public bool EnabledGakusha { get; set; }
-
-        /// <summary>モンク・格闘士</summary>
-        public bool EnabledMonk { get; set; }
-
-        /// <summary>竜騎士・槍術士</summary>
-        public bool EnabledRyukishi { get; set; }
-
-        /// <summary>忍者・双剣士</summary>
-        public bool EnabledNinja { get; set; }
-
-        /// <summary>吟遊詩人・弓術士</summary>
-        public bool EnabledGinyushijin { get; set; }
-
-        /// <summary>黒魔道士・呪術士</summary>
-        public bool EnabledKuromadoshi { get; set; }
-
         /// <summary>召喚士・巴術士</summary>
         public bool EnabledShokanshi { get; set; }
-
-        /// <summary>ギャザラー・クラフター</summary>
-        public bool EnabledGathererAndCrafter { get; set; }
-
-        /// <summary>機工士</summary>
-        public bool EnabledMachinist { get; set; }
-
-        /// <summary>暗黒騎士</summary>
-        public bool EnabledDarkKnight { get; set; }
-
-        /// <summary>占星術師</summary>
-        public bool EnabledAstrologian { get; set; }
 
         /// <summary>
         /// 要素を配列で設定、取得します
@@ -60,27 +66,26 @@
         [XmlIgnore]
         public bool[] ItemArray
         {
-            get
+            get => new bool[]
             {
-                return new bool[]
-                {
-                    this.EnabledSelf,
-                    this.EnabledKnight,
-                    this.EnabledSenshi,
-                    this.EnabledShiromadoshi,
-                    this.EnabledGakusha,
-                    this.EnabledMonk,
-                    this.EnabledRyukishi,
-                    this.EnabledNinja,
-                    this.EnabledGinyushijin,
-                    this.EnabledKuromadoshi,
-                    this.EnabledShokanshi,
-                    this.EnabledGathererAndCrafter,
-                    this.EnabledMachinist,
-                    this.EnabledDarkKnight,
-                    this.EnabledAstrologian,
-                };
-            }
+                this.EnabledSelf,
+                this.EnabledKnight,
+                this.EnabledSenshi,
+                this.EnabledShiromadoshi,
+                this.EnabledGakusha,
+                this.EnabledMonk,
+                this.EnabledRyukishi,
+                this.EnabledNinja,
+                this.EnabledGinyushijin,
+                this.EnabledKuromadoshi,
+                this.EnabledShokanshi,
+                this.EnabledGathererAndCrafter,
+                this.EnabledMachinist,
+                this.EnabledDarkKnight,
+                this.EnabledAstrologian,
+                this.EnabledSamurai,
+                this.EnabledRedmage,
+            };
 
             set
             {
@@ -99,6 +104,8 @@
                 this.EnabledMachinist = value.Length > 12 ? value[12] : this.EnabledMachinist;
                 this.EnabledDarkKnight = value.Length > 13 ? value[13] : this.EnabledDarkKnight;
                 this.EnabledAstrologian = value.Length > 14 ? value[14] : this.EnabledAstrologian;
+                this.EnabledSamurai = value.Length > 15 ? value[15] : this.EnabledSamurai;
+                this.EnabledRedmage = value.Length > 16 ? value[16] : this.EnabledRedmage;
             }
         }
     }

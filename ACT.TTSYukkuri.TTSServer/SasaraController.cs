@@ -11,24 +11,15 @@
 
     public class SasaraController
     {
-        private static SasaraController instance;
+        #region Singleton
 
-        public static SasaraController Default => instance ?? (instance = new SasaraController());
+        private static SasaraController instance = new SasaraController();
+
+        public static SasaraController Default => instance;
+
+        #endregion Singleton
 
         private Talker talker;
-
-        public void StartSasara()
-        {
-            if (!ServiceControl.IsHostStarted)
-            {
-                ServiceControl.StartHost(false);
-            }
-
-            if (talker == null)
-            {
-                talker = new Talker();
-            }
-        }
 
         public void CloseSasara()
         {
@@ -40,47 +31,6 @@
             if (talker != null)
             {
                 talker = null;
-            }
-        }
-
-        public void OutputWaveToFile(
-            string textToSpeak,
-            string waveFile)
-        {
-            if (string.IsNullOrWhiteSpace(textToSpeak))
-            {
-                return;
-            }
-
-            this.StartSasara();
-
-            var tempWave = Path.GetTempFileName();
-
-            var stat = talker.OutputWaveToFile(
-                textToSpeak,
-                tempWave);
-
-            if (stat)
-            {
-#if DEBUG
-                File.Copy(tempWave, "Sasara.wave", true);
-#endif
-
-                // ささらは音量が小さめなので増幅する
-                using (var reader = new WaveFileReader(tempWave))
-                {
-                    var prov = new VolumeWaveProvider16(reader);
-                    prov.Volume = Settings.Default.SasaraGain;
-
-                    WaveFileWriter.CreateWaveFile(
-                        waveFile,
-                        prov);
-                }
-            }
-
-            if (File.Exists(tempWave))
-            {
-                File.Delete(tempWave);
             }
         }
 
@@ -112,6 +62,53 @@
             settings.Components = compornents.ToArray();
 
             return settings;
+        }
+
+        public void OutputWaveToFile(
+            string textToSpeak,
+            string waveFile,
+            SasaraSettings settings = null)
+        {
+            if (string.IsNullOrWhiteSpace(textToSpeak))
+            {
+                return;
+            }
+
+            this.StartSasara();
+
+            if (settings != null)
+            {
+                this.SetSasaraSettings(settings);
+            }
+
+            var tempWave = Path.GetTempFileName();
+
+            var stat = talker.OutputWaveToFile(
+                textToSpeak,
+                tempWave);
+
+            if (stat)
+            {
+#if DEBUG
+                File.Copy(tempWave, "Sasara.wave", true);
+#endif
+
+                // ささらは音量が小さめなので増幅する
+                using (var reader = new WaveFileReader(tempWave))
+                {
+                    var prov = new VolumeWaveProvider16(reader);
+                    prov.Volume = Settings.Default.SasaraGain;
+
+                    WaveFileWriter.CreateWaveFile(
+                        waveFile,
+                        prov);
+                }
+            }
+
+            if (File.Exists(tempWave))
+            {
+                File.Delete(tempWave);
+            }
         }
 
         public void SetSasaraSettings(
@@ -156,6 +153,19 @@
                         }
                     }
                 }
+            }
+        }
+
+        public void StartSasara()
+        {
+            if (!ServiceControl.IsHostStarted)
+            {
+                ServiceControl.StartHost(false);
+            }
+
+            if (talker == null)
+            {
+                talker = new Talker();
             }
         }
     }

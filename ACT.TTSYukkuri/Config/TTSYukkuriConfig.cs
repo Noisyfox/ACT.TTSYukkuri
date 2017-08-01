@@ -17,16 +17,36 @@
     public class TTSYukkuriConfig
     {
         /// <summary>
+        /// シングルトンインスタンス
+        /// </summary>
+        [XmlIgnore]
+        private static TTSYukkuriConfig instance;
+
+        /// <summary>
         /// ロックオブジェクト
         /// </summary>
         [XmlIgnore]
         private static object lockObject = new object();
 
         /// <summary>
-        /// シングルトンインスタンス
+        /// コンストラクタ
         /// </summary>
-        [XmlIgnore]
-        private static TTSYukkuriConfig instance;
+        public TTSYukkuriConfig()
+        {
+            this.LastUpdateDatetime = DateTime.Now;
+
+            this.SasaraSettings = new SasaraConfig();
+            this.BoyomiServer = new List<string>();
+            this.OptionSettings = new OptionsConfig();
+            this.OpenJTalkSettings = new OpenJTalkConfig();
+            this.HOYASettings = new HOYAConfig();
+
+            this.WaveVolume = 100;
+
+            this.TTS = TTSType.Yukkuri;
+
+            this.Player = WavePlayers.WASAPI;
+        }
 
         /// <summary>
         /// シングルトンインスタンスを返す
@@ -68,54 +88,9 @@
         }
 
         /// <summary>
-        /// コンストラクタ
+        /// 棒読み設定(サーバ, ポート)
         /// </summary>
-        public TTSYukkuriConfig()
-        {
-            this.LastUpdateDatetime = DateTime.Now;
-
-            this.SasaraSettings = new SasaraConfig();
-            this.BoyomiServer = new List<string>();
-            this.OptionSettings = new OptionsConfig();
-            this.OpenJTalkSettings = new OpenJTalkConfig();
-            this.HOYASettings = new HOYAConfig();
-
-            this.WaveVolume = 100;
-
-            this.TTS = TTSType.Yukkuri;
-
-            this.Player = WavePlayers.WASAPI;
-        }
-
-        /// <summary>
-        /// 最終アップデート日時
-        /// </summary>
-        public DateTime LastUpdateDatetime { get; set; }
-
-        /// <summary>
-        /// TTSの種類
-        /// </summary>
-        public string TTS { get; set; }
-
-        /// <summary>
-        /// ゆっくりのスピード
-        /// </summary>
-        public int YukkuriSpeed { get; set; }
-
-        /// <summary>
-        /// ゆっくりのボリューム調整を有効にする
-        /// </summary>
-        public bool EnabledYukkuriVolumeSetting { get; set; }
-
-        /// <summary>
-        /// ゆっくりのボリューム
-        /// </summary>
-        public int YukkuriVolume { get; set; }
-
-        /// <summary>
-        /// メイン再生デバイスID
-        /// </summary>
-        public string MainDeviceID { get; set; }
+        public List<string> BoyomiServer { get; set; }
 
         /// <summary>
         /// サブ再生デバイスを有効にする
@@ -123,29 +98,9 @@
         public bool EnabledSubDevice { get; set; }
 
         /// <summary>
-        /// サブ再生デバイスID
+        /// ゆっくりのボリューム調整を有効にする
         /// </summary>
-        public string SubDeviceID { get; set; }
-
-        /// <summary>
-        /// Wave再生時のボリューム
-        /// </summary>
-        public int WaveVolume { get; set; }
-
-        /// <summary>
-        /// ささら設定
-        /// </summary>
-        public SasaraConfig SasaraSettings { get; set; }
-
-        /// <summary>
-        /// 棒読み設定(サーバ, ポート)
-        /// </summary>
-        public List<string> BoyomiServer { get; set; }
-
-        /// <summary>
-        /// OpenJTalk設定
-        /// </summary>
-        public OpenJTalkConfig OpenJTalkSettings { get; set; }
+        public bool EnabledYukkuriVolumeSetting { get; set; }
 
         /// <summary>
         /// HOYA VoiceTextWebAPI 設定
@@ -153,9 +108,44 @@
         public HOYAConfig HOYASettings { get; set; }
 
         /// <summary>
+        /// 最終アップデート日時
+        /// </summary>
+        public DateTime LastUpdateDatetime { get; set; }
+
+        /// <summary>
+        /// メイン再生デバイスID
+        /// </summary>
+        public string MainDeviceID { get; set; }
+
+        /// <summary>
+        /// OpenJTalk設定
+        /// </summary>
+        public OpenJTalkConfig OpenJTalkSettings { get; set; }
+
+        /// <summary>
         /// オプション設定
         /// </summary>
         public OptionsConfig OptionSettings { get; set; }
+
+        /// <summary>
+        /// 再生方式
+        /// </summary>
+        public WavePlayers Player { get; set; }
+
+        /// <summary>
+        /// ささら設定
+        /// </summary>
+        public SasaraConfig SasaraSettings { get; set; }
+
+        /// <summary>
+        /// サブ再生デバイスID
+        /// </summary>
+        public string SubDeviceID { get; set; }
+
+        /// <summary>
+        /// TTSの種類
+        /// </summary>
+        public string TTS { get; set; }
 
         /// <summary>
         /// 終了時にキャッシュしたwaveファイルを削除する
@@ -163,9 +153,46 @@
         public bool WaveCacheClearEnable { get; set; }
 
         /// <summary>
-        /// 再生方式
+        /// Wave再生時のボリューム
         /// </summary>
-        public WavePlayers Player { get; set; }
+        public int WaveVolume { get; set; }
+
+        /// <summary>
+        /// ゆっくりのスピード
+        /// </summary>
+        public int YukkuriSpeed { get; set; }
+
+        /// <summary>
+        /// ゆっくりのボリューム
+        /// </summary>
+        public int YukkuriVolume { get; set; }
+
+        public SasaraSettings GetSasaraSettings()
+        {
+            var talker = new SasaraSettings();
+
+            talker.Cast = TTSYukkuriConfig.Default.SasaraSettings.Cast;
+            talker.Volume = TTSYukkuriConfig.Default.SasaraSettings.Onryo;
+            talker.Speed = TTSYukkuriConfig.Default.SasaraSettings.Hayasa;
+            talker.Tone = TTSYukkuriConfig.Default.SasaraSettings.Takasa;
+            talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
+            talker.ToneScale = TTSYukkuriConfig.Default.SasaraSettings.Yokuyo;
+
+            var components = new List<SasaraTalkerComponent>();
+            foreach (var c in TTSYukkuriConfig.Default.SasaraSettings.Components)
+            {
+                components.Add(new SasaraTalkerComponent()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Value = c.Value
+                });
+            }
+
+            talker.Components = components.ToArray();
+
+            return talker;
+        }
 
         /// <summary>
         /// 設定をロードする
@@ -216,30 +243,9 @@
         /// </summary>
         public void SetSasara()
         {
-            var talker = new SasaraSettings();
-
-            talker.Cast = TTSYukkuriConfig.Default.SasaraSettings.Cast;
-            talker.Volume = TTSYukkuriConfig.Default.SasaraSettings.Onryo;
-            talker.Speed = TTSYukkuriConfig.Default.SasaraSettings.Hayasa;
-            talker.Tone = TTSYukkuriConfig.Default.SasaraSettings.Takasa;
-            talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
-            talker.ToneScale = TTSYukkuriConfig.Default.SasaraSettings.Yokuyo;
-
-            var components = new List<SasaraTalkerComponent>();
-            foreach (var c in TTSYukkuriConfig.Default.SasaraSettings.Components)
-            {
-                components.Add(new SasaraTalkerComponent()
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Value = c.Value
-                });
-            }
-
-            talker.Components = components.ToArray();
-
             // ささらに反映する
-            TTSClient.Instance.Channel.SetSasaraSettings(talker);
+            TTSClient.Instance.Channel.SetSasaraSettings(
+                this.GetSasaraSettings());
         }
     }
 }

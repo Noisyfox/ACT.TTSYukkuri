@@ -37,14 +37,14 @@
         private const short BoyomiSpeed = -1;
 
         /// <summary>
+        /// 棒読みちゃんへのテキストのエンコード 0:UTF-8
+        /// </summary>
+        private const byte BoyomiTextEncoding = 0;
+
+        /// <summary>
         /// 棒読みちゃんの音程 -1:棒読みちゃんの画面上の設定に従う
         /// </summary>
         private const short BoyomiTone = -1;
-
-        /// <summary>
-        /// 棒読みちゃんの音量 -1:棒読みちゃんの画面上の設定に従う
-        /// </summary>
-        private const short BoyomiVolume = -1;
 
         /// <summary>
         /// 棒読みちゃんの声質 0:棒読みちゃんの画面上の設定に従う
@@ -52,20 +52,14 @@
         private const short BoyomiVoice = 0;
 
         /// <summary>
-        /// 棒読みちゃんへのテキストのエンコード 0:UTF-8
+        /// 棒読みちゃんの音量 -1:棒読みちゃんの画面上の設定に従う
         /// </summary>
-        private const byte BoyomiTextEncoding = 0;
+        private const short BoyomiVolume = -1;
 
         /// <summary>
         /// TTSの設定Panel
         /// </summary>
-        public override UserControl TTSSettingsPanel
-        {
-            get
-            {
-                return BoyomiSettingPanel.Default;
-            }
-        }
+        public override UserControl TTSSettingsPanel => BoyomiSettingPanel.Default;
 
         /// <summary>
         /// 初期化する

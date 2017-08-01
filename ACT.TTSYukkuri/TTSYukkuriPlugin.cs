@@ -315,7 +315,10 @@
                     new FormActMain.PlayTtsDelegate(this.Speak);
 
                 // アップデートを確認する
-                this.Update();
+                Task.Run(() =>
+                {
+                    this.Update();
+                });
 
                 lblStatus.Text = "Plugin Started";
             }
