@@ -17,6 +17,9 @@
     /// </summary>
     public partial class FF14Watcher
     {
+        private const int WatcherInterval = 400;
+        private const int WatcherLongInterval = 5000;
+
         /// <summary>
         /// シングルトンインスタンス
         /// </summary>
@@ -129,10 +132,10 @@
                             ActGlobals.oFormActMain.WriteExceptionLog(
                                 ex,
                                 "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
-                            Thread.Sleep(5000);
+                            Thread.Sleep(WatcherLongInterval);
                         }
 
-                        Thread.Sleep(400);
+                        Thread.Sleep(WatcherInterval);
                     }
                 });
 
@@ -149,12 +152,14 @@
             // ACTが表示されていなければ何もしない
             if (!ActGlobals.oFormActMain.Visible)
             {
+                Thread.Sleep(WatcherLongInterval);
                 return;
             }
 
             // FF14Processがなければ何もしない
             if (FF14PluginHelper.GetFFXIVProcess == null)
             {
+                Thread.Sleep(WatcherLongInterval);
                 return;
             }
 
@@ -163,6 +168,7 @@
                 !TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch &&
                 !TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch)
             {
+                Thread.Sleep(WatcherLongInterval);
                 return;
             }
 
