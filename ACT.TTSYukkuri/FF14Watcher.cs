@@ -63,7 +63,8 @@
                 {
                     if (instance.watchThread != null)
                     {
-                        instance.watchThread.Join(TimeSpan.FromSeconds(1));
+                        instance.watchThread.Join(TimeSpan.FromMilliseconds(
+                            WatcherLongInterval + WatcherInterval));
                         if (instance.watchThread.IsAlive)
                         {
                             instance.watchThread.Abort();
