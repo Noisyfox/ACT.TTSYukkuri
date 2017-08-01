@@ -129,6 +129,7 @@
                             ActGlobals.oFormActMain.WriteExceptionLog(
                                 ex,
                                 "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
+                            Thread.Sleep(5000);
                         }
 
                         Thread.Sleep(400);
