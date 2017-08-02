@@ -31,7 +31,7 @@
         private static object lockObject = new object();
 
         private Thread watchThread;
-        private bool watchThreadRunning;
+        private volatile bool watchThreadRunning;
 
         /// <summary>
         /// シングルトンインスタンス

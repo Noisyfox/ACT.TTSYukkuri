@@ -29,7 +29,7 @@
         /// <summary>
         /// 直前のパーティメンバ情報
         /// </summary>
-        private List<PreviousPartyMemberStatus> previouseParyMemberList = new List<PreviousPartyMemberStatus>();
+        private volatile List<PreviousPartyMemberStatus> previouseParyMemberList = new List<PreviousPartyMemberStatus>();
 
         /// <summary>
         /// パーティを監視する
