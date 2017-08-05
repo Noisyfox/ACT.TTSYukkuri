@@ -21,13 +21,11 @@
                     this.EndSasara();
                     Thread.Sleep(500);
                 }
-
-                this.CloseServer();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Catched Exception on End");
-                Console.WriteLine(ex.ToString());
+                Program.WriteLineLog(
+                    "Catched Exception on End", ex);
             }
         }
 

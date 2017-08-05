@@ -26,6 +26,7 @@
             if (ServiceControl.IsHostStarted)
             {
                 ServiceControl.CloseHost();
+                Program.WriteLineLog("Sasara closed.");
             }
 
             if (talker != null)
@@ -161,6 +162,7 @@
             if (!ServiceControl.IsHostStarted)
             {
                 ServiceControl.StartHost(false);
+                Program.WriteLineLog("Sasara started.");
             }
 
             if (talker == null)

@@ -1,7 +1,8 @@
 ﻿#if DEBUG
-// #if !DEBUG
-// マルチスタートアップでデバッグするときの定義
+#if false
+    // マルチスタートアップでデバッグするときの定義
 #define MULTI_START_DEBUG
+#endif
 #endif
 
 namespace ACT.TTSYukkuri.TTSServer
@@ -43,6 +44,7 @@ namespace ACT.TTSYukkuri.TTSServer
                 WindowStyle = ProcessWindowStyle.Hidden,
 #endif
                 UseShellExecute = false,
+                RedirectStandardInput = true,
             };
 
             serverProcess = Process.Start(pi);
@@ -66,6 +68,17 @@ namespace ACT.TTSYukkuri.TTSServer
             {
                 if (serverProcess != null)
                 {
+                    EndServer();
+
+                    for (int i = 0; i < 3000; i += 100)
+                    {
+                        Thread.Sleep(100);
+                        if (serverProcess.HasExited)
+                        {
+                            break;
+                        }
+                    }
+
                     if (!serverProcess.HasExited)
                     {
                         serverProcess.Kill();
@@ -74,6 +87,18 @@ namespace ACT.TTSYukkuri.TTSServer
                     serverProcess.Dispose();
                     serverProcess = null;
                 }
+            }
+        }
+
+        private static void EndServer()
+        {
+            if (serverProcess != null)
+            {
+                serverProcess.StandardInput.WriteLine("end");
+                serverProcess.StandardInput.Flush();
+                serverProcess.StandardInput.Close();
+
+                Thread.Sleep(10);
             }
         }
     }

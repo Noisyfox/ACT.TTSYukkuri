@@ -223,6 +223,9 @@
                     ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
                 }
 
+                // TTSサーバを終了する
+                TTSServerController.End();
+
                 // FF14監視スレッドを開放する
                 FF14Watcher.Deinitialize();
 
@@ -231,9 +234,6 @@
 
                 // 設定を保存する
                 TTSYukkuriConfig.Default.Save();
-
-                // TTSサーバを終了する
-                TTSServerController.End();
 
                 // プレイヤを開放する
                 NAudioPlayer.DisposePlayers();
