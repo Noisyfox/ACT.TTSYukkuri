@@ -1,7 +1,7 @@
 ﻿namespace ACT.TTSYukkuri.TTSServer
 {
     using System;
-
+    using System.Threading;
     using ACT.TTSYukkuri.TTSServer.Core;
     using ACT.TTSYukkuri.TTSServer.Core.Models;
 
@@ -14,14 +14,15 @@
         {
             try
             {
-                this.CloseServer();
-
                 YukkuriController.Default.Free();
 
                 if (this.isSasaraStarted)
                 {
                     this.EndSasara();
+                    Thread.Sleep(500);
                 }
+
+                this.CloseServer();
             }
             catch (Exception ex)
             {

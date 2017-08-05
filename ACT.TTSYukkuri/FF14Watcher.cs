@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading;
-
+    using System.Threading.Tasks;
     using ACT.TTSYukkuri.Config;
     using Advanced_Combat_Tracker;
 
@@ -30,7 +30,7 @@
         /// </summary>
         private static object lockObject = new object();
 
-        private Thread watchThread;
+        private Task watchThread;
         private volatile bool watchThreadRunning;
 
         /// <summary>
@@ -63,11 +63,10 @@
                 {
                     if (instance.watchThread != null)
                     {
-                        instance.watchThread.Join(TimeSpan.FromMilliseconds(
-                            WatcherLongInterval + WatcherInterval));
-                        if (instance.watchThread.IsAlive)
+                        instance.watchThread.Wait();
+                        if (instance.watchThread.IsCompleted)
                         {
-                            instance.watchThread.Abort();
+                            instance.watchThread.Dispose();
                         }
 
                         instance.watchThread = null;
@@ -109,13 +108,12 @@
         {
             lock (lockObject)
             {
-                if (this.watchThread != null &&
-                    this.watchThread.IsAlive)
+                if (this.watchThread != null)
                 {
                     return;
                 }
 
-                this.watchThread = new Thread(() =>
+                this.watchThread = new Task(() =>
                 {
                     while (this.watchThreadRunning)
                     {

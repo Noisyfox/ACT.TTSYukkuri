@@ -54,20 +54,26 @@ namespace ACT.TTSYukkuri.TTSServer
 
         public static void End()
         {
-            if (TTSClient.Instance.Channel != null)
+            try
             {
-                TTSClient.Instance.Channel.End();
-            }
-
-            if (serverProcess != null)
-            {
-                if (!serverProcess.HasExited)
+                if (TTSClient.Instance.Channel != null)
                 {
-                    serverProcess.Kill();
+                    TTSClient.Instance.Channel.End();
+                    Thread.Sleep(500);
                 }
+            }
+            finally
+            {
+                if (serverProcess != null)
+                {
+                    if (!serverProcess.HasExited)
+                    {
+                        serverProcess.Kill();
+                    }
 
-                serverProcess.Dispose();
-                serverProcess = null;
+                    serverProcess.Dispose();
+                    serverProcess = null;
+                }
             }
         }
     }
