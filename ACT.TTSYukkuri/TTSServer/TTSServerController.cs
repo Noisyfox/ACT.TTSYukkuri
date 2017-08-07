@@ -7,7 +7,6 @@
 
 namespace ACT.TTSYukkuri.TTSServer
 {
-    using System;
     using System.Diagnostics;
     using System.IO;
     using System.Threading;
@@ -22,37 +21,6 @@ namespace ACT.TTSYukkuri.TTSServer
             Path.Combine(
                 TTSYukkuriPlugin.PluginDirectory,
                 @"ACT.TTSYukkuri.TTSServer.exe");
-
-        public static void Start()
-        {
-#if !MULTI_START_DEBUG
-            // ゾンビプロセスがいたら殺す
-            var ps = Process.GetProcessesByName("ACT.TTSYukkuri.TTSServer");
-            if (ps != null)
-            {
-                foreach (var p in ps)
-                {
-                    p.Kill();
-                    p.Dispose();
-                }
-            }
-
-            var pi = new ProcessStartInfo(ServerProcessPath)
-            {
-#if !DEBUG
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
-#endif
-                UseShellExecute = false,
-                RedirectStandardInput = true,
-            };
-
-            serverProcess = Process.Start(pi);
-            Thread.Sleep(1000);
-#endif
-            // TTSサービスへ接続する
-            TTSClient.Instance.Open();
-        }
 
         public static void End()
         {
@@ -88,6 +56,37 @@ namespace ACT.TTSYukkuri.TTSServer
                     serverProcess = null;
                 }
             }
+        }
+
+        public static void Start()
+        {
+#if !MULTI_START_DEBUG
+            // ゾンビプロセスがいたら殺す
+            var ps = Process.GetProcessesByName("ACT.TTSYukkuri.TTSServer");
+            if (ps != null)
+            {
+                foreach (var p in ps)
+                {
+                    p.Kill();
+                    p.Dispose();
+                }
+            }
+
+            var pi = new ProcessStartInfo(ServerProcessPath)
+            {
+#if !DEBUG
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden,
+#endif
+                UseShellExecute = false,
+                RedirectStandardInput = true,
+            };
+
+            serverProcess = Process.Start(pi);
+            Thread.Sleep(1000);
+#endif
+            // TTSサービスへ接続する
+            TTSClient.Instance.Open();
         }
 
         private static void EndServer()

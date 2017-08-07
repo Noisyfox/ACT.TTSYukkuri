@@ -1,8 +1,8 @@
 ﻿namespace ACT.TTSYukkuri
 {
     using System;
+    using System.ComponentModel;
     using System.Threading;
-    using System.Threading.Tasks;
     using ACT.TTSYukkuri.Config;
     using Advanced_Combat_Tracker;
 
@@ -30,8 +30,7 @@
         /// </summary>
         private static object lockObject = new object();
 
-        private Task watchThread;
-        private volatile bool watchThreadRunning;
+        private BackgroundWorker watchWorker;
 
         /// <summary>
         /// シングルトンインスタンス
@@ -55,23 +54,11 @@
         /// </summary>
         public static void Deinitialize()
         {
-            instance.watchThreadRunning = false;
-
             lock (lockObject)
             {
                 if (instance != null)
                 {
-                    if (instance.watchThread != null)
-                    {
-                        instance.watchThread.Wait();
-                        if (instance.watchThread.IsCompleted)
-                        {
-                            instance.watchThread.Dispose();
-                        }
-
-                        instance.watchThread = null;
-                    }
-
+                    instance.watchWorker?.CancelAsync();
                     instance = null;
                 }
             }
@@ -108,23 +95,26 @@
         {
             lock (lockObject)
             {
-                if (this.watchThread != null)
+                if (this.watchWorker != null)
                 {
                     return;
                 }
 
-                this.watchThread = new Task(() =>
+                this.watchWorker = new BackgroundWorker();
+                this.watchWorker.WorkerSupportsCancellation = true;
+                this.watchWorker.DoWork += (s, e) =>
                 {
-                    while (this.watchThreadRunning)
+                    while (true)
                     {
                         try
                         {
+                            if (this.watchWorker.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+
                             this.WatchCore();
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            this.watchThreadRunning = false;
-                            return;
                         }
                         catch (Exception ex)
                         {
@@ -136,10 +126,9 @@
 
                         Thread.Sleep(WatcherInterval);
                     }
-                });
+                };
 
-                this.watchThreadRunning = true;
-                this.watchThread.Start();
+                this.watchWorker.RunWorkerAsync();
             }
         }
 
