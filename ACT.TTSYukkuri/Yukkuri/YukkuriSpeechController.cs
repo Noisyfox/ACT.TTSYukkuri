@@ -6,9 +6,9 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.TTSServer.Core;
-    using ACT.TTSYukkuri.TTSServer.Core.Models;
     using Advanced_Combat_Tracker;
+    using FFXIV.Framework.TTS;
+    using FFXIV.Framework.TTS.Common;
     using Microsoft.VisualBasic;
 
     /// <summary>
@@ -72,13 +72,11 @@
                     var textByYomigana = this.ConvertYomigana(text);
 
                     // サーバに送信する
-                    TTSClient.Instance.Channel.Speak(new Speak()
-                    {
-                        TTSEngine = TTSEngine.Yukkuri,
-                        TextToSpeak = textByYomigana,
-                        SpeakSpeed = TTSYukkuriConfig.Default.YukkuriSpeed,
-                        WaveFileName = wave
-                    });
+                    TTSClient.Instance.TTSModel.TextToWave(
+                        TTSTypes.Yukkuri,
+                        textByYomigana,
+                        wave,
+                        TTSYukkuriConfig.Default.YukkuriSpeed);
                 }
             }
 

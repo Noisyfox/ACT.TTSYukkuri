@@ -5,8 +5,8 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.TTSServer.Core;
-    using ACT.TTSYukkuri.TTSServer.Core.Models;
+    using FFXIV.Framework.TTS;
+    using FFXIV.Framework.TTS.Common;
 
     /// <summary>
     /// さとうささらスピーチコントローラ
@@ -25,7 +25,6 @@
         /// </summary>
         public override void Initialize()
         {
-            TTSClient.Instance.Channel.StartSasara();
             TTSYukkuriConfig.Default.SetSasara();
         }
 
@@ -57,13 +56,11 @@
                 if (!File.Exists(wave))
                 {
                     // 音声waveファイルを生成する
-                    TTSClient.Instance.Channel.Speak(new Speak()
-                    {
-                        TTSEngine = TTSEngine.CeVIO,
-                        TextToSpeak = text,
-                        WaveFileName = wave,
-                        Settings = TTSYukkuriConfig.Default.GetSasaraSettings(),
-                    });
+                    TTSClient.Instance.TTSModel.TextToWave(
+                        TTSTypes.CeVIO,
+                        text,
+                        wave,
+                        0);
                 }
             }
 

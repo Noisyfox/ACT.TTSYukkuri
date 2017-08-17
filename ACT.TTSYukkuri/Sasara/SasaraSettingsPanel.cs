@@ -6,9 +6,8 @@
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.TTSServer;
-    using ACT.TTSYukkuri.TTSServer.Core;
-    using ACT.TTSYukkuri.TTSServer.Core.Models;
+    using FFXIV.Framework.TTS.Common;
+    using FFXIV.Framework.TTS.Common.Models;
 
     /// <summary>
     /// ささらTTS設定Panel
@@ -16,14 +15,14 @@
     public partial class SasaraSettingsPanel : UserControl
     {
         /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
-        private static object lockObject = new object();
-
-        /// <summary>
         /// シングルトンinstance
         /// </summary>
         private static SasaraSettingsPanel instance;
+
+        /// <summary>
+        /// ロックオブジェクト
+        /// </summary>
+        private static object lockObject = new object();
 
         /// <summary>
         /// 感情componentテーブル
@@ -33,7 +32,15 @@
         /// <summary>
         /// さららTalker設定
         /// </summary>
-        private SasaraSettings talker;
+        private CevioTalkerModel talker;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public SasaraSettingsPanel()
+        {
+            this.InitializeComponent();
+        }
 
         /// <summary>
         /// シングルトンinstance
@@ -55,11 +62,42 @@
         }
 
         /// <summary>
-        /// コンストラクタ
+        /// 感情GridView CellValidated
         /// </summary>
-        public SasaraSettingsPanel()
+        /// <param name="sender">イベント発生元</param>
+        /// <param name="e">イベント引数</param>
+        private void kanjoDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
         {
-            this.InitializeComponent();
+            foreach (var row in this.componentsTable)
+            {
+                if (row.Value < 0)
+                {
+                    row.Value = 0;
+                }
+
+                if (row.Value > 100)
+                {
+                    row.Value = 100;
+                }
+            }
+
+            // 設定を保存する
+            this.SaveSettings();
+        }
+
+        /// <summary>
+        /// 感情GridView DataError
+        /// </summary>
+        /// <param name="sender">イベント発生元</param>
+        /// <param name="e">イベント引数</param>
+        private void kanjoDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.Exception != null)
+            {
+                MessageBox.Show(
+                    this,
+                    "0～100の値を入力して下さい");
+            }
         }
 
         /// <summary>
@@ -69,7 +107,7 @@
         /// <param name="e">イベント引数</param>
         private void SasaraSettingsPanel_Load(object sender, EventArgs e)
         {
-            this.talker = TTSClient.Instance.Channel.GetSasaraSettings();
+            this.talker = TTSClient.Instance.TTSModel.GetCevioTalker();
 
             // キャストコンボボックスを設定する
             var casts = this.talker.AvailableCasts;
@@ -78,9 +116,9 @@
             {
                 this.talker.Cast = this.castComboBox.Text;
 
-                TTSClient.Instance.Channel.SetSasaraSettings(this.talker);
+                TTSClient.Instance.TTSModel.SetCevioTalker(this.talker);
 
-                this.talker = TTSClient.Instance.Channel.GetSasaraSettings();
+                this.talker = TTSClient.Instance.TTSModel.GetCevioTalker();
 
                 var components = this.talker.Components;
                 for (int i = 0; i < components.Length; i++)
@@ -150,42 +188,24 @@
         }
 
         /// <summary>
-        /// 感情GridView DataError
+        /// 設定を保存する
         /// </summary>
-        /// <param name="sender">イベント発生元</param>
-        /// <param name="e">イベント引数</param>
-        private void kanjoDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void SaveSettings()
         {
-            if (e.Exception != null)
-            {
-                MessageBox.Show(
-                    this,
-                    "0～100の値を入力して下さい");
-            }
-        }
+            TTSYukkuriConfig.Default.SasaraSettings.Onryo = uint.Parse(this.onryoTextBox.Text);
+            TTSYukkuriConfig.Default.SasaraSettings.Hayasa = uint.Parse(this.hayasaTextBox.Text);
+            TTSYukkuriConfig.Default.SasaraSettings.Takasa = uint.Parse(this.takasaTextBox.Text);
+            TTSYukkuriConfig.Default.SasaraSettings.Seishitsu = uint.Parse(this.seishitsuTextBox.Text);
+            TTSYukkuriConfig.Default.SasaraSettings.Yokuyo = uint.Parse(this.yokuyoTextBox.Text);
 
-        /// <summary>
-        /// 感情GridView CellValidated
-        /// </summary>
-        /// <param name="sender">イベント発生元</param>
-        /// <param name="e">イベント引数</param>
-        private void kanjoDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
-        {
-            foreach (var row in this.componentsTable)
-            {
-                if (row.Value < 0)
-                {
-                    row.Value = 0;
-                }
-
-                if (row.Value > 100)
-                {
-                    row.Value = 100;
-                }
-            }
+            TTSYukkuriConfig.Default.SasaraSettings.Cast = this.castComboBox.Text;
+            TTSYukkuriConfig.Default.SasaraSettings.Components = this.componentsTable;
 
             // 設定を保存する
-            this.SaveSettings();
+            TTSYukkuriConfig.Default.Save();
+
+            // ささらを設定する
+            TTSYukkuriConfig.Default.SetSasara();
         }
 
         /// <summary>
@@ -215,27 +235,6 @@
 
             // 設定を保存する
             this.SaveSettings();
-        }
-
-        /// <summary>
-        /// 設定を保存する
-        /// </summary>
-        private void SaveSettings()
-        {
-            TTSYukkuriConfig.Default.SasaraSettings.Onryo = uint.Parse(this.onryoTextBox.Text);
-            TTSYukkuriConfig.Default.SasaraSettings.Hayasa = uint.Parse(this.hayasaTextBox.Text);
-            TTSYukkuriConfig.Default.SasaraSettings.Takasa = uint.Parse(this.takasaTextBox.Text);
-            TTSYukkuriConfig.Default.SasaraSettings.Seishitsu = uint.Parse(this.seishitsuTextBox.Text);
-            TTSYukkuriConfig.Default.SasaraSettings.Yokuyo = uint.Parse(this.yokuyoTextBox.Text);
-
-            TTSYukkuriConfig.Default.SasaraSettings.Cast = this.castComboBox.Text;
-            TTSYukkuriConfig.Default.SasaraSettings.Components = this.componentsTable;
-
-            // 設定を保存する
-            TTSYukkuriConfig.Default.Save();
-
-            // ささらを設定する
-            TTSYukkuriConfig.Default.SetSasara();
         }
     }
 }

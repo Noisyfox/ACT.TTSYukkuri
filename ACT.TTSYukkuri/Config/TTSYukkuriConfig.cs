@@ -7,8 +7,8 @@
     using System.Xml.Serialization;
 
     using ACT.TTSYukkuri.SoundPlayer;
-    using ACT.TTSYukkuri.TTSServer.Core;
-    using ACT.TTSYukkuri.TTSServer.Core.Models;
+    using FFXIV.Framework.TTS.Common;
+    using FFXIV.Framework.TTS.Common.Models;
 
     /// <summary>
     /// TTSYukkuri設定
@@ -167,9 +167,9 @@
         /// </summary>
         public int YukkuriVolume { get; set; }
 
-        public SasaraSettings GetSasaraSettings()
+        public CevioTalkerModel GetSasaraSettings()
         {
-            var talker = new SasaraSettings();
+            var talker = new CevioTalkerModel();
 
             talker.Cast = TTSYukkuriConfig.Default.SasaraSettings.Cast;
             talker.Volume = TTSYukkuriConfig.Default.SasaraSettings.Onryo;
@@ -178,10 +178,10 @@
             talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
             talker.ToneScale = TTSYukkuriConfig.Default.SasaraSettings.Yokuyo;
 
-            var components = new List<SasaraTalkerComponent>();
+            var components = new List<CevioTalkerModel.CevioTalkerComponent>();
             foreach (var c in TTSYukkuriConfig.Default.SasaraSettings.Components)
             {
-                components.Add(new SasaraTalkerComponent()
+                components.Add(new CevioTalkerModel.CevioTalkerComponent()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -244,7 +244,7 @@
         public void SetSasara()
         {
             // ささらに反映する
-            TTSClient.Instance.Channel.SetSasaraSettings(
+            TTSClient.Instance.TTSModel.SetCevioTalker(
                 this.GetSasaraSettings());
         }
     }
