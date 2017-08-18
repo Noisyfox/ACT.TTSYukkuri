@@ -212,6 +212,9 @@ pip-log.txt
 #Translations
 *.mo
 
+#misc
+.vs/
+
 #Mr Developer
 .mr.developer.cfg
 /ACT.TTSYukkuri.TTSServer/Resources/AquesTalkDa.dll
