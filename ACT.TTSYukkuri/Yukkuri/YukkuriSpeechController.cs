@@ -72,7 +72,7 @@
                     var textByYomigana = this.ConvertYomigana(text);
 
                     // サーバに送信する
-                    TTSClient.Instance.TTSModel.TextToWave(
+                    RemoteTTSClient.Instance.TTSModel.TextToWave(
                         TTSTypes.Yukkuri,
                         textByYomigana,
                         wave,

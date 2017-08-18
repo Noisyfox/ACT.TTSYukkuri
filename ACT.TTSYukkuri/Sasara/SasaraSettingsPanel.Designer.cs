@@ -76,8 +76,8 @@
             this.kanjoDataGridView.RowTemplate.Height = 21;
             this.kanjoDataGridView.Size = new System.Drawing.Size(296, 152);
             this.kanjoDataGridView.TabIndex = 1;
-            this.kanjoDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.kanjoDataGridView_CellValidated);
-            this.kanjoDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.kanjoDataGridView_DataError);
+            this.kanjoDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.KanjoDataGridView_CellValidated);
+            this.kanjoDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.KanjoDataGridView_DataError);
             // 
             // KanjoColumn
             // 

@@ -189,7 +189,7 @@
                 });
             }
 
-            talker.Components = components.ToArray();
+            talker.Components = components;
 
             return talker;
         }
@@ -244,7 +244,7 @@
         public void SetSasara()
         {
             // ささらに反映する
-            TTSClient.Instance.TTSModel.SetCevioTalker(
+            RemoteTTSClient.Instance.TTSModel.SetCevioTalker(
                 this.GetSasaraSettings());
         }
     }

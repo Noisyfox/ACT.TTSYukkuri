@@ -27,7 +27,8 @@
         /// <summary>
         /// 感情componentテーブル
         /// </summary>
-        private SasaraSettingsDataSet.SasaraComponentsDataTable componentsTable = new SasaraSettingsDataSet.SasaraComponentsDataTable();
+        private SasaraSettingsDataSet.SasaraComponentsDataTable componentsTable =
+            new SasaraSettingsDataSet.SasaraComponentsDataTable();
 
         /// <summary>
         /// さららTalker設定
@@ -66,7 +67,7 @@
         /// </summary>
         /// <param name="sender">イベント発生元</param>
         /// <param name="e">イベント引数</param>
-        private void kanjoDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
+        private void KanjoDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
         {
             foreach (var row in this.componentsTable)
             {
@@ -90,7 +91,7 @@
         /// </summary>
         /// <param name="sender">イベント発生元</param>
         /// <param name="e">イベント引数</param>
-        private void kanjoDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        private void KanjoDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             if (e.Exception != null)
             {
@@ -107,7 +108,7 @@
         /// <param name="e">イベント引数</param>
         private void SasaraSettingsPanel_Load(object sender, EventArgs e)
         {
-            this.talker = TTSClient.Instance.TTSModel.GetCevioTalker();
+            this.talker = RemoteTTSClient.Instance.TTSModel.GetCevioTalker();
 
             // キャストコンボボックスを設定する
             var casts = this.talker.AvailableCasts;
@@ -116,12 +117,12 @@
             {
                 this.talker.Cast = this.castComboBox.Text;
 
-                TTSClient.Instance.TTSModel.SetCevioTalker(this.talker);
+                RemoteTTSClient.Instance.TTSModel.SetCevioTalker(this.talker);
 
-                this.talker = TTSClient.Instance.TTSModel.GetCevioTalker();
+                this.talker = RemoteTTSClient.Instance.TTSModel.GetCevioTalker();
 
                 var components = this.talker.Components;
-                for (int i = 0; i < components.Length; i++)
+                for (int i = 0; i < components.Count; i++)
                 {
                     var c = components[i];
 

@@ -56,7 +56,7 @@
                 if (!File.Exists(wave))
                 {
                     // 音声waveファイルを生成する
-                    TTSClient.Instance.TTSModel.TextToWave(
+                    RemoteTTSClient.Instance.TTSModel.TextToWave(
                         TTSTypes.CeVIO,
                         text,
                         wave,

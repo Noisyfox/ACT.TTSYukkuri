@@ -6,16 +6,16 @@ namespace ACT.TTSYukkuri.TTSServer
     {
         public static void End()
         {
-            TTSClient.Instance.Close();
+            RemoteTTSClient.Instance.Close();
 #if DEBUG
-            TTSClient.Instance.ShutdownTTSServer();
+            RemoteTTSClient.Instance.ShutdownTTSServer();
 #endif
         }
 
         public static void Start()
         {
-            TTSClient.Instance.StartTTSServer();
-            TTSClient.Instance.Open();
+            RemoteTTSClient.Instance.StartTTSServer();
+            RemoteTTSClient.Instance.Open();
         }
     }
 }
