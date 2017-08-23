@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("ACT.TTSYukkuri")]
@@ -10,6 +10,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("f20b280b-35b9-4462-a71e-e187cc2a60e7")]
+[assembly: Guid("fc5518a8-181b-43b2-bc12-298484b2919c")]
 [assembly: AssemblyVersion("2.0.0.0")]
 [assembly: AssemblyFileVersion("2.0.0.0")]

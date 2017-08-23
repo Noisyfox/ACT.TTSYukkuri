@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri.Config
+namespace ACT.TTSYukkuri.Config
 {
     using System;
     using System.Collections.Generic;
@@ -53,7 +53,7 @@
                 }
 
                 // 自身の場所を取得する
-                var selfDirectory = TTSYukkuriPlugin.PluginDirectory ?? string.Empty;
+                var selfDirectory = PluginCore.Instance.PluginDirectory ?? string.Empty;
                 var resourcesUnderThis = Path.Combine(selfDirectory, @"OpenJTalk");
 
                 if (Directory.Exists(resourcesUnderThis))

@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri.SoundPlayer
+namespace ACT.TTSYukkuri.SoundPlayer
 {
     using System;
     using System.Collections.Generic;
@@ -54,22 +54,33 @@
         /// <returns>再生デバイスのリスト</returns>
         public static List<PlayDevice> EnumlateDevices()
         {
+            var list = default(List<PlayDevice>);
+
             switch (TTSYukkuriConfig.Default.Player)
             {
                 case WavePlayers.WaveOut:
-                    return EnumlateDevicesByWaveOut();
+                    list = EnumlateDevicesByWaveOut();
+                    break;
 
                 case WavePlayers.DirectSound:
-                    return EnumlateDevicesByDirectSoundOut();
+                    list = EnumlateDevicesByDirectSoundOut();
+                    break;
 
                 case WavePlayers.WASAPI:
-                    return EnumlateDevicesByWasapiOut();
+                    list = EnumlateDevicesByWasapiOut();
+                    break;
 
                 case WavePlayers.ASIO:
-                    return EnumlateDevicesByAsioOut();
+                    list = EnumlateDevicesByAsioOut();
+                    break;
             }
 
-            return null;
+            if (list != null)
+            {
+                list.Add(PlayDevice.DiscordPlugin);
+            }
+
+            return list;
         }
 
         /// <summary>
@@ -174,6 +185,14 @@
 
             try
             {
+                // Discord指定？
+                if (deviceID == PlayDevice.DiscordDeviceID)
+                {
+                    // Discordプラグインを呼んで抜ける
+                    PluginCore.Instance.PlaySoundByDiscord(waveFile, volume);
+                    return;
+                }
+
                 IWavePlayer player = null;
                 IWaveProvider provider = null;
 
@@ -258,6 +277,14 @@
     /// </summary>
     public class PlayDevice
     {
+        public const string DiscordDeviceID = "DISCORD";
+
+        public readonly static PlayDevice DiscordPlugin = new PlayDevice()
+        {
+            ID = DiscordDeviceID,
+            Name = "Use ACT_DiscordTriggers.dll",
+        };
+
         /// <summary>
         /// デバイスのID
         /// </summary>

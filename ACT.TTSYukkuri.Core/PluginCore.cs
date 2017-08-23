@@ -1,90 +1,80 @@
-﻿namespace ACT.TTSYukkuri
+using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using ACT.TTSYukkuri.Config;
+using ACT.TTSYukkuri.SoundPlayer;
+using ACT.TTSYukkuri.TTSServer;
+using Advanced_Combat_Tracker;
+
+namespace ACT.TTSYukkuri
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-    using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
-
-    using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.SoundPlayer;
-    using ACT.TTSYukkuri.TTSServer;
-    using Advanced_Combat_Tracker;
-
     /// <summary>
     /// TTSゆっくりプラグイン
     /// </summary>
-    public partial class TTSYukkuriPlugin :
-        IActPluginV1
+    public partial class PluginCore
     {
+        #region Singleton
+
+        private static PluginCore instance = new PluginCore();
+
+        public static PluginCore Instance => instance;
+
+        private PluginCore()
+        {
+        }
+
+        #endregion Singleton
+
+        public TTSYukkuriConfigPanel ConfigPanel { get; private set; }
+
+        public string PluginDirectory { get; private set; }
+
         private Label lblStatus;
 
-        private FormActMain.PlayTtsDelegate originalTTSDelegate;
+        #region ACT_DiscordTriggers
 
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public TTSYukkuriPlugin()
+        private FormActMain.PlayTtsDelegate originalTTSMethod;
+
+        public void PlaySoundByDiscord(
+            string waveFile,
+            int volume = 100)
         {
-            // このDLLの配置場所とACT標準のPluginディレクトリも解決の対象にする
-            AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
+            if (string.IsNullOrEmpty(waveFile) ||
+                !File.Exists(waveFile))
             {
-                try
-                {
-                    var asm = new AssemblyName(e.Name);
+                return;
+            }
 
-                    var plugin = ActGlobals.oFormActMain.PluginGetSelfData(this);
-                    if (plugin != null)
-                    {
-                        var thisDirectory = plugin.pluginFile.DirectoryName;
-                        var path1 = Path.Combine(thisDirectory, asm.Name + ".dll");
-                        if (File.Exists(path1))
-                        {
-                            return Assembly.LoadFrom(path1);
-                        }
-                    }
-
-                    var pluginDirectory = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        @"Advanced Combat Tracker\Plugins");
-
-                    var path = Path.Combine(pluginDirectory, asm.Name + ".dll");
-
-                    if (File.Exists(path))
-                    {
-                        return Assembly.LoadFrom(path);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ActGlobals.oFormActMain.WriteExceptionLog(
-                        ex,
-                        "ACT.TTSYukkuri Assemblyの解決で例外が発生しました");
-                }
-
-                return null;
-            };
-
-            Instance = this;
+            var playSound = ActGlobals.oFormActMain.PlaySoundMethod;
+            if (playSound.Target.GetType().FullName.Contains("DiscordPlugin"))
+            {
+                playSound.Invoke(waveFile, volume);
+            }
         }
 
-        /// <summary>
-        /// 設定Panel（設定タブ）
-        /// </summary>
-        public static TTSYukkuriConfigPanel ConfigPanel
+        private void ReplaceTTSMethod()
         {
-            get;
-            private set;
+            // TTSメソッドを置き換える
+            if (ActGlobals.oFormActMain.PlayTtsMethod != this.Speak)
+            {
+                this.originalTTSMethod = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
+                ActGlobals.oFormActMain.PlayTtsMethod = this.Speak;
+            }
         }
 
-        public static TTSYukkuriPlugin Instance { get; private set; }
-
-        public static string PluginDirectory
+        private void RestoreTTSMethod()
         {
-            get;
-            private set;
+            // 置き換えたTTSメソッドを元に戻す
+            if (this.originalTTSMethod != null)
+            {
+                ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSMethod;
+            }
         }
+
+        #endregion ACT_DiscordTriggers
 
         /// <summary>
         /// テキストを読上げる
@@ -97,6 +87,9 @@
             {
                 return;
             }
+
+            // TTSメソッドを置き換える
+            this.ReplaceTTSMethod();
 
             Task.Run(() =>
             {
@@ -160,7 +153,7 @@
         /// TTSを読上げる
         /// </summary>
         /// <param name="textToSpeak">読上げるテキスト</param>
-        public void SpeakTTS(
+        private void SpeakTTS(
             string textToSpeak)
         {
             const string waitCommand = "/wait";
@@ -211,17 +204,12 @@
             }
         }
 
-        #region IActPluginV1 Members
-
         public void DeInitPlugin()
         {
             try
             {
-                // 置き換えたTTSメソッドを元に戻す
-                if (this.originalTTSDelegate != null)
-                {
-                    ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSDelegate;
-                }
+                // TTSアクションを元に戻す
+                this.RestoreTTSMethod();
 
                 // TTSサーバを終了する
                 TTSServerController.End();
@@ -260,7 +248,7 @@
                     }
                 }
 
-                lblStatus.Text = "Plugin Exited";
+                this.lblStatus.Text = "Plugin Exited";
             }
             catch (Exception ex)
             {
@@ -272,17 +260,19 @@
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void InitPlugin(
+            IActPluginV1 plugin,
             TabPage pluginScreenSpace,
             Label pluginStatusText)
         {
             try
             {
+                this.lblStatus = pluginStatusText;
                 pluginScreenSpace.Text = "TTSゆっくり";
 
-                var plugin = ActGlobals.oFormActMain.PluginGetSelfData(this);
-                if (plugin != null)
+                var pluginInfo = ActGlobals.oFormActMain.PluginGetSelfData(plugin);
+                if (pluginInfo != null)
                 {
-                    TTSYukkuriPlugin.PluginDirectory = plugin.pluginFile.DirectoryName;
+                    this.PluginDirectory = pluginInfo.pluginFile.DirectoryName;
                 }
 
                 // TTSのキャッシュを移行する
@@ -302,17 +292,12 @@
                 FF14Watcher.Initialize();
 
                 // 設定Panelを追加する
-                ConfigPanel = new TTSYukkuriConfigPanel();
-                ConfigPanel.Dock = DockStyle.Fill;
+                this.ConfigPanel = new TTSYukkuriConfigPanel();
+                this.ConfigPanel.Dock = DockStyle.Fill;
                 pluginScreenSpace.Controls.Add(ConfigPanel);
 
-                // Hand the status label's reference to our local var
-                lblStatus = pluginStatusText;
-
                 // TTSメソッドを置き換える
-                this.originalTTSDelegate = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
-                ActGlobals.oFormActMain.PlayTtsMethod =
-                    new FormActMain.PlayTtsDelegate(this.Speak);
+                this.ReplaceTTSMethod();
 
                 // アップデートを確認する
                 Task.Run(() =>
@@ -337,8 +322,6 @@
                 TTSYukkuriConfig.Default.Save();
             }
         }
-
-        #endregion IActPluginV1 Members
 
         /// <summary>
         /// TTSのキャッシュ(waveファイル)をマイグレーションする

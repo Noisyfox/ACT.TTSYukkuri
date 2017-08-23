@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri
+namespace ACT.TTSYukkuri
 {
     using System;
     using System.Linq;
@@ -44,7 +44,7 @@
 
             this.PlayTestButton.Click += (s, e) =>
             {
-                TTSYukkuriPlugin.Instance.Speak(
+                PluginCore.Instance.Speak(
                     this.TestTTSTextBox.Text);
             };
         }
