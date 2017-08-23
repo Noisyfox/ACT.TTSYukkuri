@@ -7,6 +7,10 @@ if (Test-Path CeVIO.Talk.RemoteService.dll) {
   Remove-Item CeVIO.Talk.RemoteService.dll -Force
 }
 
+if (Test-Path logs) {
+  Remove-Item logs -Force -Recurse
+}
+
 Remove-Item -Force -Recurse -Path .\* -Include *.xml -Exclude *系*,preset-*
 Remove-Item -Force -Recurse -Path .\* -Include *.pdb
 Remove-Item -Force -Recurse -Path .\* -Include "Action icons",locale

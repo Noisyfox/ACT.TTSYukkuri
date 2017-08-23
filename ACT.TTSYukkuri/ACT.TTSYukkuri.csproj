@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="Advanced Combat Tracker">
       <HintPath>..\..\ACTv3\Advanced Combat Tracker.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -71,9 +72,6 @@
       <Project>{22ebf8a4-eed1-4cd1-99eb-99665163a315}</Project>
       <Name>FFXIV.Framework</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
