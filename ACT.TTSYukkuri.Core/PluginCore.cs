@@ -38,6 +38,12 @@ namespace ACT.TTSYukkuri
 
         private FormActMain.PlayTtsDelegate originalTTSMethod;
 
+        private System.Timers.Timer replaceTTSMethodTimer = new System.Timers.Timer()
+        {
+            Interval = 10 * 1000,
+            AutoReset = true,
+        };
+
         public void PlaySoundByDiscord(
             string waveFile,
             int volume = 100)
@@ -63,6 +69,17 @@ namespace ACT.TTSYukkuri
                 this.originalTTSMethod = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
                 ActGlobals.oFormActMain.PlayTtsMethod = this.Speak;
             }
+
+            // 置き換え監視タイマを開始する
+            if (!this.replaceTTSMethodTimer.Enabled)
+            {
+                this.replaceTTSMethodTimer.Elapsed += (s, e) =>
+                {
+                    this.ReplaceTTSMethod();
+                };
+
+                this.replaceTTSMethodTimer.Start();
+            }
         }
 
         private void RestoreTTSMethod()
@@ -71,6 +88,13 @@ namespace ACT.TTSYukkuri
             if (this.originalTTSMethod != null)
             {
                 ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSMethod;
+            }
+
+            // タイマを止める
+            if (this.replaceTTSMethodTimer.Enabled)
+            {
+                this.replaceTTSMethodTimer.Stop();
+                this.replaceTTSMethodTimer.Dispose();
             }
         }
 
@@ -87,9 +111,6 @@ namespace ACT.TTSYukkuri
             {
                 return;
             }
-
-            // TTSメソッドを置き換える
-            this.ReplaceTTSMethod();
 
             Task.Run(() =>
             {
