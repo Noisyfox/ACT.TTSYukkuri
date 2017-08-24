@@ -40,7 +40,7 @@ namespace ACT.TTSYukkuri
 
         private System.Timers.Timer replaceTTSMethodTimer = new System.Timers.Timer()
         {
-            Interval = 10 * 1000,
+            Interval = 3 * 1000,
             AutoReset = true,
         };
 
@@ -54,22 +54,28 @@ namespace ACT.TTSYukkuri
                 return;
             }
 
-            var playSound = ActGlobals.oFormActMain.PlaySoundMethod;
-            if (playSound.Target.GetType().FullName.Contains("DiscordPlugin"))
+            var playSoundMethod = ActGlobals.oFormActMain.PlaySoundMethod;
+            if (playSoundMethod.Target.GetType().FullName.Contains("DiscordPlugin"))
             {
-                playSound.Invoke(waveFile, volume);
+                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
+                {
+                    playSoundMethod(waveFile, volume);
+                });
             }
         }
 
-        private void ReplaceTTSMethod()
+        private void StopReplaceTTSMethodTimer()
         {
-            // TTSメソッドを置き換える
-            if (ActGlobals.oFormActMain.PlayTtsMethod != this.Speak)
+            // タイマを止める
+            if (this.replaceTTSMethodTimer.Enabled)
             {
-                this.originalTTSMethod = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
-                ActGlobals.oFormActMain.PlayTtsMethod = this.Speak;
+                this.replaceTTSMethodTimer.Stop();
+                this.replaceTTSMethodTimer.Dispose();
             }
+        }
 
+        private void StartReplaceTTSMethodTimer()
+        {
             // 置き換え監視タイマを開始する
             if (!this.replaceTTSMethodTimer.Enabled)
             {
@@ -82,19 +88,22 @@ namespace ACT.TTSYukkuri
             }
         }
 
+        private void ReplaceTTSMethod()
+        {
+            // TTSメソッドを置き換える
+            if (ActGlobals.oFormActMain.PlayTtsMethod != this.Speak)
+            {
+                this.originalTTSMethod = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
+                ActGlobals.oFormActMain.PlayTtsMethod = this.Speak;
+            }
+        }
+
         private void RestoreTTSMethod()
         {
             // 置き換えたTTSメソッドを元に戻す
             if (this.originalTTSMethod != null)
             {
                 ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSMethod;
-            }
-
-            // タイマを止める
-            if (this.replaceTTSMethodTimer.Enabled)
-            {
-                this.replaceTTSMethodTimer.Stop();
-                this.replaceTTSMethodTimer.Dispose();
             }
         }
 
@@ -112,61 +121,59 @@ namespace ACT.TTSYukkuri
                 return;
             }
 
+            // ファイルじゃない（TTS）？
+            if (!textToSpeak.EndsWith(".wav"))
+            {
+                Task.Run(() =>
+                {
+                    this.SpeakTTS(textToSpeak);
+                });
+
+                return;
+            }
+
+            // waveファイルとして再生する
             Task.Run(() =>
             {
-                // ファイルじゃない？
-                if (!textToSpeak.EndsWith(".wav"))
+                var wave = textToSpeak;
+                if (!File.Exists(wave))
                 {
-                    // 喋って終わる
-                    this.SpeakTTS(textToSpeak);
+                    var dirs = new string[]
+                    {
+                        Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"resources\wav"),
+                        Path.Combine(this.PluginDirectory, @"resources\wav"),
+                    };
 
+                    foreach (var dir in dirs)
+                    {
+                        var f = Path.Combine(dir, wave);
+                        if (File.Exists(f))
+                        {
+                            wave = f;
+                            break;
+                        }
+                    }
+                }
+
+                if (!File.Exists(wave))
+                {
                     return;
                 }
 
-                if (File.Exists(textToSpeak))
+                if (TTSYukkuriConfig.Default.EnabledSubDevice)
                 {
-                    if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                    {
-                        NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.SubDeviceID,
-                            textToSpeak,
-                            false,
-                            TTSYukkuriConfig.Default.WaveVolume);
-                    }
-
                     NAudioPlayer.Play(
-                        TTSYukkuriConfig.Default.MainDeviceID,
-                        textToSpeak,
+                        TTSYukkuriConfig.Default.SubDeviceID,
+                        wave,
                         false,
                         TTSYukkuriConfig.Default.WaveVolume);
                 }
-                else
-                {
-                    // ACTのパスを取得する
-                    var baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-                    var waveDir = Path.Combine(
-                        baseDir,
-                        @"resources\wav");
 
-                    var wave = Path.Combine(waveDir, textToSpeak);
-                    if (File.Exists(wave))
-                    {
-                        if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                        {
-                            NAudioPlayer.Play(
-                                TTSYukkuriConfig.Default.SubDeviceID,
-                                wave,
-                                false,
-                                TTSYukkuriConfig.Default.WaveVolume);
-                        }
-
-                        NAudioPlayer.Play(
-                            TTSYukkuriConfig.Default.MainDeviceID,
-                            wave,
-                            false,
-                            TTSYukkuriConfig.Default.WaveVolume);
-                    }
-                }
+                NAudioPlayer.Play(
+                    TTSYukkuriConfig.Default.MainDeviceID,
+                    wave,
+                    false,
+                    TTSYukkuriConfig.Default.WaveVolume);
             });
         }
 
@@ -230,6 +237,7 @@ namespace ACT.TTSYukkuri
             try
             {
                 // TTSアクションを元に戻す
+                this.StopReplaceTTSMethodTimer();
                 this.RestoreTTSMethod();
 
                 // TTSサーバを終了する
@@ -318,7 +326,7 @@ namespace ACT.TTSYukkuri
                 pluginScreenSpace.Controls.Add(ConfigPanel);
 
                 // TTSメソッドを置き換える
-                this.ReplaceTTSMethod();
+                this.StartReplaceTTSMethodTimer();
 
                 // アップデートを確認する
                 Task.Run(() =>

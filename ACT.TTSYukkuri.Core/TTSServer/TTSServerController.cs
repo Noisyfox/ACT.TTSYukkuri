@@ -1,4 +1,4 @@
-﻿using FFXIV.Framework.TTS.Common;
+using FFXIV.Framework.TTS.Common;
 
 namespace ACT.TTSYukkuri.TTSServer
 {
@@ -14,6 +14,7 @@ namespace ACT.TTSYukkuri.TTSServer
 
         public static void Start()
         {
+            RemoteTTSClient.Instance.BaseDirectory = PluginCore.Instance.PluginDirectory;
             RemoteTTSClient.Instance.StartTTSServer();
             RemoteTTSClient.Instance.Open();
         }
