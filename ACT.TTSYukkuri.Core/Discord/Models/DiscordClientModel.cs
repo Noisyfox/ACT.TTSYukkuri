@@ -155,12 +155,18 @@ namespace ACT.TTSYukkuri.Discord.Models
         {
             if (this.vnc != null)
             {
-                await vnc.SendSpeakingAsync(true);
+                try
+                {
+                    await vnc.SendSpeakingAsync(true);
 
-                var data = PcmSoundModel.Instance.GetPcmSound(wave);
-                await this.vnc.SendAsync(data, 20);
-
-                await vnc.SendSpeakingAsync(false);
+                    WaveModel.Instance.SendEncode(
+                        wave,
+                        (bytes, blocksize) => this.vnc.SendAsync(bytes, blocksize));
+                }
+                finally
+                {
+                    await vnc.SendSpeakingAsync(false);
+                }
 
                 this.AppendLogLine($"Play sound: {wave}");
             }

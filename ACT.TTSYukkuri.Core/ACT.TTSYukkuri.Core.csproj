@@ -117,7 +117,7 @@
     <Compile Include="Discord\Converters\ProgressBarBlurConverter.cs" />
     <Compile Include="Discord\Converters\RatingConverter.cs" />
     <Compile Include="Discord\Models\DiscordClientModel.cs" />
-    <Compile Include="Discord\Models\PcmSoundModel.cs" />
+    <Compile Include="Discord\Models\WaveModel.cs" />
     <Compile Include="Discord\ViewModels\DiscordViewModel.cs" />
     <Compile Include="Discord\Views\DiscordView.xaml.cs">
       <DependentUpon>DiscordView.xaml</DependentUpon>
