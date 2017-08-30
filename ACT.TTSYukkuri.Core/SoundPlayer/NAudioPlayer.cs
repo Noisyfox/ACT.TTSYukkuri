@@ -282,7 +282,7 @@ namespace ACT.TTSYukkuri.SoundPlayer
         public readonly static PlayDevice DiscordPlugin = new PlayDevice()
         {
             ID = DiscordDeviceID,
-            Name = "Use ACT_DiscordTriggers.dll",
+            Name = "Use Discord",
         };
 
         /// <summary>
