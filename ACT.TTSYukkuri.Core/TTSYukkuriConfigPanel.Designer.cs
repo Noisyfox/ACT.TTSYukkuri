@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri
+namespace ACT.TTSYukkuri
 {
     partial class TTSYukkuriConfigPanel
     {
@@ -79,6 +79,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.TPThresholdTextBox = new System.Windows.Forms.TextBox();
             this.enableWatchTPCheckBox = new System.Windows.Forms.CheckBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.DiscordElementHost = new System.Windows.Forms.Integration.ElementHost();
+            this.DiscordView = new ACT.TTSYukkuri.Discord.Views.DiscordView();
             this.saiseiDeviceGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaveVolTrackBar)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -90,6 +93,7 @@
             this.watchHPTabPage.SuspendLayout();
             this.watchMPTabPage.SuspendLayout();
             this.watchTPTabPage.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // ttsSettingsGroupBox
@@ -250,6 +254,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -273,7 +278,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1193, 612);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "General";
+            this.tabPage1.Text = "General　";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // WaveCacheClearCheckBox
@@ -329,7 +334,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(1193, 612);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Option";
+            this.tabPage2.Text = "Parameter Alarm　";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // optionGroupBox
@@ -677,6 +682,25 @@
             this.enableWatchTPCheckBox.Text = "PartyのTP低下を監視する";
             this.enableWatchTPCheckBox.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.DiscordElementHost);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(1193, 612);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Discord　";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // DiscordElementHost
+            // 
+            this.DiscordElementHost.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DiscordElementHost.Location = new System.Drawing.Point(0, 0);
+            this.DiscordElementHost.Name = "DiscordElementHost";
+            this.DiscordElementHost.Size = new System.Drawing.Size(1193, 612);
+            this.DiscordElementHost.TabIndex = 2;
+            this.DiscordElementHost.Child = this.DiscordView;
+            // 
             // TTSYukkuriConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -702,6 +726,7 @@
             this.watchMPTabPage.PerformLayout();
             this.watchTPTabPage.ResumeLayout(false);
             this.watchTPTabPage.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -756,5 +781,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox TPThresholdTextBox;
         private System.Windows.Forms.CheckBox enableWatchTPCheckBox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Integration.ElementHost DiscordElementHost;
+        private Discord.Views.DiscordView DiscordView;
     }
 }

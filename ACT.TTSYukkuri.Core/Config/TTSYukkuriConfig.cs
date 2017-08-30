@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri.Config
+namespace ACT.TTSYukkuri.Config
 {
     using System;
     using System.Collections.Generic;
@@ -166,6 +166,11 @@
         /// ゆっくりのボリューム
         /// </summary>
         public int YukkuriVolume { get; set; }
+
+        /// <summary>
+        /// Discordの設定
+        /// </summary>
+        public DiscordSettings DicordSettings { get; set; } = new DiscordSettings();
 
         public CevioTalkerModel GetSasaraSettings()
         {

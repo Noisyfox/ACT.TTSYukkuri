@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ACT.TTSYukkuri.Config;
+using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.SoundPlayer;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
@@ -34,35 +35,11 @@ namespace ACT.TTSYukkuri
 
         private Label lblStatus;
 
-        #region ACT_DiscordTriggers
+        #region Replace TTS Method
 
         private FormActMain.PlayTtsDelegate originalTTSMethod;
 
-        private System.Timers.Timer replaceTTSMethodTimer = new System.Timers.Timer()
-        {
-            Interval = 3 * 1000,
-            AutoReset = true,
-        };
-
-        public void PlaySoundByDiscord(
-            string waveFile,
-            int volume = 100)
-        {
-            if (string.IsNullOrEmpty(waveFile) ||
-                !File.Exists(waveFile))
-            {
-                return;
-            }
-
-            var playSoundMethod = ActGlobals.oFormActMain.PlaySoundMethod;
-            if (playSoundMethod.Target.GetType().FullName.Contains("DiscordPlugin"))
-            {
-                ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
-                {
-                    playSoundMethod(waveFile, volume);
-                });
-            }
-        }
+        private System.Timers.Timer replaceTTSMethodTimer;
 
         private void StopReplaceTTSMethodTimer()
         {
@@ -71,11 +48,18 @@ namespace ACT.TTSYukkuri
             {
                 this.replaceTTSMethodTimer.Stop();
                 this.replaceTTSMethodTimer.Dispose();
+                this.replaceTTSMethodTimer = null;
             }
         }
 
         private void StartReplaceTTSMethodTimer()
         {
+            this.replaceTTSMethodTimer = new System.Timers.Timer()
+            {
+                Interval = 3 * 1000,
+                AutoReset = true,
+            };
+
             // 置き換え監視タイマを開始する
             if (!this.replaceTTSMethodTimer.Enabled)
             {
@@ -107,7 +91,7 @@ namespace ACT.TTSYukkuri
             }
         }
 
-        #endregion ACT_DiscordTriggers
+        #endregion Replace TTS Method
 
         /// <summary>
         /// テキストを読上げる
@@ -240,6 +224,9 @@ namespace ACT.TTSYukkuri
                 this.StopReplaceTTSMethodTimer();
                 this.RestoreTTSMethod();
 
+                // Discordを終了する
+                DiscordClientModel.Instance.Dispose();
+
                 // TTSサーバを終了する
                 TTSServerController.End();
 
@@ -327,6 +314,10 @@ namespace ACT.TTSYukkuri
 
                 // TTSメソッドを置き換える
                 this.StartReplaceTTSMethodTimer();
+
+                // Discordに接続する
+                DiscordClientModel.Instance.Initialize();
+                DiscordClientModel.Instance.Connect(true);
 
                 // アップデートを確認する
                 Task.Run(() =>

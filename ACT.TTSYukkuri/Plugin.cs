@@ -7,7 +7,9 @@ using Advanced_Combat_Tracker;
 
 namespace ACT.TTSYukkuri
 {
-    public class Plugin : IActPluginV1
+    public class Plugin :
+        IActPluginV1,
+        ISpeak
     {
         #region Singleton
 
@@ -63,7 +65,7 @@ namespace ACT.TTSYukkuri
 
         public void DeInitPlugin()
         {
-            PluginCore.Instance.DeInitPlugin();
+            PluginCore.Instance?.DeInitPlugin();
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -76,5 +78,12 @@ namespace ACT.TTSYukkuri
                 pluginScreenSpace,
                 pluginStatusText);
         }
+
+        #region ISpeak
+
+        public void Speak(string textToSpeak) =>
+            PluginCore.Instance.Speak(textToSpeak);
+
+        #endregion ISpeak
     }
 }

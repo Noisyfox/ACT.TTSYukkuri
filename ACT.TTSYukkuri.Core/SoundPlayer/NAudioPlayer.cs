@@ -6,6 +6,7 @@ namespace ACT.TTSYukkuri.SoundPlayer
     using System.IO;
 
     using ACT.TTSYukkuri.Config;
+    using ACT.TTSYukkuri.Discord.Models;
     using Advanced_Combat_Tracker;
     using NAudio.CoreAudioApi;
     using NAudio.Wave;
@@ -188,8 +189,7 @@ namespace ACT.TTSYukkuri.SoundPlayer
                 // Discord指定？
                 if (deviceID == PlayDevice.DiscordDeviceID)
                 {
-                    // Discordプラグインを呼んで抜ける
-                    PluginCore.Instance.PlaySoundByDiscord(waveFile, volume);
+                    DiscordClientModel.Instance.Play(waveFile);
                     return;
                 }
 
