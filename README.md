@@ -13,15 +13,35 @@ ACTのTTSをゆっくりさんに置き換えます
 ※TTSYukkuri の動作には. NET Framework 4.7 以降が必要です。  
 
 2) インストール  
-OpenJTalk\  
+Step1.  
+OpenJTalk  
+FFXIV.Framework.TTS.Server.exe.config  
+FFXIV.Framework.TTS.Server.NLog.config  
+ffmpeg.exe  
+FFXIV.Framework.TTS.Server.exe  
+ACT.TTSYukkuri.Core.dll  
 ACT.TTSYukkuri.dll  
-ACT.TTSYukkuri.TTSServer.Core.dll  
-ACT.TTSYukkuri.TTSServer.exe  
-ACT.TTSYukkuri.TTSServer.exe.config  
-NAudio.dll  
 AquesTalk.dll  
-をACTのインストールディレクトリにコピーします  
-その後、プラグインとしてACT.TTSYukkuri.dllを追加してください
+DSharpPlus.dll  
+DSharpPlus.VoiceNext.dll  
+FFXIV.Framework.dll  
+FFXIV.Framework.TTS.Common.dll  
+FFXIV.Framework.TTS.dll  
+MahApps.Metro.dll  
+NAudio.dll  
+Newtonsoft.Json.dll  
+NLog.dll  
+Prism.dll  
+System.Windows.Interactivity.dll  
+をACTのインストールディレクトリにコピーします。  
+  
+Step2.  
+lib\libopus.dll  
+lib\libsodium.dll  
+をACTのインストールディレクトリにコピーします。  
+  
+Step3.
+ACTのプラグインリストからプラグインとしてACT.TTSYukkuri.dllを追加してください。  
   
     
 #### ディレイ読上げ  
