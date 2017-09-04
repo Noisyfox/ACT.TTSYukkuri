@@ -13,6 +13,7 @@ ACTのTTSをゆっくりさんに置き換えます
 ※TTSYukkuri の動作には. NET Framework 4.7 以降が必要です。  
 
 2) インストール  
+  
 Step1.  
 OpenJTalk  
 FFXIV.Framework.TTS.Server.exe.config  
