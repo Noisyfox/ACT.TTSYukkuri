@@ -41,7 +41,7 @@ lib\libopus.dll
 lib\libsodium.dll  
 をACTのインストールディレクトリにコピーします。  
   
-Step3.
+Step3.  
 ACTのプラグインリストからプラグインとしてACT.TTSYukkuri.dllを追加してください。  
   
     
