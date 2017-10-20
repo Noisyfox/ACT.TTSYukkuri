@@ -40,10 +40,6 @@
     </NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ACT.TTSYukkuri.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Thirdparty\ACT.TTSYukkuri.Common.dll</HintPath>
-    </Reference>
     <Reference Include="Advanced Combat Tracker">
       <HintPath>..\..\ACTv3\Advanced Combat Tracker.exe</HintPath>
       <Private>False</Private>

@@ -3,11 +3,27 @@ $startdir=Get-Location
 
 $sln=Get-Item *.sln
 
+'Replace License Key'
+$codefile = ".\ACT.TTSYukkuri.Core\Yukkuri\AquesTalk.cs"
+$codefileBack = ".\ACT.TTSYukkuri.Core\Yukkuri\AquesTalk.cs.back"
+
+if (Test-Path .\AquesTalk.key) {
+    $replacement = "#DEVELOPER_KEY_IS_HERE#"
+    $key = $(Get-Content .\AquesTalk.key)
+    Copy-Item -Force $codefile $codefileBack
+    (Get-Content $codefile) | % { $_ -replace $replacement, $key } > $codefile
+}
+
 'Build Debug'
 & $devenv $sln /project deploy\deploy.csproj /Rebuild Debug
 
 'Build Release'
 & $devenv $sln /project deploy\deploy.csproj /Rebuild Release
+
+'Restore Backup'
+if (Test-Path $codefileBack) {
+    Copy-Item -Force $codefileBack $codefile
+}
 
 'Deploy Debug'
 if (Test-Path .\deploy\bin\Debug) {
