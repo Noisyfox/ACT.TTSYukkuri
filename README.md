@@ -20,7 +20,6 @@ Yukkuri
 FFXIV.Framework.TTS.Server.NLog.config  
 ffmpeg.exe  
 FFXIV.Framework.TTS.Server.exe  
-ACT.TTSYukkuri.Common.dll  
 ACT.TTSYukkuri.Core.dll  
 ACT.TTSYukkuri.dll  
 DSharpPlus.dll  
