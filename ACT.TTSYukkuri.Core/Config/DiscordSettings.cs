@@ -1,12 +1,11 @@
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using Prism.Mvvm;
 
 namespace ACT.TTSYukkuri.Config
 {
     [Serializable]
     public class DiscordSettings :
-        INotifyPropertyChanged
+        BindableBase
     {
         private string token = string.Empty;
         private string defaultServer = string.Empty;
@@ -36,38 +35,5 @@ namespace ACT.TTSYukkuri.Config
             get => this.autoJoin;
             set => this.SetProperty(ref this.autoJoin, value);
         }
-
-        #region INotifyPropertyChanged
-
-        [field: NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisePropertyChanged(
-            [CallerMemberName]string propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(
-                this,
-                new PropertyChangedEventArgs(propertyName));
-        }
-
-        protected virtual bool SetProperty<T>(
-            ref T field,
-            T value,
-            [CallerMemberName]string propertyName = null)
-        {
-            if (Equals(field, value))
-            {
-                return false;
-            }
-
-            field = value;
-            this.PropertyChanged?.Invoke(
-                this,
-                new PropertyChangedEventArgs(propertyName));
-
-            return true;
-        }
-
-        #endregion INotifyPropertyChanged
     }
 }

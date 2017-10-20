@@ -1,4 +1,4 @@
-﻿namespace VoiceTextWebAPI.Client
+namespace VoiceTextWebAPI.Client
 {
     public enum Emotion
     {

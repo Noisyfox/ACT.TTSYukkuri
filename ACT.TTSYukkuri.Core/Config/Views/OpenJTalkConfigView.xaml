@@ -1,0 +1,139 @@
+<UserControl
+  x:Class="ACT.TTSYukkuri.Config.Views.OpenJTalkConfigView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:vm="clr-namespace:ACT.TTSYukkuri.Config.ViewModels"
+  xmlns:cnv="clr-namespace:ACT.TTSYukkuri.Converters"
+  xmlns:resources="clr-namespace:ACT.TTSYukkuri.resources"
+  xmlns:sounds="clr-namespace:ACT.TTSYukkuri.SoundPlayer"
+  xmlns:yukkuri="clr-namespace:ACT.TTSYukkuri.Yukkuri"
+  xmlns:local="clr-namespace:ACT.TTSYukkuri.Config.Views"
+  mc:Ignorable="d"
+  TextOptions.TextFormattingMode="Display"
+  TextOptions.TextHintingMode="Animated"
+  TextOptions.TextRenderingMode="ClearType"
+  RenderOptions.ClearTypeHint="Enabled"
+  RenderOptions.BitmapScalingMode="HighQuality"
+  RenderOptions.EdgeMode="Unspecified"
+  Background="White"
+  FontFamily="Consolas"
+  FontSize="17"
+  d:DesignWidth="600"
+  d:DataContext="{d:DesignInstance Type=vm:OpenJTalkConfigViewModel, IsDesignTimeCreatable=True}"
+  DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <FontFamily x:Key="FontAwesome">pack://application:,,,/FontAwesome.WPF;component/#FontAwesome</FontFamily>
+      <cnv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+      <cnv:BoolToHiddenConverter x:Key="HiddenConverter" />
+
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../resources/strings/Strings.ja-JP.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <StackPanel Orientation="Vertical">
+    <Label Content="{DynamicResource OJT_Voices}" />
+    <ComboBox
+      HorizontalAlignment="Left"
+      MinWidth="350"
+      ItemsSource="{Binding Voices, Mode=OneWay}"
+      DisplayMemberPath="Name"
+      SelectedValuePath="Value"
+      SelectedValue="{Binding Config.Voice, Mode=TwoWay}">
+    </ComboBox>
+
+    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="100"
+        Content="{DynamicResource OJT_Gain}" />
+      <Label
+        Margin="5 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=GainSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="GainSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="1"
+        LargeChange="1"
+        Minimum="0" Maximum="400"
+        Width="250"
+        Value="{Binding Config.Gain, Mode=TwoWay}" />
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="100"
+        Content="{DynamicResource OJT_Volume}" />
+      <Label
+        Margin="5 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=VolumeSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="VolumeSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="1"
+        LargeChange="1"
+        Minimum="0" Maximum="100"
+        Width="250"
+        Value="{Binding Config.Volume, Mode=TwoWay}" />
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="100"
+        Content="{DynamicResource OJT_Speed}" />
+      <Label
+        Margin="5 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=SpeedSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="SpeedSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="1"
+        LargeChange="1"
+        Minimum="1" Maximum="400"
+        Width="250"
+        Value="{Binding Config.Speed, Mode=TwoWay}" />
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="100"
+        Content="{DynamicResource OJT_Pitch}" />
+      <Label
+        Margin="5 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=PitchSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="PitchSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="1"
+        LargeChange="1"
+        Minimum="-100" Maximum="100"
+        Width="250"
+        Value="{Binding Config.Pitch, Mode=TwoWay}" />
+      </StackPanel>
+  </StackPanel>
+</UserControl>

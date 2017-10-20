@@ -66,6 +66,7 @@ namespace ACT.TTSYukkuri
         public void DeInitPlugin()
         {
             PluginCore.Instance?.DeInitPlugin();
+            PluginCore.Free();
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

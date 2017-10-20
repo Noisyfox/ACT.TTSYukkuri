@@ -1,11 +1,8 @@
 namespace ACT.TTSYukkuri
 {
-    using System;
-    using System.Linq;
     using System.Windows.Forms;
 
     using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.SoundPlayer;
 
     /// <summary>
     /// TTSゆっくり設定Panel
@@ -13,42 +10,14 @@ namespace ACT.TTSYukkuri
     public partial class TTSYukkuriConfigPanel : UserControl
     {
         /// <summary>
-        /// TTS設定Panel
-        /// </summary>
-        private UserControl ttsSettingsPanel;
-
-        /// <summary>
-        /// ロード完了
-        /// </summary>
-        private bool Loaded;
-
-        /// <summary>
         /// コンストラクタ
         /// </summary>
         public TTSYukkuriConfigPanel()
         {
             this.InitializeComponent();
-
-            this.ttsShuruiComboBox.DisplayMember = "Display";
-            this.ttsShuruiComboBox.ValueMember = "Value";
-            this.ttsShuruiComboBox.DataSource = TTSType.ToComboBox;
-
-            this.ttsShuruiComboBox.TextChanged += (s1, e1) =>
-            {
-                if (this.Loaded)
-                {
-                    this.SaveSettings();
-                    this.LoadTTS();
-                }
-            };
-
-            this.PlayTestButton.Click += (s, e) =>
-            {
-                PluginCore.Instance.Speak(
-                    this.TestTTSTextBox.Text);
-            };
         }
 
+#if false
         /// <summary>
         /// Load
         /// </summary>
@@ -181,25 +150,6 @@ namespace ACT.TTSYukkuri
         }
 
         /// <summary>
-        /// 設定を保存する
-        /// </summary>
-        private void SaveSettings()
-        {
-            TTSYukkuriConfig.Default.TTS = (this.ttsShuruiComboBox.SelectedItem as ComboBoxItem).Value;
-
-            TTSYukkuriConfig.Default.Player = (WavePlayers)this.PlayerComboBox.SelectedItem;
-            TTSYukkuriConfig.Default.MainDeviceID = (string)this.mainDeviceComboBox.SelectedValue;
-            TTSYukkuriConfig.Default.EnabledSubDevice = this.enabledSubDeviceCheckBox.Checked;
-            TTSYukkuriConfig.Default.SubDeviceID = (string)this.subDeviceComboBox.SelectedValue;
-            TTSYukkuriConfig.Default.WaveVolume = (int)this.WaveVolTrackBar.Value;
-            TTSYukkuriConfig.Default.WaveCacheClearEnable = this.WaveCacheClearCheckBox.Checked;
-
-            this.SaveSettingsOptions();
-
-            TTSYukkuriConfig.Default.Save();
-        }
-
-        /// <summary>
         /// TTSを読み込む
         /// </summary>
         private void LoadTTS()
@@ -241,5 +191,11 @@ namespace ACT.TTSYukkuri
                 this.ttsShuruiComboBox.SelectedValue = TTSYukkuriConfig.Default.TTS;
             }
         }
+#endif
+
+        /// <summary>
+        /// 設定を保存する
+        /// </summary>
+        private void SaveSettings() => TTSYukkuriConfig.Default.Save();
     }
 }

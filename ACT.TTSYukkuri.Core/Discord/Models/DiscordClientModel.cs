@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
 using DSharpPlus;
+using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.Codec;
 using Prism.Mvvm;
@@ -24,7 +26,7 @@ namespace ACT.TTSYukkuri.Discord.Models
 
         public const string DicordCommandPrefix = "//";
 
-        private DiscordSettings Config => TTSYukkuriConfig.Default.DicordSettings;
+        private DiscordSettings Config => TTSYukkuriConfig.Default.DiscordSettings;
 
         public void Initialize()
         {
@@ -76,7 +78,7 @@ namespace ACT.TTSYukkuri.Discord.Models
                 return;
             }
 
-            this.discord = new DiscordClient(new DiscordConfig()
+            this.discord = new DiscordClient(new DiscordConfiguration()
             {
                 Token = this.Config.Token,
                 TokenType = TokenType.Bot,
@@ -96,7 +98,7 @@ namespace ACT.TTSYukkuri.Discord.Models
 
             this.discord.Ready += this.Ready;
             this.discord.GuildAvailable += this.GuildAvailable;
-            this.discord.ClientError += this.ClientError;
+            this.discord.ClientErrored += this.ClientError;
 
             var vcfg = new VoiceNextConfiguration
             {

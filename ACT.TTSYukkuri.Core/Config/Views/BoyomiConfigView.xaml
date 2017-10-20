@@ -1,0 +1,60 @@
+<UserControl
+  x:Class="ACT.TTSYukkuri.Config.Views.BoyomiConfigView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:system="clr-namespace:System;assembly=mscorlib"
+  xmlns:vm="clr-namespace:ACT.TTSYukkuri.Config.ViewModels"
+  xmlns:cnv="clr-namespace:ACT.TTSYukkuri.Converters"
+  xmlns:resources="clr-namespace:ACT.TTSYukkuri.resources"
+  xmlns:sounds="clr-namespace:ACT.TTSYukkuri.SoundPlayer"
+  xmlns:yukkuri="clr-namespace:ACT.TTSYukkuri.Yukkuri"
+  xmlns:local="clr-namespace:ACT.TTSYukkuri.Config.Views"
+  mc:Ignorable="d"
+  TextOptions.TextFormattingMode="Display"
+  TextOptions.TextHintingMode="Animated"
+  TextOptions.TextRenderingMode="ClearType"
+  RenderOptions.ClearTypeHint="Enabled"
+  RenderOptions.BitmapScalingMode="HighQuality"
+  RenderOptions.EdgeMode="Unspecified"
+  Background="White"
+  FontFamily="Consolas"
+  FontSize="17"
+  d:DesignWidth="600"
+  d:DataContext="{d:DesignInstance Type=vm:BoyomiConfigViewModel, IsDesignTimeCreatable=True}"
+  DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <FontFamily x:Key="FontAwesome">pack://application:,,,/FontAwesome.WPF;component/#FontAwesome</FontFamily>
+      <cnv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
+      <cnv:BoolToHiddenConverter x:Key="HiddenConverter" />
+
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../resources/strings/Strings.ja-JP.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <StackPanel Orientation="Vertical">
+    <Label Content="{DynamicResource Boyomi_Server}" />
+    <TextBox
+      Text="{Binding Config.BoyomiServer, Mode=TwoWay}"
+      HorizontalAlignment="Left"
+      Width="300" />
+
+    <Label Content="{DynamicResource Boyomi_Port}" Margin="0 10 0 0" />
+    <StackPanel Orientation="Horizontal">
+      <TextBox
+      Text="{Binding Config.BoyomiPort, Mode=TwoWay}"
+      HorizontalAlignment="Left"
+      TextAlignment="Right"
+      Width="60" />
+      <TextBlock
+      Margin="10 5 0 0"
+      FontSize="14"
+      Text="{DynamicResource Boyomi_PortDefault}"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

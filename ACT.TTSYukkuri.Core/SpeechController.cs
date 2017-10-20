@@ -1,21 +1,23 @@
-﻿namespace ACT.TTSYukkuri
+using ACT.TTSYukkuri.Boyomichan;
+using ACT.TTSYukkuri.Config;
+using ACT.TTSYukkuri.HOYA;
+using ACT.TTSYukkuri.OpenJTalk;
+using ACT.TTSYukkuri.Sasara;
+using ACT.TTSYukkuri.Yukkuri;
+
+namespace ACT.TTSYukkuri
 {
-    using System.Windows.Forms;
-
-    using ACT.TTSYukkuri.Boyomichan;
-    using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.HOYA;
-    using ACT.TTSYukkuri.OpenJTalk;
-    using ACT.TTSYukkuri.Sasara;
-    using ACT.TTSYukkuri.Yukkuri;
-
     /// <summary>
     /// スピーチコントローラ
     /// </summary>
     public class SpeechController :
-        SpeechControllerBase,
         ISpeechController
     {
+        /// <summary>
+        /// 現在のTTSタイプ
+        /// </summary>
+        private static string ttsType;
+
         /// <summary>
         /// Lockオブジェクト
         /// </summary>
@@ -27,11 +29,6 @@
         private static ISpeechController instance;
 
         /// <summary>
-        /// 現在のTTSタイプ
-        /// </summary>
-        private static string nowTTSType;
-
-        /// <summary>
         /// シングルトンinstanceを返す
         /// </summary>
         public static ISpeechController Default
@@ -40,69 +37,76 @@
             {
                 lock (lockObject)
                 {
-                    if (instance == null ||
-                        nowTTSType != TTSYukkuriConfig.Default.TTS)
+                    if (SpeechController.instance == null ||
+                        SpeechController.ttsType != TTSYukkuriConfig.Default.TTS)
                     {
+                        if (SpeechController.instance != null)
+                        {
+                            SpeechController.instance.Free();
+                        }
+
                         switch (TTSYukkuriConfig.Default.TTS)
                         {
                             case TTSType.Yukkuri:
-                                instance = new YukkuriSpeechController();
+                                SpeechController.instance = new YukkuriSpeechController();
                                 break;
 
-                            case TTSType.SasaraSato:
-                                instance = new SasaraSpeechController();
+                            case TTSType.Sasara:
+                                SpeechController.instance = new SasaraSpeechController();
                                 break;
 
                             case TTSType.Boyomichan:
-                                instance = new BoyomichanSpeechController();
+                                SpeechController.instance = new BoyomichanSpeechController();
                                 break;
 
                             case TTSType.OpenJTalk:
-                                instance = new OpenJTalkSpeechController();
+                                SpeechController.instance = new OpenJTalkSpeechController();
                                 break;
 
                             case TTSType.HOYA:
-                                instance = new HOYASpeechController();
+                                SpeechController.instance = new HOYASpeechController();
                                 break;
 
                             default:
-                                instance = new YukkuriSpeechController();
+                                SpeechController.instance = new YukkuriSpeechController();
                                 break;
                         }
 
-                        instance.Initialize();
+                        SpeechController.instance.Initialize();
 
-                        nowTTSType = TTSYukkuriConfig.Default.TTS;
+                        SpeechController.ttsType = TTSYukkuriConfig.Default.TTS;
 
                         // 監視スレッドにスピークdelegateを与える
-                        FF14Watcher.Default.SpeakDelegate = instance.Speak;
+                        FFXIVWatcher.Default.SpeakDelegate = SpeechController.instance.Speak;
                     }
 
-                    return instance;
+                    return SpeechController.instance;
                 }
             }
         }
 
         /// <summary>
-        /// TTSの設定Panel
-        /// </summary>
-        public override UserControl TTSSettingsPanel => SpeechController.Default.TTSSettingsPanel;
-
-        /// <summary>
         /// 初期化する
         /// </summary>
-        public override void Initialize()
-        {
+        public void Initialize() =>
             SpeechController.Default.Initialize();
+
+        /// <summary>
+        /// 開放する
+        /// </summary>
+        public void Free()
+        {
+            FFXIVWatcher.Default.SpeakDelegate = null;
+            SpeechController.Default.Free();
+            SpeechController.ttsType = string.Empty;
+            SpeechController.instance = null;
         }
 
         /// <summary>
         /// TTSに話してもらう
         /// </summary>
         /// <param name="text">読上げるテキスト</param>
-        public override void Speak(string text)
-        {
-            instance.Speak(text);
-        }
+        public void Speak(string text) =>
+            SpeechController.instance.Speak(text);
     }
 }

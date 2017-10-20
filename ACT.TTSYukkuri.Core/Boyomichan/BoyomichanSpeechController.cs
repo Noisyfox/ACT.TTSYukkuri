@@ -1,19 +1,17 @@
-﻿namespace ACT.TTSYukkuri.Boyomichan
+using System;
+using System.IO;
+using System.Net.Sockets;
+using System.Text;
+
+using ACT.TTSYukkuri.Config;
+using Advanced_Combat_Tracker;
+
+namespace ACT.TTSYukkuri.Boyomichan
 {
-    using System;
-    using System.IO;
-    using System.Net.Sockets;
-    using System.Text;
-    using System.Windows.Forms;
-
-    using ACT.TTSYukkuri.Config;
-    using Advanced_Combat_Tracker;
-
     /// <summary>
     /// 棒読みちゃんスピーチコントローラ
     /// </summary>
     public class BoyomichanSpeechController :
-        SpeechControllerBase,
         ISpeechController
     {
         /// <summary>
@@ -57,23 +55,19 @@
         private const short BoyomiVolume = -1;
 
         /// <summary>
-        /// TTSの設定Panel
-        /// </summary>
-        public override UserControl TTSSettingsPanel => BoyomiSettingPanel.Default;
-
-        /// <summary>
         /// 初期化する
         /// </summary>
-        public override void Initialize()
+        public void Initialize() { }
+
+        public void Free()
         {
-            // NO-OP
         }
 
         /// <summary>
         /// テキストを読み上げる
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
-        public override void Speak(
+        public void Speak(
             string text)
         {
             // 初期化する
@@ -81,13 +75,8 @@
 
             try
             {
-                var server = TTSYukkuriConfig.Default.BoyomiServer.Count > 0 ?
-                    TTSYukkuriConfig.Default.BoyomiServer[0] :
-                    BoyomichanServer;
-
-                var port = TTSYukkuriConfig.Default.BoyomiServer.Count > 1 ?
-                    int.Parse(TTSYukkuriConfig.Default.BoyomiServer[1]) :
-                    BoyomichanServicePort;
+                var server = TTSYukkuriConfig.Default.BoyomiServer;
+                var port = TTSYukkuriConfig.Default.BoyomiPort;
 
                 using (var tcp = new TcpClient(server, port))
                 using (var ns = tcp.GetStream())

@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri
+namespace ACT.TTSYukkuri
 {
     /// <summary>
     /// TTSの種類
@@ -13,7 +13,7 @@
         /// <summary>
         /// Sasara:CeVIO Creative Studio
         /// </summary>
-        public const string SasaraSato = "Sasara";
+        public const string Sasara = "Sasara";
 
         /// <summary>
         /// Boyomichan:棒読みちゃん
@@ -35,11 +35,11 @@
         /// </summary>
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
         {
-            new ComboBoxItem("ゆっくり", TTSType.Yukkuri),
+            new ComboBoxItem("AquesTalk (ゆっくり)", TTSType.Yukkuri),
             new ComboBoxItem("Open JTalk", TTSType.OpenJTalk),
             new ComboBoxItem("HOYA VoiceText Web API", TTSType.HOYA),
             new ComboBoxItem("棒読みちゃん(TCPインターフェース)", TTSType.Boyomichan),
-            new ComboBoxItem("CeVIO Creative Studio", TTSType.SasaraSato),
+            new ComboBoxItem("CeVIO Creative Studio", TTSType.Sasara),
         };
     }
 
@@ -72,9 +72,6 @@
         /// ToString
         /// </summary>
         /// <returns>文字列</returns>
-        public override string ToString()
-        {
-            return this.Display;
-        }
+        public override string ToString() => this.Display;
     }
 }

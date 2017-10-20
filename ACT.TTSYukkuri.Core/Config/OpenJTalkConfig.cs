@@ -1,37 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Serialization;
+using Prism.Mvvm;
+
 namespace ACT.TTSYukkuri.Config
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Xml.Serialization;
-
     [Serializable]
-    public class OpenJTalkConfig
+    public class OpenJTalkConfig :
+        BindableBase
     {
-        public OpenJTalkConfig()
-        {
-            this.SetDefault();
-        }
-
-        public string Voice { get; set; }
-
-        public int Gain { get; set; }
-
-        public int Volume { get; set; }
-
-        public int Speed { get; set; }
-
-        public int Pitch { get; set; }
+        private string voice = "mei_normal.htsvoice";
+        public int gain = 100;
+        public int volume = 100;
+        public int speed = 100;
+        public int pitch = 0;
 
         public void SetDefault()
         {
-            this.Voice = "mei_normal.htsvoice";
-            this.Gain = 100;
-            this.Volume = 100;
-            this.Speed = 100;
-            this.Pitch = 0;
+            var defaultConfig = new OpenJTalkConfig();
+            this.Gain = defaultConfig.Gain;
+            this.Volume = defaultConfig.Volume;
+            this.Speed = defaultConfig.Speed;
+            this.Pitch = defaultConfig.Pitch;
+        }
+
+        public string Voice
+        {
+            get => this.voice;
+            set => this.SetProperty(ref this.voice, value);
+        }
+
+        public int Gain
+        {
+            get => this.gain;
+            set => this.SetProperty(ref this.gain, value);
+        }
+
+        public int Volume
+        {
+            get => this.volume;
+            set => this.SetProperty(ref this.volume, value);
+        }
+
+        public int Speed
+        {
+            get => this.speed;
+            set => this.SetProperty(ref this.speed, value);
+        }
+
+        public int Pitch
+        {
+            get => this.pitch;
+            set => this.SetProperty(ref this.pitch, value);
         }
 
         [XmlIgnore]
@@ -113,27 +136,12 @@ namespace ACT.TTSYukkuri.Config
     [Serializable]
     public class OpenJTalkVoice
     {
-        public string Value
-        {
-            get
-            {
-                return Path.GetFileName(this.File);
-            }
-        }
+        public string Value => Path.GetFileName(this.File);
 
-        public string Name
-        {
-            get
-            {
-                return Path.GetFileName(this.File);
-            }
-        }
+        public string Name => Path.GetFileName(this.File);
 
         public string File { get; set; }
 
-        public override string ToString()
-        {
-            return this.Name;
-        }
+        public override string ToString() => this.Name;
     }
 }

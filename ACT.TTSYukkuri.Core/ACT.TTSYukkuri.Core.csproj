@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,6 +11,7 @@
     <AssemblyName>ACT.TTSYukkuri.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -43,24 +44,27 @@
       <HintPath>..\..\ACTv3\Advanced Combat Tracker.exe</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="DSharpPlus, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.2.5.4\lib\net46\DSharpPlus.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.1\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.CommandsNext, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.CommandsNext.2.5.4\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
+    <Reference Include="DSharpPlus, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.3.2.2\lib\net46\DSharpPlus.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.VoiceNext, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.VoiceNext.2.5.4\lib\net46\DSharpPlus.VoiceNext.dll</HintPath>
+    <Reference Include="DSharpPlus.CommandsNext, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.CommandsNext.3.2.2\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="DSharpPlus.VoiceNext, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.VoiceNext.3.2.2\lib\net46\DSharpPlus.VoiceNext.dll</HintPath>
+    </Reference>
+    <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="NAudio, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.2\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -80,6 +84,7 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -97,19 +102,52 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boyomichan\BoyomichanSpeechController.cs" />
-    <Compile Include="Boyomichan\BoyomiSettingPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Boyomichan\BoyomiSettingPanel.Designer.cs">
-      <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Common\Crypter.cs" />
     <Compile Include="Config\DiscordSettings.cs" />
     <Compile Include="Config\HOYAConfig.cs" />
+    <Compile Include="Config\Jobs.cs" />
     <Compile Include="Config\OpenJTalkConfig.cs" />
-    <Compile Include="Config\OptionsConfig.cs" />
+    <Compile Include="Config\StatusAlertConfig.cs" />
+    <Compile Include="Config\SasaraComponent.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\TTSYukkuriConfig.cs" />
-    <Compile Include="Config\WatchTargets.cs" />
+    <Compile Include="Config\ViewModels\GeneralViewModel.cs" />
+    <Compile Include="Config\ViewModels\BoyomiConfigViewModel.cs" />
+    <Compile Include="Config\ViewModels\SasaraConfigViewModel.cs" />
+    <Compile Include="Config\ViewModels\HoyaConfigViewModel.cs" />
+    <Compile Include="Config\ViewModels\OpenJTalkConfigViewModel.cs" />
+    <Compile Include="Config\ViewModels\StatusAlertConfigViewModel.cs" />
+    <Compile Include="Config\ViewModels\YukkuriConfigViewModel.cs" />
+    <Compile Include="Config\Views\BoyomiConfigView.xaml.cs">
+      <DependentUpon>BoyomiConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\ConfigBaseView.xaml.cs">
+      <DependentUpon>ConfigBaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\GeneralView.xaml.cs">
+      <DependentUpon>GeneralView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\HoyaConfigView.xaml.cs">
+      <DependentUpon>HoyaConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\OpenJTalkConfigView.xaml.cs">
+      <DependentUpon>OpenJTalkConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\SasaraConfigView.xaml.cs">
+      <DependentUpon>SasaraConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\StatusAlertConfigView.xaml.cs">
+      <DependentUpon>StatusAlertConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\YukkuriConfigView.xaml.cs">
+      <DependentUpon>YukkuriConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\AlertTarget.cs" />
+    <Compile Include="Config\YukkuriConfig.cs" />
+    <Compile Include="Converters\AddConverter.cs" />
+    <Compile Include="Converters\BoolToHiddenConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\RatingConverter.cs" />
     <Compile Include="Discord\Converters\BoolToHiddenConverter.cs" />
     <Compile Include="Discord\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Discord\Converters\ColorToSolidColorBrushConverter.cs" />
@@ -122,16 +160,10 @@
     <Compile Include="Discord\Views\DiscordView.xaml.cs">
       <DependentUpon>DiscordView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FF14PluginHelper.cs" />
-    <Compile Include="FF14Watcher.cs" />
-    <Compile Include="FF14Watcher.FF14PluginWrapper.cs" />
-    <Compile Include="FF14Watcher.PartyWatcher.cs" />
-    <Compile Include="HOYA\HOYASettingsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="HOYA\HOYASettingsPanel.Designer.cs">
-      <DependentUpon>HOYASettingsPanel.cs</DependentUpon>
-    </Compile>
+    <Compile Include="FFXIVPluginHelper.cs" />
+    <Compile Include="FFXIVWatcher.cs" />
+    <Compile Include="FFXIVWatcher.FFXIVPluginWrapper.cs" />
+    <Compile Include="FFXIVWatcher.PartyWatcher.cs" />
     <Compile Include="HOYA\HOYASpeechController.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\Emotion.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\EmotionLevel.cs" />
@@ -141,46 +173,23 @@
     <Compile Include="HOYA\VoiceTextWebAPI.Client\VoiceTextException.cs" />
     <Compile Include="ISpeachController.cs" />
     <Compile Include="KanjiTranslator.cs" />
-    <Compile Include="OpenJTalk\OpenJTalkSettingsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="OpenJTalk\OpenJTalkSettingsPanel.Designer.cs">
-      <DependentUpon>OpenJTalkSettingsPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="OpenJTalk\OpenJTalkSpeechController.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Sasara\SasaraSettingsDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Sasara\SasaraSettingsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Sasara\SasaraSettingsPanel.Designer.cs">
-      <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
-    </Compile>
+    <Compile Include="resources\ILocalizable.cs" />
+    <Compile Include="resources\Locales.cs" />
+    <Compile Include="resources\LocalizeExtensions.cs" />
     <Compile Include="Sasara\SasaraSpeechController.cs" />
     <Compile Include="SoundPlayer\NAudioPlayer.cs" />
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
-    <Compile Include="SpeechControllerBase.cs" />
     <Compile Include="StringExtension.cs" />
     <Compile Include="TTSServer\TTSServerController.cs" />
     <Compile Include="TTSYukkuriConfigPanel.Options.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UpdateChecker.cs" />
-    <Compile Include="Yukkuri\YukkuriSettingsPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Yukkuri\YukkuriSettingsPanel.Designer.cs">
-      <DependentUpon>YukkuriSettingsPanel.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Yukkuri\AquesTalkParam.cs" />
+    <Compile Include="Yukkuri\AquesTalk.cs" />
+    <Compile Include="Yukkuri\AqKanji2Koe.cs" />
     <Compile Include="Yukkuri\YukkuriSpeechController.cs" />
     <Compile Include="TTSType.cs" />
     <Compile Include="TTSYukkuriConfigPanel.cs">
@@ -193,27 +202,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Boyomichan\BoyomiSettingPanel.resx">
-      <DependentUpon>BoyomiSettingPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HOYA\HOYASettingsPanel.resx">
-      <DependentUpon>HOYASettingsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OpenJTalk\OpenJTalkSettingsPanel.resx">
-      <DependentUpon>OpenJTalkSettingsPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Sasara\SasaraSettingsPanel.resx">
-      <DependentUpon>SasaraSettingsPanel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TTSYukkuriConfigPanel.resx">
       <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Yukkuri\YukkuriSettingsPanel.resx">
-      <DependentUpon>YukkuriSettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -247,24 +237,46 @@
     <None Include="OpenJTalk\voice\mei_sad.htsvoice">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="OpenJTalk\voice\type-alpha.htsvoice">
+    <Content Include="OpenJTalk\voice\tohoku-f01-angry.htsvoice">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="OpenJTalk\voice\type-beta.htsvoice">
+    </Content>
+    <Content Include="OpenJTalk\voice\tohoku-f01-happy.htsvoice">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="OpenJTalk\voice\tohoku-f01-neutral.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\voice\tohoku-f01-sad.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\voice\type-A.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\voice\type-B.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\voice\type-G.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenJTalk\voice\type-T.htsvoice">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
-    <None Include="Sasara\SasaraSettingsDataSet.xsc">
-      <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Sasara\SasaraSettingsDataSet.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SasaraSettingsDataSet.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Sasara\SasaraSettingsDataSet.xss">
-      <DependentUpon>SasaraSettingsDataSet.xsd</DependentUpon>
-    </None>
+    <Content Include="Yukkuri\AqKanji2Koe.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Yukkuri\aq_dic\aqdic.bin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Yukkuri\aq_dic\aq_user.dic">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Yukkuri\aq_dic\CREDITS">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Yukkuri\aq_dic\aq_dic files is here">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FFXIV.Framework\FFXIV.Framework.TTS.Common\FFXIV.Framework.TTS.Common.csproj">
@@ -312,14 +324,61 @@
     <Content Include="lib\libopus.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Yukkuri\AquesTalk.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Yukkuri\AquesTalk.dll is here">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Config\Views\BoyomiConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\ConfigBaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\GeneralView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\HoyaConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\OpenJTalkConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\SasaraConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\StatusAlertConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\YukkuriConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Discord\Views\DiscordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="resources\strings\Strings.en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="resources\strings\Strings.ja-JP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Config\Models\" />
     <Folder Include="Discord\ViewModels\Commands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

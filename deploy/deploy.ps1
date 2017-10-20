@@ -11,6 +11,13 @@ if (Test-Path logs) {
   Remove-Item logs -Force -Recurse
 }
 
+$locales = @("de", "en", "es", "fr", "it", "ja", "ko", "ru", "zh-Hans", "zh-Hant");
+foreach($locale in $locales) {
+	if (Test-Path $locale) {
+		Remove-Item $locale -Force -Recurse
+	}
+}
+
 Remove-Item -Force -Recurse -Path .\* -Include *.xml -Exclude *系*,preset-*
 Remove-Item -Force -Recurse -Path .\* -Include *.pdb
 Remove-Item -Force -Recurse -Path .\* -Include "Action icons",locale

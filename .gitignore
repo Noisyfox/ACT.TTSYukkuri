@@ -222,3 +222,8 @@ pip-log.txt
 /ACT.TTSYukkuri.TTSServer/CeVIO.Talk.RemoteService.DLL
 /Thirdparty/CeVIO.Talk.RemoteService.DLL
 /ACT.TTSYukkuri.TTSServer/AquesTalk.dll
+/ACT.TTSYukkuri.Core/Yukkuri/AquesTalk.dll
+/ACT.TTSYukkuri.Core/Yukkuri/AqKanji2Koe.dll
+/ACT.TTSYukkuri.Core/Yukkuri/aq_dic/CREDITS
+/ACT.TTSYukkuri.Core/Yukkuri/aq_dic/aqdic.bin
+/ACT.TTSYukkuri.Core/Yukkuri/aq_dic/aq_user.dic

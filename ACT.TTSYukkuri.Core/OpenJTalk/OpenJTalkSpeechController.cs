@@ -1,17 +1,13 @@
-﻿namespace ACT.TTSYukkuri.OpenJTalk
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using ACT.TTSYukkuri.Config;
+using NAudio.Wave;
+
+namespace ACT.TTSYukkuri.OpenJTalk
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Text;
-    using System.Windows.Forms;
-
-    using ACT.TTSYukkuri.Config;
-    using NAudio.Wave;
-
     public class OpenJTalkSpeechController :
-        SpeechControllerBase,
         ISpeechController
     {
         /// <summary>
@@ -20,23 +16,21 @@
         private List<KeyValuePair<string, string>> userDictionary = new List<KeyValuePair<string, string>>();
 
         /// <summary>
-        /// TTSの設定Panel
-        /// </summary>
-        public override UserControl TTSSettingsPanel => OpenJTalkSettingsPanel.Default;
-
-        /// <summary>
         /// 初期化する
         /// </summary>
-        public override void Initialize()
+        public void Initialize()
         {
-            // NO-OP
+        }
+
+        public void Free()
+        {
         }
 
         /// <summary>
         /// テキストを読み上げる
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
-        public override void Speak(
+        public void Speak(
             string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -47,15 +41,11 @@
             // テキストをユーザ辞書で置き換える
             text = this.ReplaceByUserDictionary(text);
 
-            // 現在の条件からwaveファイル名を生成する
-            var wave = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\tts cache\" + ("OpenJTalk" + TTSYukkuriConfig.Default.OpenJTalkSettings.ToString() + text).GetMD5() + ".wav");
-
-            if (!Directory.Exists(Path.GetDirectoryName(wave)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(wave));
-            }
+            // 現在の条件をハッシュ化してWAVEファイル名を作る
+            var wave = this.GetCacheFileName(
+                TTSYukkuriConfig.Default.TTS,
+                text,
+                TTSYukkuriConfig.Default.OpenJTalkSettings.ToString());
 
             lock (this)
             {
@@ -67,21 +57,8 @@
                 }
             }
 
-            // サブデバイスを再生する
-            // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-            if (TTSYukkuriConfig.Default.EnabledSubDevice)
-            {
-                SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.SubDeviceID,
-                    wave,
-                    TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
-            }
-
-            // メインデバイスを再生する
-            SoundPlayerWrapper.Play(
-                TTSYukkuriConfig.Default.MainDeviceID,
-                wave,
-                TTSYukkuriConfig.Default.OpenJTalkSettings.Volume);
+            // 再生する
+            SoundPlayerWrapper.Play(wave);
         }
 
         /// <summary>

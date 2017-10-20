@@ -12,7 +12,7 @@ namespace ACT.TTSYukkuri.Discord.ViewModels
     {
         public DiscordView View { get; set; }
 
-        public DiscordSettings Config => TTSYukkuriConfig.Default.DicordSettings;
+        public DiscordSettings Config => TTSYukkuriConfig.Default.DiscordSettings;
         public DiscordClientModel Model => DiscordClientModel.Instance;
 
         private ICommand connectCommand;

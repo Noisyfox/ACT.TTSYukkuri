@@ -1,34 +1,28 @@
-﻿namespace ACT.TTSYukkuri.HOYA
+using System.IO;
+using ACT.TTSYukkuri.Config;
+using VoiceTextWebAPI.Client;
+
+namespace ACT.TTSYukkuri.HOYA
 {
-    using System;
-    using System.IO;
-    using System.Windows.Forms;
-
-    using ACT.TTSYukkuri.Config;
-    using VoiceTextWebAPI.Client;
-
     public class HOYASpeechController :
-        SpeechControllerBase,
         ISpeechController
     {
         /// <summary>
-        /// TTSの設定Panel
-        /// </summary>
-        public override UserControl TTSSettingsPanel => HOYASettingsPanel.Default;
-
-        /// <summary>
         /// 初期化する
         /// </summary>
-        public override void Initialize()
+        public void Initialize()
         {
-            // NO-OP
+        }
+
+        public void Free()
+        {
         }
 
         /// <summary>
         /// テキストを読み上げる
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
-        public override void Speak(
+        public void Speak(
             string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -36,15 +30,11 @@
                 return;
             }
 
-            // 現在の条件からwaveファイル名を生成する
-            var wave = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\tts cache\" + ("HOYA" + TTSYukkuriConfig.Default.HOYASettings.ToString() + text).GetMD5() + ".wav");
-
-            if (!Directory.Exists(Path.GetDirectoryName(wave)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(wave));
-            }
+            // 現在の条件をハッシュ化してWAVEファイル名を作る
+            var wave = this.GetCacheFileName(
+                TTSYukkuriConfig.Default.TTS,
+                text,
+                TTSYukkuriConfig.Default.HOYASettings.ToString());
 
             lock (this)
             {
@@ -62,21 +52,8 @@
                 }
             }
 
-            // サブデバイスを再生する
-            // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-            if (TTSYukkuriConfig.Default.EnabledSubDevice)
-            {
-                SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.SubDeviceID,
-                    wave,
-                    100);
-            }
-
-            // メインデバイスを再生する
-            SoundPlayerWrapper.Play(
-                TTSYukkuriConfig.Default.MainDeviceID,
-                wave,
-                100);
+            // 再生する
+            SoundPlayerWrapper.Play(wave);
         }
 
         /// <summary>

@@ -1,52 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml.Serialization;
+using ACT.TTSYukkuri.Common;
+using ACT.TTSYukkuri.resources;
+using ACT.TTSYukkuri.SoundPlayer;
+using Prism.Mvvm;
+
 namespace ACT.TTSYukkuri.Config
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using System.Xml.Serialization;
-
-    using ACT.TTSYukkuri.SoundPlayer;
-    using FFXIV.Framework.TTS.Common;
-    using FFXIV.Framework.TTS.Common.Models;
-
     /// <summary>
     /// TTSYukkuri設定
     /// </summary>
     [Serializable]
-    public class TTSYukkuriConfig
+    public class TTSYukkuriConfig :
+        BindableBase
     {
-        /// <summary>
-        /// シングルトンインスタンス
-        /// </summary>
-        [XmlIgnore]
-        private static TTSYukkuriConfig instance;
+        #region Singleton
 
-        /// <summary>
-        /// ロックオブジェクト
-        /// </summary>
         [XmlIgnore]
         private static object lockObject = new object();
 
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public TTSYukkuriConfig()
-        {
-            this.LastUpdateDatetime = DateTime.Now;
-
-            this.SasaraSettings = new SasaraConfig();
-            this.BoyomiServer = new List<string>();
-            this.OptionSettings = new OptionsConfig();
-            this.OpenJTalkSettings = new OpenJTalkConfig();
-            this.HOYASettings = new HOYAConfig();
-
-            this.WaveVolume = 100;
-
-            this.TTS = TTSType.Yukkuri;
-
-            this.Player = WavePlayers.WASAPI;
-        }
+        [XmlIgnore]
+        private static TTSYukkuriConfig instance;
 
         /// <summary>
         /// シングルトンインスタンスを返す
@@ -69,134 +46,250 @@ namespace ACT.TTSYukkuri.Config
             }
         }
 
+        #endregion Singleton
+
         /// <summary>
         /// 設定ファイルのパスを返す
         /// </summary>
         [XmlIgnore]
-        public static string FilePath
+        public static string FilePath =>
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "anoyetta\\ACT\\ACT.TTSYukkuri.config");
+
+        private DateTime lastUpdateDateTime = DateTime.Now;
+        private string tts = TTSType.Yukkuri;
+        private bool waveCacheClearEnable;
+        private int waveVolume = 100;
+        private WavePlayers player = WavePlayers.WASAPI;
+        private string mainDeviceID;
+        private bool enabledSubDevice;
+        private string subDeviceID;
+        private string boyomiServer = "localhost";
+        private int boyomiPort = 50001;
+        private YukkuriConfig yukkuriSettings = new YukkuriConfig();
+        private HOYAConfig hoyaSettings = new HOYAConfig();
+        private OpenJTalkConfig openJTalkSettings = new OpenJTalkConfig();
+        private SasaraConfig sasaraSettings = new SasaraConfig();
+        private StatusAlertConfig statusAlertSettings = new StatusAlertConfig();
+        private DiscordSettings discordSettings = new DiscordSettings();
+
+        private Locales uiLocale = Locales.JA;
+        private Locales ffxivLocale = Locales.JA;
+
+        /// <summary>
+        /// プラグインのUIのロケール
+        /// </summary>
+        public Locales UILocale
         {
-            get
-            {
-                var r = string.Empty;
-
-                r = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "anoyetta\\ACT\\ACT.TTSYukkuri.config");
-
-                return r;
-            }
+            get => this.uiLocale;
+            set => this.SetProperty(ref this.uiLocale, value);
         }
 
         /// <summary>
-        /// 棒読み設定(サーバ, ポート)
+        /// FFXIVのロケール
         /// </summary>
-        public List<string> BoyomiServer { get; set; }
-
-        /// <summary>
-        /// サブ再生デバイスを有効にする
-        /// </summary>
-        public bool EnabledSubDevice { get; set; }
-
-        /// <summary>
-        /// ゆっくりのボリューム調整を有効にする
-        /// </summary>
-        public bool EnabledYukkuriVolumeSetting { get; set; }
-
-        /// <summary>
-        /// HOYA VoiceTextWebAPI 設定
-        /// </summary>
-        public HOYAConfig HOYASettings { get; set; }
+        public Locales FFXIVLocale
+        {
+            get => this.ffxivLocale;
+            set => this.SetProperty(ref this.ffxivLocale, value);
+        }
 
         /// <summary>
         /// 最終アップデート日時
         /// </summary>
-        public DateTime LastUpdateDatetime { get; set; }
+        [XmlIgnore]
+        public DateTime LastUpdateDateTime
+        {
+            get => this.lastUpdateDateTime;
+            set => this.SetProperty(ref this.lastUpdateDateTime, value);
+        }
 
         /// <summary>
-        /// メイン再生デバイスID
+        /// 最終アップデート日時
         /// </summary>
-        public string MainDeviceID { get; set; }
+        [XmlElement(ElementName = "LastUpdateDateTime")]
+        public string LastUpdateDateTimeCrypted
+        {
+            get => Crypter.EncryptString(this.lastUpdateDateTime.ToString("o"));
+            set
+            {
+                DateTime d;
+                if (DateTime.TryParse(value, out d))
+                {
+                    if (d > DateTime.Now)
+                    {
+                        d = DateTime.Now;
+                    }
 
-        /// <summary>
-        /// OpenJTalk設定
-        /// </summary>
-        public OpenJTalkConfig OpenJTalkSettings { get; set; }
+                    this.lastUpdateDateTime = d;
+                    return;
+                }
 
-        /// <summary>
-        /// オプション設定
-        /// </summary>
-        public OptionsConfig OptionSettings { get; set; }
+                try
+                {
+                    var decrypt = Crypter.DecryptString(value);
+                    if (DateTime.TryParse(decrypt, out d))
+                    {
+                        if (d > DateTime.Now)
+                        {
+                            d = DateTime.Now;
+                        }
 
-        /// <summary>
-        /// 再生方式
-        /// </summary>
-        public WavePlayers Player { get; set; }
+                        this.lastUpdateDateTime = d;
+                        return;
+                    }
+                }
+                catch (Exception)
+                {
+                }
 
-        /// <summary>
-        /// ささら設定
-        /// </summary>
-        public SasaraConfig SasaraSettings { get; set; }
-
-        /// <summary>
-        /// サブ再生デバイスID
-        /// </summary>
-        public string SubDeviceID { get; set; }
+                this.lastUpdateDateTime = DateTime.MinValue;
+            }
+        }
 
         /// <summary>
         /// TTSの種類
         /// </summary>
-        public string TTS { get; set; }
+        public string TTS
+        {
+            get => this.tts;
+            set => this.SetProperty(ref this.tts, value);
+        }
 
         /// <summary>
         /// 終了時にキャッシュしたwaveファイルを削除する
         /// </summary>
-        public bool WaveCacheClearEnable { get; set; }
+        public bool WaveCacheClearEnable
+        {
+            get => this.waveCacheClearEnable;
+            set => this.SetProperty(ref this.waveCacheClearEnable, value);
+        }
 
         /// <summary>
         /// Wave再生時のボリューム
         /// </summary>
-        public int WaveVolume { get; set; }
+        public int WaveVolume
+        {
+            get => this.waveVolume;
+            set => this.SetProperty(ref this.waveVolume, value);
+        }
 
         /// <summary>
-        /// ゆっくりのスピード
+        /// 再生方式
         /// </summary>
-        public int YukkuriSpeed { get; set; }
+        public WavePlayers Player
+        {
+            get => this.player;
+            set
+            {
+                if (this.SetProperty(ref this.player, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.PlayDevices));
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public List<PlayDevice> PlayDevices => NAudioPlayer.EnumlateDevices();
 
         /// <summary>
-        /// ゆっくりのボリューム
+        /// メイン再生デバイスID
         /// </summary>
-        public int YukkuriVolume { get; set; }
+        public string MainDeviceID
+        {
+            get => this.mainDeviceID;
+            set => this.SetProperty(ref this.mainDeviceID, value);
+        }
+
+        /// <summary>
+        /// サブ再生デバイスを有効にする
+        /// </summary>
+        public bool EnabledSubDevice
+        {
+            get => this.enabledSubDevice;
+            set => this.SetProperty(ref this.enabledSubDevice, value);
+        }
+
+        /// <summary>
+        /// サブ再生デバイスID
+        /// </summary>
+        public string SubDeviceID
+        {
+            get => this.subDeviceID;
+            set => this.SetProperty(ref this.subDeviceID, value);
+        }
+
+        /// <summary>
+        /// 棒読みサーバ
+        /// </summary>
+        public string BoyomiServer
+        {
+            get => this.boyomiServer;
+            set => this.SetProperty(ref this.boyomiServer, value);
+        }
+
+        /// <summary>
+        /// 棒読みサーバのポート
+        /// </summary>
+        public int BoyomiPort
+        {
+            get => this.boyomiPort;
+            set => this.SetProperty(ref this.boyomiPort, value);
+        }
+
+        /// <summary>
+        /// AquesTalk(ゆっくり)の設定
+        /// </summary>
+        public YukkuriConfig YukkuriSettings
+        {
+            get => this.yukkuriSettings;
+            set => this.SetProperty(ref this.yukkuriSettings, value);
+        }
+
+        /// <summary>
+        /// HOYA VoiceTextWebAPI 設定
+        /// </summary>
+        public HOYAConfig HOYASettings
+        {
+            get => this.hoyaSettings;
+            set => this.SetProperty(ref this.hoyaSettings, value);
+        }
+
+        /// <summary>
+        /// OpenJTalk設定
+        /// </summary>
+        public OpenJTalkConfig OpenJTalkSettings
+        {
+            get => this.openJTalkSettings;
+            set => this.SetProperty(ref this.openJTalkSettings, value);
+        }
+
+        /// <summary>
+        /// ささら設定
+        /// </summary>
+        public SasaraConfig SasaraSettings
+        {
+            get => this.sasaraSettings;
+            set => this.SetProperty(ref this.sasaraSettings, value);
+        }
+
+        /// <summary>
+        /// オプション設定
+        /// </summary>
+        public StatusAlertConfig StatusAlertSettings
+        {
+            get => this.statusAlertSettings;
+            set => this.SetProperty(ref this.statusAlertSettings, value);
+        }
 
         /// <summary>
         /// Discordの設定
         /// </summary>
-        public DiscordSettings DicordSettings { get; set; } = new DiscordSettings();
-
-        public CevioTalkerModel GetSasaraSettings()
+        public DiscordSettings DiscordSettings
         {
-            var talker = new CevioTalkerModel();
-
-            talker.Cast = TTSYukkuriConfig.Default.SasaraSettings.Cast;
-            talker.Volume = TTSYukkuriConfig.Default.SasaraSettings.Onryo;
-            talker.Speed = TTSYukkuriConfig.Default.SasaraSettings.Hayasa;
-            talker.Tone = TTSYukkuriConfig.Default.SasaraSettings.Takasa;
-            talker.Alpha = TTSYukkuriConfig.Default.SasaraSettings.Seishitsu;
-            talker.ToneScale = TTSYukkuriConfig.Default.SasaraSettings.Yokuyo;
-
-            var components = new List<CevioTalkerModel.CevioTalkerComponent>();
-            foreach (var c in TTSYukkuriConfig.Default.SasaraSettings.Components)
-            {
-                components.Add(new CevioTalkerModel.CevioTalkerComponent()
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Value = c.Value
-                });
-            }
-
-            talker.Components = components;
-
-            return talker;
+            get => this.discordSettings;
+            set => this.SetProperty(ref this.discordSettings, value);
         }
 
         /// <summary>
@@ -208,14 +301,21 @@ namespace ACT.TTSYukkuri.Config
             {
                 var file = FilePath;
 
+                var activeConfig = this;
+
                 if (File.Exists(file))
                 {
                     using (var sr = new StreamReader(file, new UTF8Encoding(false)))
                     {
                         var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
                         instance = (TTSYukkuriConfig)xs.Deserialize(sr);
+
+                        activeConfig = instance;
                     }
                 }
+
+                // ステータスアラートの対象を初期化する
+                activeConfig?.StatusAlertSettings?.SetDefaultAlertTargets();
             }
         }
 
@@ -235,22 +335,15 @@ namespace ACT.TTSYukkuri.Config
                     Directory.CreateDirectory(dir);
                 }
 
+                // ステータスアラートの対象を初期化する
+                this.StatusAlertSettings.SetDefaultAlertTargets();
+
                 using (var sw = new StreamWriter(file, false, new UTF8Encoding(false)))
                 {
                     var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
                     xs.Serialize(sw, Default);
                 }
             }
-        }
-
-        /// <summary>
-        /// ささらを設定する
-        /// </summary>
-        public void SetSasara()
-        {
-            // ささらに反映する
-            RemoteTTSClient.Instance.TTSModel.SetCevioTalker(
-                this.GetSasaraSettings());
         }
     }
 }

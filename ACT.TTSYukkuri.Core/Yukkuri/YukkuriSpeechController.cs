@@ -1,23 +1,15 @@
-﻿namespace ACT.TTSYukkuri.Yukkuri
+using System.IO;
+using ACT.TTSYukkuri.Config;
+
+namespace ACT.TTSYukkuri.Yukkuri
 {
-    using System;
-    using System.IO;
-    using System.Text.RegularExpressions;
-    using System.Windows.Forms;
-
-    using ACT.TTSYukkuri.Config;
-    using Advanced_Combat_Tracker;
-    using FFXIV.Framework.TTS;
-    using FFXIV.Framework.TTS.Common;
-    using Microsoft.VisualBasic;
-
     /// <summary>
     /// ゆっくりスピーチコントローラ
     /// </summary>
     public class YukkuriSpeechController :
-        SpeechControllerBase,
         ISpeechController
     {
+#if false
         /// <summary>
         /// 正規表現A-Z
         /// </summary>
@@ -27,25 +19,28 @@
         /// 正規表現Num
         /// </summary>
         private static Regex regexNum = new Regex(@"\d+", RegexOptions.Compiled);
-
-        /// <summary>
-        /// TTSの設定Panel
-        /// </summary>
-        public override UserControl TTSSettingsPanel => YukkuriSettingsPanel.Default;
+#endif
 
         /// <summary>
         /// 初期化する
         /// </summary>
-        public override void Initialize()
+        public void Initialize()
         {
-            // NO-OP
+            AquesTalk.Instance.Load();
+            AqKanji2Koe.Instance.Load();
+        }
+
+        public void Free()
+        {
+            AquesTalk.Instance.Free();
+            AqKanji2Koe.Instance.Free();
         }
 
         /// <summary>
         /// テキストを読み上げる
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
-        public override void Speak(
+        public void Speak(
             string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -53,48 +48,29 @@
                 return;
             }
 
-            // 今回の再生データをMD5化したものからwaveファイルの名称を作る
-            var wave = ("Yukkuri" + TTSYukkuriConfig.Default.YukkuriSpeed.ToString() + text).GetMD5() + ".wav";
-            wave = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                @"anoyetta\ACT\tts cache\" + wave);
-
-            if (!Directory.Exists(Path.GetDirectoryName(wave)))
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(wave));
-            }
+            // 現在の条件をハッシュ化してWAVEファイル名を作る
+            var wave = this.GetCacheFileName(
+                TTSYukkuriConfig.Default.TTS,
+                text,
+                TTSYukkuriConfig.Default.YukkuriSettings.ToString());
 
             lock (this)
             {
                 if (!File.Exists(wave))
                 {
                     // よみがなに変換する
-                    var textByYomigana = this.ConvertYomigana(text);
+                    var textByPhonetic = this.ConvertToPhonetic(text);
 
-                    // サーバに送信する
-                    RemoteTTSClient.Instance.TTSModel.TextToWave(
-                        TTSTypes.Yukkuri,
-                        textByYomigana,
+                    // WAVEを生成する
+                    AquesTalk.Instance.TextToWave(
+                        textByPhonetic,
                         wave,
-                        TTSYukkuriConfig.Default.YukkuriSpeed);
+                        TTSYukkuriConfig.Default.YukkuriSettings.ToParameter());
                 }
             }
 
-            // サブデバイスを再生する
-            // サブデバイスは専らVoiceChat用であるため先に鳴動させる
-            if (TTSYukkuriConfig.Default.EnabledSubDevice)
-            {
-                SoundPlayerWrapper.Play(
-                    TTSYukkuriConfig.Default.SubDeviceID,
-                    wave,
-                    TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
-            }
-
-            // メインデバイスを再生する
-            SoundPlayerWrapper.Play(
-                TTSYukkuriConfig.Default.MainDeviceID,
-                wave,
-                TTSYukkuriConfig.Default.EnabledYukkuriVolumeSetting ? TTSYukkuriConfig.Default.YukkuriVolume : 100);
+            // 再生する
+            SoundPlayerWrapper.Play(wave);
         }
 
         /// <summary>
@@ -102,15 +78,17 @@
         /// </summary>
         /// <param name="textToConvert">変換するテキスト</param>
         /// <returns>よみがなに変換したテキスト</returns>
-        private string ConvertYomigana(
+        private string ConvertToPhonetic(
             string textToConvert)
         {
             var yomigana = textToConvert.Trim();
+            return AqKanji2Koe.Instance.Convert(yomigana);
 
+#if false
             // IMEでよみがなに変換する
             ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
-                yomigana = KanjiTranslator.Default.GetYomigana(yomigana);
+                yomigana = KanjiTranslator.Default.GetPhonetic(yomigana);
             });
 
             // 一旦すべて全角のカタカナに変換する
@@ -264,6 +242,7 @@
                 });
 
             return yomigana;
+#endif
         }
     }
 }

@@ -19,12 +19,18 @@ namespace ACT.TTSYukkuri
     {
         #region Singleton
 
-        private static PluginCore instance = new PluginCore();
+        private static PluginCore instance;
 
-        public static PluginCore Instance => instance;
+        public static PluginCore Instance =>
+            instance ?? (instance = new PluginCore());
 
         private PluginCore()
         {
+        }
+
+        public static void Free()
+        {
+            instance = null;
         }
 
         #endregion Singleton
@@ -33,11 +39,12 @@ namespace ACT.TTSYukkuri
 
         public string PluginDirectory { get; private set; }
 
-        private Label lblStatus;
+        private Label PluginStatusLabel;
 
         #region Replace TTS Method
 
         private FormActMain.PlayTtsDelegate originalTTSMethod;
+        private FormActMain.PlaySoundDelegate originalSoundMethod;
 
         private System.Timers.Timer replaceTTSMethodTimer;
 
@@ -80,6 +87,13 @@ namespace ACT.TTSYukkuri
                 this.originalTTSMethod = (FormActMain.PlayTtsDelegate)ActGlobals.oFormActMain.PlayTtsMethod.Clone();
                 ActGlobals.oFormActMain.PlayTtsMethod = this.Speak;
             }
+
+            // サウンド再生メソッドを置き換える
+            if (ActGlobals.oFormActMain.PlaySoundMethod != this.PlaySound)
+            {
+                this.originalSoundMethod = (FormActMain.PlaySoundDelegate)ActGlobals.oFormActMain.PlaySoundMethod.Clone();
+                ActGlobals.oFormActMain.PlaySoundMethod = this.PlaySound;
+            }
         }
 
         private void RestoreTTSMethod()
@@ -89,9 +103,43 @@ namespace ACT.TTSYukkuri
             {
                 ActGlobals.oFormActMain.PlayTtsMethod = this.originalTTSMethod;
             }
+
+            // 置き換えたサウンド再生メソッドを元に戻す
+            if (this.originalSoundMethod != null)
+            {
+                ActGlobals.oFormActMain.PlaySoundMethod = this.originalSoundMethod;
+            }
         }
 
         #endregion Replace TTS Method
+
+        public void PlaySound(
+            string wave,
+            int volume)
+        {
+            if (!File.Exists(wave))
+            {
+                return;
+            }
+
+            Task.Run(() =>
+            {
+                if (TTSYukkuriConfig.Default.EnabledSubDevice)
+                {
+                    NAudioPlayer.Play(
+                        TTSYukkuriConfig.Default.SubDeviceID,
+                        wave,
+                        false,
+                        TTSYukkuriConfig.Default.WaveVolume);
+                }
+
+                NAudioPlayer.Play(
+                    TTSYukkuriConfig.Default.MainDeviceID,
+                    wave,
+                    false,
+                    TTSYukkuriConfig.Default.WaveVolume);
+            });
+        }
 
         /// <summary>
         /// テキストを読上げる
@@ -212,7 +260,80 @@ namespace ACT.TTSYukkuri
             {
                 ActGlobals.oFormActMain.WriteExceptionLog(
                     ex,
-                    "TTSYukkuri newTTSで例外が発生しました。");
+                    "SpeakTTS で例外が発生しました。");
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public void InitPlugin(
+            IActPluginV1 plugin,
+            TabPage pluginScreenSpace,
+            Label pluginStatusText)
+        {
+            try
+            {
+                this.PluginStatusLabel = pluginStatusText;
+                pluginScreenSpace.Text = "YUKKURI";
+
+                var pluginInfo = ActGlobals.oFormActMain.PluginGetSelfData(plugin);
+                if (pluginInfo != null)
+                {
+                    this.PluginDirectory = pluginInfo.pluginFile.DirectoryName;
+                }
+
+                // 設定ファイルを読み込む
+                TTSYukkuriConfig.Default.Load();
+
+                // TTSのキャッシュを移行する
+                this.MigrateTTSCache();
+
+                // TTSサーバを開始する
+                TTSServerController.Start();
+
+                // 漢字変換を初期化する
+                KanjiTranslator.Default.Initialize();
+
+                // TTSを初期化する
+                SpeechController.Default.Initialize();
+
+                // FF14監視スレッドを初期化する
+                FFXIVWatcher.Initialize();
+
+                // 設定Panelを追加する
+                pluginScreenSpace.Controls.Add(
+                    this.ConfigPanel = new TTSYukkuriConfigPanel()
+                    {
+                        Dock = DockStyle.Fill
+                    });
+
+                // TTSメソッドを置き換える
+                this.StartReplaceTTSMethodTimer();
+
+                // Discordに接続する
+                DiscordClientModel.Instance.Initialize();
+                DiscordClientModel.Instance.Connect(true);
+
+                // アップデートを確認する
+                Task.Run(() =>
+                {
+                    this.Update();
+                });
+
+                PluginStatusLabel.Text = "Plugin Started";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ActGlobals.oFormActMain,
+                    "プラグインの初期化中に例外が発生しました。環境を確認してACTを再起動して下さい" + Environment.NewLine + Environment.NewLine +
+                    ex.ToString(),
+                    "TTSゆっくりプラグイン",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                // TTSをゆっくりに戻す
+                TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
+                TTSYukkuriConfig.Default.Save();
             }
         }
 
@@ -224,6 +345,9 @@ namespace ACT.TTSYukkuri
                 this.StopReplaceTTSMethodTimer();
                 this.RestoreTTSMethod();
 
+                // TTSコントローラを開放する
+                SpeechController.Default.Free();
+
                 // Discordを終了する
                 DiscordClientModel.Instance.Dispose();
 
@@ -231,13 +355,10 @@ namespace ACT.TTSYukkuri
                 TTSServerController.End();
 
                 // FF14監視スレッドを開放する
-                FF14Watcher.Deinitialize();
+                FFXIVWatcher.Deinitialize();
 
                 // 漢字変換オブジェクトを開放する
                 KanjiTranslator.Default.Dispose();
-
-                // 設定を保存する
-                TTSYukkuriConfig.Default.Save();
 
                 // プレイヤを開放する
                 NAudioPlayer.DisposePlayers();
@@ -264,82 +385,16 @@ namespace ACT.TTSYukkuri
                     }
                 }
 
-                this.lblStatus.Text = "Plugin Exited";
+                // 設定を保存する
+                TTSYukkuriConfig.Default.Save();
+
+                this.PluginStatusLabel.Text = "Plugin Exited";
             }
             catch (Exception ex)
             {
                 ActGlobals.oFormActMain.WriteExceptionLog(
                     ex,
                     "TTSゆっくりプラグインの終了時に例外が発生しました。");
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public void InitPlugin(
-            IActPluginV1 plugin,
-            TabPage pluginScreenSpace,
-            Label pluginStatusText)
-        {
-            try
-            {
-                this.lblStatus = pluginStatusText;
-                pluginScreenSpace.Text = "TTSゆっくり";
-
-                var pluginInfo = ActGlobals.oFormActMain.PluginGetSelfData(plugin);
-                if (pluginInfo != null)
-                {
-                    this.PluginDirectory = pluginInfo.pluginFile.DirectoryName;
-                }
-
-                // TTSのキャッシュを移行する
-                this.MigrateTTSCache();
-
-                // TTSサーバを開始する
-                TTSServerController.Start();
-
-                // 漢字変換を初期化する
-                KanjiTranslator.Default.Initialize();
-
-                // TTSを初期化する
-                TTSYukkuriConfig.Default.Load();
-                SpeechController.Default.Initialize();
-
-                // FF14監視スレッドを初期化する
-                FF14Watcher.Initialize();
-
-                // 設定Panelを追加する
-                this.ConfigPanel = new TTSYukkuriConfigPanel();
-                this.ConfigPanel.Dock = DockStyle.Fill;
-                pluginScreenSpace.Controls.Add(ConfigPanel);
-
-                // TTSメソッドを置き換える
-                this.StartReplaceTTSMethodTimer();
-
-                // Discordに接続する
-                DiscordClientModel.Instance.Initialize();
-                DiscordClientModel.Instance.Connect(true);
-
-                // アップデートを確認する
-                Task.Run(() =>
-                {
-                    this.Update();
-                });
-
-                lblStatus.Text = "Plugin Started";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    ActGlobals.oFormActMain,
-                    "プラグインの初期化中に例外が発生しました。環境を確認してACTを再起動して下さい" + Environment.NewLine + Environment.NewLine +
-                    ex.ToString(),
-                    "TTSゆっくりプラグイン",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-
-                // TTSをゆっくりに戻す
-                TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
-                TTSYukkuriConfig.Default.Save();
             }
         }
 
@@ -382,7 +437,8 @@ namespace ACT.TTSYukkuri
         /// </summary>
         private void Update()
         {
-            if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDatetime).TotalHours > 6d)
+            if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDateTime).TotalHours
+                > 12d)
             {
                 var message = UpdateChecker.Update();
                 if (!string.IsNullOrWhiteSpace(message))
@@ -392,7 +448,7 @@ namespace ACT.TTSYukkuri
                         message);
                 }
 
-                TTSYukkuriConfig.Default.LastUpdateDatetime = DateTime.Now;
+                TTSYukkuriConfig.Default.LastUpdateDateTime = DateTime.Now;
                 TTSYukkuriConfig.Default.Save();
             }
         }

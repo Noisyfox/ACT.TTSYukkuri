@@ -1,16 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using ACT.TTSYukkuri.Config;
+using ACT.TTSYukkuri.Discord.Models;
+using Advanced_Combat_Tracker;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
+
 namespace ACT.TTSYukkuri.SoundPlayer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-
-    using ACT.TTSYukkuri.Config;
-    using ACT.TTSYukkuri.Discord.Models;
-    using Advanced_Combat_Tracker;
-    using NAudio.CoreAudioApi;
-    using NAudio.Wave;
-
     /// <summary>
     /// WavePlayers
     /// </summary>

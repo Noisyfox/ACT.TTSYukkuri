@@ -1,4 +1,4 @@
-﻿namespace ACT.TTSYukkuri
+namespace ACT.TTSYukkuri
 {
     using System.Windows.Forms;
 
@@ -9,37 +9,38 @@
     /// </summary>
     public partial class TTSYukkuriConfigPanel
     {
+#if false
         /// <summary>
         /// オプションをロードする
         /// </summary>
         private void LoadOptions()
         {
             // 設定をロードする
-            this.enableWatchHPCheckBox.Checked = TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch;
-            this.enableWatchMPCheckBox.Checked = TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch;
-            this.enableWatchTPCheckBox.Checked = TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch;
-            this.HPThresholdTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.HPThreshold.ToString();
-            this.MPThresholdTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.MPThreshold.ToString();
-            this.TPThresholdTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.TPThreshold.ToString();
-            this.hpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack;
-            this.mpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack;
-            this.tpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack;
+            this.enableWatchHPCheckBox.Checked = TTSYukkuriConfig.Default.StatusAlertSettings.EnabledHPWatch;
+            this.enableWatchMPCheckBox.Checked = TTSYukkuriConfig.Default.StatusAlertSettings.EnabledMPWatch;
+            this.enableWatchTPCheckBox.Checked = TTSYukkuriConfig.Default.StatusAlertSettings.EnabledTPWatch;
+            this.HPThresholdTextBox.Text = TTSYukkuriConfig.Default.StatusAlertSettings.HPThreshold.ToString();
+            this.MPThresholdTextBox.Text = TTSYukkuriConfig.Default.StatusAlertSettings.MPThreshold.ToString();
+            this.TPThresholdTextBox.Text = TTSYukkuriConfig.Default.StatusAlertSettings.TPThreshold.ToString();
+            this.hpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.StatusAlertSettings.HPTextToSpeack;
+            this.mpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.StatusAlertSettings.MPTextToSpeack;
+            this.tpTextToSpeakTextBox.Text = TTSYukkuriConfig.Default.StatusAlertSettings.TPTextToSpeack;
 
             var array = new bool[0];
 
-            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP.ItemArray;
+            array = TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsHP.ItemArray;
             for (int i = 0; i < array.Length; i++)
             {
                 this.watchTargetsHPCheckedListBox.SetItemChecked(i, array[i]);
             }
 
-            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP.ItemArray;
+            array = TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsMP.ItemArray;
             for (int i = 0; i < array.Length; i++)
             {
                 this.watchTargetsMPCheckedListBox.SetItemChecked(i, array[i]);
             }
 
-            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP.ItemArray;
+            array = TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsTP.ItemArray;
             for (int i = 0; i < array.Length; i++)
             {
                 this.watchTargetsTPCheckedListBox.SetItemChecked(i, array[i]);
@@ -133,41 +134,42 @@
         /// </summary>
         private void SaveSettingsOptions()
         {
-            TTSYukkuriConfig.Default.OptionSettings.EnabledHPWatch = this.enableWatchHPCheckBox.Checked;
-            TTSYukkuriConfig.Default.OptionSettings.EnabledMPWatch = this.enableWatchMPCheckBox.Checked;
-            TTSYukkuriConfig.Default.OptionSettings.EnabledTPWatch = this.enableWatchTPCheckBox.Checked;
-            TTSYukkuriConfig.Default.OptionSettings.HPThreshold = int.Parse(this.HPThresholdTextBox.Text);
-            TTSYukkuriConfig.Default.OptionSettings.MPThreshold = int.Parse(this.MPThresholdTextBox.Text);
-            TTSYukkuriConfig.Default.OptionSettings.TPThreshold = int.Parse(this.TPThresholdTextBox.Text);
-            TTSYukkuriConfig.Default.OptionSettings.HPTextToSpeack = this.hpTextToSpeakTextBox.Text;
-            TTSYukkuriConfig.Default.OptionSettings.MPTextToSpeack = this.mpTextToSpeakTextBox.Text;
-            TTSYukkuriConfig.Default.OptionSettings.TPTextToSpeack = this.tpTextToSpeakTextBox.Text;
+            TTSYukkuriConfig.Default.StatusAlertSettings.EnabledHPWatch = this.enableWatchHPCheckBox.Checked;
+            TTSYukkuriConfig.Default.StatusAlertSettings.EnabledMPWatch = this.enableWatchMPCheckBox.Checked;
+            TTSYukkuriConfig.Default.StatusAlertSettings.EnabledTPWatch = this.enableWatchTPCheckBox.Checked;
+            TTSYukkuriConfig.Default.StatusAlertSettings.HPThreshold = int.Parse(this.HPThresholdTextBox.Text);
+            TTSYukkuriConfig.Default.StatusAlertSettings.MPThreshold = int.Parse(this.MPThresholdTextBox.Text);
+            TTSYukkuriConfig.Default.StatusAlertSettings.TPThreshold = int.Parse(this.TPThresholdTextBox.Text);
+            TTSYukkuriConfig.Default.StatusAlertSettings.HPTextToSpeack = this.hpTextToSpeakTextBox.Text;
+            TTSYukkuriConfig.Default.StatusAlertSettings.MPTextToSpeack = this.mpTextToSpeakTextBox.Text;
+            TTSYukkuriConfig.Default.StatusAlertSettings.TPTextToSpeack = this.tpTextToSpeakTextBox.Text;
 
             var array = new bool[0];
 
-            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP.ItemArray;
+            array = TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsHP.ItemArray;
             for (int i = 0; i < array.Length; i++)
             {
                 array[i] = this.watchTargetsHPCheckedListBox.GetItemChecked(i);
             }
 
-            TTSYukkuriConfig.Default.OptionSettings.WatchTargetsHP.ItemArray = array;
+            TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsHP.ItemArray = array;
 
-            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP.ItemArray;
+            array = TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsMP.ItemArray;
             for (int i = 0; i < array.Length; i++)
             {
                 array[i] = this.watchTargetsMPCheckedListBox.GetItemChecked(i);
             }
 
-            TTSYukkuriConfig.Default.OptionSettings.WatchTargetsMP.ItemArray = array;
+            TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsMP.ItemArray = array;
 
-            array = TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP.ItemArray;
+            array = TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsTP.ItemArray;
             for (int i = 0; i < array.Length; i++)
             {
                 array[i] = this.watchTargetsTPCheckedListBox.GetItemChecked(i);
             }
 
-            TTSYukkuriConfig.Default.OptionSettings.WatchTargetsTP.ItemArray = array;
+            TTSYukkuriConfig.Default.StatusAlertSettings.WatchTargetsTP.ItemArray = array;
         }
+#endif
     }
 }

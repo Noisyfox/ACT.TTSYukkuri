@@ -1,10 +1,9 @@
-﻿namespace ACT.TTSYukkuri
+using System;
+using System.Runtime.InteropServices;
+using Advanced_Combat_Tracker;
+
+namespace ACT.TTSYukkuri
 {
-    using System;
-    using System.Runtime.InteropServices;
-
-    using Advanced_Combat_Tracker;
-
     /// <summary>
     /// 漢字翻訳
     /// </summary>
@@ -79,7 +78,7 @@
         /// </summary>
         /// <param name="text">変換対象のテキスト</param>
         /// <returns>読みがなに変換したテキスト</returns>
-        public string GetYomigana(
+        public string GetPhonetic(
             string text)
         {
             var yomigana = text;
@@ -131,10 +130,15 @@
     public interface IFELanguage
     {
         int Open();
+
         int Close();
+
         int GetJMorphResult(uint dwRequest, uint dwCMode, int cwchInput, [MarshalAs(UnmanagedType.LPWStr)] string pwchInput, IntPtr pfCInfo, out object ppResult);
+
         int GetConversionModeCaps(ref uint pdwCaps);
+
         int GetPhonetic([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
+
         int GetConversion([MarshalAs(UnmanagedType.BStr)] string @string, int start, int length, [MarshalAs(UnmanagedType.BStr)] out string result);
     }
 }

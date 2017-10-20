@@ -16,23 +16,25 @@ ACTのTTSをゆっくりさんに置き換えます
   
 Step1.  
 OpenJTalk  
+Yukkuri  
 FFXIV.Framework.TTS.Server.exe.config  
 FFXIV.Framework.TTS.Server.NLog.config  
 ffmpeg.exe  
 FFXIV.Framework.TTS.Server.exe  
 ACT.TTSYukkuri.Core.dll  
 ACT.TTSYukkuri.dll  
-AquesTalk.dll  
 DSharpPlus.dll  
 DSharpPlus.VoiceNext.dll  
 FFXIV.Framework.dll  
 FFXIV.Framework.TTS.Common.dll  
 FFXIV.Framework.TTS.dll  
+FontAwesome.WPF.dll  
 MahApps.Metro.dll  
 NAudio.dll  
 Newtonsoft.Json.dll  
 NLog.dll  
 Prism.dll  
+Prism.WPF.dll  
 System.Windows.Interactivity.dll  
 をACTのインストールディレクトリにコピーします。  
   
@@ -97,19 +99,6 @@ VOICEROIDには外部のアプリケーションから呼出す機能(API)があ
 **[こちらの改造版タイムラインをどうぞ](https://github.com/anoyetta/act_timeline/releases)**  
   
     
-#### ゆっくりが喋らない？  
-ゆっくりは読める文字に制限があります  
-文章の中に読めない文字が「一文字でも」混じっていると文章そのものを読みません  
-  
-以下、文字の対応状況です  
-漢字 → よめます。ただしIMEで変換できる範囲です  
-ひらがな → よめます  
-カタカナ → よめます  
-数字 → 読めます  
-記号 → 一部読めません  
-アルファベット → 英単語としては読めません。「えー」「びー」「しー」という風になります  
-句読点 → 区切りとして読上げに間が開くようになります。読点は多めに入れるほうが自然な読上げになります  
-  
   
 #### TimeLineから使った時にwaveが既定のデバイスからしかならない  
 TimeLineから普通にwaveを鳴らすとTTSYukkuri経由ではなくTimeLine本体がwaveを再生します  
@@ -176,7 +165,7 @@ NAudio
     
 AquesTalk（いわゆる、ゆっくりボイス）
 --------------
-本ソフトは、(株)アクエストの音声合成ライブラリAquesTalkを使用しており、その著作権は同社に帰属します。  
+本ソフトは、(株)アクエストの音声合成ライブラリAquesTalk, AqKanji2Koeを使用しており、その著作権は同社に帰属します。  
 営利目的での使用は当該ライブラリの使用ライセンスが必要となります。  
   
     

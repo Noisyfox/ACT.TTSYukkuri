@@ -1,8 +1,8 @@
-﻿namespace ACT.TTSYukkuri
-{
-    using System.Security.Cryptography;
-    using System.Text;
+using System.Security.Cryptography;
+using System.Text;
 
+namespace ACT.TTSYukkuri
+{
     public static class StringExtension
     {
         public static string GetMD5(
