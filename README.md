@@ -153,6 +153,7 @@ WaveOutとWASAPIで迷う場合は、WASAPIを選択しておけば理論上は�
 三条項BSDライセンス  
 Copryright (c) 2014, anoyetta  
 https://github.com/anoyetta/ACT.TTSYukkuri/blob/master/LICENSE  
+ただし配布されたDLLやEXEのリバースエンジニアリングは禁止します。  
   
     
 NAudio
