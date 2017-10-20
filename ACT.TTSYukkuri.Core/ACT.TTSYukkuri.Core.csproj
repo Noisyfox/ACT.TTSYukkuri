@@ -279,6 +279,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ACT.TTSYukkuri.Common\ACT.TTSYukkuri.Common.csproj">
+      <Project>{a3d74b76-7d7d-4fb1-9978-aab4366a39ab}</Project>
+      <Name>ACT.TTSYukkuri.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FFXIV.Framework\FFXIV.Framework.TTS.Common\FFXIV.Framework.TTS.Common.csproj">
       <Project>{18ce9b28-4f0b-45d1-ae3f-14f3982f0e59}</Project>
       <Name>FFXIV.Framework.TTS.Common</Name>

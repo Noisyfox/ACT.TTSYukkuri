@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using ACT.TTSYukkuri.Common;
 using FFXIV.Framework.Common;
 
 namespace ACT.TTSYukkuri.Yukkuri
@@ -47,10 +48,7 @@ namespace ACT.TTSYukkuri.Yukkuri
                 {
                     this.SetDevKeyDelegate =
                         this.yukkuriLib.GetUnmanagedFunction<AquesTalk_SetDevKey>(nameof(AquesTalk_SetDevKey));
-                    /*
-                                        // 開発ライセンスを登録する
-                                        this.SetDevKeyDelegate(Resources.AquesTalkDevKey);
-                    */
+                    this.SetDevKeyDelegate(Crypter.DecryptString(Constants.AquesTalkKey));
                 }
 
                 if (this.SynthesizeDelegate == null)
