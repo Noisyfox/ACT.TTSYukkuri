@@ -13,38 +13,38 @@ ACTのTTSをゆっくりさんに置き換えます
 ※TTSYukkuri の動作には. NET Framework 4.7 以降が必要です。  
 
 2) インストール  
+<pre>
+  Step1.  
+    OpenJTalk  
+    Yukkuri  
+    FFXIV.Framework.TTS.Server.NLog.config  
+    ffmpeg.exe  
+    FFXIV.Framework.TTS.Server.exe  
+    ACT.TTSYukkuri.Core.dll  
+    ACT.TTSYukkuri.dll  
+    DSharpPlus.dll  
+    DSharpPlus.VoiceNext.dll  
+    FFXIV.Framework.dll  
+    FFXIV.Framework.TTS.Common.dll  
+    FFXIV.Framework.TTS.dll  
+    FontAwesome.WPF.dll  
+    MahApps.Metro.dll  
+    NAudio.dll  
+    Newtonsoft.Json.dll   
+    NLog.dll  
+    Prism.dll  
+    Prism.WPF.dll  
+    System.Windows.Interactivity.dll  
+    をACTのインストールディレクトリにコピーします。  
   
-Step1.  
-OpenJTalk  
-Yukkuri  
-FFXIV.Framework.TTS.Server.NLog.config  
-ffmpeg.exe  
-FFXIV.Framework.TTS.Server.exe  
-ACT.TTSYukkuri.Core.dll  
-ACT.TTSYukkuri.dll  
-DSharpPlus.dll  
-DSharpPlus.VoiceNext.dll  
-FFXIV.Framework.dll  
-FFXIV.Framework.TTS.Common.dll  
-FFXIV.Framework.TTS.dll  
-FontAwesome.WPF.dll  
-MahApps.Metro.dll  
-NAudio.dll  
-Newtonsoft.Json.dll  
-NLog.dll  
-Prism.dll  
-Prism.WPF.dll  
-System.Windows.Interactivity.dll  
-をACTのインストールディレクトリにコピーします。  
+  Step2.  
+    lib\libopus.dll  
+    lib\libsodium.dll  
+    をACTのインストールディレクトリにコピーします。  
   
-Step2.  
-lib\libopus.dll  
-lib\libsodium.dll  
-をACTのインストールディレクトリにコピーします。  
-  
-Step3.  
-ACTのプラグインリストからプラグインとしてACT.TTSYukkuri.dllを追加してください。  
-  
+  Step3.  
+    ACTのプラグインリストからプラグインとしてACT.TTSYukkuri.dllを追加してください。  
+</pre>
     
 #### ディレイ読上げ  
 /wait 1,ゆっくりです  
@@ -57,7 +57,7 @@ ACTのプラグインリストからプラグインとしてACT.TTSYukkuri.dll�
 ##### AquesTalk（ゆっくり）  
 ニコニコ動画の「ゆっくり実況」で有名なTTSエンジン。  
 ゲームのアラートとして使用する場合は読上げ速度を早めにしておくのがオススメです。  
-また、ゆっくりに喋らせる場合は句読点を多めに記述すると比較的自然な喋りになります。  
+AquesTal10になり非常にクリアな音質になりました。  
   
 ##### Open JTalk（MEI）  
 名工大が開発したオープンソースのTTSエンジン。  
@@ -153,7 +153,7 @@ WaveOutとWASAPIで迷う場合は、WASAPIを選択しておけば理論上は�
 三条項BSDライセンス  
 Copryright (c) 2014, anoyetta  
 https://github.com/anoyetta/ACT.TTSYukkuri/blob/master/LICENSE  
-ただし配布されたDLLやEXEのリバースエンジニアリングは禁止します。  
+ただし配布されたDLLやEXEのリバースエンジニアリングやリソース・変数の解析は禁止します。  
   
     
 NAudio
@@ -165,7 +165,7 @@ NAudio
     
 AquesTalk（いわゆる、ゆっくりボイス）
 --------------
-本ソフトは、(株)アクエストの音声合成ライブラリAquesTalk, AqKanji2Koeを使用しており、その著作権は同社に帰属します。  
+本ソフトは、株式会社アクエストの音声合成ライブラリAquesTalk, AqKanji2Koeを使用しており、その著作権は同社に帰属します。  
 営利目的での使用は当該ライブラリの使用ライセンスが必要となります。  
   
     
