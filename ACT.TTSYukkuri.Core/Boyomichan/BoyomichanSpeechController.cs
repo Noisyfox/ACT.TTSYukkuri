@@ -53,13 +53,24 @@ namespace ACT.TTSYukkuri.Boyomichan
         /// </summary>
         private const short BoyomiVolume = -1;
 
+        private TcpClient boyomiClient;
+        private string connectedServer;
+        private int connectedPort;
+
         /// <summary>
         /// 初期化する
         /// </summary>
-        public void Initialize() { }
+        public void Initialize()
+        {
+        }
 
         public void Free()
         {
+            lock (this)
+            {
+                this.boyomiClient?.Dispose();
+                this.boyomiClient = null;
+            }
         }
 
         /// <summary>
@@ -69,16 +80,12 @@ namespace ACT.TTSYukkuri.Boyomichan
         public void Speak(
             string text)
         {
-            // 初期化する
-            this.Initialize();
-
             try
             {
-                var server = TTSYukkuriConfig.Default.BoyomiServer;
-                var port = TTSYukkuriConfig.Default.BoyomiPort;
+                // 棒読みちゃんに接続する
+                this.ConnectToBoyomi();
 
-                using (var tcp = new TcpClient(server, port))
-                using (var ns = tcp.GetStream())
+                using (var ns = this.boyomiClient.GetStream())
                 using (var bw = new BinaryWriter(ns))
                 {
                     var messageAsBytes = Encoding.UTF8.GetBytes(text);
@@ -100,6 +107,46 @@ namespace ACT.TTSYukkuri.Boyomichan
                 ActGlobals.oFormActMain.WriteExceptionLog(
                     ex,
                     "ACT.TTSYukkuri 棒読みちゃんの読上げで例外が発生しました");
+            }
+        }
+
+        private void ConnectToBoyomi()
+        {
+            lock (this)
+            {
+                var server = TTSYukkuriConfig.Default.BoyomiServer;
+                var port = TTSYukkuriConfig.Default.BoyomiPort;
+
+                if (server.ToLower() == "localhost")
+                {
+                    server = "127.0.0.1";
+                }
+
+                if (this.boyomiClient == null)
+                {
+                    this.boyomiClient = new TcpClient(server, port);
+                    this.connectedServer = server;
+                    this.connectedPort = port;
+                }
+                else
+                {
+                    if (!this.boyomiClient.Connected)
+                    {
+                        this.boyomiClient = new TcpClient(server, port);
+                        this.connectedServer = server;
+                        this.connectedPort = port;
+                    }
+                    else
+                    {
+                        if (this.connectedServer != server ||
+                            this.connectedPort != port)
+                        {
+                            this.boyomiClient = new TcpClient(server, port);
+                            this.connectedServer = server;
+                            this.connectedPort = port;
+                        }
+                    }
+                }
             }
         }
     }
