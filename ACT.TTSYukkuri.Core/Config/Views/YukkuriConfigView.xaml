@@ -220,8 +220,23 @@
           Value="{Binding Config.FSC, Mode=TwoWay}" />
       </StackPanel>
 
+      <Label
+        Margin="0 5 0 0"
+        Content="{DynamicResource Yukkuri_KanjiTranslation}" />
+      <StackPanel Orientation="Horizontal">
+        <RadioButton
+          Margin="5 0 0 0"
+          VerticalContentAlignment="Center"
+          Content="{DynamicResource Yukkuri_KanjiTranslationIME}" />
+        <RadioButton
+          Margin="20 0 0 0"
+          VerticalContentAlignment="Center"
+          Content="{DynamicResource Yukkuri_KanjiTranslationKanji2Koe}"
+          IsChecked="{Binding Config.UseKanji2Koe, Mode=OneWay}" />
+      </StackPanel>
+
       <TextBlock Margin="5 15 0 0" HorizontalAlignment="Left">
-        <Hyperlink 
+        <Hyperlink
           NavigateUri="https://www.a-quest.com/archive/manual/siyo_onseikigou.pdf"
           ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=NavigateUri, Mode=OneWay}"
           RequestNavigate="OnRequestNavigate">

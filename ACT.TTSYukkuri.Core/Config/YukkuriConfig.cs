@@ -18,6 +18,7 @@ namespace ACT.TTSYukkuri.Config
         private int accent = AQVoicePresets.F1.acc;
         private int lmd = AQVoicePresets.F1.lmd;
         private int fsc = AQVoicePresets.F1.fsc;
+        private bool useKanji2Koe = true;
 
         public void LoadPreset(
             AQPresets preset)
@@ -178,6 +179,12 @@ namespace ACT.TTSYukkuri.Config
             }
         }
 
+        public bool UseKanji2Koe
+        {
+            get => this.useKanji2Koe;
+            set => this.SetProperty(ref this.useKanji2Koe, value);
+        }
+
         public AQTK_VOICE ToParameter() =>
             new AQTK_VOICE()
             {
@@ -198,6 +205,7 @@ namespace ACT.TTSYukkuri.Config
             $"Pitch:{this.Pitch}," +
             $"Accent:{this.Accent}," +
             $"LMD:{this.LMD}" +
-            $"FSC:{this.FSC}";
+            $"FSC:{this.FSC}" +
+            $"UseKanji2Koe:{this.UseKanji2Koe}";
     }
 }

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-
 using ACT.TTSYukkuri.Config;
 using Advanced_Combat_Tracker;
 

@@ -26,6 +26,9 @@
   <system:String x:Key="Yukkuri_Accent">Accent</system:String>
   <system:String x:Key="Yukkuri_LMD">LMD</system:String>
   <system:String x:Key="Yukkuri_FSC">FSC</system:String>
+  <system:String x:Key="Yukkuri_KanjiTranslation">KANJI Translation</system:String>
+  <system:String x:Key="Yukkuri_KanjiTranslationIME">Use IME</system:String>
+  <system:String x:Key="Yukkuri_KanjiTranslationKanji2Koe">Use AqKanji2Koe</system:String>
   <system:String x:Key="Yukkuri_Discription">
     This software uses AquesTalk provided by AQUEST Corporation. AQUEST Corporation all rights reserved to AquesTalk.
     For use for commercial purposes, a license to use the library is required.

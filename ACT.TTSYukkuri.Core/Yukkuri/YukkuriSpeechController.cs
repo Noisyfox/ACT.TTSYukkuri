@@ -1,5 +1,9 @@
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using ACT.TTSYukkuri.Config;
+using Advanced_Combat_Tracker;
+using Microsoft.VisualBasic;
 
 namespace ACT.TTSYukkuri.Yukkuri
 {
@@ -9,7 +13,6 @@ namespace ACT.TTSYukkuri.Yukkuri
     public class YukkuriSpeechController :
         ISpeechController
     {
-#if false
         /// <summary>
         /// 正規表現A-Z
         /// </summary>
@@ -19,7 +22,6 @@ namespace ACT.TTSYukkuri.Yukkuri
         /// 正規表現Num
         /// </summary>
         private static Regex regexNum = new Regex(@"\d+", RegexOptions.Compiled);
-#endif
 
         /// <summary>
         /// 初期化する
@@ -59,11 +61,20 @@ namespace ACT.TTSYukkuri.Yukkuri
                 if (!File.Exists(wave))
                 {
                     // よみがなに変換する
-                    var textByPhonetic = this.ConvertToPhonetic(text);
+                    var tts = text;
+
+                    if (TTSYukkuriConfig.Default.YukkuriSettings.UseKanji2Koe)
+                    {
+                        tts = this.ConvertToPhoneticByKanji2Koe(tts);
+                    }
+                    else
+                    {
+                        tts = this.ConvertToPhonetic(tts);
+                    }
 
                     // WAVEを生成する
                     AquesTalk.Instance.TextToWave(
-                        textByPhonetic,
+                        tts,
                         wave,
                         TTSYukkuriConfig.Default.YukkuriSettings.ToParameter());
                 }
@@ -74,6 +85,17 @@ namespace ACT.TTSYukkuri.Yukkuri
         }
 
         /// <summary>
+        /// AqKanji2Koeを使用してよみがな（音声記号列）に変換する
+        /// </summary>
+        /// <param name="textToConvert">
+        /// 変換する文字列</param>
+        /// <returns>
+        /// 変換した文字列</returns>
+        private string ConvertToPhoneticByKanji2Koe(
+            string textToConvert) =>
+            AqKanji2Koe.Instance.Convert(textToConvert);
+
+        /// <summary>
         /// よみがなに変換する
         /// </summary>
         /// <param name="textToConvert">変換するテキスト</param>
@@ -82,9 +104,7 @@ namespace ACT.TTSYukkuri.Yukkuri
             string textToConvert)
         {
             var yomigana = textToConvert.Trim();
-            return AqKanji2Koe.Instance.Convert(yomigana);
 
-#if false
             // IMEでよみがなに変換する
             ActGlobals.oFormActMain.Invoke((MethodInvoker)delegate
             {
@@ -242,7 +262,6 @@ namespace ACT.TTSYukkuri.Yukkuri
                 });
 
             return yomigana;
-#endif
         }
     }
 }

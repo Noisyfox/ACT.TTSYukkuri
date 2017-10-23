@@ -28,7 +28,7 @@ namespace ACT.TTSYukkuri.SoundPlayer
     {
         private const int PlayerLatencyDirectSoundOut = 40;
 
-        private const int PlayerLatencyWasapiOut = 80;
+        private const int PlayerLatencyWasapiOut = 40;
 
         /// <summary>
         /// プレイヤのレイテンシ
@@ -179,8 +179,9 @@ namespace ACT.TTSYukkuri.SoundPlayer
             bool isDelete,
             int volume)
         {
+#if DEBUG
             var sw = Stopwatch.StartNew();
-
+#endif
             var volumeAsFloat = ((float)volume / 100f);
 
             try
@@ -262,11 +263,13 @@ namespace ACT.TTSYukkuri.SoundPlayer
             }
             finally
             {
+#if DEBUG
                 sw.Stop();
                 Debug.WriteLine(
                     "PlaySound ({0}) -> {1:N0} ticks",
                     TTSYukkuriConfig.Default.Player,
                     sw.ElapsedTicks);
+#endif
             }
         }
     }

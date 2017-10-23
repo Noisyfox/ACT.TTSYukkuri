@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using ACT.TTSYukkuri.Boyomichan;
 using ACT.TTSYukkuri.Common;
 using ACT.TTSYukkuri.resources;
 using ACT.TTSYukkuri.SoundPlayer;
@@ -65,8 +66,8 @@ namespace ACT.TTSYukkuri.Config
         private string mainDeviceID;
         private bool enabledSubDevice;
         private string subDeviceID;
-        private string boyomiServer = "localhost";
-        private int boyomiPort = 50001;
+        private string boyomiServer = BoyomichanSpeechController.BoyomichanServer;
+        private int boyomiPort = BoyomichanSpeechController.BoyomichanServicePort;
         private YukkuriConfig yukkuriSettings = new YukkuriConfig();
         private HOYAConfig hoyaSettings = new HOYAConfig();
         private OpenJTalkConfig openJTalkSettings = new OpenJTalkConfig();

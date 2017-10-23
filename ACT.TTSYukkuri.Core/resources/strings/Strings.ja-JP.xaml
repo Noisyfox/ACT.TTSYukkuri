@@ -26,6 +26,9 @@
   <system:String x:Key="Yukkuri_Accent">アクセント</system:String>
   <system:String x:Key="Yukkuri_LMD">LMD</system:String>
   <system:String x:Key="Yukkuri_FSC">FSC</system:String>
+  <system:String x:Key="Yukkuri_KanjiTranslation">漢字変換の方式</system:String>
+  <system:String x:Key="Yukkuri_KanjiTranslationIME">IMEによる逆変換</system:String>
+  <system:String x:Key="Yukkuri_KanjiTranslationKanji2Koe">AqKanji2Koe を使用する</system:String>
   <system:String x:Key="Yukkuri_Discription">
     本ソフトウェアは、株式会社アクエストの音声ライブラリ AquesTalk を使用しており、その著作権は同社に帰属します。
     営利目的での使用は当該ライブラリの使用ライセンスが必要となります。
