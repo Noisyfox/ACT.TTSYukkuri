@@ -43,7 +43,10 @@ namespace FFXIV.Framework.TTS.Server.Models
             switch (ttsType)
             {
                 case TTSTypes.CeVIO:
-                    CevioModel.Instance.TextToWave(textToSpeak, waveFileName);
+                    CevioModel.Instance.TextToWave(
+                        textToSpeak,
+                        waveFileName,
+                        gain);
                     break;
             }
 

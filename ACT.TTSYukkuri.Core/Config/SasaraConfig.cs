@@ -164,11 +164,7 @@ namespace ACT.TTSYukkuri.Config
             }
         }
 
-        /// <summary>
-        /// 内容をMD5化する
-        /// </summary>
-        /// <returns></returns>
-        public string GetMD5()
+        public override string ToString()
         {
             var sb = new StringBuilder();
             sb.AppendLine(this.Cast);
@@ -187,7 +183,7 @@ namespace ACT.TTSYukkuri.Config
                 }
             }
 
-            return sb.ToString().GetMD5();
+            return sb.ToString();
         }
 
         /// <summary>

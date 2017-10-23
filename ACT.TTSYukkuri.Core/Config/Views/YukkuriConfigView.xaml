@@ -232,7 +232,7 @@
           Margin="20 0 0 0"
           VerticalContentAlignment="Center"
           Content="{DynamicResource Yukkuri_KanjiTranslationKanji2Koe}"
-          IsChecked="{Binding Config.UseKanji2Koe, Mode=OneWay}" />
+          IsChecked="{Binding Config.UseKanji2Koe, Mode=TwoWay}" />
       </StackPanel>
 
       <TextBlock Margin="5 15 0 0" HorizontalAlignment="Left">
