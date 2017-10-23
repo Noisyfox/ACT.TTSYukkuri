@@ -37,7 +37,8 @@ namespace FFXIV.Framework.TTS.Server.Models
             TTSTypes ttsType,
             string textToSpeak,
             string waveFileName,
-            int speed)
+            int speed,
+            float gain)
         {
             switch (ttsType)
             {

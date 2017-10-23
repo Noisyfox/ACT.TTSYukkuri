@@ -49,7 +49,8 @@ namespace ACT.TTSYukkuri.Sasara
                         TTSTypes.CeVIO,
                         text,
                         wave,
-                        0);
+                        0,
+                        TTSYukkuriConfig.Default.SasaraSettings.Gain);
                 }
             }
 
