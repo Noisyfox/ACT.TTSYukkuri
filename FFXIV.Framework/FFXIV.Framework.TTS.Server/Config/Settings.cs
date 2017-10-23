@@ -114,6 +114,7 @@ namespace FFXIV.Framework.TTS.Server.Config
 
         #region Data
 
+        /*
         private float cevioVolumeGain;
 
         public float CevioVolumeGain
@@ -121,6 +122,7 @@ namespace FFXIV.Framework.TTS.Server.Config
             get => this.cevioVolumeGain;
             set => this.SetProperty(ref this.cevioVolumeGain, value);
         }
+        */
 
         #endregion Data
 
@@ -131,7 +133,9 @@ namespace FFXIV.Framework.TTS.Server.Config
         /// </summary>
         public static readonly Dictionary<string, object> DefaultValues = new Dictionary<string, object>()
         {
+            /*
             { nameof(Settings.CevioVolumeGain), 2.1f },
+            */
         };
 
         /// <summary>

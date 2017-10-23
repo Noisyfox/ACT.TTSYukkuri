@@ -88,6 +88,29 @@
         <Label
           Margin="0 0 0 0"
           MinWidth="100"
+          Content="{DynamicResource Sasara_Gain}" />
+        <Label
+          Margin="5 0 0 0"
+          MinWidth="60"
+          HorizontalContentAlignment="Right"
+          Content="{Binding ElementName=GainSlider, Path=Value, Mode=OneWay }"
+          ContentStringFormat="N1" />
+        <Slider
+          Margin="5 0 0 0"
+          HorizontalAlignment="Left"
+          VerticalAlignment="Center"
+          Width="250"
+          x:Name="GainSlider"
+          SmallChange="0.1"
+          LargeChange="0.1"
+          Minimum="0.0" Maximum="9.9"
+          Value="{Binding Config.Gain, Mode=TwoWay}" />
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+        <Label
+          Margin="0 0 0 0"
+          MinWidth="100"
           Content="{DynamicResource Sasara_Onryo}" />
         <Label
           Margin="5 0 0 0"

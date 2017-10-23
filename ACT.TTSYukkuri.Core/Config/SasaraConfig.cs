@@ -21,6 +21,7 @@ namespace ACT.TTSYukkuri.Config
         private CevioTalkerModel talker;
 
         private string cast;
+        private float gain = 2.1f;
         private uint onryo;
         private uint hayasa;
         private uint takasa;
@@ -41,6 +42,15 @@ namespace ACT.TTSYukkuri.Config
             get;
             private set;
         } = new ObservableCollection<string>();
+
+        /// <summary>
+        /// ゲイン
+        /// </summary>
+        public float Gain
+        {
+            get => this.gain;
+            set => this.SetProperty(ref this.gain, value);
+        }
 
         /// <summary>
         /// キャスト
@@ -162,6 +172,7 @@ namespace ACT.TTSYukkuri.Config
         {
             var sb = new StringBuilder();
             sb.AppendLine(this.Cast);
+            sb.AppendLine(this.Gain.ToString());
             sb.AppendLine(this.Onryo.ToString());
             sb.AppendLine(this.Hayasa.ToString());
             sb.AppendLine(this.Takasa.ToString());

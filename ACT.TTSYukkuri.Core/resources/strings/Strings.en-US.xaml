@@ -40,6 +40,7 @@
   <system:String x:Key="Sasara_Cast">Cast</system:String>
   <system:String x:Key="Sasara_Emotions">Emotions</system:String>
   <system:String x:Key="Sasara_General">General</system:String>
+  <system:String x:Key="Sasara_Gain">Gain</system:String>
   <system:String x:Key="Sasara_Onryo">Volume</system:String>
   <system:String x:Key="Sasara_Hayasa">Speed</system:String>
   <system:String x:Key="Sasara_Takasa">Pitch</system:String>
