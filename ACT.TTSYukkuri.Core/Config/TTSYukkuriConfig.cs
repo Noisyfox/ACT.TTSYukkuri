@@ -72,6 +72,7 @@ namespace ACT.TTSYukkuri.Config
         private HOYAConfig hoyaSettings = new HOYAConfig();
         private OpenJTalkConfig openJTalkSettings = new OpenJTalkConfig();
         private SasaraConfig sasaraSettings = new SasaraConfig();
+        private VoiceroidConfig voiceroidSettings = new VoiceroidConfig();
         private StatusAlertConfig statusAlertSettings = new StatusAlertConfig();
         private DiscordSettings discordSettings = new DiscordSettings();
 
@@ -273,6 +274,15 @@ namespace ACT.TTSYukkuri.Config
         {
             get => this.sasaraSettings;
             set => this.SetProperty(ref this.sasaraSettings, value);
+        }
+
+        /// <summary>
+        /// VOICEROID設定
+        /// </summary>
+        public VoiceroidConfig VoiceroidSettings
+        {
+            get => this.voiceroidSettings;
+            set => this.SetProperty(ref this.voiceroidSettings, value);
         }
 
         /// <summary>

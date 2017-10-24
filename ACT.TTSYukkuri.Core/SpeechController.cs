@@ -3,6 +3,7 @@ using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.HOYA;
 using ACT.TTSYukkuri.OpenJTalk;
 using ACT.TTSYukkuri.Sasara;
+using ACT.TTSYukkuri.Voiceroid;
 using ACT.TTSYukkuri.Yukkuri;
 
 namespace ACT.TTSYukkuri
@@ -65,6 +66,10 @@ namespace ACT.TTSYukkuri
 
                             case TTSType.HOYA:
                                 SpeechController.instance = new HOYASpeechController();
+                                break;
+
+                            case TTSType.VOICEROID:
+                                SpeechController.instance = new VoiceroidSpeechController();
                                 break;
 
                             default:

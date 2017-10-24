@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ACT.TTSYukkuri.Config.ViewModels;
 using ACT.TTSYukkuri.resources;
+using ACT.TTSYukkuri.Voiceroid;
 using Advanced_Combat_Tracker;
 using FFXIV.Framework.Common;
 
@@ -105,6 +106,50 @@ namespace ACT.TTSYukkuri.Config.Views
 
                 case TTSType.Boyomichan:
                     content = new BoyomiConfigView();
+                    break;
+
+                case TTSType.VOICEROID:
+                    try
+                    {
+                        var ctrl = SpeechController.Default as VoiceroidSpeechController;
+                        TTSYukkuriConfig.Default.VoiceroidSettings.Load();
+                        var err = await ctrl?.Start();
+
+                        if (!string.IsNullOrEmpty(err))
+                        {
+                            var message = new StringBuilder();
+                            message.AppendLine("VOICEROIDの初期化でエラーが発生しました。");
+                            message.AppendLine();
+                            message.AppendLine(err);
+
+                            System.Windows.Forms.MessageBox.Show(
+                                ActGlobals.oFormActMain,
+                                message.ToString(),
+                                "TTSゆっくりプラグイン",
+                                System.Windows.Forms.MessageBoxButtons.OK,
+                                System.Windows.Forms.MessageBoxIcon.Exclamation);
+
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var message = new StringBuilder();
+                        message.AppendLine("VOICEROIDの初期化で例外が発生しました。");
+                        message.AppendLine();
+                        message.AppendLine(ex.ToString());
+
+                        System.Windows.Forms.MessageBox.Show(
+                            ActGlobals.oFormActMain,
+                            message.ToString(),
+                            "TTSゆっくりプラグイン",
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Exclamation);
+
+                        return;
+                    }
+
+                    content = new VoiceroidConfigView();
                     break;
 
                 default:

@@ -31,6 +31,11 @@ namespace ACT.TTSYukkuri
         public const string HOYA = "HOYA";
 
         /// <summary>
+        /// VOICEROID
+        /// </summary>
+        public const string VOICEROID = "VOICEROID";
+
+        /// <summary>
         /// コンボボックスコレクション
         /// </summary>
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
@@ -40,6 +45,7 @@ namespace ACT.TTSYukkuri
             new ComboBoxItem("HOYA VoiceText Web API", TTSType.HOYA),
             new ComboBoxItem("棒読みちゃん(TCPインターフェース)", TTSType.Boyomichan),
             new ComboBoxItem("CeVIO Creative Studio", TTSType.Sasara),
+            new ComboBoxItem("VOICEROID", TTSType.VOICEROID),
         };
     }
 

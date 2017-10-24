@@ -72,6 +72,8 @@
   <system:String x:Key="Boyomi_Port">棒読みちゃんポート番号</system:String>
   <system:String x:Key="Boyomi_PortDefault">*default 50001</system:String>
 
+  <system:String x:Key="Voiceroid_ExitVoiceroid">ACTの終了時にVOICEROIDも終了させる</system:String>
+
   <system:String x:Key="SA_Enabled">監視する</system:String>
   <system:String x:Key="SA_Threshold">通知する閾値</system:String>
   <system:String x:Key="SA_TTSFormat">通知するテキスト</system:String>
