@@ -139,6 +139,12 @@
         VerticalContentAlignment="Center"
         Margin="10 15 0 0"
         IsChecked="{Binding Config.ExitVoiceroidWhenExit, Mode=TwoWay}" />
+
+      <CheckBox
+        Content="{DynamicResource Voiceroid_DirectSpeak}"
+        VerticalContentAlignment="Center"
+        Margin="10 5 0 0"
+        IsChecked="{Binding Config.DirectSpeak, Mode=TwoWay}" />
     </StackPanel>
   </ScrollViewer>
 </UserControl>

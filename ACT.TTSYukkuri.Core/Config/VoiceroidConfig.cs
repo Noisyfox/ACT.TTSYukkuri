@@ -36,6 +36,7 @@ namespace ACT.TTSYukkuri.Config
         private VoiceroidId selectedVoiceroidId = VoiceroidId.YukariEx;
         private ObservableCollection<VoiceroidProcess> voiceroids = new ObservableCollection<VoiceroidProcess>();
         private bool exitVoiceroidWhenExit = true;
+        private bool directSpeak = true;
 
         public VoiceroidId SelectedVoiceroidId
         {
@@ -49,6 +50,12 @@ namespace ACT.TTSYukkuri.Config
         {
             get => this.exitVoiceroidWhenExit;
             set => this.SetProperty(ref this.exitVoiceroidWhenExit, value);
+        }
+
+        public bool DirectSpeak
+        {
+            get => this.directSpeak;
+            set => this.SetProperty(ref this.directSpeak, value);
         }
 
         public void Load()
@@ -81,6 +88,10 @@ namespace ACT.TTSYukkuri.Config
 
         public VoiceroidProcess GetSelected() =>
             this.Get(this.SelectedVoiceroidId);
+
+        public override string ToString() =>
+            $"{nameof(this.SelectedVoiceroidId)}:{this.SelectedVoiceroidId}," +
+            $"{nameof(this.DirectSpeak)}:{this.DirectSpeak}";
     }
 
     [Serializable]

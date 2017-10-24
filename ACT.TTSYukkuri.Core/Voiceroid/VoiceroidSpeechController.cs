@@ -131,39 +131,15 @@ namespace ACT.TTSYukkuri.Voiceroid
                 return;
             }
 
-#if false
-            // 現在の条件をハッシュ化してWAVEファイル名を作る
-            var wave = this.GetCacheFileName(
-                TTSYukkuriConfig.Default.TTS,
-                text,
-                this.Config.ToString());
-
-            if (!File.Exists(wave))
+            var process = this.Config.GetSelected()?.InnerProcess;
+            if (process == null)
             {
-                // 音声waveファイルを生成する
-                var process = this.ProcessFactory?.Get(this.Config.VoiceroidId);
-                if (process != null)
-                {
-                    if (await process.SetTalkText(text))
-                    {
-                        var result = await process.Save(wave);
-                        if (!result.IsSucceeded)
-                        {
-                            ActGlobals.oFormActMain.WriteInfoLog(
-                                $"VOICEROID Speak error : {result.Error}, {result.ExtraMessage}");
-                            return;
-                        }
-                    }
-                }
+                return;
             }
 
-            // 再生する
-            SoundPlayerWrapper.Play(wave);
-#else
-            // 直接再生する
-            var process = this.Config.GetSelected()?.InnerProcess;
-            if (process != null)
+            if (this.Config.DirectSpeak)
             {
+                // 直接再生する
                 if (await process.SetTalkText(text))
                 {
                     if (!await process.Play())
@@ -173,8 +149,33 @@ namespace ACT.TTSYukkuri.Voiceroid
                         return;
                     }
                 }
+
+                return;
             }
-#endif
+
+            // 現在の条件をハッシュ化してWAVEファイル名を作る
+            var wave = this.GetCacheFileName(
+                TTSYukkuriConfig.Default.TTS,
+                text,
+                this.Config.ToString());
+
+            if (!File.Exists(wave))
+            {
+                // 音声waveファイルを生成する
+                if (await process.SetTalkText(text))
+                {
+                    var result = await process.Save(wave);
+                    if (!result.IsSucceeded)
+                    {
+                        ActGlobals.oFormActMain.WriteInfoLog(
+                            $"VOICEROID Speak error : {result.Error}, {result.ExtraMessage}");
+                        return;
+                    }
+                }
+            }
+
+            // 再生する
+            SoundPlayerWrapper.Play(wave);
         }
 
         public static class NativeMethods

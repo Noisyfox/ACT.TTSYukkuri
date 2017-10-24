@@ -72,6 +72,9 @@
   <system:String x:Key="Boyomi_Port">Boyomichan Port</system:String>
   <system:String x:Key="Boyomi_PortDefault">*default 50001</system:String>
 
+  <system:String x:Key="Voiceroid_ExitVoiceroid">Shutdown VOICEROID at the end of ACT</system:String>
+  <system:String x:Key="Voiceroid_DirectSpeak">Voice directly without generating WAVE</system:String>
+
   <system:String x:Key="SA_Enabled">Alert Enabled</system:String>
   <system:String x:Key="SA_Threshold">Alert Threshold</system:String>
   <system:String x:Key="SA_TTSFormat">Text to Alert</system:String>
