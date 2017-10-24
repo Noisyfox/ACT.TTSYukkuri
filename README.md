@@ -3,52 +3,61 @@ ACT.TTSYukkuri
 
 概要
 -------------
-ACTのTTSをゆっくりさんに置き換えます
+ACTのTTSをゆっくりなどの他の合成音声エンジンに置き換えます
   
     
 使い方
 --------------
-1) 準備  
+1. 準備  
 **[.NET Framework 4.7](https://www.microsoft.com/en-us/download/details.aspx?id=55170)** をインストールします。  
 ※TTSYukkuri の動作には. NET Framework 4.7 以降が必要です。  
 
-2) インストール  
+2. インストール  
 <pre>
-  Step1.  
-    OpenJTalk  
-    Yukkuri  
-    FFXIV.Framework.TTS.Server.NLog.config  
-    ffmpeg.exe  
-    FFXIV.Framework.TTS.Server.exe  
-    ACT.TTSYukkuri.Core.dll  
-    ACT.TTSYukkuri.dll  
-    DSharpPlus.dll  
-    DSharpPlus.VoiceNext.dll  
-    FFXIV.Framework.dll  
-    FFXIV.Framework.TTS.Common.dll  
-    FFXIV.Framework.TTS.dll  
-    FontAwesome.WPF.dll  
-    MahApps.Metro.dll  
-    NAudio.dll  
-    Newtonsoft.Json.dll   
-    NLog.dll  
-    Prism.dll  
-    Prism.WPF.dll  
-    System.Windows.Interactivity.dll  
-    をACTのインストールディレクトリにコピーします。  
-  
-  Step2.  
-    lib\libopus.dll  
-    lib\libsodium.dll  
-    をACTのインストールディレクトリにコピーします。  
-  
-  Step3.  
-    ACTのプラグインリストからプラグインとしてACT.TTSYukkuri.dllを追加してください。  
+<b>Step 1.</b>
+  OpenJTalk
+  Yukkuri
+  FFXIV.Framework.TTS.Server.NLog.config
+  ffmpeg.exe
+  FFXIV.Framework.TTS.Server.exe
+  ACT.TTSYukkuri.Core.dll
+  ACT.TTSYukkuri.dll
+  DSharpPlus.dll
+  DSharpPlus.VoiceNext.dll
+  FFXIV.Framework.dll
+  FFXIV.Framework.TTS.Common.dll
+  FFXIV.Framework.TTS.dll
+  FontAwesome.WPF.dll
+  MahApps.Metro.dll
+  NAudio.dll
+  Newtonsoft.Json.dll
+  NLog.dll
+  Prism.dll
+  Prism.Wpf.dll
+  ReactiveProperty.dll
+  ReactiveProperty.NET46.dll
+  RucheHome.Voiceroid.dll
+  RucheHomeLib.dll
+  System.Reactive.Core.dll
+  System.Reactive.Interfaces.dll
+  System.Reactive.Linq.dll
+  System.Reactive.PlatformServices.dll
+  System.Reactive.Windows.Threading.dll
+  System.Windows.Interactivity.dll
+  をACTのインストールディレクトリにコピーします。
+
+<b>Step 2.</b>
+  lib\libopus.dll
+  lib\libsodium.dll
+  を必ずACTのインストールディレクトリにコピーします。
+
+<b>Step 3.</b>
+  ACTのプラグインリストからプラグインとして ACT.TTSYukkuri.dll を追加してください。
 </pre>
     
 #### ディレイ読上げ  
 /wait 1,ゆっくりです  
-読上げのテキストに上記のように記述すると、トリガー検出から1秒後に「ゆっくりです」を読上げます  
+読上げるテキストに上記のように記述すると、トリガー検出から1秒後に「ゆっくりです」を読上げます  
   
     
 #### TTS対応状況  
@@ -85,15 +94,10 @@ HOYAサービス株式会社が提供しているWeb経由で使用できるTTS�
 棒読みちゃんには文章だけを連携して、文章の解析、速度・ピッチ等の調整、TTSの再生等は棒読みちゃん側の制御になります。  
 当プラグイン側で再生していないため、TTSに対するサウンドデバイスの変更や再生方式の変更は効きません。  
   
-VOICEROIDシリーズ等を使いたい場合は、棒読みちゃん＋棒読みちゃんのプラグインとこのモードを使用して再生することになります。  
+##### VOICEROID  
+v3.1.0からVOICEROIDにも対応しました。  
+しかしVOICEROIDには外部から操作するためのAPIがないため使い勝手がよくありません。参考程度に考えてください。  
   
-※VOICEROIDも直接使えるようにできないの？  
-残念ながら対応する予定はありません。棒読みちゃん経由で利用して下さい。  
-VOICEROIDには外部のアプリケーションから呼出す機能(API)がありません。よって連携するためにはかなりの作業量が必要になります。  
-その内容は棒読みちゃんのVOICEROID連携プラグインと同様の内容になります。  
-であれば既存のものをそのまま使って貰うほうが良いだろうということです。  
-  
-    
 #### タイムラインでも使いたい  
 **[こちらの改造版タイムラインをどうぞ](https://github.com/anoyetta/act_timeline/releases)**  
   
@@ -118,12 +122,12 @@ Windowsの伝統的なAPIによる再生。
 可もなく不可もなくといったところ。ほとんどの環境で動作すると思われる。  
   
 ##### DirectSound  
-Windowsのゲーム用のAPIによる再生。  
+Windowsのゲーム向けAPIによる再生。  
 ゲーム向けであるため低遅延及び同時再生に強いのが特徴。  
   
 ##### WASAPI（デフォルト）  
 Windows Vista から搭載された新しいAPIによる再生。  
-WaveOut同様に可もなく不可もなく動作する。XPでは動かないのでご注意。  
+WaveOut同様に可もなく不可もなく動作する。特にこだわりがない場合はこれを選んでおけばよい。  
   
 ##### ASIO  
 高級サウンドカード等が対応している高品質な汎用API。  
@@ -138,7 +142,6 @@ ASIOは環境が無いため試せていません。
   
 ただし、OSやPCのスペック、サウンドデバイス等の様々な外部要素の影響によってDirectSoundではノイズが発生する場合があります。  
 自身の環境で動かしてみてマッチするものを選んで下さい。  
-テストはカスタムトリガに適当な文章を記載して再生ボタンを連打する方法が良いと思います。  
 体感できる差がないという場合は、DirectSoundを選択しておけば理論上は最速になります。  
 WaveOutとWASAPIで迷う場合は、WASAPIを選択しておけば理論上はより高速に動作します。  
   
@@ -167,6 +170,12 @@ AquesTalk（いわゆる、ゆっくりボイス）
 --------------
 本ソフトは、株式会社アクエストの音声合成ライブラリAquesTalk, AqKanji2Koeを使用しており、その著作権は同社に帰属します。  
 営利目的での使用は当該ライブラリの使用ライセンスが必要となります。  
+  
+    
+VoiceroidUtil
+--------------
+本ソフトは、VoiceroidUtil, RucheHomeLib をMITライセンスに基づき使用しています。  
+https://github.com/ruche7/VoiceroidUtil  
   
     
 謝辞
