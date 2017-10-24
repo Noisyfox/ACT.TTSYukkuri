@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -73,21 +73,34 @@ namespace ACT.TTSYukkuri.Config
         public ObservableCollection<SasaraComponent> Components
         {
             get => this.components;
-            set
-            {
-                var previousComponents = this.components;
-
-                if (this.SetProperty(ref this.components, value))
-                {
-                    previousComponents.CollectionChanged -= this.ComponentsCollectionChanged;
-                    this.components.CollectionChanged += this.ComponentsCollectionChanged;
-                }
-            }
         }
 
         private void ComponentsCollectionChanged(
             object sender,
-            NotifyCollectionChangedEventArgs e) => this.SyncRemoteModel();
+            NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                {
+                    item.PropertyChanged -= this.ItemOnPropertyChanged;
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                {
+                    item.PropertyChanged += this.ItemOnPropertyChanged;
+                }
+            }
+
+            // 変更を同期させる
+            this.SyncRemoteModel();
+        }
+
+        private void ItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+            => this.SyncRemoteModel();
 
         /// <summary>
         /// 音量
@@ -308,18 +321,13 @@ namespace ACT.TTSYukkuri.Config
             this.talker.Alpha = this.Seishitsu;
             this.talker.ToneScale = this.Yokuyo;
 
-            var components = new List<CevioTalkerModel.CevioTalkerComponent>();
-            foreach (var c in this.Components)
-            {
-                components.Add(new CevioTalkerModel.CevioTalkerComponent()
+            this.talker.Components = this.Components.Select(
+                x => new CevioTalkerModel.CevioTalkerComponent()
                 {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Value = c.Value
-                });
-            }
-
-            this.talker.Components = components;
+                    Id = x.Id,
+                    Name = x.Name,
+                    Value = x.Value,
+                }).ToList();
 
             return this.talker;
         }
