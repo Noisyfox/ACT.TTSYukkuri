@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ACT.TTSYukkuri.Config;
@@ -36,21 +35,10 @@ namespace ACT.TTSYukkuri.SoundPlayer
         private static MMDeviceEnumerator deviceEnumrator = new MMDeviceEnumerator();
 
         /// <summary>
-        /// プレイヤ辞書
-        /// </summary>
-        private static ConcurrentDictionary<string, PlayerSet> players = new ConcurrentDictionary<string, PlayerSet>();
-
-        /// <summary>
         /// プレイヤを開放する
         /// </summary>
         public static void DisposePlayers()
         {
-            foreach (var kvp in players)
-            {
-                kvp.Value.Dispose();
-            }
-
-            players.Clear();
         }
 
         /// <summary>
@@ -194,13 +182,14 @@ namespace ACT.TTSYukkuri.SoundPlayer
                     return;
                 }
 
-                var ps = GetPlayer(
+                var player = GetPlayer(
                     TTSYukkuriConfig.Default.Player,
                     deviceID,
-                    waveFile);
+                    waveFile,
+                    volume / 100f);
 
                 // 再生する
-                ps.Play((float)volume / 100f);
+                player.Play();
             }
             catch (Exception ex)
             {
@@ -220,24 +209,18 @@ namespace ACT.TTSYukkuri.SoundPlayer
             }
         }
 
-        private static PlayerSet GetPlayer(
+        private static IWavePlayer GetPlayer(
             WavePlayers playerType,
             string deviceID,
-            string wave)
+            string wave,
+            float volume = 1.0f)
         {
-            var key = $"Player:{playerType},Device:{deviceID},Wave:{wave}";
-
-            if (players.ContainsKey(key))
-            {
-                return players[key];
-            }
-
-            var playerSet = new PlayerSet();
+            var player = default(IWavePlayer);
 
             switch (playerType)
             {
                 case WavePlayers.WaveOut:
-                    playerSet.Player = new WaveOut()
+                    player = new WaveOut()
                     {
                         DeviceNumber = int.Parse(deviceID),
                         DesiredLatency = PlayerLatencyWaveOut,
@@ -245,13 +228,13 @@ namespace ACT.TTSYukkuri.SoundPlayer
                     break;
 
                 case WavePlayers.DirectSound:
-                    playerSet.Player = new DirectSoundOut(
+                    player = new DirectSoundOut(
                         Guid.Parse(deviceID),
                         PlayerLatencyDirectSoundOut);
                     break;
 
                 case WavePlayers.WASAPI:
-                    playerSet.Player = new WasapiOut(
+                    player = new WasapiOut(
                         deviceEnumrator.GetDevice(deviceID),
                         AudioClientShareMode.Shared,
                         false,
@@ -259,41 +242,23 @@ namespace ACT.TTSYukkuri.SoundPlayer
                     break;
 
                 case WavePlayers.ASIO:
-                    playerSet.Player = new AsioOut(deviceID);
+                    player = new AsioOut(deviceID);
                     break;
             }
 
-            playerSet.AudioStream = new AudioFileReader(wave);
-            playerSet.Player.Init(playerSet.AudioStream);
-
-            players[key] = playerSet;
-
-            return playerSet;
-        }
-    }
-
-    public class PlayerSet : IDisposable
-    {
-        public IWavePlayer Player { get; set; }
-        public AudioFileReader AudioStream { get; set; }
-
-        public void Dispose()
-        {
-            this.AudioStream?.Dispose();
-            this.Player?.Dispose();
-        }
-
-        public void Play(
-            float volume = 1.0f)
-        {
-            if (this.Player.PlaybackState == PlaybackState.Playing)
+            var audio = new AudioFileReader(wave)
             {
-                this.Player.Stop();
-            }
+                Volume = volume
+            };
 
-            this.AudioStream.Volume = volume;
-            this.AudioStream.Position = 0;
-            this.Player.Play();
+            player.Init(audio);
+            player.PlaybackStopped += (x, y) =>
+            {
+                audio.Dispose();
+                player.Dispose();
+            };
+
+            return player;
         }
     }
 
