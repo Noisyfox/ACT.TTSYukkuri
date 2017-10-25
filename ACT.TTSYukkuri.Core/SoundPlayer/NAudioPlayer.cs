@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
 using Advanced_Combat_Tracker;
@@ -36,11 +36,21 @@ namespace ACT.TTSYukkuri.SoundPlayer
         private static MMDeviceEnumerator deviceEnumrator = new MMDeviceEnumerator();
 
         /// <summary>
+        /// プレイヤ辞書
+        /// </summary>
+        private static ConcurrentDictionary<string, PlayerSet> players = new ConcurrentDictionary<string, PlayerSet>();
+
+        /// <summary>
         /// プレイヤを開放する
         /// </summary>
         public static void DisposePlayers()
         {
-            // NO-OP
+            foreach (var kvp in players)
+            {
+                kvp.Value.Dispose();
+            }
+
+            players.Clear();
         }
 
         /// <summary>
@@ -177,8 +187,6 @@ namespace ACT.TTSYukkuri.SoundPlayer
 #if DEBUG
             var sw = Stopwatch.StartNew();
 #endif
-            var volumeAsFloat = ((float)volume / 100f);
-
             try
             {
                 // Discord指定？
@@ -188,67 +196,13 @@ namespace ACT.TTSYukkuri.SoundPlayer
                     return;
                 }
 
-                IWavePlayer player = null;
-                IWaveProvider provider = null;
-
-                switch (TTSYukkuriConfig.Default.Player)
-                {
-                    case WavePlayers.WaveOut:
-                        player = new WaveOut()
-                        {
-                            DeviceNumber = int.Parse(deviceID),
-                            DesiredLatency = PlayerLatencyWaveOut,
-                        };
-                        break;
-
-                    case WavePlayers.DirectSound:
-                        player = new DirectSoundOut(
-                            Guid.Parse(deviceID),
-                            PlayerLatencyDirectSoundOut);
-                        break;
-
-                    case WavePlayers.WASAPI:
-                        player = new WasapiOut(
-                            deviceEnumrator.GetDevice(deviceID),
-                            AudioClientShareMode.Shared,
-                            false,
-                            PlayerLatencyWasapiOut);
-                        break;
-
-                    case WavePlayers.ASIO:
-                        player = new AsioOut(deviceID);
-                        break;
-                }
-
-                if (player == null)
-                {
-                    return;
-                }
-
-                provider = new AudioFileReader(waveFile)
-                {
-                    Volume = volumeAsFloat
-                };
-
-                player.Init(provider);
-                player.PlaybackStopped += (s, e) =>
-                {
-                    player.Dispose();
-
-                    var file = provider as IDisposable;
-                    if (file != null)
-                    {
-                        file.Dispose();
-                    }
-
-                    if (isDelete)
-                    {
-                        File.Delete(waveFile);
-                    }
-                };
+                var ps = GetPlayer(
+                    TTSYukkuriConfig.Default.Player,
+                    deviceID,
+                    waveFile);
 
                 // 再生する
-                player.Play();
+                ps.Play((float)volume / 100f);
             }
             catch (Exception ex)
             {
@@ -266,6 +220,77 @@ namespace ACT.TTSYukkuri.SoundPlayer
                     sw.ElapsedTicks);
 #endif
             }
+        }
+
+        private static PlayerSet GetPlayer(
+            WavePlayers playerType,
+            string deviceID,
+            string wave)
+        {
+            var key = $"Player:{playerType},Device:{deviceID},Wave:{wave}";
+
+            if (players.ContainsKey(key))
+            {
+                return players[key];
+            }
+
+            var playerSet = new PlayerSet();
+
+            switch (playerType)
+            {
+                case WavePlayers.WaveOut:
+                    playerSet.Player = new WaveOut()
+                    {
+                        DeviceNumber = int.Parse(deviceID),
+                        DesiredLatency = PlayerLatencyWaveOut,
+                    };
+                    break;
+
+                case WavePlayers.DirectSound:
+                    playerSet.Player = new DirectSoundOut(
+                        Guid.Parse(deviceID),
+                        PlayerLatencyDirectSoundOut);
+                    break;
+
+                case WavePlayers.WASAPI:
+                    playerSet.Player = new WasapiOut(
+                        deviceEnumrator.GetDevice(deviceID),
+                        AudioClientShareMode.Shared,
+                        false,
+                        PlayerLatencyWasapiOut);
+                    break;
+
+                case WavePlayers.ASIO:
+                    playerSet.Player = new AsioOut(deviceID);
+                    break;
+            }
+
+            playerSet.AudioStream = new AudioFileReader(wave);
+            playerSet.Player.Init(playerSet.AudioStream);
+
+            players[key] = playerSet;
+
+            return playerSet;
+        }
+    }
+
+    public class PlayerSet : IDisposable
+    {
+        public IWavePlayer Player { get; set; }
+        public AudioFileReader AudioStream { get; set; }
+
+        public void Dispose()
+        {
+            this.AudioStream?.Dispose();
+            this.Player?.Dispose();
+        }
+
+        public void Play(
+            float volume = 1.0f)
+        {
+            this.AudioStream.Volume = volume;
+            this.AudioStream.Position = 0;
+            this.Player.Play();
         }
     }
 
