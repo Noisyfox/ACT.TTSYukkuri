@@ -39,6 +39,13 @@ namespace ACT.TTSYukkuri.Yukkuri
         }
 
         /// <summary>
+        /// AppKeyを設定する
+        /// </summary>
+        /// <returns>
+        /// status</returns>
+        public bool SetAppKey() => AquesTalk.Instance.SetAppKey();
+
+        /// <summary>
         /// テキストを読み上げる
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>

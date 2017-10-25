@@ -26,6 +26,8 @@ namespace ACT.TTSYukkuri.Yukkuri
             PluginCore.Instance.PluginDirectory,
             $@"Yukkuri\aq_dic");
 
+        private readonly Encoding ShiftJISEncoding = Encoding.GetEncoding("Shift_JIS");
+
         private UnmanagedLibrary kanji2KoeLib;
         private AqKanji2Koe_Create createDelegate;
         private AqKanji2Koe_Release releaseDelegate;
@@ -40,36 +42,38 @@ namespace ACT.TTSYukkuri.Yukkuri
 
         public void Load()
         {
-            if (!NetiveMethods.IsModuleLoaded(Kanji2KoeLibName))
+            if (this.kanji2KoeLib == null)
             {
                 this.kanji2KoeLib = new UnmanagedLibrary(this.Kanji2KoeDllName);
             }
 
-            if (this.kanji2KoeLib != null)
+            if (this.kanji2KoeLib == null)
             {
-                if (this.createDelegate == null)
-                {
-                    this.createDelegate =
-                        this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Create>(nameof(AqKanji2Koe_Create));
+                return;
+            }
 
-                    // 言語処理モジュールのインスタンスを生成しそのハンドルを取得する
-                    int err = 0;
-                    this.kanji2KoeHandle = this.createDelegate.Invoke(
-                        this.Kanji2KoeDictionaryName,
-                        ref err);
-                }
+            if (this.createDelegate == null)
+            {
+                this.createDelegate =
+                    this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Create>(nameof(AqKanji2Koe_Create));
 
-                if (this.releaseDelegate == null)
-                {
-                    this.releaseDelegate =
-                        this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Release>(nameof(AqKanji2Koe_Release));
-                }
+                // 言語処理モジュールのインスタンスを生成しそのハンドルを取得する
+                int err = 0;
+                this.kanji2KoeHandle = this.createDelegate.Invoke(
+                    this.Kanji2KoeDictionaryName,
+                    ref err);
+            }
 
-                if (this.convertDelegate == null)
-                {
-                    this.convertDelegate =
-                        this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Convert>(nameof(AqKanji2Koe_Convert));
-                }
+            if (this.releaseDelegate == null)
+            {
+                this.releaseDelegate =
+                    this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Release>(nameof(AqKanji2Koe_Release));
+            }
+
+            if (this.convertDelegate == null)
+            {
+                this.convertDelegate =
+                    this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Convert>(nameof(AqKanji2Koe_Convert));
             }
         }
 
@@ -92,8 +96,6 @@ namespace ACT.TTSYukkuri.Yukkuri
                 this.kanji2KoeLib = null;
             }
         }
-
-        #region Native Methods
 
         /// <summary>
         /// 漢字混じりのテキストを音声記号列にして返す
@@ -124,7 +126,7 @@ namespace ACT.TTSYukkuri.Yukkuri
 
                 if (stat == 0)
                 {
-                    var koe = Encoding.GetEncoding("Shift_JIS").GetString(koeBuffer).TrimEnd('\0');
+                    var koe = this.ShiftJISEncoding.GetString(koeBuffer).TrimEnd('\0');
                     if (!string.IsNullOrWhiteSpace(koe))
                     {
                         phonetic = koe;
@@ -134,30 +136,5 @@ namespace ACT.TTSYukkuri.Yukkuri
 
             return phonetic;
         }
-
-        private static class NetiveMethods
-        {
-            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern IntPtr GetModuleHandle(string moduleName);
-
-            /// <summary>
-            /// Check whether or not the specified module is loaded in the
-            /// current process.
-            /// </summary>
-            /// <param name="moduleName">the module name</param>
-            /// <returns>
-            /// The function returns true if the specified module is loaded in
-            /// the current process. If the module is not loaded, the function
-            /// returns false.
-            /// </returns>
-            public static bool IsModuleLoaded(string moduleName)
-            {
-                // Get the module in the process according to the module name.
-                IntPtr hMod = GetModuleHandle(moduleName);
-                return (hMod != IntPtr.Zero);
-            }
-        }
-
-        #endregion Native Methods
     }
 }

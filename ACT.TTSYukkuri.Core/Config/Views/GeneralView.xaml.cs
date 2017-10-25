@@ -1,11 +1,11 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ACT.TTSYukkuri.Config.ViewModels;
 using ACT.TTSYukkuri.resources;
 using ACT.TTSYukkuri.Voiceroid;
+using ACT.TTSYukkuri.Yukkuri;
 using Advanced_Combat_Tracker;
 using FFXIV.Framework.Common;
 
@@ -64,6 +64,23 @@ namespace ACT.TTSYukkuri.Config.Views
             switch (ttsType)
             {
                 case TTSType.Yukkuri:
+                    try
+                    {
+                        var ctrl = SpeechController.Default as YukkuriSpeechController;
+                        if (ctrl != null)
+                        {
+                            if (!ctrl.SetAppKey())
+                            {
+                                this.ShowErrorMessage("AquesTalk の初期化でエラーが発生しました。Code=D");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ShowErrorMessage("AquesTalk の初期化で例外が発生しました。", ex);
+                        return;
+                    }
+
                     content = new YukkuriConfigView();
                     break;
 
@@ -79,25 +96,11 @@ namespace ACT.TTSYukkuri.Config.Views
                     try
                     {
                         // リモートからささらの設定を取得する
-                        await Task.Run(() =>
-                        {
-                            TTSYukkuriConfig.Default.SasaraSettings.LoadRemoteConfig();
-                        });
+                        await Task.Run(() => TTSYukkuriConfig.Default.SasaraSettings.LoadRemoteConfig());
                     }
                     catch (Exception ex)
                     {
-                        var message = new StringBuilder();
-                        message.AppendLine("CeVIO Creative Studio との接続で例外が発生しました。");
-                        message.AppendLine();
-                        message.AppendLine(ex.ToString());
-
-                        System.Windows.Forms.MessageBox.Show(
-                            ActGlobals.oFormActMain,
-                            message.ToString(),
-                            "TTSゆっくりプラグイン",
-                            System.Windows.Forms.MessageBoxButtons.OK,
-                            System.Windows.Forms.MessageBoxIcon.Exclamation);
-
+                        this.ShowErrorMessage("CeVIO Creative Studio との接続で例外が発生しました。", ex);
                         return;
                     }
 
@@ -117,35 +120,13 @@ namespace ACT.TTSYukkuri.Config.Views
 
                         if (!string.IsNullOrEmpty(err))
                         {
-                            var message = new StringBuilder();
-                            message.AppendLine("VOICEROIDの初期化でエラーが発生しました。");
-                            message.AppendLine();
-                            message.AppendLine(err);
-
-                            System.Windows.Forms.MessageBox.Show(
-                                ActGlobals.oFormActMain,
-                                message.ToString(),
-                                "TTSゆっくりプラグイン",
-                                System.Windows.Forms.MessageBoxButtons.OK,
-                                System.Windows.Forms.MessageBoxIcon.Exclamation);
-
+                            this.ShowErrorMessage($"VOICEROIDの初期化でエラーが発生しました。\n\n{err}");
                             return;
                         }
                     }
                     catch (Exception ex)
                     {
-                        var message = new StringBuilder();
-                        message.AppendLine("VOICEROIDの初期化で例外が発生しました。");
-                        message.AppendLine();
-                        message.AppendLine(ex.ToString());
-
-                        System.Windows.Forms.MessageBox.Show(
-                            ActGlobals.oFormActMain,
-                            message.ToString(),
-                            "TTSゆっくりプラグイン",
-                            System.Windows.Forms.MessageBoxButtons.OK,
-                            System.Windows.Forms.MessageBoxIcon.Exclamation);
-
+                        this.ShowErrorMessage("VOICEROIDの初期化で例外が発生しました。", ex);
                         return;
                     }
 
@@ -158,6 +139,25 @@ namespace ACT.TTSYukkuri.Config.Views
 
             this.ContentGrid.Children.Clear();
             this.ContentGrid.Children.Add((UIElement)content);
+        }
+
+        private async void ShowErrorMessage(
+            string message,
+            Exception ex = null)
+        {
+            var prompt = message;
+            if (ex != null)
+            {
+                prompt += Environment.NewLine + Environment.NewLine;
+                prompt += ex.ToString();
+            }
+
+            await Task.Run(() => System.Windows.Forms.MessageBox.Show(
+                ActGlobals.oFormActMain,
+                message,
+                "ACT.TTSYukkuri",
+                System.Windows.Forms.MessageBoxButtons.OK,
+                System.Windows.Forms.MessageBoxIcon.Exclamation));
         }
     }
 }
