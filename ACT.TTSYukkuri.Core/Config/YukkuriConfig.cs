@@ -198,14 +198,14 @@ namespace ACT.TTSYukkuri.Config
             };
 
         public override string ToString() =>
-            $"Preset:{this.Preset}," +
-            $"BaseVoice:{this.BaseVoice}," +
-            $"Speed:{this.Speed}," +
-            $"Volume:{this.Volume}," +
-            $"Pitch:{this.Pitch}," +
-            $"Accent:{this.Accent}," +
-            $"LMD:{this.LMD}" +
-            $"FSC:{this.FSC}" +
-            $"UseKanji2Koe:{this.UseKanji2Koe}";
+            $"{nameof(this.Preset)}:{this.Preset}," +
+            $"{nameof(this.BaseVoice)}:{this.BaseVoice}," +
+            $"{nameof(this.Speed)}:{this.Speed}," +
+            $"{nameof(this.Volume)}:{this.Volume}," +
+            $"{nameof(this.Pitch)}:{this.Pitch}," +
+            $"{nameof(this.Accent)}:{this.Accent}," +
+            $"{nameof(this.LMD)}:{this.LMD}" +
+            $"{nameof(this.FSC)}:{this.FSC}" +
+            $"{nameof(this.UseKanji2Koe)}:{this.UseKanji2Koe}";
     }
 }

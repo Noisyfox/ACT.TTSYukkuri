@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using Prism.Mvvm;
 using VoiceTextWebAPI.Client;
 
@@ -73,21 +72,12 @@ namespace ACT.TTSYukkuri.Config
             set => this.SetProperty(ref this.pitch, value);
         }
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine("{");
-            sb.AppendLine("APIKey = " + this.APIKey + ",");
-            sb.AppendLine("Speaker = " + this.Speaker.ToString() + ",");
-            sb.AppendLine("Emotion = " + this.Emotion.ToString() + ",");
-            sb.AppendLine("EmotionLevel = " + this.EmotionLevel.ToString() + ",");
-            sb.AppendLine("Volume = " + this.Volume.ToString() + ",");
-            sb.AppendLine("Speed = " + this.Speed.ToString() + ",");
-            sb.AppendLine("Pitch = " + this.Pitch.ToString() + ",");
-            sb.AppendLine("}");
-
-            return sb.ToString();
-        }
+        public override string ToString() =>
+            $"{nameof(this.Speaker)}:{this.Speaker}," +
+            $"{nameof(this.Emotion)}:{this.Emotion}," +
+            $"{nameof(this.EmotionLevel)}:{this.EmotionLevel}," +
+            $"{nameof(this.Volume)}:{this.Volume}," +
+            $"{nameof(this.Speed)}:{this.Speed}," +
+            $"{nameof(this.Pitch)}:{this.Pitch}";
     }
 }

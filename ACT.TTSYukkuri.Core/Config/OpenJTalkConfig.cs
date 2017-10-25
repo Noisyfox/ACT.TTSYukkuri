@@ -119,18 +119,12 @@ namespace ACT.TTSYukkuri.Config
             return list.ToArray();
         }
 
-        public override string ToString()
-        {
-            var t = string.Empty;
-
-            t += this.Voice;
-            t += this.Gain.ToString();
-            t += this.Volume.ToString();
-            t += this.Speed.ToString();
-            t += this.Pitch.ToString();
-
-            return t;
-        }
+        public override string ToString() =>
+            $"{nameof(this.Voice)}:{this.Voice}," +
+            $"{nameof(this.Gain)}:{this.Gain}," +
+            $"{nameof(this.Volume)}:{this.Volume}," +
+            $"{nameof(this.Speed)}:{this.Speed}," +
+            $"{nameof(this.Pitch)}:{this.Pitch}";
     }
 
     [Serializable]

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using FFXIV.Framework.TTS.Common;
 using FFXIV.Framework.TTS.Common.Models;
@@ -177,27 +176,17 @@ namespace ACT.TTSYukkuri.Config
             }
         }
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine(this.Cast);
-            sb.AppendLine(this.Gain.ToString());
-            sb.AppendLine(this.Onryo.ToString());
-            sb.AppendLine(this.Hayasa.ToString());
-            sb.AppendLine(this.Takasa.ToString());
-            sb.AppendLine(this.Seishitsu.ToString());
-            sb.AppendLine(this.Yokuyo.ToString());
-
-            if (this.Components != null)
-            {
-                foreach (var c in this.Components)
-                {
-                    sb.AppendLine(c.Id + c.Name + c.Value.ToString());
-                }
-            }
-
-            return sb.ToString();
-        }
+        public override string ToString() =>
+            $"{nameof(this.Cast)}:{this.Cast}," +
+            $"{nameof(this.Gain)}:{this.Gain}," +
+            $"{nameof(this.Onryo)}:{this.Onryo}," +
+            $"{nameof(this.Hayasa)}:{this.Hayasa}," +
+            $"{nameof(this.Takasa)}:{this.Takasa}," +
+            $"{nameof(this.Seishitsu)}:{this.Seishitsu}," +
+            $"{nameof(this.Yokuyo)}:{this.Yokuyo}," +
+            this.Components
+                .Select(x => $"{x.Name}.{x.Id}:{x.Value}")
+                .Aggregate((x, y) => $"{x},{y}");
 
         /// <summary>
         /// リモートに自動的に反映するか？
