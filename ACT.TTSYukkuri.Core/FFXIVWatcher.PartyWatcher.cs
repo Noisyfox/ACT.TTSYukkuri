@@ -46,19 +46,8 @@ namespace ACT.TTSYukkuri
             var partyList = this.GetCombatantListParty();
 
             // パーティリストに存在しないメンバの前回の状態を消去する
-            var removeList = new List<PreviousPartyMemberStatus>();
-            foreach (var previouseMember in previouseParyMemberList)
-            {
-                if (!partyList.Any(x => x.ID == previouseMember.ID))
-                {
-                    removeList.Add(previouseMember);
-                }
-            }
-
-            foreach (var removeMember in removeList)
-            {
-                this.previouseParyMemberList.Remove(removeMember);
-            }
+            this.previouseParyMemberList.RemoveAll(x =>
+                !partyList.Any(y => y.ID == x.ID));
 
             foreach (var partyMember in partyList)
             {
@@ -101,8 +90,24 @@ namespace ACT.TTSYukkuri
                 }
 
                 // 読上げ用の名前「ジョブ名＋イニシャル」とする
-                var pcname =
-                    $"{partyMember.JobId.GetPhonetic()} { partyMember.Name.Trim().Substring(0, 1)}";
+                var pcname = string.Empty;
+                if (partyMember.IsPlayer)
+                {
+                    switch (TTSYukkuriConfig.Default.UILocale)
+                    {
+                        case Locales.EN:
+                            pcname = "You";
+                            break;
+
+                        case Locales.JA:
+                            pcname = "自分";
+                            break;
+                    }
+                }
+                else
+                {
+                    pcname = $"{partyMember.JobId.GetPhonetic()} { partyMember.Name.Trim().Substring(0, 1)}";
+                }
 
                 // 読上げ用のテキストを編集する
                 var hpTextToSpeak = TTSYukkuriConfig.Default.StatusAlertSettings.HPTextToSpeack;
@@ -236,9 +241,9 @@ namespace ACT.TTSYukkuri
             string pcName)
         {
             var emptyJa = $"{pcName},{targetStatus}なし。";
-            var emptyEn = $"{pcName}'s {targetStatus} is empty.";
+            var emptyEn = $"{pcName}, {targetStatus} empty.";
             var diedJa = $"{pcName},戦闘不能。";
-            var diedEn = $"{pcName} is died.";
+            var diedEn = $"{pcName}, dead.";
 
             var empty = string.Empty;
             var died = string.Empty;

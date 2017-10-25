@@ -46,6 +46,7 @@ namespace ACT.TTSYukkuri
             dynamic list = pluginScancombat.GetCombatantList();
             var result = new List<Combatant>(list.Count);
 
+            var isPlayer = true;
             foreach (dynamic item in list.ToArray())
             {
                 if (item == null)
@@ -54,6 +55,9 @@ namespace ACT.TTSYukkuri
                 }
 
                 var combatant = new Combatant();
+
+                combatant.IsPlayer = isPlayer;
+                isPlayer = false;
 
                 combatant.ID = (uint)item.ID;
                 combatant.OwnerID = (uint)item.OwnerID;
@@ -173,5 +177,7 @@ namespace ACT.TTSYukkuri
         public int Order;
         public uint OwnerID;
         public byte type;
+
+        public bool IsPlayer = false;
     }
 }
