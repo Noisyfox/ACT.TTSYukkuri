@@ -41,7 +41,6 @@ namespace ACT.TTSYukkuri
             SoundPlayerWrapper.PlayCore(
                 deviceID,
                 waveFile,
-                false,
                 TTSYukkuriConfig.Default.WaveVolume);
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace ACT.TTSYukkuri
             string deviceID,
             string file,
             int volume) =>
-            SoundPlayerWrapper.PlayCore(deviceID, file, false, volume);
+            SoundPlayerWrapper.PlayCore(deviceID, file, volume);
 
         /// <summary>
         /// サウンドを再生する
@@ -66,7 +65,6 @@ namespace ACT.TTSYukkuri
         private static void PlayCore(
             string deviceID,
             string file,
-            bool isFileDelete,
             int volume)
         {
             if (!File.Exists(file))
@@ -86,7 +84,6 @@ namespace ACT.TTSYukkuri
                     NAudioPlayer.Play(
                         deviceID,
                         file,
-                        isFileDelete,
                         volume);
                 });
             }
@@ -95,7 +92,6 @@ namespace ACT.TTSYukkuri
                 NAudioPlayer.Play(
                     deviceID,
                     file,
-                    isFileDelete,
                     volume);
             }
         }

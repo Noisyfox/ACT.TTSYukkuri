@@ -176,12 +176,10 @@ namespace ACT.TTSYukkuri.SoundPlayer
         /// </summary>
         /// <param name="deviceID">再生デバイスID</param>
         /// <param name="waveFile">wavファイル</param>
-        /// <param name="isDelete">再生後に削除する</param>
         /// <param name="volume">ボリューム</param>
         public static void Play(
             string deviceID,
             string waveFile,
-            bool isDelete,
             int volume)
         {
 #if DEBUG

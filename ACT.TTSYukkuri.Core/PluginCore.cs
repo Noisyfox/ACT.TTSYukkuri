@@ -129,14 +129,12 @@ namespace ACT.TTSYukkuri
                     NAudioPlayer.Play(
                         TTSYukkuriConfig.Default.SubDeviceID,
                         wave,
-                        false,
                         TTSYukkuriConfig.Default.WaveVolume);
                 }
 
                 NAudioPlayer.Play(
                     TTSYukkuriConfig.Default.MainDeviceID,
                     wave,
-                    false,
                     TTSYukkuriConfig.Default.WaveVolume);
             });
         }
@@ -197,14 +195,12 @@ namespace ACT.TTSYukkuri
                     NAudioPlayer.Play(
                         TTSYukkuriConfig.Default.SubDeviceID,
                         wave,
-                        false,
                         TTSYukkuriConfig.Default.WaveVolume);
                 }
 
                 NAudioPlayer.Play(
                     TTSYukkuriConfig.Default.MainDeviceID,
                     wave,
-                    false,
                     TTSYukkuriConfig.Default.WaveVolume);
             });
         }
