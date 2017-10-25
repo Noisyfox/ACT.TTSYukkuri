@@ -286,6 +286,11 @@ namespace ACT.TTSYukkuri.SoundPlayer
         public void Play(
             float volume = 1.0f)
         {
+            if (this.Player.PlaybackState == PlaybackState.Playing)
+            {
+                this.Player.Stop();
+            }
+
             this.AudioStream.Volume = volume;
             this.AudioStream.Position = 0;
             this.Player.Play();
