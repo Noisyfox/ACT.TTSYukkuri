@@ -21,11 +21,11 @@ namespace ACT.TTSYukkuri.Config
 
         private string cast;
         private float gain = 2.1f;
-        private uint onryo;
-        private uint hayasa;
-        private uint takasa;
-        private uint seishitsu;
-        private uint yokuyo;
+        private uint onryo = 50;
+        private uint hayasa = 50;
+        private uint takasa = 50;
+        private uint seishitsu = 50;
+        private uint yokuyo = 50;
         private ObservableCollection<SasaraComponent> components = new ObservableCollection<SasaraComponent>();
 
         public SasaraConfig()
