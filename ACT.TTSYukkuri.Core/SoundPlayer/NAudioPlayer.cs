@@ -26,14 +26,9 @@ namespace ACT.TTSYukkuri.SoundPlayer
     /// </summary>
     public partial class NAudioPlayer
     {
-        private const int PlayerLatencyDirectSoundOut = 40;
-
-        private const int PlayerLatencyWasapiOut = 40;
-
-        /// <summary>
-        /// プレイヤのレイテンシ
-        /// </summary>
-        private const int PlayerLatencyWaveOut = 128;
+        private const int PlayerLatencyWaveOut = 200;
+        private const int PlayerLatencyDirectSoundOut = 200;
+        private const int PlayerLatencyWasapiOut = 200;
 
         /// <summary>
         /// Device Enumrator
