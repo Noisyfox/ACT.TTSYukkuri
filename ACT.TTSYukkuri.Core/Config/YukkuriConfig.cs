@@ -57,6 +57,9 @@ namespace ACT.TTSYukkuri.Config
         }
 
         [XmlIgnore]
+        public bool IsLoadedAppKey => AquesTalk.Instance.IsLoadedAppKey;
+
+        [XmlIgnore]
         public AQPresets Preset
         {
             get => this.preset;
@@ -198,6 +201,7 @@ namespace ACT.TTSYukkuri.Config
             };
 
         public override string ToString() =>
+            $"{nameof(this.IsLoadedAppKey)}:{this.IsLoadedAppKey}," +
             $"{nameof(this.Preset)}:{this.Preset}," +
             $"{nameof(this.BaseVoice)}:{this.BaseVoice}," +
             $"{nameof(this.Speed)}:{this.Speed}," +

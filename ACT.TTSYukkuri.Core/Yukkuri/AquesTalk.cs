@@ -12,7 +12,7 @@ namespace ACT.TTSYukkuri.Yukkuri
         /// </summary>
         /// <remarks>
         /// ここにAquesTalk10の開発者ライセンスキーをセットします。</remarks>
-        private readonly string DeveloperKey = "#DEVELOPER_KEY_IS_HERE#";
+        private static readonly string DeveloperKey = "#DEVELOPER_KEY_IS_HERE#";
 
         #region Singleton
 
@@ -46,6 +46,7 @@ namespace ACT.TTSYukkuri.Yukkuri
             if (this.yukkuriLib == null)
             {
                 this.yukkuriLib = new UnmanagedLibrary(YukkuriDllName);
+                this.IsLoadedAppKey = false;
             }
 
             if (this.yukkuriLib == null)
@@ -78,10 +79,14 @@ namespace ACT.TTSYukkuri.Yukkuri
             }
         }
 
+        public bool IsLoadedAppKey { get; private set; }
+
         public void Free()
         {
             if (this.yukkuriLib != null)
             {
+                this.IsLoadedAppKey = false;
+
                 this.SetDevKeyDelegate = null;
                 this.SynthesizeDelegate = null;
                 this.SynthesizeUTF16Delegate = null;
@@ -102,9 +107,11 @@ namespace ACT.TTSYukkuri.Yukkuri
             var result = this.SetDevKeyDelegate?.Invoke(DeveloperKey);
             if (result != 0)
             {
+                this.IsLoadedAppKey = false;
                 return false;
             }
 
+            this.IsLoadedAppKey = true;
             return true;
         }
 
