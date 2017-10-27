@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
 using Advanced_Combat_Tracker;
@@ -358,15 +357,6 @@ namespace ACT.TTSYukkuri.SoundPlayer
 
             this.AudioStream.Volume = volume;
             this.InnerPlayer.Play();
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(TimeSpan.FromSeconds(10));
-                if (this.InnerPlayer.PlaybackState == PlaybackState.Playing)
-                {
-                    this.InnerPlayer.Stop();
-                }
-            });
         }
 
         public void Dispose()
