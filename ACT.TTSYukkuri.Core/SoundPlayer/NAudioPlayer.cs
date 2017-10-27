@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
 using Advanced_Combat_Tracker;
@@ -39,6 +42,15 @@ namespace ACT.TTSYukkuri.SoundPlayer
         /// </summary>
         public static void DisposePlayers()
         {
+            foreach (var kvp in playerDictionary)
+            {
+                foreach (var player in kvp.Value)
+                {
+                    player.Dispose();
+                }
+            }
+
+            playerDictionary.Clear();
         }
 
         /// <summary>
@@ -185,11 +197,10 @@ namespace ACT.TTSYukkuri.SoundPlayer
                 var player = GetPlayer(
                     TTSYukkuriConfig.Default.Player,
                     deviceID,
-                    waveFile,
-                    volume / 100f);
+                    waveFile);
 
                 // 再生する
-                player.Play();
+                player?.Play(volume / 100f);
             }
             catch (Exception ex)
             {
@@ -209,56 +220,172 @@ namespace ACT.TTSYukkuri.SoundPlayer
             }
         }
 
-        private static IWavePlayer GetPlayer(
+        private static IDictionary<string, YukkuriPlayer[]> playerDictionary = new ConcurrentDictionary<string, YukkuriPlayer[]>();
+
+        private static YukkuriPlayer GetPlayer(
             WavePlayers playerType,
             string deviceID,
-            string wave,
-            float volume = 1.0f)
+            string wave)
         {
-            var player = default(IWavePlayer);
+            var player = default(YukkuriPlayer);
 
-            switch (playerType)
+            var key = $"{playerType}-{deviceID}-{wave}";
+            if (playerDictionary.ContainsKey(key))
             {
-                case WavePlayers.WaveOut:
-                    player = new WaveOut()
-                    {
-                        DeviceNumber = int.Parse(deviceID),
-                        DesiredLatency = PlayerLatencyWaveOut,
-                    };
-                    break;
-
-                case WavePlayers.DirectSound:
-                    player = new DirectSoundOut(
-                        Guid.Parse(deviceID),
-                        PlayerLatencyDirectSoundOut);
-                    break;
-
-                case WavePlayers.WASAPI:
-                    player = new WasapiOut(
-                        deviceEnumrator.GetDevice(deviceID),
-                        AudioClientShareMode.Shared,
-                        false,
-                        PlayerLatencyWasapiOut);
-                    break;
-
-                case WavePlayers.ASIO:
-                    player = new AsioOut(deviceID);
-                    break;
+                player = playerDictionary[key].FirstOrDefault(x => !x.IsPlaying);
+                return player;
             }
 
-            var audio = new AudioFileReader(wave)
+            playerDictionary[key] = new YukkuriPlayer[]
             {
-                Volume = volume
-            };
-
-            player.Init(audio);
-            player.PlaybackStopped += (x, y) =>
-            {
-                audio.Dispose();
-                player.Dispose();
+                player = CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
+                CreatePlayer(playerType, deviceID, wave),
             };
 
             return player;
+        }
+
+        public static YukkuriPlayer CreatePlayer(
+            WavePlayers playerType,
+            string deviceID,
+            string wave)
+        {
+            // プレイヤーを使い捨てるか？
+            const bool isInstant = false;
+
+            var player = default(YukkuriPlayer);
+            switch (playerType)
+            {
+                case WavePlayers.WaveOut:
+                    player = new YukkuriPlayer(
+                        new WaveOut()
+                        {
+                            DeviceNumber = int.Parse(deviceID),
+                            DesiredLatency = PlayerLatencyWaveOut,
+                        },
+                        wave,
+                        isInstant);
+                    break;
+
+                case WavePlayers.DirectSound:
+                    player = new YukkuriPlayer(
+                        new DirectSoundOut(
+                            Guid.Parse(deviceID),
+                            PlayerLatencyDirectSoundOut),
+                        wave,
+                        isInstant);
+                    break;
+
+                case WavePlayers.WASAPI:
+                    player = new YukkuriPlayer(
+                        new WasapiOut(
+                            deviceEnumrator.GetDevice(deviceID),
+                            AudioClientShareMode.Shared,
+                            false,
+                            PlayerLatencyWasapiOut),
+                        wave,
+                        isInstant);
+                    break;
+
+                case WavePlayers.ASIO:
+                    player = new YukkuriPlayer(
+                        new AsioOut(deviceID),
+                        wave,
+                        isInstant);
+                    break;
+            }
+
+            return player;
+        }
+    }
+
+    public class YukkuriPlayer : IDisposable
+    {
+        public YukkuriPlayer(
+            IWavePlayer player,
+            string wave,
+            bool instant = false)
+        {
+            this.InnerPlayer = player;
+            this.AudioStream = new AudioFileReader(wave);
+            this.Instant = instant;
+            this.Init();
+        }
+
+        public void Init()
+        {
+            if (this.InnerPlayer == null ||
+                this.AudioStream == null)
+            {
+                return;
+            }
+
+            this.InnerPlayer.PlaybackStopped += (x, y) =>
+            {
+                this.AudioStream.Position = 0;
+
+                if (this.Instant)
+                {
+                    this.InnerPlayer?.Dispose();
+                    this.AudioStream?.Dispose();
+                    this.InnerPlayer = null;
+                    this.AudioStream = null;
+                }
+            };
+
+            this.InnerPlayer.Init(this.AudioStream);
+        }
+
+        public void Play(
+            float volume = 1.0f)
+        {
+            if (this.InnerPlayer == null ||
+                this.AudioStream == null)
+            {
+                return;
+            }
+
+            if (this.InnerPlayer.PlaybackState == PlaybackState.Playing)
+            {
+                return;
+            }
+
+            this.AudioStream.Volume = volume;
+            this.InnerPlayer.Play();
+
+            Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromSeconds(10));
+                if (this.InnerPlayer.PlaybackState == PlaybackState.Playing)
+                {
+                    this.InnerPlayer.Stop();
+                }
+            });
+        }
+
+        public void Dispose()
+        {
+            this.InnerPlayer?.Dispose();
+            this.AudioStream?.Dispose();
+            this.InnerPlayer = null;
+            this.AudioStream = null;
+        }
+
+        public bool Instant { get; set; }
+        public IWavePlayer InnerPlayer { get; private set; }
+        public AudioFileReader AudioStream { get; private set; }
+        public bool IsPlaying => this.InnerPlayer?.PlaybackState == PlaybackState.Playing;
+
+        public float Volume
+        {
+            get => this.AudioStream.Volume;
+            set => this.AudioStream.Volume = value;
         }
     }
 
