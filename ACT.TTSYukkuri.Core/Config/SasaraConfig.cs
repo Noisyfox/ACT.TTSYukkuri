@@ -229,7 +229,8 @@ namespace ACT.TTSYukkuri.Config
                 this.AvalableCasts.Remove(item);
             }
 
-            if (string.IsNullOrWhiteSpace(this.Cast))
+            if (string.IsNullOrWhiteSpace(this.Cast) ||
+                !this.Components.Any())
             {
                 // キャストを設定する
                 var firstCast = this.talker.AvailableCasts.FirstOrDefault();
@@ -251,8 +252,7 @@ namespace ACT.TTSYukkuri.Config
             string cast)
         {
             if (string.IsNullOrWhiteSpace(cast) ||
-               this.talker == null ||
-               (this.talker.Cast == cast && this.Cast == cast))
+               this.talker == null)
             {
                 return;
             }
@@ -278,7 +278,7 @@ namespace ACT.TTSYukkuri.Config
                     });
                 }
 
-                this.Cast = cast;
+                this.cast = cast;
                 this.Onryo = talker.Volume;
                 this.Hayasa = talker.Speed;
                 this.Takasa = talker.Tone;
