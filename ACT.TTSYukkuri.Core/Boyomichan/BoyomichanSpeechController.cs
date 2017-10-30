@@ -141,6 +141,9 @@ namespace ACT.TTSYukkuri.Boyomichan
                         if (this.connectedServer != server ||
                             this.connectedPort != port)
                         {
+                            this.boyomiClient.Close();
+                            this.boyomiClient.Dispose();
+
                             this.boyomiClient = new TcpClient(server, port);
                             this.connectedServer = server;
                             this.connectedPort = port;
