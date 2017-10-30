@@ -72,7 +72,10 @@ namespace ACT.TTSYukkuri
             {
                 this.replaceTTSMethodTimer.Elapsed += (s, e) =>
                 {
-                    this.ReplaceTTSMethod();
+                    if (this.replaceTTSMethodTimer.Enabled)
+                    {
+                        this.ReplaceTTSMethod();
+                    }
                 };
 
                 this.replaceTTSMethodTimer.Start();
