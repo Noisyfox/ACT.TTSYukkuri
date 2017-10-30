@@ -229,17 +229,22 @@ namespace ACT.TTSYukkuri.Config
                 this.AvalableCasts.Remove(item);
             }
 
-            if (string.IsNullOrWhiteSpace(this.Cast) ||
-                !this.Components.Any())
-            {
-                // キャストを設定する
-                var firstCast = this.talker.AvailableCasts.FirstOrDefault();
-                this.SetCast(firstCast);
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(this.Cast) &&
+                this.AvalableCasts.Contains(this.Cast) &&
+                this.Components.Any())
             {
                 // 現在の設定をリモートに送る
                 this.SetToRemote();
+            }
+            else
+            {
+                var cast = this.talker.AvailableCasts.FirstOrDefault();
+                if (this.AvalableCasts.Contains(this.Cast))
+                {
+                    cast = this.Cast;
+                }
+
+                this.SetCast(cast);
             }
         }
 
