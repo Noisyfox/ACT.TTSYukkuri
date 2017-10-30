@@ -63,7 +63,7 @@
               HorizontalAlignment="Left"
               Width="60"
               TextAlignment="Right"
-              Text="{Binding Config.TPThreshold, Mode=TwoWay}" />
+              Text="{Binding Config.HPThreshold, Mode=TwoWay}" />
             <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Text="%" />
           </StackPanel>
 
@@ -85,7 +85,7 @@
               <DataTemplate>
                 <CheckBox
                     Content="{Binding Text, Mode=OneWay}"
-                    IsChecked="{Binding Enabled, Mode=OneWayToSource}" />
+                    IsChecked="{Binding Enabled, Mode=TwoWay}" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
@@ -116,7 +116,7 @@
               HorizontalAlignment="Left"
               Width="60"
               TextAlignment="Right"
-              Text="{Binding Config.TPThreshold, Mode=TwoWay}" />
+              Text="{Binding Config.MPThreshold, Mode=TwoWay}" />
             <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Text="%" />
           </StackPanel>
 
@@ -138,7 +138,7 @@
               <DataTemplate>
                 <CheckBox
                     Content="{Binding Text, Mode=OneWay}"
-                    IsChecked="{Binding Enabled, Mode=OneWayToSource}" />
+                    IsChecked="{Binding Enabled, Mode=TwoWay}" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
@@ -191,7 +191,7 @@
               <DataTemplate>
                 <CheckBox
                     Content="{Binding Text, Mode=OneWay}"
-                    IsChecked="{Binding Enabled, Mode=OneWayToSource}" />
+                    IsChecked="{Binding Enabled, Mode=TwoWay}" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
