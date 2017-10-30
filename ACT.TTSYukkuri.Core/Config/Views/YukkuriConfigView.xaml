@@ -244,6 +244,12 @@
         </Hyperlink>
       </TextBlock>
 
+      <TextBlock Margin="5 5 0 0" HorizontalAlignment="Left">
+        <Hyperlink Command="{Binding OpenUserDictionaryEditorCommand, Mode=OneWay}">
+          <TextBlock Text="{StaticResource Yukkuri_EditDictionary}" />
+        </Hyperlink>
+      </TextBlock>
+
       <TextBlock
         Margin="5 20 5 0"
         HorizontalAlignment="Left"

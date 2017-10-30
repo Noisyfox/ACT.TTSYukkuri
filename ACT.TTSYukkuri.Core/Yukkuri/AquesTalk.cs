@@ -27,6 +27,10 @@ namespace ACT.TTSYukkuri.Yukkuri
             PluginCore.Instance.PluginDirectory,
             $@"Yukkuri\{YukkuriLibName}.dll");
 
+        public static readonly string UserDictionaryEditor = Path.Combine(
+            PluginCore.Instance.PluginDirectory,
+            $@"Yukkuri\aq_dic\GenUserDic.exe");
+
         private UnmanagedLibrary yukkuriLib;
         private AquesTalk_SetDevKey SetDevKeyDelegate;
         private AquesTalk_Synthe SynthesizeDelegate;

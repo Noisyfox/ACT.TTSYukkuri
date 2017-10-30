@@ -36,6 +36,7 @@
   <system:String x:Key="Yukkuri_YukkuriVer">AquesTalk10 Win Ver.1.0</system:String>
   <system:String x:Key="Yukkuri_Kanji2KoeVer">AqKanji2Koe Win Ver.2.0</system:String>
   <system:String x:Key="Yukkuri_Reference">AquesTalk 音声記号列仕様書</system:String>
+  <system:String x:Key="Yukkuri_EditDictionary">ユーザ辞書を編集する</system:String>
 
   <system:String x:Key="Sasara_Cast">キャスト</system:String>
   <system:String x:Key="Sasara_Emotions">感情パラメータ</system:String>
