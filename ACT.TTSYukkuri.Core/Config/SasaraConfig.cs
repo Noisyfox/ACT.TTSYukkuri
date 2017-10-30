@@ -252,7 +252,7 @@ namespace ACT.TTSYukkuri.Config
         {
             if (string.IsNullOrWhiteSpace(cast) ||
                this.talker == null ||
-               this.talker.Cast == cast)
+               (this.talker.Cast == cast && this.Cast == cast))
             {
                 return;
             }

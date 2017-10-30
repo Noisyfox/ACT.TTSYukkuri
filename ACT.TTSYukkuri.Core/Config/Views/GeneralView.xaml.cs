@@ -57,6 +57,12 @@ namespace ACT.TTSYukkuri.Config.Views
             this.LoadTTSConfigPage(ttsType);
         }
 
+        private void PlayMethodOnSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            var vm = this.ViewModel;
+            vm?.ChangePlayMethodCommand.Execute(null);
+        }
+
         private async void LoadTTSConfigPage(
             string ttsType)
         {

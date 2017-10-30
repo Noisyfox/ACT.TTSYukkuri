@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -30,6 +31,23 @@ namespace ACT.TTSYukkuri.Config.ViewModels
             this.openCachFolderCommand ?? (this.openCachFolderCommand = new DelegateCommand(() =>
             {
                 Process.Start(SpeechControllerExtentions.CacheDirectory);
+            }));
+
+        private ICommand changePlayMethodCommand;
+
+        public ICommand ChangePlayMethodCommand =>
+            this.changePlayMethodCommand ?? (this.changePlayMethodCommand = new DelegateCommand(() =>
+            {
+                var devices = this.Config.PlayDevices;
+                if (!devices.Any(x => x.ID == this.Config.MainDeviceID))
+                {
+                    this.Config.MainDeviceID = devices.FirstOrDefault()?.ID;
+                }
+
+                if (!devices.Any(x => x.ID == this.Config.SubDeviceID))
+                {
+                    this.Config.SubDeviceID = devices.FirstOrDefault()?.ID;
+                }
             }));
     }
 }

@@ -195,7 +195,8 @@
               HorizontalAlignment="Left"
               MinWidth="250"
               ItemsSource="{Binding Source={StaticResource PlayMethods}, Mode=OneWay}"
-              SelectedItem="{Binding Config.Player, Mode=TwoWay}" />
+              SelectedItem="{Binding Config.Player, Mode=TwoWay}"
+              SelectionChanged="PlayMethodOnSelectionChanged" />
 
             <Label
               Margin="0 10 0 0"
