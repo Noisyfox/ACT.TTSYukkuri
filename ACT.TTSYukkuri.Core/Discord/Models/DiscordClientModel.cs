@@ -9,6 +9,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.Codec;
+using FFXIV.Framework.Common;
 using Prism.Mvvm;
 
 namespace ACT.TTSYukkuri.Discord.Models
@@ -23,6 +24,22 @@ namespace ACT.TTSYukkuri.Discord.Models
         public static DiscordClientModel Instance => instance;
 
         #endregion Singleton
+
+        private bool connected;
+
+        public bool Connected
+        {
+            get => this.connected;
+            set => this.SetProperty(ref this.connected, value);
+        }
+
+        private bool joined;
+
+        public bool Joined
+        {
+            get => this.joined;
+            set => this.SetProperty(ref this.joined, value);
+        }
 
         public const string DicordCommandPrefix = "//";
 
@@ -117,7 +134,19 @@ namespace ACT.TTSYukkuri.Discord.Models
                 await this.discord?.DisconnectAsync()
                     .ContinueWith((task) =>
                 {
+                    if (this.vnc != null)
+                    {
+                        this.vnc.Dispose();
+                        this.vnc = null;
+                    }
+
                     this.discord = null;
+
+                    WPFHelper.BeginInvoke(() =>
+                    {
+                        this.Connected = false;
+                        this.Joined = false;
+                    });
                 });
             }
         }
@@ -134,6 +163,12 @@ namespace ACT.TTSYukkuri.Discord.Models
                 .ContinueWith<VoiceNextConnection>((task) =>
                 {
                     this.AppendLogLine($"Joined channel: {chn.Name}");
+
+                    WPFHelper.BeginInvoke(() =>
+                    {
+                        this.Joined = true;
+                    });
+
                     return task.Result;
                 });
         }
@@ -145,7 +180,21 @@ namespace ACT.TTSYukkuri.Discord.Models
                 await this.discord.DisconnectAsync()
                     .ContinueWith(async (task) =>
                     {
+                        if (this.vnc != null)
+                        {
+                            this.vnc.Dispose();
+                            this.vnc = null;
+                        }
+
+                        this.discord = null;
+
+                        await WPFHelper.BeginInvoke(() =>
+                        {
+                            this.Joined = false;
+                        });
+
                         this.AppendLogLine($"Left channel.");
+
                         await Task.Delay(TimeSpan.FromMilliseconds(200));
                         this.Connect();
                     });
@@ -180,6 +229,13 @@ namespace ACT.TTSYukkuri.Discord.Models
             this.AppendLogLine(
                 $"Client error. event: {e.EventName}" + Environment.NewLine +
                 e.Exception.ToString());
+
+            WPFHelper.BeginInvoke(() =>
+            {
+                this.Connected = false;
+                this.Joined = false;
+            });
+
             return Task.CompletedTask;
         }
 
@@ -215,11 +271,19 @@ namespace ACT.TTSYukkuri.Discord.Models
                 }
             }
 
-            this.RaisePropertyChanged(nameof(this.GuildName));
-            this.RaisePropertyChanged(nameof(this.Channels));
-            this.RaisePropertyChanged(nameof(this.SelectedChannel));
+            WPFHelper.BeginInvoke(() =>
+            {
+                this.RaisePropertyChanged(nameof(this.GuildName));
+                this.RaisePropertyChanged(nameof(this.Channels));
+                this.RaisePropertyChanged(nameof(this.SelectedChannel));
+            });
 
             this.AppendLogLine($"Guild available: {e.Guild.Name}");
+
+            WPFHelper.BeginInvoke(() =>
+            {
+                this.Connected = true;
+            });
 
             if (this.isInit)
             {
@@ -241,7 +305,11 @@ namespace ACT.TTSYukkuri.Discord.Models
         {
             var log = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")}] {message}";
             this.log.AppendLine(log);
-            this.RaisePropertyChanged(nameof(this.Log));
+
+            WPFHelper.BeginInvoke(() =>
+            {
+                this.RaisePropertyChanged(nameof(this.Log));
+            });
         }
     }
 }

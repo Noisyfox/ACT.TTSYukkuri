@@ -192,7 +192,7 @@ namespace ACT.TTSYukkuri.Config
         /// リモートに自動的に反映するか？
         /// </summary>
         [XmlIgnore]
-        public bool AutoSync { get; set; } = true;
+        public bool AutoSync { get; private set; } = true;
 
         /// <summary>
         /// リモートに反映する
@@ -271,17 +271,13 @@ namespace ACT.TTSYukkuri.Config
                 this.talker = RemoteTTSClient.Instance.TTSModel.GetCevioTalker();
 
                 this.Components.Clear();
-                for (int i = 0; i < talker.Components.Count; i++)
+                this.Components.AddRange(talker.Components.Select(x => new SasaraComponent()
                 {
-                    var component = talker.Components[i];
-                    this.Components.Add(new SasaraComponent()
-                    {
-                        Id = component.Id,
-                        Name = component.Name.Trim(),
-                        Value = component.Value,
-                        Cast = talker.Cast,
-                    });
-                }
+                    Id = x.Id,
+                    Name = x.Name.Trim(),
+                    Value = x.Value,
+                    Cast = talker.Cast,
+                }));
 
                 this.cast = cast;
                 this.Onryo = talker.Volume;
