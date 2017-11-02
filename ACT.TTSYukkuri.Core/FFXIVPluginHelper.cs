@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using ACT.TTSYukkuri.Config;
 using Advanced_Combat_Tracker;
+using FFXIV.Framework.FFXIVHelper;
 
 namespace ACT.TTSYukkuri
 {
@@ -169,7 +169,7 @@ namespace ACT.TTSYukkuri
         public int CurrentTP;
         public uint ID;
         public int Job;
-        public JobIds JobId => (JobIds)this.Job;
+        public JobIDs JobId => (JobIDs)this.Job;
         public int Level;
         public int MaxHP;
         public int MaxMP;

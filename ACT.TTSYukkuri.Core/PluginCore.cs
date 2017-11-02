@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
-using ACT.TTSYukkuri.SoundPlayer;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
 
@@ -125,21 +124,7 @@ namespace ACT.TTSYukkuri
                 return;
             }
 
-            Task.Run(() =>
-            {
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                {
-                    NAudioPlayer.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
-                        wave,
-                        TTSYukkuriConfig.Default.WaveVolume);
-                }
-
-                NAudioPlayer.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
-                    wave,
-                    TTSYukkuriConfig.Default.WaveVolume);
-            });
+            SoundPlayerWrapper.Play(wave);
         }
 
         /// <summary>
@@ -166,46 +151,27 @@ namespace ACT.TTSYukkuri
             }
 
             // waveファイルとして再生する
-            Task.Run(() =>
+            var wave = textToSpeak;
+            if (!File.Exists(wave))
             {
-                var wave = textToSpeak;
-                if (!File.Exists(wave))
+                var dirs = new string[]
                 {
-                    var dirs = new string[]
-                    {
                         Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"resources\wav"),
                         Path.Combine(this.PluginDirectory, @"resources\wav"),
-                    };
+                };
 
-                    foreach (var dir in dirs)
+                foreach (var dir in dirs)
+                {
+                    var f = Path.Combine(dir, wave);
+                    if (File.Exists(f))
                     {
-                        var f = Path.Combine(dir, wave);
-                        if (File.Exists(f))
-                        {
-                            wave = f;
-                            break;
-                        }
+                        wave = f;
+                        break;
                     }
                 }
+            }
 
-                if (!File.Exists(wave))
-                {
-                    return;
-                }
-
-                if (TTSYukkuriConfig.Default.EnabledSubDevice)
-                {
-                    NAudioPlayer.Play(
-                        TTSYukkuriConfig.Default.SubDeviceID,
-                        wave,
-                        TTSYukkuriConfig.Default.WaveVolume);
-                }
-
-                NAudioPlayer.Play(
-                    TTSYukkuriConfig.Default.MainDeviceID,
-                    wave,
-                    TTSYukkuriConfig.Default.WaveVolume);
-            });
+            SoundPlayerWrapper.Play(wave);
         }
 
         /// <summary>
@@ -358,9 +324,6 @@ namespace ACT.TTSYukkuri
 
                 // 漢字変換オブジェクトを開放する
                 KanjiTranslator.Default.Dispose();
-
-                // プレイヤを開放する
-                NAudioPlayer.DisposePlayers();
 
                 // TTS用waveファイルを削除する？
                 if (TTSYukkuriConfig.Default.WaveCacheClearEnable)

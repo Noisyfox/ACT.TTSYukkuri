@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
@@ -9,7 +11,6 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.Codec;
-using FFXIV.Framework.Common;
 using Prism.Mvvm;
 
 namespace ACT.TTSYukkuri.Discord.Models
@@ -142,11 +143,8 @@ namespace ACT.TTSYukkuri.Discord.Models
 
                     this.discord = null;
 
-                    WPFHelper.BeginInvoke(() =>
-                    {
-                        this.Connected = false;
-                        this.Joined = false;
-                    });
+                    this.Connected = false;
+                    this.Joined = false;
                 });
             }
         }
@@ -159,15 +157,32 @@ namespace ACT.TTSYukkuri.Discord.Models
                 return;
             }
 
+            // libopus.dll
+            // libsodium.dll
+            // の存在を確認する
+            var entryDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var opus = Path.Combine(entryDirectory, "libopus.dll");
+            var sodium = Path.Combine(entryDirectory, "libsodium.dll");
+            if (!File.Exists(opus))
+            {
+                this.AppendLogLine($"Error: Opus not found. {opus}");
+                this.AppendLogLine($"You must install libopus.dll to ACT directory.");
+                return;
+            }
+
+            if (!File.Exists(sodium))
+            {
+                this.AppendLogLine($"Error: Sodium not found. {sodium}");
+                this.AppendLogLine($"You must install libsodium.dll to ACT directory.");
+                return;
+            }
+
             this.vnc = await this.voice.ConnectAsync(chn)
                 .ContinueWith<VoiceNextConnection>((task) =>
                 {
                     this.AppendLogLine($"Joined channel: {chn.Name}");
 
-                    WPFHelper.BeginInvoke(() =>
-                    {
-                        this.Joined = true;
-                    });
+                    this.Joined = true;
 
                     return task.Result;
                 });
@@ -188,10 +203,7 @@ namespace ACT.TTSYukkuri.Discord.Models
 
                         this.discord = null;
 
-                        await WPFHelper.BeginInvoke(() =>
-                        {
-                            this.Joined = false;
-                        });
+                        this.Joined = false;
 
                         this.AppendLogLine($"Left channel.");
 
@@ -230,11 +242,8 @@ namespace ACT.TTSYukkuri.Discord.Models
                 $"Client error. event: {e.EventName}" + Environment.NewLine +
                 e.Exception.ToString());
 
-            WPFHelper.BeginInvoke(() =>
-            {
-                this.Connected = false;
-                this.Joined = false;
-            });
+            this.Connected = false;
+            this.Joined = false;
 
             return Task.CompletedTask;
         }
@@ -271,19 +280,13 @@ namespace ACT.TTSYukkuri.Discord.Models
                 }
             }
 
-            WPFHelper.BeginInvoke(() =>
-            {
-                this.RaisePropertyChanged(nameof(this.GuildName));
-                this.RaisePropertyChanged(nameof(this.Channels));
-                this.RaisePropertyChanged(nameof(this.SelectedChannel));
-            });
+            this.RaisePropertyChanged(nameof(this.GuildName));
+            this.RaisePropertyChanged(nameof(this.Channels));
+            this.RaisePropertyChanged(nameof(this.SelectedChannel));
 
             this.AppendLogLine($"Guild available: {e.Guild.Name}");
 
-            WPFHelper.BeginInvoke(() =>
-            {
-                this.Connected = true;
-            });
+            this.Connected = true;
 
             if (this.isInit)
             {
@@ -306,10 +309,7 @@ namespace ACT.TTSYukkuri.Discord.Models
             var log = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")}] {message}";
             this.log.AppendLine(log);
 
-            WPFHelper.BeginInvoke(() =>
-            {
-                this.RaisePropertyChanged(nameof(this.Log));
-            });
+            this.RaisePropertyChanged(nameof(this.Log));
         }
     }
 }

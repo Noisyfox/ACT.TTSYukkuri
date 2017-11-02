@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using ACT.TTSYukkuri.Config.ViewModels;
 using ACT.TTSYukkuri.resources;
+using FFXIV.Framework.Globalization;
 
 namespace ACT.TTSYukkuri.Config.Views
 {

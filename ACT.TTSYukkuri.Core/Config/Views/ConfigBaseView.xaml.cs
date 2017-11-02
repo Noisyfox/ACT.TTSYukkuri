@@ -1,5 +1,6 @@
 using System.Windows.Controls;
 using ACT.TTSYukkuri.resources;
+using FFXIV.Framework.Globalization;
 
 namespace ACT.TTSYukkuri.Config.Views
 {

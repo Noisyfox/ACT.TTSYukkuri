@@ -8,6 +8,7 @@ using ACT.TTSYukkuri.Voiceroid;
 using ACT.TTSYukkuri.Yukkuri;
 using Advanced_Combat_Tracker;
 using FFXIV.Framework.Common;
+using FFXIV.Framework.Globalization;
 
 namespace ACT.TTSYukkuri.Config.Views
 {

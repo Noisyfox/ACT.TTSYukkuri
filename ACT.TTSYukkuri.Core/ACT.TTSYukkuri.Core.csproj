@@ -47,21 +47,21 @@
     <Reference Include="CommonServiceLocator, Version=2.0.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.1\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.3.2.2\lib\net46\DSharpPlus.dll</HintPath>
+    <Reference Include="DSharpPlus, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.3.2.3\lib\net46\DSharpPlus.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.CommandsNext, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.CommandsNext.3.2.2\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
+    <Reference Include="DSharpPlus.CommandsNext, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.CommandsNext.3.2.3\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.VoiceNext, Version=3.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.VoiceNext.3.2.2\lib\net46\DSharpPlus.VoiceNext.dll</HintPath>
+    <Reference Include="DSharpPlus.VoiceNext, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.VoiceNext.3.2.3\lib\net46\DSharpPlus.VoiceNext.dll</HintPath>
     </Reference>
     <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="NAudio, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.8.2\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -130,10 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Boyomichan\BoyomichanSpeechController.cs" />
-    <Compile Include="Common\Crypter.cs" />
     <Compile Include="Config\DiscordSettings.cs" />
     <Compile Include="Config\HOYAConfig.cs" />
-    <Compile Include="Config\Jobs.cs" />
+    <Compile Include="Config\JobsExtension.cs" />
     <Compile Include="Config\OpenJTalkConfig.cs" />
     <Compile Include="Config\StatusAlertConfig.cs" />
     <Compile Include="Config\SasaraComponent.cs" />
@@ -177,17 +176,7 @@
     <Compile Include="Config\AlertTarget.cs" />
     <Compile Include="Config\VoiceroidConfig.cs" />
     <Compile Include="Config\YukkuriConfig.cs" />
-    <Compile Include="Converters\AddConverter.cs" />
-    <Compile Include="Converters\BoolToHiddenConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Converters\RatingConverter.cs" />
     <Compile Include="Discord\Converters\BoolConverter.cs" />
-    <Compile Include="Discord\Converters\BoolToHiddenConverter.cs" />
-    <Compile Include="Discord\Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Discord\Converters\ColorToSolidColorBrushConverter.cs" />
-    <Compile Include="Discord\Converters\GridLengthConverter.cs" />
-    <Compile Include="Discord\Converters\ProgressBarBlurConverter.cs" />
-    <Compile Include="Discord\Converters\RatingConverter.cs" />
     <Compile Include="Discord\Models\DiscordClientModel.cs" />
     <Compile Include="Discord\Models\WaveModel.cs" />
     <Compile Include="Discord\ViewModels\DiscordViewModel.cs" />
@@ -209,10 +198,8 @@
     <Compile Include="KanjiTranslator.cs" />
     <Compile Include="OpenJTalk\OpenJTalkSpeechController.cs" />
     <Compile Include="resources\ILocalizable.cs" />
-    <Compile Include="resources\Locales.cs" />
     <Compile Include="resources\LocalizeExtensions.cs" />
     <Compile Include="Sasara\SasaraSpeechController.cs" />
-    <Compile Include="SoundPlayer\NAudioPlayer.cs" />
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
     <Compile Include="StringExtension.cs" />

@@ -4,9 +4,8 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using ACT.TTSYukkuri.Boyomichan;
-using ACT.TTSYukkuri.Common;
-using ACT.TTSYukkuri.resources;
-using ACT.TTSYukkuri.SoundPlayer;
+using FFXIV.Framework.Common;
+using FFXIV.Framework.Globalization;
 using Prism.Mvvm;
 
 namespace ACT.TTSYukkuri.Config
@@ -62,7 +61,7 @@ namespace ACT.TTSYukkuri.Config
         private string tts = TTSType.Yukkuri;
         private bool waveCacheClearEnable;
         private int waveVolume = 100;
-        private WavePlayers player = WavePlayers.WASAPI;
+        private WavePlayerTypes player = WavePlayerTypes.WASAPI;
         private string mainDeviceID;
         private bool enabledSubDevice;
         private string subDeviceID;
@@ -180,7 +179,7 @@ namespace ACT.TTSYukkuri.Config
         /// <summary>
         /// 再生方式
         /// </summary>
-        public WavePlayers Player
+        public WavePlayerTypes Player
         {
             get => this.player;
             set
@@ -193,7 +192,7 @@ namespace ACT.TTSYukkuri.Config
         }
 
         [XmlIgnore]
-        public List<PlayDevice> PlayDevices => NAudioPlayer.EnumlateDevices();
+        public List<PlayDevice> PlayDevices => WavePlayer.EnumlateDevices(this.Player);
 
         /// <summary>
         /// メイン再生デバイスID

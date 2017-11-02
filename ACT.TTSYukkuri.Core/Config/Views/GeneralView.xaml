@@ -6,9 +6,10 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:system="clr-namespace:System;assembly=mscorlib"
   xmlns:vm="clr-namespace:ACT.TTSYukkuri.Config.ViewModels"
-  xmlns:cnv="clr-namespace:ACT.TTSYukkuri.Converters"
   xmlns:resources="clr-namespace:ACT.TTSYukkuri.resources"
-  xmlns:sounds="clr-namespace:ACT.TTSYukkuri.SoundPlayer"
+  xmlns:global="clr-namespace:FFXIV.Framework.Globalization;assembly=FFXIV.Framework"
+  xmlns:fwcmn="clr-namespace:FFXIV.Framework.Common;assembly=FFXIV.Framework"
+  xmlns:fwcnv="clr-namespace:FFXIV.Framework.WPF.Converters;assembly=FFXIV.Framework"
   xmlns:local="clr-namespace:ACT.TTSYukkuri.Config.Views"
   xmlns:fa="http://schemas.fontawesome.io/icons/"
   mc:Ignorable="d"
@@ -29,15 +30,15 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <FontFamily x:Key="FontAwesome">pack://application:,,,/FontAwesome.WPF;component/#FontAwesome</FontFamily>
-      <cnv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
-      <cnv:BoolToHiddenConverter x:Key="HiddenConverter" />
+      <fwcnv:BoolToCollapsedConverter x:Key="VisibilityConverter" />
+      <fwcnv:BoolToHiddenConverter x:Key="HiddenConverter" />
 
       <ObjectDataProvider
         x:Key="LocalesEnumlator"
         MethodName="GetValues"
         ObjectType="{x:Type system:Enum}">
         <ObjectDataProvider.MethodParameters>
-          <x:Type TypeName="resources:Locales" />
+          <x:Type TypeName="global:Locales" />
         </ObjectDataProvider.MethodParameters>
       </ObjectDataProvider>
 
@@ -46,7 +47,7 @@
         MethodName="GetValues"
         ObjectType="{x:Type system:Enum}">
         <ObjectDataProvider.MethodParameters>
-          <x:Type TypeName="sounds:WavePlayers" />
+          <x:Type TypeName="fwcmn:WavePlayerTypes" />
         </ObjectDataProvider.MethodParameters>
       </ObjectDataProvider>
 
@@ -77,7 +78,7 @@
               <ComboBox
                 HorizontalAlignment="Left"
                 MinWidth="200"
-                ItemsSource="{Binding Source={x:Static resources:LocalesExtensions.Enums}}"
+                ItemsSource="{Binding Source={x:Static global:LocalesExtensions.Enums}}"
                 DisplayMemberPath="Text"
                 SelectedValuePath="Value"
                 SelectedValue="{Binding Path=Config.UILocale, Mode=TwoWay}">
@@ -91,7 +92,7 @@
                 Visibility="Collapsed"
                 HorizontalAlignment="Left"
                 MinWidth="200"
-                ItemsSource="{Binding Source={x:Static resources:LocalesExtensions.Enums}}"
+                ItemsSource="{Binding Source={x:Static global:LocalesExtensions.Enums}}"
                 DisplayMemberPath="Text"
                 SelectedValuePath="Value"
                 SelectedValue="{Binding Path=Config.FFXIVLocale, Mode=TwoWay}">

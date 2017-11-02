@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ACT.TTSYukkuri.Config;
-using ACT.TTSYukkuri.resources;
+using FFXIV.Framework.FFXIVHelper;
+using FFXIV.Framework.Globalization;
 
 namespace ACT.TTSYukkuri
 {
@@ -308,7 +309,7 @@ namespace ACT.TTSYukkuri
                     return r;
             }
 
-            if (targetInfo.JobId != JobIds.Unknown)
+            if (targetInfo.JobId != JobIDs.Unknown)
             {
                 var alertCategoryNo = (int)targetInfo.JobId.GetAlertCategory();
                 if (alertCategoryNo < watchTarget.Count)

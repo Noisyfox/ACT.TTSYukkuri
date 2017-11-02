@@ -6,10 +6,11 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:system="clr-namespace:System;assembly=mscorlib"
   xmlns:vm="clr-namespace:ACT.TTSYukkuri.Config.ViewModels"
-  xmlns:cnv="clr-namespace:ACT.TTSYukkuri.Converters"
   xmlns:resources="clr-namespace:ACT.TTSYukkuri.resources"
-  xmlns:sounds="clr-namespace:ACT.TTSYukkuri.SoundPlayer"
   xmlns:yukkuri="clr-namespace:ACT.TTSYukkuri.Yukkuri"
+  xmlns:global="clr-namespace:FFXIV.Framework.Globalization;assembly=FFXIV.Framework"
+  xmlns:fwcmn="clr-namespace:FFXIV.Framework.Common;assembly=FFXIV.Framework"
+  xmlns:fwcnv="clr-namespace:FFXIV.Framework.WPF.Converters;assembly=FFXIV.Framework"
   xmlns:local="clr-namespace:ACT.TTSYukkuri.Config.Views"
   mc:Ignorable="d"
   TextOptions.TextFormattingMode="Display"
@@ -28,8 +29,8 @@
   <UserControl.Resources>
     <ResourceDictionary>
       <FontFamily x:Key="FontAwesome">pack://application:,,,/FontAwesome.WPF;component/#FontAwesome</FontFamily>
-      <cnv:BoolToVisibilityConverter x:Key="VisibilityConverter" />
-      <cnv:BoolToHiddenConverter x:Key="HiddenConverter" />
+      <fwcnv:BoolToCollapsedConverter x:Key="VisibilityConverter" />
+      <fwcnv:BoolToHiddenConverter x:Key="HiddenConverter" />
 
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../../resources/strings/Strings.ja-JP.xaml" />
@@ -54,7 +55,7 @@
       <TextBlock
       Margin="10 5 0 0"
       FontSize="14"
-      Text="{DynamicResource Boyomi_PortDefault}"/>
+      Text="{DynamicResource Boyomi_PortDefault}" />
     </StackPanel>
   </StackPanel>
 </UserControl>

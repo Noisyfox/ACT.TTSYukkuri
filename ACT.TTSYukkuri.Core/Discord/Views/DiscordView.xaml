@@ -7,6 +7,9 @@
   xmlns:local="clr-namespace:ACT.TTSYukkuri.Discord.Views"
   xmlns:vm="clr-namespace:ACT.TTSYukkuri.Discord.ViewModels"
   xmlns:cv="clr-namespace:ACT.TTSYukkuri.Discord.Converters"
+  xmlns:global="clr-namespace:FFXIV.Framework.Globalization;assembly=FFXIV.Framework"
+  xmlns:fwcmn="clr-namespace:FFXIV.Framework.Common;assembly=FFXIV.Framework"
+  xmlns:fwcnv="clr-namespace:FFXIV.Framework.WPF.Converters;assembly=FFXIV.Framework"
   mc:Ignorable="d"
   TextOptions.TextFormattingMode="Display"
   TextOptions.TextHintingMode="Animated"
@@ -24,8 +27,8 @@
 
   <UserControl.Resources>
     <cv:BoolConverter x:Key="BoolConverter" />
-    <cv:BoolToHiddenConverter x:Key="BoolHiddenConverter" />
-    <cv:BoolToVisibilityConverter x:Key="BoolVisibleConverter" />
+    <fwcnv:BoolToCollapsedConverter x:Key="VisibilityConverter" />
+    <fwcnv:BoolToHiddenConverter x:Key="HiddenConverter" />
   </UserControl.Resources>
 
   <Border
@@ -63,7 +66,7 @@
               FontStyle="Italic"
               Content="Connected!"
               Foreground="DarkBlue"
-              Visibility="{Binding Model.Connected, Converter={StaticResource BoolVisibleConverter}, Mode=OneWay}" />
+              Visibility="{Binding Model.Connected, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
           </StackPanel>
           <TextBox
             IsReadOnly="True"
@@ -81,7 +84,7 @@
               FontStyle="Italic"
               Content="Joined!"
               Foreground="DarkBlue"
-              Visibility="{Binding Model.Joined, Converter={StaticResource BoolVisibleConverter}, Mode=OneWay}" />
+              Visibility="{Binding Model.Joined, Converter={StaticResource VisibilityConverter}, Mode=OneWay}" />
           </StackPanel>
           <ComboBox
             Width="600"

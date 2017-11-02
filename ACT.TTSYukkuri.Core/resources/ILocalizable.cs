@@ -1,3 +1,5 @@
+using FFXIV.Framework.Globalization;
+
 namespace ACT.TTSYukkuri.resources
 {
     public interface ILocalizable
