@@ -77,6 +77,8 @@ namespace ACT.TTSYukkuri
             return result;
         }
 
+        private static byte[] dummyBuffer = new byte[15360];
+
         public static List<uint> GetCurrentPartyList(
             out int partyCount)
         {
@@ -93,6 +95,7 @@ namespace ACT.TTSYukkuri
             }
 
             partyList = pluginScancombat.GetCurrentPartyList(
+                dummyBuffer,
                 out partyCount) as List<uint>;
 
             return partyList;
