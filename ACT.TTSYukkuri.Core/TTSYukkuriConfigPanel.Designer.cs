@@ -52,7 +52,7 @@ namespace ACT.TTSYukkuri
             // TTSYukkuriConfigPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.ElementHost);
             this.Name = "TTSYukkuriConfigPanel";
             this.Size = new System.Drawing.Size(1201, 638);

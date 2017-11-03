@@ -204,9 +204,6 @@
     <Compile Include="SpeechController.cs" />
     <Compile Include="StringExtension.cs" />
     <Compile Include="TTSServer\TTSServerController.cs" />
-    <Compile Include="TTSYukkuriConfigPanel.Options.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="UpdateChecker.cs" />
     <Compile Include="Voiceroid\VoiceroidSpeechController.cs" />
     <Compile Include="Yukkuri\AquesTalkParam.cs" />
