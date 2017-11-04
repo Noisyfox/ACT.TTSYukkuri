@@ -7,13 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT.TTSYukkuri.Core", "ACT.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FFXIV.Framework", "FFXIV.Framework", "{B639A3CC-7049-40AB-9BF0-6D388EA405FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework", "FFXIV.Framework\FFXIV.Framework\FFXIV.Framework.csproj", "{22EBF8A4-EED1-4CD1-99EB-99665163A315}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework", "..\FFXIV.Framework\FFXIV.Framework\FFXIV.Framework.csproj", "{22EBF8A4-EED1-4CD1-99EB-99665163A315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework.TTS.Common", "FFXIV.Framework\FFXIV.Framework.TTS.Common\FFXIV.Framework.TTS.Common.csproj", "{18CE9B28-4F0B-45D1-AE3F-14F3982F0E59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework.TTS.Common", "..\FFXIV.Framework\FFXIV.Framework.TTS.Common\FFXIV.Framework.TTS.Common.csproj", "{18CE9B28-4F0B-45D1-AE3F-14F3982F0E59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework.TTS", "FFXIV.Framework\FFXIV.Framework.TTS\FFXIV.Framework.TTS.csproj", "{B796D164-4154-4CE5-AAA4-7FF0365FBD92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework.TTS", "..\FFXIV.Framework\FFXIV.Framework.TTS\FFXIV.Framework.TTS.csproj", "{B796D164-4154-4CE5-AAA4-7FF0365FBD92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework.TTS.Server", "FFXIV.Framework\FFXIV.Framework.TTS.Server\FFXIV.Framework.TTS.Server.csproj", "{4CB004BE-8162-4601-8F98-162D4F1C0FA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFXIV.Framework.TTS.Server", "..\FFXIV.Framework\FFXIV.Framework.TTS.Server\FFXIV.Framework.TTS.Server.csproj", "{4CB004BE-8162-4601-8F98-162D4F1C0FA1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deploy", "deploy\deploy.csproj", "{9F031C94-8011-408E-B916-19C484EA95FF}"
 EndProject
@@ -95,6 +95,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62BA88CA-0C64-4C7E-82CF-F262EE48706F}
-		    SolutionGuid = {A9AA83EB-F573-47B2-969C-F75D687670DF}
+			SolutionGuid = {A9AA83EB-F573-47B2-969C-F75D687670DF}
 	EndGlobalSection
 EndGlobal
