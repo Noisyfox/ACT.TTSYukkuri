@@ -11,6 +11,8 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.Codec;
+using FFXIV.Framework.Common;
+using NLog;
 using Prism.Mvvm;
 
 namespace ACT.TTSYukkuri.Discord.Models
@@ -25,6 +27,12 @@ namespace ACT.TTSYukkuri.Discord.Models
         public static DiscordClientModel Instance => instance;
 
         #endregion Singleton
+
+        #region Logger
+
+        private Logger Logger => AppLog.DefaultLogger;
+
+        #endregion Logger
 
         private bool connected;
 
@@ -102,7 +110,7 @@ namespace ACT.TTSYukkuri.Discord.Models
                 TokenType = TokenType.Bot,
 
                 AutoReconnect = true,
-                LogLevel = LogLevel.Debug,
+                LogLevel = DSharpPlus.LogLevel.Error,
                 UseInternalLogHandler = true
             });
 
@@ -165,15 +173,13 @@ namespace ACT.TTSYukkuri.Discord.Models
             var sodium = Path.Combine(entryDirectory, "libsodium.dll");
             if (!File.Exists(opus))
             {
-                this.AppendLogLine($"Error: Opus not found. {opus}");
-                this.AppendLogLine($"You must install libopus.dll to ACT directory.");
+                this.AppendLogLine($"Join Error", new FileNotFoundException("Opus not found.", opus));
                 return;
             }
 
             if (!File.Exists(sodium))
             {
-                this.AppendLogLine($"Error: Sodium not found. {sodium}");
-                this.AppendLogLine($"You must install libsodium.dll to ACT directory.");
+                this.AppendLogLine($"Join Error", new FileNotFoundException("Sodium not found.", sodium));
                 return;
             }
 
@@ -239,8 +245,7 @@ namespace ACT.TTSYukkuri.Discord.Models
             }
             catch (Exception ex)
             {
-                this.AppendLogLine($"Play sound error !");
-                this.AppendLogLine(ex.ToString());
+                this.AppendLogLine($"Play sound error !", ex);
             }
         }
 
@@ -248,8 +253,8 @@ namespace ACT.TTSYukkuri.Discord.Models
             ClientErrorEventArgs e)
         {
             this.AppendLogLine(
-                $"Client error. event: {e.EventName}" + Environment.NewLine +
-                e.Exception.ToString());
+                $"Client error. event: {e.EventName}",
+                e.Exception);
 
             this.Connected = false;
             this.Joined = false;
@@ -313,11 +318,27 @@ namespace ACT.TTSYukkuri.Discord.Models
         }
 
         private void AppendLogLine(
-            string message)
+            string message,
+            Exception ex = null)
         {
-            var log = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")}] {message}";
-            this.log.AppendLine(log);
+            // NLogに出力する
+            if (ex == null)
+            {
+                this.Logger.Trace(message);
+            }
+            else
+            {
+                this.Logger.Error(ex, message);
+            }
 
+            // UIに出力する
+            var text = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")}] {message}";
+            if (ex != null)
+            {
+                text += ex.ToString();
+            }
+
+            this.log.AppendLine(text);
             this.RaisePropertyChanged(nameof(this.Log));
         }
     }

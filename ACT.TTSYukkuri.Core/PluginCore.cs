@@ -9,6 +9,7 @@ using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
 using FFXIV.Framework.Common;
+using NLog;
 
 namespace ACT.TTSYukkuri
 {
@@ -34,6 +35,12 @@ namespace ACT.TTSYukkuri
         }
 
         #endregion Singleton
+
+        #region Logger
+
+        private Logger Logger => AppLog.DefaultLogger;
+
+        #endregion Logger
 
         public TTSYukkuriConfigPanel ConfigPanel { get; private set; }
 
@@ -224,9 +231,7 @@ namespace ACT.TTSYukkuri
             }
             catch (Exception ex)
             {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "SpeakTTS で例外が発生しました。");
+                this.Logger.Error(ex, "SpeakTTS で例外が発生しました。");
             }
         }
 
@@ -236,6 +241,8 @@ namespace ACT.TTSYukkuri
             TabPage pluginScreenSpace,
             Label pluginStatusText)
         {
+            AppLog.LoadConfiguration(AppLog.HojoringConfig);
+
             try
             {
                 this.PluginStatusLabel = pluginStatusText;
@@ -293,6 +300,8 @@ namespace ACT.TTSYukkuri
             }
             catch (Exception ex)
             {
+                this.Logger.Error(ex, "InitPlugin error.");
+
                 MessageBox.Show(
                     ActGlobals.oFormActMain,
                     "プラグインの初期化中に例外が発生しました。環境を確認してACTを再起動して下さい" + Environment.NewLine + Environment.NewLine +
@@ -359,9 +368,7 @@ namespace ACT.TTSYukkuri
             }
             catch (Exception ex)
             {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "TTSゆっくりプラグインの終了時に例外が発生しました。");
+                this.Logger.Error(ex, "DeInitPlugin error.");
             }
         }
 
@@ -418,9 +425,7 @@ namespace ACT.TTSYukkuri
                     Assembly.GetExecutingAssembly());
                 if (!string.IsNullOrWhiteSpace(message))
                 {
-                    ActGlobals.oFormActMain.WriteExceptionLog(
-                        new Exception(),
-                        message);
+                    this.Logger.Error(message);
                 }
 
                 TTSYukkuriConfig.Default.LastUpdateDateTime = DateTime.Now;

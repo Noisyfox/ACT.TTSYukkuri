@@ -4,7 +4,6 @@ using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
-using Advanced_Combat_Tracker;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using RucheHome.Voiceroid;
@@ -126,8 +125,7 @@ namespace ACT.TTSYukkuri.Voiceroid
             var err = await this.Start();
             if (!string.IsNullOrEmpty(err))
             {
-                ActGlobals.oFormActMain.WriteInfoLog(
-                    $"VOICEROID Speak error : {err}");
+                this.GetLogger().Error($"VOICEROID Speeak error text={text}, err={err}");
                 return;
             }
 
@@ -147,8 +145,7 @@ namespace ACT.TTSYukkuri.Voiceroid
                 {
                     if (!await process.Play())
                     {
-                        ActGlobals.oFormActMain.WriteInfoLog(
-                            $"VOICEROID Speak error");
+                        this.GetLogger().Error($"VOICEROID Speeak error text={text}");
                         return;
                     }
                 }
@@ -170,8 +167,7 @@ namespace ACT.TTSYukkuri.Voiceroid
                     var result = await process.Save(wave);
                     if (!result.IsSucceeded)
                     {
-                        ActGlobals.oFormActMain.WriteInfoLog(
-                            $"VOICEROID Speak error : {result.Error}, {result.ExtraMessage}");
+                        this.GetLogger().Error($"VOICEROID Speeak error text={text}, err={result.Error}, extra={result.ExtraMessage}");
                         return;
                     }
                 }

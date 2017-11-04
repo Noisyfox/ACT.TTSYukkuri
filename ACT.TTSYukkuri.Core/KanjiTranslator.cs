@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
-using Advanced_Combat_Tracker;
+using FFXIV.Framework.Common;
+using NLog;
 
 namespace ACT.TTSYukkuri
 {
@@ -9,6 +10,12 @@ namespace ACT.TTSYukkuri
     /// </summary>
     public class KanjiTranslator : IDisposable
     {
+        #region Logger
+
+        private Logger Logger => AppLog.DefaultLogger;
+
+        #endregion Logger
+
         /// <summary>
         /// ロックオブジェクト
         /// </summary>
@@ -61,14 +68,11 @@ namespace ACT.TTSYukkuri
                     var hr = IFELang.Open();
                     if (hr != 0)
                     {
-                        ActGlobals.oFormActMain.WriteInfoLog(
-                            "ACT.TTSYukkuri IFELANG IMEに接続できません");
-
+                        this.Logger.Error("IFELANG IMEに接続できません。");
                         this.IFELang = null;
                     }
 
-                    ActGlobals.oFormActMain.WriteDebugLog(
-                        "ACT.TTSYukkuri IFELANG 接続OK");
+                    this.Logger.Trace("IFELANG Connected.");
                 }
             }
         }
@@ -91,16 +95,11 @@ namespace ACT.TTSYukkuri
                 var hr = ifelang.GetPhonetic(text, 1, -1, out t);
                 if (hr != 0)
                 {
-                    ActGlobals.oFormActMain.WriteInfoLog(
-                        "ACT.TTSYukkuri IFELANG Phoneticを取得できません");
-
+                    this.Logger.Error($"IFELANG Phoneticを取得できません。text={text}");
                     return yomigana;
                 }
 
                 yomigana = t;
-
-                ActGlobals.oFormActMain.WriteDebugLog(
-                    "ACT.TTSYukkuri IFELANG 変換前:" + text + ", 変換後:" + yomigana);
             }
 
             return yomigana;

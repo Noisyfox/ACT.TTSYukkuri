@@ -104,9 +104,7 @@ namespace ACT.TTSYukkuri.Boyomichan
             }
             catch (Exception ex)
             {
-                ActGlobals.oFormActMain.WriteExceptionLog(
-                    ex,
-                    "ACT.TTSYukkuri 棒読みちゃんの読上げで例外が発生しました");
+                this.GetLogger().Error(ex, "棒読みちゃんの読上げで例外が発生しました。");
             }
         }
 

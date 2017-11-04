@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Threading;
 using ACT.TTSYukkuri.Config;
 using Advanced_Combat_Tracker;
+using FFXIV.Framework.Common;
+using NLog;
 
 namespace ACT.TTSYukkuri
 {
@@ -17,6 +19,12 @@ namespace ACT.TTSYukkuri
     /// </summary>
     public partial class FFXIVWatcher
     {
+        #region Logger
+
+        private Logger Logger => AppLog.DefaultLogger;
+
+        #endregion Logger
+
         private const int WatcherInterval = 400;
         private const int WatcherLongInterval = 5000;
 
@@ -116,9 +124,7 @@ namespace ACT.TTSYukkuri
                         }
                         catch (Exception ex)
                         {
-                            ActGlobals.oFormActMain.WriteExceptionLog(
-                                ex,
-                                "ACT.TTSYukkuri FF14の監視スレッドで例外が発生しました");
+                            this.Logger.Error(ex, "FFXIVの監視スレッドで例外が発声しました。");
                             Thread.Sleep(WatcherLongInterval);
                         }
 

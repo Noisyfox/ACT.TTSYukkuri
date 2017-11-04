@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using FFXIV.Framework.Common;
+using NLog;
 
 namespace ACT.TTSYukkuri
 {
@@ -29,9 +31,19 @@ namespace ACT.TTSYukkuri
 
     public static class SpeechControllerExtentions
     {
+        #region Logger
+
+        private static Logger Logger => AppLog.DefaultLogger;
+
+        #endregion Logger
+
         public static string CacheDirectory => Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             @"anoyetta\ACT\tts cache");
+
+        public static Logger GetLogger(
+            this ISpeechController ctrl)
+            => Logger;
 
         public static void SpeakWithDelay(
             this ISpeechController speechController,
