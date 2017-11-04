@@ -8,7 +8,6 @@ using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
-using FFXIV.Framework.Common;
 
 namespace ACT.TTSYukkuri
 {
@@ -408,7 +407,10 @@ namespace ACT.TTSYukkuri
             if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDateTime).TotalHours
                 > 12d)
             {
-                var message = UpdateChecker.Update("ACT.TTSYukkuri", LastestReleaseUrl);
+                var message = FFXIV.Framework.Common.UpdateChecker.Update(
+                    "ACT.TTSYukkuri",
+                    LastestReleaseUrl,
+                    Assembly.GetExecutingAssembly());
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     ActGlobals.oFormActMain.WriteExceptionLog(
