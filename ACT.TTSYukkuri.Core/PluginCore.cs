@@ -8,6 +8,7 @@ using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
+using FFXIV.Framework.Common;
 
 namespace ACT.TTSYukkuri
 {
@@ -252,6 +253,10 @@ namespace ACT.TTSYukkuri
                 // TTSのキャッシュを移行する
                 this.MigrateTTSCache();
 
+                // HojoringのSplashを表示する
+                WPFHelper.Start();
+                UpdateChecker.ShowSplash();
+
                 // TTSサーバを開始する
                 TTSServerController.Start();
 
@@ -405,9 +410,9 @@ namespace ACT.TTSYukkuri
         private void Update()
         {
             if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDateTime).TotalHours
-                > 12d)
+                >= TTSYukkuriConfig.UpdateCheckInterval)
             {
-                var message = FFXIV.Framework.Common.UpdateChecker.Update(
+                var message = UpdateChecker.Update(
                     "ACT.TTSYukkuri",
                     LastestReleaseUrl,
                     Assembly.GetExecutingAssembly());

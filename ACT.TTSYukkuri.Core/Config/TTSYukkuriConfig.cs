@@ -48,6 +48,9 @@ namespace ACT.TTSYukkuri.Config
 
         #endregion Singleton
 
+        [XmlIgnore]
+        public const double UpdateCheckInterval = 12;
+
         /// <summary>
         /// 設定ファイルのパスを返す
         /// </summary>
