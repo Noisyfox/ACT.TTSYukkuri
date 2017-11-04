@@ -8,6 +8,7 @@ using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
+using FFXIV.Framework.Common;
 
 namespace ACT.TTSYukkuri
 {
@@ -395,6 +396,11 @@ namespace ACT.TTSYukkuri
         }
 
         /// <summary>
+        /// 最終リリースのURL
+        /// </summary>
+        public const string LastestReleaseUrl = @"https://github.com/anoyetta/ACT.TTSYukkuri/releases/latest";
+
+        /// <summary>
         /// アップデートを行う
         /// </summary>
         private void Update()
@@ -402,7 +408,7 @@ namespace ACT.TTSYukkuri
             if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDateTime).TotalHours
                 > 12d)
             {
-                var message = UpdateChecker.Update();
+                var message = UpdateChecker.Update("ACT.TTSYukkuri", LastestReleaseUrl);
                 if (!string.IsNullOrWhiteSpace(message))
                 {
                     ActGlobals.oFormActMain.WriteExceptionLog(
