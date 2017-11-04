@@ -216,22 +216,31 @@ namespace ACT.TTSYukkuri.Discord.Models
         public async void Play(
             string wave)
         {
-            if (this.vnc != null)
+            try
             {
-                try
+                if (this.vnc != null &&
+                    !this.vnc.IsPlaying)
                 {
-                    await vnc.SendSpeakingAsync(true);
+                    try
+                    {
+                        await vnc.SendSpeakingAsync(true);
 
-                    WaveModel.Instance.SendEncode(
-                        wave,
-                        (bytes, blocksize) => this.vnc.SendAsync(bytes, blocksize));
-                }
-                finally
-                {
-                    await vnc.SendSpeakingAsync(false);
-                }
+                        WaveModel.Instance.SendEncode(
+                            wave,
+                            (bytes, blocksize) => this.vnc.SendAsync(bytes, blocksize));
+                    }
+                    finally
+                    {
+                        await vnc.SendSpeakingAsync(false);
+                    }
 
-                this.AppendLogLine($"Play sound: {wave}");
+                    this.AppendLogLine($"Play sound: {wave}");
+                }
+            }
+            catch (Exception ex)
+            {
+                this.AppendLogLine($"Play sound error !");
+                this.AppendLogLine(ex.ToString());
             }
         }
 
