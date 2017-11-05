@@ -9,6 +9,7 @@ using ACT.TTSYukkuri.Yukkuri;
 using Advanced_Combat_Tracker;
 using FFXIV.Framework.Common;
 using FFXIV.Framework.Globalization;
+using NLog;
 
 namespace ACT.TTSYukkuri.Config.Views
 {
@@ -17,12 +18,18 @@ namespace ACT.TTSYukkuri.Config.Views
     /// </summary>
     public partial class GeneralView : UserControl, ILocalizable
     {
+        #region Logger
+
+        private Logger Logger => AppLog.DefaultLogger;
+
+        #endregion Logger
+
         public GeneralView()
         {
             this.InitializeComponent();
             this.DataContext = new GeneralViewModel();
 
-            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
+            this.SetLocale(Settings.Default.UILocale);
 
             this.TTSTypesComboBox.SelectionChanged += this.TTSTypeOnSelectionChanged;
             this.Loaded += this.OnLoaded;
@@ -78,7 +85,7 @@ namespace ACT.TTSYukkuri.Config.Views
                         {
                             if (!ctrl.SetAppKey())
                             {
-                                this.ShowErrorMessage("AquesTalk の初期化でエラーが発生しました。Code=D");
+                                this.ShowErrorMessage("AquesTalk の初期化でエラーが発生しました。Code=D", null, false);
                             }
                         }
                     }
@@ -103,7 +110,7 @@ namespace ACT.TTSYukkuri.Config.Views
                     try
                     {
                         // リモートからささらの設定を取得する
-                        await Task.Run(() => TTSYukkuriConfig.Default.SasaraSettings.LoadRemoteConfig());
+                        await Task.Run(() => Settings.Default.SasaraSettings.LoadRemoteConfig());
                     }
                     catch (Exception ex)
                     {
@@ -122,7 +129,7 @@ namespace ACT.TTSYukkuri.Config.Views
                     try
                     {
                         var ctrl = SpeechController.Default as VoiceroidSpeechController;
-                        TTSYukkuriConfig.Default.VoiceroidSettings.Load();
+                        Settings.Default.VoiceroidSettings.Load();
                         var err = await ctrl?.Start();
 
                         if (!string.IsNullOrEmpty(err))
@@ -150,8 +157,11 @@ namespace ACT.TTSYukkuri.Config.Views
 
         private async void ShowErrorMessage(
             string message,
-            Exception ex = null)
+            Exception ex = null,
+            bool modal = true)
         {
+            this.Logger.Error(ex, message);
+
             var prompt = message;
             if (ex != null)
             {
@@ -159,12 +169,23 @@ namespace ACT.TTSYukkuri.Config.Views
                 prompt += ex.ToString();
             }
 
-            await Task.Run(() => System.Windows.Forms.MessageBox.Show(
-                ActGlobals.oFormActMain,
-                message,
-                "ACT.TTSYukkuri",
-                System.Windows.Forms.MessageBoxButtons.OK,
-                System.Windows.Forms.MessageBoxIcon.Exclamation));
+            if (modal)
+            {
+                await Task.Run(() => System.Windows.Forms.MessageBox.Show(
+                    ActGlobals.oFormActMain,
+                    message,
+                    "ACT.TTSYukkuri",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Exclamation));
+            }
+            else
+            {
+                await Task.Run(() => System.Windows.Forms.MessageBox.Show(
+                    message,
+                    "ACT.TTSYukkuri",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Exclamation));
+            }
         }
     }
 }

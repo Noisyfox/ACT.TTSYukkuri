@@ -4,6 +4,6 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class StatusAlertConfigViewModel : BindableBase
     {
-        public StatusAlertConfig Config => TTSYukkuriConfig.Default.StatusAlertSettings;
+        public StatusAlertConfig Config => Settings.Default.StatusAlertSettings;
     }
 }

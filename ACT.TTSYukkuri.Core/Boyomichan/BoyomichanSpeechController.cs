@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using ACT.TTSYukkuri.Config;
-using Advanced_Combat_Tracker;
 
 namespace ACT.TTSYukkuri.Boyomichan
 {
@@ -112,8 +111,8 @@ namespace ACT.TTSYukkuri.Boyomichan
         {
             lock (this)
             {
-                var server = TTSYukkuriConfig.Default.BoyomiServer;
-                var port = TTSYukkuriConfig.Default.BoyomiPort;
+                var server = Settings.Default.BoyomiServer;
+                var port = Settings.Default.BoyomiPort;
 
                 if (server.ToLower() == "localhost")
                 {

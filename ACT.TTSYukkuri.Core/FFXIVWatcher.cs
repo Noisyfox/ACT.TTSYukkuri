@@ -156,9 +156,9 @@ namespace ACT.TTSYukkuri
             }
 
             // オプションが全部OFFならば何もしない
-            if (!TTSYukkuriConfig.Default.StatusAlertSettings.EnabledHPAlert &&
-                !TTSYukkuriConfig.Default.StatusAlertSettings.EnabledMPAlert &&
-                !TTSYukkuriConfig.Default.StatusAlertSettings.EnabledTPAlert)
+            if (!Settings.Default.StatusAlertSettings.EnabledHPAlert &&
+                !Settings.Default.StatusAlertSettings.EnabledMPAlert &&
+                !Settings.Default.StatusAlertSettings.EnabledTPAlert)
             {
                 Thread.Sleep(WatcherLongInterval);
                 return;

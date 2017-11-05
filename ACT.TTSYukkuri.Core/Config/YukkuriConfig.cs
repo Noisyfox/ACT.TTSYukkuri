@@ -19,6 +19,7 @@ namespace ACT.TTSYukkuri.Config
         private int lmd = AQVoicePresets.F1.lmd;
         private int fsc = AQVoicePresets.F1.fsc;
         private bool useKanji2Koe = true;
+        private bool useIME = false;
 
         public void LoadPreset(
             AQPresets preset)
@@ -180,6 +181,12 @@ namespace ACT.TTSYukkuri.Config
                     }
                 }
             }
+        }
+
+        public bool UseIME
+        {
+            get => this.useIME;
+            set => this.SetProperty(ref this.useIME, value);
         }
 
         public bool UseKanji2Koe

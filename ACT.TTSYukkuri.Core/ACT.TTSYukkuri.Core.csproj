@@ -140,7 +140,7 @@
     <Compile Include="Config\StatusAlertConfig.cs" />
     <Compile Include="Config\SasaraComponent.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
-    <Compile Include="Config\TTSYukkuriConfig.cs" />
+    <Compile Include="Config\Settings.cs" />
     <Compile Include="Config\ViewModels\GeneralViewModel.cs" />
     <Compile Include="Config\ViewModels\BoyomiConfigViewModel.cs" />
     <Compile Include="Config\ViewModels\VoiceroidConfigViewModel.cs" />

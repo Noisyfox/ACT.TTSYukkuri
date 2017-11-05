@@ -210,7 +210,8 @@
         <RadioButton
           Margin="5 0 0 0"
           VerticalContentAlignment="Center"
-          Content="{DynamicResource Yukkuri_KanjiTranslationIME}" />
+          Content="{DynamicResource Yukkuri_KanjiTranslationIME}"
+          IsChecked="{Binding Config.UseIME, Mode=TwoWay}" />
         <RadioButton
           Margin="20 0 0 0"
           VerticalContentAlignment="Center"
