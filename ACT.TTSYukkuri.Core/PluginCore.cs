@@ -132,7 +132,7 @@ namespace ACT.TTSYukkuri
                 return;
             }
 
-            SoundPlayerWrapper.Play(wave);
+            Task.Run(() => SoundPlayerWrapper.Play(wave));
         }
 
         /// <summary>
@@ -150,11 +150,7 @@ namespace ACT.TTSYukkuri
             // ファイルじゃない（TTS）？
             if (!textToSpeak.EndsWith(".wav"))
             {
-                Task.Run(() =>
-                {
-                    this.SpeakTTS(textToSpeak);
-                });
-
+                Task.Run(() => this.SpeakTTS(textToSpeak));
                 return;
             }
 
@@ -164,8 +160,8 @@ namespace ACT.TTSYukkuri
             {
                 var dirs = new string[]
                 {
-                        Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"resources\wav"),
-                        Path.Combine(this.PluginDirectory, @"resources\wav"),
+                    Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"resources\wav"),
+                    Path.Combine(this.PluginDirectory, @"resources\wav"),
                 };
 
                 foreach (var dir in dirs)
@@ -179,7 +175,8 @@ namespace ACT.TTSYukkuri
                 }
             }
 
-            SoundPlayerWrapper.Play(wave);
+            // Volumeはダミーなので0で指定する
+            this.PlaySound(wave, 0);
         }
 
         /// <summary>
