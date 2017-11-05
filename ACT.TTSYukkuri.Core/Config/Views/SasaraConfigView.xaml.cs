@@ -15,7 +15,7 @@ namespace ACT.TTSYukkuri.Config.Views
             this.InitializeComponent();
             this.DataContext = new SasaraConfigViewModel();
 
-            this.SetLocale(Settings.Default.UILocale);
+            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
         }
 
         public SasaraConfigViewModel ViewModel => this.DataContext as SasaraConfigViewModel;

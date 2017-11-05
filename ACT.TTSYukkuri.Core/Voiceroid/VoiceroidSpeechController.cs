@@ -16,7 +16,7 @@ namespace ACT.TTSYukkuri.Voiceroid
     public class VoiceroidSpeechController :
         ISpeechController
     {
-        private VoiceroidConfig Config => Settings.Default.VoiceroidSettings;
+        private VoiceroidConfig Config => TTSYukkuriConfig.Default.VoiceroidSettings;
 
         public ProcessFactory ProcessFactory { get; private set; }
 
@@ -155,7 +155,7 @@ namespace ACT.TTSYukkuri.Voiceroid
 
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
-                Settings.Default.TTS,
+                TTSYukkuriConfig.Default.TTS,
                 text,
                 this.Config.ToString());
 

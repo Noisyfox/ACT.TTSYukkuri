@@ -14,22 +14,22 @@ namespace ACT.TTSYukkuri
         public static void Play(
             string waveFile)
         {
-            var volume = Settings.Default.WaveVolume / 100f;
+            var volume = TTSYukkuriConfig.Default.WaveVolume / 100f;
 
-            if (Settings.Default.EnabledSubDevice)
+            if (TTSYukkuriConfig.Default.EnabledSubDevice)
             {
                 SoundPlayerWrapper.PlayCore(
                     waveFile,
                     volume,
-                    Settings.Default.Player,
-                    Settings.Default.SubDeviceID);
+                    TTSYukkuriConfig.Default.Player,
+                    TTSYukkuriConfig.Default.SubDeviceID);
             }
 
             SoundPlayerWrapper.PlayCore(
                 waveFile,
                 volume,
-                Settings.Default.Player,
-                Settings.Default.MainDeviceID);
+                TTSYukkuriConfig.Default.Player,
+                TTSYukkuriConfig.Default.MainDeviceID);
         }
 
         private static void PlayCore(
@@ -57,7 +57,7 @@ namespace ACT.TTSYukkuri
             WavePlayer.Instance.Play(
                 file,
                 volume,
-                Settings.Default.Player,
+                TTSYukkuriConfig.Default.Player,
                 deviceID);
         }
     }

@@ -115,7 +115,7 @@ namespace ACT.TTSYukkuri.Config
             this JobIDs id) =>
             JobPhonetics[
                 (int)id,
-                (int)Settings.Default.UILocale];
+                (int)TTSYukkuriConfig.Default.UILocale];
 
         public static AlertCategories GetAlertCategory(
             this JobIDs id) =>
@@ -149,6 +149,6 @@ namespace ACT.TTSYukkuri.Config
             this AlertCategories category) =>
             AlertCategoriesTexts[
                 (int)category,
-                (int)Settings.Default.UILocale];
+                (int)TTSYukkuriConfig.Default.UILocale];
     }
 }

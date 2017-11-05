@@ -15,7 +15,7 @@ namespace ACT.TTSYukkuri.Config.Views
             this.InitializeComponent();
             this.DataContext = new StatusAlertConfigViewModel();
 
-            this.SetLocale(Settings.Default.UILocale);
+            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
         }
 
         public StatusAlertConfigViewModel ViewModel => this.DataContext as StatusAlertConfigViewModel;

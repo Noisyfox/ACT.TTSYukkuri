@@ -8,7 +8,7 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class GeneralViewModel : BindableBase
     {
-        public Settings Config => Settings.Default;
+        public TTSYukkuriConfig Config => TTSYukkuriConfig.Default;
 
         public ComboBoxItem[] TTSTypes => TTSType.ToComboBox;
 

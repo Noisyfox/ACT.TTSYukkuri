@@ -10,7 +10,7 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class YukkuriConfigViewModel : BindableBase
     {
-        public YukkuriConfig Config => Settings.Default.YukkuriSettings;
+        public YukkuriConfig Config => TTSYukkuriConfig.Default.YukkuriSettings;
 
         public IReadOnlyList<AQPreset> Presets => AQVoicePresets.Presets;
 

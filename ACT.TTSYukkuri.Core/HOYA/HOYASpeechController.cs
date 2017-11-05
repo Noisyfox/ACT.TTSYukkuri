@@ -32,16 +32,16 @@ namespace ACT.TTSYukkuri.HOYA
 
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
-                Settings.Default.TTS,
+                TTSYukkuriConfig.Default.TTS,
                 text,
-                Settings.Default.HOYASettings.ToString());
+                TTSYukkuriConfig.Default.HOYASettings.ToString());
 
             lock (this)
             {
                 if (!File.Exists(wave))
                 {
                     if (string.IsNullOrWhiteSpace(
-                        Settings.Default.HOYASettings.APIKey))
+                        TTSYukkuriConfig.Default.HOYASettings.APIKey))
                     {
                         return;
                     }
@@ -69,13 +69,13 @@ namespace ACT.TTSYukkuri.HOYA
         {
             var client = new VoiceTextClient()
             {
-                APIKey = Settings.Default.HOYASettings.APIKey,
-                Speaker = Settings.Default.HOYASettings.Speaker,
-                Emotion = Settings.Default.HOYASettings.Emotion,
-                EmotionLevel = Settings.Default.HOYASettings.EmotionLevel,
-                Volume = Settings.Default.HOYASettings.Volume,
-                Speed = Settings.Default.HOYASettings.Speed,
-                Pitch = Settings.Default.HOYASettings.Pitch,
+                APIKey = TTSYukkuriConfig.Default.HOYASettings.APIKey,
+                Speaker = TTSYukkuriConfig.Default.HOYASettings.Speaker,
+                Emotion = TTSYukkuriConfig.Default.HOYASettings.Emotion,
+                EmotionLevel = TTSYukkuriConfig.Default.HOYASettings.EmotionLevel,
+                Volume = TTSYukkuriConfig.Default.HOYASettings.Volume,
+                Speed = TTSYukkuriConfig.Default.HOYASettings.Speed,
+                Pitch = TTSYukkuriConfig.Default.HOYASettings.Pitch,
             };
 
             var waveData = client.GetVoice(textToSpeak);

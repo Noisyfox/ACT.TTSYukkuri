@@ -52,7 +52,7 @@ namespace ACT.TTSYukkuri.Discord.Models
 
         public const string DicordCommandPrefix = "//";
 
-        private DiscordSettings Config => Settings.Default.DiscordSettings;
+        private DiscordSettings Config => TTSYukkuriConfig.Default.DiscordSettings;
 
         public void Initialize()
         {

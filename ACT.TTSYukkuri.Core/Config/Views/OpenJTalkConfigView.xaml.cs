@@ -15,7 +15,7 @@ namespace ACT.TTSYukkuri.Config.Views
             this.InitializeComponent();
             this.DataContext = new OpenJTalkConfigViewModel();
 
-            this.SetLocale(Settings.Default.UILocale);
+            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
         }
 
         public OpenJTalkConfigViewModel ViewModel => this.DataContext as OpenJTalkConfigViewModel;

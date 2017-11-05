@@ -94,7 +94,7 @@ namespace ACT.TTSYukkuri
                 var pcname = string.Empty;
                 if (partyMember.IsPlayer)
                 {
-                    switch (Settings.Default.UILocale)
+                    switch (TTSYukkuriConfig.Default.UILocale)
                     {
                         case Locales.EN:
                             pcname = "You";
@@ -111,9 +111,9 @@ namespace ACT.TTSYukkuri
                 }
 
                 // 読上げ用のテキストを編集する
-                var hpTextToSpeak = Settings.Default.StatusAlertSettings.HPTextToSpeack;
-                var mpTextToSpeak = Settings.Default.StatusAlertSettings.MPTextToSpeack;
-                var tpTextToSpeak = Settings.Default.StatusAlertSettings.TPTextToSpeack;
+                var hpTextToSpeak = TTSYukkuriConfig.Default.StatusAlertSettings.HPTextToSpeack;
+                var mpTextToSpeak = TTSYukkuriConfig.Default.StatusAlertSettings.MPTextToSpeack;
+                var tpTextToSpeak = TTSYukkuriConfig.Default.StatusAlertSettings.TPTextToSpeack;
 
                 hpTextToSpeak = hpTextToSpeak.Replace("<pcname>", pcname);
                 hpTextToSpeak = hpTextToSpeak.Replace("<hp>", hp.ToString());
@@ -140,13 +140,13 @@ namespace ACT.TTSYukkuri
                 tpTextToSpeak = tpTextToSpeak.Replace("<tpp>", decimal.ToInt32(tpp).ToString());
 
                 // HPをチェックして読上げる
-                if (Settings.Default.StatusAlertSettings.EnabledHPAlert &&
+                if (TTSYukkuriConfig.Default.StatusAlertSettings.EnabledHPAlert &&
                     !string.IsNullOrWhiteSpace(hpTextToSpeak))
                 {
                     if (this.IsWatchTarget(partyMember, player, "HP"))
                     {
-                        if (hpp <= (decimal)Settings.Default.StatusAlertSettings.HPThreshold &&
-                            previousePartyMember.HPRate > (decimal)Settings.Default.StatusAlertSettings.HPThreshold)
+                        if (hpp <= (decimal)TTSYukkuriConfig.Default.StatusAlertSettings.HPThreshold &&
+                            previousePartyMember.HPRate > (decimal)TTSYukkuriConfig.Default.StatusAlertSettings.HPThreshold)
                         {
                             if ((DateTime.Now - this.lastHPNotice).TotalSeconds >= NoticeInterval)
                             {
@@ -168,13 +168,13 @@ namespace ACT.TTSYukkuri
                 // MPをチェックして読上げる
                 if (hp > 0)
                 {
-                    if (Settings.Default.StatusAlertSettings.EnabledMPAlert &&
+                    if (TTSYukkuriConfig.Default.StatusAlertSettings.EnabledMPAlert &&
                         !string.IsNullOrWhiteSpace(mpTextToSpeak))
                     {
                         if (this.IsWatchTarget(partyMember, player, "MP"))
                         {
-                            if (mpp <= (decimal)Settings.Default.StatusAlertSettings.MPThreshold &&
-                                previousePartyMember.MPRate > (decimal)Settings.Default.StatusAlertSettings.MPThreshold)
+                            if (mpp <= (decimal)TTSYukkuriConfig.Default.StatusAlertSettings.MPThreshold &&
+                                previousePartyMember.MPRate > (decimal)TTSYukkuriConfig.Default.StatusAlertSettings.MPThreshold)
                             {
                                 if ((DateTime.Now - this.lastMPNotice).TotalSeconds >= NoticeInterval)
                                 {
@@ -197,13 +197,13 @@ namespace ACT.TTSYukkuri
                 // TPをチェックして読上げる
                 if (hp > 0)
                 {
-                    if (Settings.Default.StatusAlertSettings.EnabledTPAlert &&
+                    if (TTSYukkuriConfig.Default.StatusAlertSettings.EnabledTPAlert &&
                         !string.IsNullOrWhiteSpace(tpTextToSpeak))
                     {
                         if (this.IsWatchTarget(partyMember, player, "TP"))
                         {
-                            if (tpp <= (decimal)Settings.Default.StatusAlertSettings.TPThreshold &&
-                                previousePartyMember.TPRate > (decimal)Settings.Default.StatusAlertSettings.TPThreshold)
+                            if (tpp <= (decimal)TTSYukkuriConfig.Default.StatusAlertSettings.TPThreshold &&
+                                previousePartyMember.TPRate > (decimal)TTSYukkuriConfig.Default.StatusAlertSettings.TPThreshold)
                             {
                                 if ((DateTime.Now - this.lastTPNotice).TotalSeconds >= NoticeInterval)
                                 {
@@ -248,7 +248,7 @@ namespace ACT.TTSYukkuri
 
             var empty = string.Empty;
             var died = string.Empty;
-            switch (Settings.Default.UILocale)
+            switch (TTSYukkuriConfig.Default.UILocale)
             {
                 case Locales.EN:
                     empty = emptyEn;
@@ -294,15 +294,15 @@ namespace ACT.TTSYukkuri
             switch (targetParameter.ToUpper())
             {
                 case "HP":
-                    watchTarget = (IList<AlertTarget>)Settings.Default.StatusAlertSettings.AlertTargetsHP;
+                    watchTarget = (IList<AlertTarget>)TTSYukkuriConfig.Default.StatusAlertSettings.AlertTargetsHP;
                     break;
 
                 case "MP":
-                    watchTarget = (IList<AlertTarget>)Settings.Default.StatusAlertSettings.AlertTargetsMP;
+                    watchTarget = (IList<AlertTarget>)TTSYukkuriConfig.Default.StatusAlertSettings.AlertTargetsMP;
                     break;
 
                 case "TP":
-                    watchTarget = (IList<AlertTarget>)Settings.Default.StatusAlertSettings.AlertTargetsTP;
+                    watchTarget = (IList<AlertTarget>)TTSYukkuriConfig.Default.StatusAlertSettings.AlertTargetsTP;
                     break;
 
                 default:

@@ -18,7 +18,7 @@ namespace ACT.TTSYukkuri.Config.Views
             InitializeComponent();
             this.DataContext = new HoyaConfigViewModel();
 
-            this.SetLocale(Settings.Default.UILocale);
+            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
         }
 
         public HoyaConfigViewModel ViewModel => this.DataContext as HoyaConfigViewModel;

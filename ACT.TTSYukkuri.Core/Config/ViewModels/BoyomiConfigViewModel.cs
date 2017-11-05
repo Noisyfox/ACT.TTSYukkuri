@@ -4,6 +4,6 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class BoyomiConfigViewModel : BindableBase
     {
-        public Settings Config => Settings.Default;
+        public TTSYukkuriConfig Config => TTSYukkuriConfig.Default;
     }
 }

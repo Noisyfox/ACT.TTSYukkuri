@@ -15,7 +15,7 @@ namespace ACT.TTSYukkuri.Config.Views
             this.InitializeComponent();
             this.DataContext = new BoyomiConfigViewModel();
 
-            this.SetLocale(Settings.Default.UILocale);
+            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
         }
 
         public BoyomiConfigViewModel ViewModel => this.DataContext as BoyomiConfigViewModel;

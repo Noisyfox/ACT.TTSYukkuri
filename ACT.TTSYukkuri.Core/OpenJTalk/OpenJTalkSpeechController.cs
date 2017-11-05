@@ -43,9 +43,9 @@ namespace ACT.TTSYukkuri.OpenJTalk
 
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
-                Settings.Default.TTS,
+                TTSYukkuriConfig.Default.TTS,
                 text,
-                Settings.Default.OpenJTalkSettings.ToString());
+                TTSYukkuriConfig.Default.OpenJTalkSettings.ToString());
 
             lock (this)
             {
@@ -73,7 +73,7 @@ namespace ACT.TTSYukkuri.OpenJTalk
             string wave)
         {
             // パス関係を生成する
-            var openJTalkDir = Settings.Default.OpenJTalkSettings.OpenJTalkDirectory;
+            var openJTalkDir = TTSYukkuriConfig.Default.OpenJTalkSettings.OpenJTalkDirectory;
             if (string.IsNullOrWhiteSpace(openJTalkDir))
             {
                 openJTalkDir = "OpenJTalk";
@@ -81,16 +81,16 @@ namespace ACT.TTSYukkuri.OpenJTalk
 
             var openJTalk = Path.Combine(openJTalkDir, @"open_jtalk.exe");
             var dic = Path.Combine(openJTalkDir, @"dic");
-            var voice = Path.Combine(openJTalkDir, @"voice\" + Settings.Default.OpenJTalkSettings.Voice);
+            var voice = Path.Combine(openJTalkDir, @"voice\" + TTSYukkuriConfig.Default.OpenJTalkSettings.Voice);
             var waveTemp = Path.GetTempFileName();
             if (File.Exists(waveTemp))
             {
                 File.Delete(waveTemp);
             }
 
-            var volume = (float)Settings.Default.OpenJTalkSettings.Volume / 100f;
-            var speed = (float)Settings.Default.OpenJTalkSettings.Speed / 100f;
-            var pitch = (float)Settings.Default.OpenJTalkSettings.Pitch / 10f;
+            var volume = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Volume / 100f;
+            var speed = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Speed / 100f;
+            var pitch = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Pitch / 10f;
 
             var textFile = Path.GetTempFileName();
             File.WriteAllText(textFile, textToSpeak, Encoding.GetEncoding("Shift_JIS"));
@@ -141,7 +141,7 @@ namespace ACT.TTSYukkuri.OpenJTalk
                 File.Delete(textFile);
             }
 
-            var gain = (float)Settings.Default.OpenJTalkSettings.Gain / 100f;
+            var gain = (float)TTSYukkuriConfig.Default.OpenJTalkSettings.Gain / 100f;
 
             if (gain != 1.0f)
             {
@@ -178,7 +178,7 @@ namespace ACT.TTSYukkuri.OpenJTalk
         {
             var t = textToSpeak;
 
-            var openJTalkDir = Settings.Default.OpenJTalkSettings.OpenJTalkDirectory;
+            var openJTalkDir = TTSYukkuriConfig.Default.OpenJTalkSettings.OpenJTalkDirectory;
             if (string.IsNullOrWhiteSpace(openJTalkDir))
             {
                 openJTalkDir = "OpenJTalk";

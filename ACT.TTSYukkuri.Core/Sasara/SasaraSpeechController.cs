@@ -15,7 +15,7 @@ namespace ACT.TTSYukkuri.Sasara
         /// </summary>
         public void Initialize()
         {
-            Settings.Default.SasaraSettings.SetToRemote();
+            TTSYukkuriConfig.Default.SasaraSettings.SetToRemote();
         }
 
         public void Free()
@@ -36,9 +36,9 @@ namespace ACT.TTSYukkuri.Sasara
 
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
-                Settings.Default.TTS,
+                TTSYukkuriConfig.Default.TTS,
                 text,
-                Settings.Default.SasaraSettings.ToString());
+                TTSYukkuriConfig.Default.SasaraSettings.ToString());
 
             lock (this)
             {
@@ -50,7 +50,7 @@ namespace ACT.TTSYukkuri.Sasara
                         text,
                         wave,
                         0,
-                        Settings.Default.SasaraSettings.Gain);
+                        TTSYukkuriConfig.Default.SasaraSettings.Gain);
                 }
             }
 
