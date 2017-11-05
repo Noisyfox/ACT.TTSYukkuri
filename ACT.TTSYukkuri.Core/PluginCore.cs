@@ -256,7 +256,7 @@ namespace ACT.TTSYukkuri
                 }
 
                 // 設定ファイルを読み込む
-                TTSYukkuriConfig.Default.Load();
+                Settings.Default.Load();
 
                 // TTSのキャッシュを移行する
                 this.MigrateTTSCache();
@@ -312,8 +312,8 @@ namespace ACT.TTSYukkuri
                     MessageBoxIcon.Exclamation);
 
                 // TTSをゆっくりに戻す
-                TTSYukkuriConfig.Default.TTS = TTSType.Yukkuri;
-                TTSYukkuriConfig.Default.Save();
+                Settings.Default.TTS = TTSType.Yukkuri;
+                Settings.Default.Save();
             }
         }
 
@@ -341,7 +341,7 @@ namespace ACT.TTSYukkuri
                 KanjiTranslator.Default.Dispose();
 
                 // TTS用waveファイルを削除する？
-                if (TTSYukkuriConfig.Default.WaveCacheClearEnable)
+                if (Settings.Default.WaveCacheClearEnable)
                 {
                     var appdir = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -363,7 +363,7 @@ namespace ACT.TTSYukkuri
                 }
 
                 // 設定を保存する
-                TTSYukkuriConfig.Default.Save();
+                Settings.Default.Save();
 
                 this.PluginStatusLabel.Text = "Plugin Exited";
             }
@@ -417,8 +417,8 @@ namespace ACT.TTSYukkuri
         /// </summary>
         private void Update()
         {
-            if ((DateTime.Now - TTSYukkuriConfig.Default.LastUpdateDateTime).TotalHours
-                >= TTSYukkuriConfig.UpdateCheckInterval)
+            if ((DateTime.Now - Settings.Default.LastUpdateDateTime).TotalHours
+                >= Settings.UpdateCheckInterval)
             {
                 var message = UpdateChecker.Update(
                     "ACT.TTSYukkuri",
@@ -429,8 +429,8 @@ namespace ACT.TTSYukkuri
                     this.Logger.Error(message);
                 }
 
-                TTSYukkuriConfig.Default.LastUpdateDateTime = DateTime.Now;
-                TTSYukkuriConfig.Default.Save();
+                Settings.Default.LastUpdateDateTime = DateTime.Now;
+                Settings.Default.Save();
             }
         }
     }

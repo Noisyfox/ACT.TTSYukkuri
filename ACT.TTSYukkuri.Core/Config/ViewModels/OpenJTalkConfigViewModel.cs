@@ -4,8 +4,8 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class OpenJTalkConfigViewModel : BindableBase
     {
-        public OpenJTalkConfig Config => TTSYukkuriConfig.Default.OpenJTalkSettings;
+        public OpenJTalkConfig Config => Settings.Default.OpenJTalkSettings;
 
-        public OpenJTalkVoice[] Voices => TTSYukkuriConfig.Default.OpenJTalkSettings.EnumlateVoice();
+        public OpenJTalkVoice[] Voices => Settings.Default.OpenJTalkSettings.EnumlateVoice();
     }
 }

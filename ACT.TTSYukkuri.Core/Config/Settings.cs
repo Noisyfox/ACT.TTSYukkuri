@@ -14,7 +14,9 @@ namespace ACT.TTSYukkuri.Config
     /// TTSYukkuri設定
     /// </summary>
     [Serializable]
-    public class TTSYukkuriConfig :
+    [XmlRoot("TTSYukkuriConfig")]
+    [XmlType("TTSYukkuriConfig")]
+    public class Settings :
         BindableBase
     {
         #region Singleton
@@ -23,13 +25,13 @@ namespace ACT.TTSYukkuri.Config
         private static object lockObject = new object();
 
         [XmlIgnore]
-        private static TTSYukkuriConfig instance;
+        private static Settings instance;
 
         /// <summary>
         /// シングルトンインスタンスを返す
         /// </summary>
         [XmlIgnore]
-        public static TTSYukkuriConfig Default
+        public static Settings Default
         {
             get
             {
@@ -37,7 +39,7 @@ namespace ACT.TTSYukkuri.Config
                 {
                     if (instance == null)
                     {
-                        instance = new TTSYukkuriConfig();
+                        instance = new Settings();
                         instance.Load();
                     }
 
@@ -320,8 +322,8 @@ namespace ACT.TTSYukkuri.Config
                 {
                     using (var sr = new StreamReader(file, new UTF8Encoding(false)))
                     {
-                        var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
-                        instance = (TTSYukkuriConfig)xs.Deserialize(sr);
+                        var xs = new XmlSerializer(typeof(Settings));
+                        instance = (Settings)xs.Deserialize(sr);
 
                         activeConfig = instance;
                     }
@@ -353,7 +355,7 @@ namespace ACT.TTSYukkuri.Config
 
                 using (var sw = new StreamWriter(file, false, new UTF8Encoding(false)))
                 {
-                    var xs = new XmlSerializer(typeof(TTSYukkuriConfig));
+                    var xs = new XmlSerializer(typeof(Settings));
                     xs.Serialize(sw, Default);
                 }
             }

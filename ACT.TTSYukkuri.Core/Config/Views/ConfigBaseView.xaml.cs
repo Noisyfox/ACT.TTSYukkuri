@@ -13,7 +13,7 @@ namespace ACT.TTSYukkuri.Config.Views
         {
             this.InitializeComponent();
 
-            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
+            this.SetLocale(Settings.Default.UILocale);
         }
 
         public void SetLocale(Locales locale) => this.ReloadLocaleDictionary(locale);

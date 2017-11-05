@@ -18,7 +18,7 @@ namespace ACT.TTSYukkuri.Config.Views
             this.InitializeComponent();
             this.DataContext = new YukkuriConfigViewModel();
 
-            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
+            this.SetLocale(Settings.Default.UILocale);
         }
 
         public YukkuriConfigViewModel ViewModel => this.DataContext as YukkuriConfigViewModel;

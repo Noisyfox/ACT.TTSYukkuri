@@ -29,7 +29,7 @@ namespace ACT.TTSYukkuri.Config.Views
             this.InitializeComponent();
             this.DataContext = new GeneralViewModel();
 
-            this.SetLocale(TTSYukkuriConfig.Default.UILocale);
+            this.SetLocale(Settings.Default.UILocale);
 
             this.TTSTypesComboBox.SelectionChanged += this.TTSTypeOnSelectionChanged;
             this.Loaded += this.OnLoaded;
@@ -110,7 +110,7 @@ namespace ACT.TTSYukkuri.Config.Views
                     try
                     {
                         // リモートからささらの設定を取得する
-                        await Task.Run(() => TTSYukkuriConfig.Default.SasaraSettings.LoadRemoteConfig());
+                        await Task.Run(() => Settings.Default.SasaraSettings.LoadRemoteConfig());
                     }
                     catch (Exception ex)
                     {
@@ -129,7 +129,7 @@ namespace ACT.TTSYukkuri.Config.Views
                     try
                     {
                         var ctrl = SpeechController.Default as VoiceroidSpeechController;
-                        TTSYukkuriConfig.Default.VoiceroidSettings.Load();
+                        Settings.Default.VoiceroidSettings.Load();
                         var err = await ctrl?.Start();
 
                         if (!string.IsNullOrEmpty(err))

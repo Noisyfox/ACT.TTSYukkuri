@@ -39,14 +39,14 @@ namespace ACT.TTSYukkuri
                 lock (lockObject)
                 {
                     if (SpeechController.instance == null ||
-                        SpeechController.ttsType != TTSYukkuriConfig.Default.TTS)
+                        SpeechController.ttsType != Settings.Default.TTS)
                     {
                         if (SpeechController.instance != null)
                         {
                             SpeechController.instance.Free();
                         }
 
-                        switch (TTSYukkuriConfig.Default.TTS)
+                        switch (Settings.Default.TTS)
                         {
                             case TTSType.Yukkuri:
                                 SpeechController.instance = new YukkuriSpeechController();
@@ -79,7 +79,7 @@ namespace ACT.TTSYukkuri
 
                         SpeechController.instance.Initialize();
 
-                        SpeechController.ttsType = TTSYukkuriConfig.Default.TTS;
+                        SpeechController.ttsType = Settings.Default.TTS;
 
                         // 監視スレッドにスピークdelegateを与える
                         FFXIVWatcher.Default.SpeakDelegate = SpeechController.instance.Speak;

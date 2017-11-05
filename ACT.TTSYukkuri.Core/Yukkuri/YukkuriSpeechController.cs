@@ -59,9 +59,9 @@ namespace ACT.TTSYukkuri.Yukkuri
 
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
-                TTSYukkuriConfig.Default.TTS,
+                Settings.Default.TTS,
                 text,
-                TTSYukkuriConfig.Default.YukkuriSettings.ToString());
+                Settings.Default.YukkuriSettings.ToString());
 
             lock (this)
             {
@@ -70,7 +70,7 @@ namespace ACT.TTSYukkuri.Yukkuri
                     // よみがなに変換する
                     var tts = text;
 
-                    if (TTSYukkuriConfig.Default.YukkuriSettings.UseKanji2Koe)
+                    if (Settings.Default.YukkuriSettings.UseKanji2Koe)
                     {
                         tts = this.ConvertToPhoneticByKanji2Koe(tts);
                     }
@@ -83,7 +83,7 @@ namespace ACT.TTSYukkuri.Yukkuri
                     AquesTalk.Instance.TextToWave(
                         tts,
                         wave,
-                        TTSYukkuriConfig.Default.YukkuriSettings.ToParameter());
+                        Settings.Default.YukkuriSettings.ToParameter());
                 }
             }
 

@@ -111,8 +111,8 @@ namespace ACT.TTSYukkuri.Boyomichan
         {
             lock (this)
             {
-                var server = TTSYukkuriConfig.Default.BoyomiServer;
-                var port = TTSYukkuriConfig.Default.BoyomiPort;
+                var server = Settings.Default.BoyomiServer;
+                var port = Settings.Default.BoyomiPort;
 
                 if (server.ToLower() == "localhost")
                 {

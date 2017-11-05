@@ -4,6 +4,6 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class HoyaConfigViewModel : BindableBase
     {
-        public HOYAConfig Config => TTSYukkuriConfig.Default.HOYASettings;
+        public HOYAConfig Config => Settings.Default.HOYASettings;
     }
 }

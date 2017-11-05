@@ -5,7 +5,7 @@ namespace ACT.TTSYukkuri.Config.ViewModels
 {
     public class VoiceroidConfigViewModel : BindableBase
     {
-        public VoiceroidConfig Config => TTSYukkuriConfig.Default.VoiceroidSettings;
+        public VoiceroidConfig Config => Settings.Default.VoiceroidSettings;
 
         public VoiceroidSpeechController Controller => SpeechController.Default as VoiceroidSpeechController;
     }
