@@ -242,6 +242,7 @@ namespace ACT.TTSYukkuri
             Label pluginStatusText)
         {
             AppLog.LoadConfiguration(AppLog.HojoringConfig);
+            this.Logger.Trace(Assembly.GetExecutingAssembly().GetName().ToString() + " start.");
 
             try
             {
