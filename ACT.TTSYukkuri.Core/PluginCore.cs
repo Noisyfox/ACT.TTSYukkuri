@@ -58,7 +58,8 @@ namespace ACT.TTSYukkuri
         private void StopReplaceTTSMethodTimer()
         {
             // タイマを止める
-            if (this.replaceTTSMethodTimer.Enabled)
+            if (this.replaceTTSMethodTimer != null &&
+                this.replaceTTSMethodTimer.Enabled)
             {
                 this.replaceTTSMethodTimer.Stop();
                 this.replaceTTSMethodTimer.Dispose();
