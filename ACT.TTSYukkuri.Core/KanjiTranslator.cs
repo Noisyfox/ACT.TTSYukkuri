@@ -115,8 +115,6 @@ namespace ACT.TTSYukkuri
                 this.IFELang.Close();
                 this.IFELang = null;
             }
-
-            GC.SuppressFinalize(this);
         }
     }
 
