@@ -3,7 +3,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ACT.TTSYukkuri.Config;
 using Advanced_Combat_Tracker;
+using FFXIV.Framework.Common;
 using Microsoft.VisualBasic;
+using NLog;
 
 namespace ACT.TTSYukkuri.Yukkuri
 {
@@ -78,6 +80,8 @@ namespace ACT.TTSYukkuri.Yukkuri
                     {
                         tts = this.ConvertToPhonetic(tts);
                     }
+
+                    this.GetLogger()?.Trace($"Yukkuri speak={text}, phonetic={tts}");
 
                     // WAVEを生成する
                     AquesTalk.Instance.TextToWave(

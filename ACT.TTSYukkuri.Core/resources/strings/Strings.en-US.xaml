@@ -10,6 +10,7 @@
   <system:String x:Key="General_TTSType">TTS Type</system:String>
   <system:String x:Key="General_ClearCache">Clear tts cache on exit.</system:String>
   <system:String x:Key="General_OpenCacheDirectory">Open cache directory</system:String>
+  <system:String x:Key="General_ClearCacheNow">Clear tts cache right now</system:String>
   <system:String x:Key="General_WaveVolume">Master Vol.</system:String>
   <system:String x:Key="General_Test">Preview</system:String>
   <system:String x:Key="General_TestTTS">It's fine today.</system:String>

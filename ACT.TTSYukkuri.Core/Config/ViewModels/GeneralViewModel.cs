@@ -1,5 +1,8 @@
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -25,15 +28,43 @@ namespace ACT.TTSYukkuri.Config.ViewModels
                 PluginCore.Instance.Speak(tts);
             }));
 
-        private ICommand openCachFolderCommand;
+        private ICommand openCacheFolderCommand;
 
-        public ICommand OpenCachFolderCommand =>
-            this.openCachFolderCommand ?? (this.openCachFolderCommand = new DelegateCommand(() =>
+        public ICommand OpenCacheFolderCommand =>
+            this.openCacheFolderCommand ?? (this.openCacheFolderCommand = new DelegateCommand(() =>
             {
-                Process.Start(SpeechControllerExtentions.CacheDirectory);
+                if (Directory.Exists(SpeechControllerExtentions.CacheDirectory))
+                {
+                    Process.Start(SpeechControllerExtentions.CacheDirectory);
+                }
             }));
 
         private ICommand changePlayMethodCommand;
+
+        public ICommand clearCacheCommand;
+        public ICommand ClearCacheCommand =>
+            this.clearCacheCommand ?? (this.clearCacheCommand = new DelegateCommand(async () =>
+            {
+                if (Directory.Exists(SpeechControllerExtentions.CacheDirectory))
+                {
+                    await Task.Run(() =>
+                    {
+                        foreach (var file in Directory.GetFiles(
+                            SpeechControllerExtentions.CacheDirectory,
+                            "*.wav",
+                            SearchOption.TopDirectoryOnly))
+                        {
+                            File.Delete(file);
+                        }
+                    });
+
+                    MessageBox.Show(
+                        "Cached wave deleted.",
+                        "ACT.UltraScouter",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+            }));
 
         public ICommand ChangePlayMethodCommand =>
             this.changePlayMethodCommand ?? (this.changePlayMethodCommand = new DelegateCommand(() =>

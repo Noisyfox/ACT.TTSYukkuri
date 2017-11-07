@@ -118,8 +118,15 @@
 
               <TextBlock Margin="0 5 0 0">
                 <Hyperlink
-                  Command="{Binding OpenCachFolderCommand, Mode=OneWay}">
+                  Command="{Binding OpenCacheFolderCommand, Mode=OneWay}">
                   <TextBlock Text="{DynamicResource General_OpenCacheDirectory}" />
+                </Hyperlink>
+              </TextBlock>
+
+              <TextBlock Margin="0 5 0 0">
+                <Hyperlink
+                  Command="{Binding ClearCacheCommand, Mode=OneWay}">
+                  <TextBlock Text="{DynamicResource General_ClearCacheNow}" />
                 </Hyperlink>
               </TextBlock>
             </StackPanel>
