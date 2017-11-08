@@ -226,12 +226,15 @@ namespace ACT.TTSYukkuri.Discord.Models
         {
             try
             {
-                if ((DateTime.Now - this.lastSpeakTimestamp).TotalSeconds <= 0.2d)
+                lock (this)
                 {
-                    return;
-                }
+                    if ((DateTime.Now - this.lastSpeakTimestamp).TotalSeconds <= 0.2d)
+                    {
+                        return;
+                    }
 
-                this.lastSpeakTimestamp = DateTime.Now;
+                    this.lastSpeakTimestamp = DateTime.Now;
+                }
 
                 if (this.vnc != null)
                 {
