@@ -228,7 +228,8 @@ namespace ACT.TTSYukkuri.Discord.Models
             {
                 lock (this)
                 {
-                    if ((DateTime.Now - this.lastSpeakTimestamp).TotalSeconds <= 0.2d)
+                    if ((DateTime.Now - this.lastSpeakTimestamp).TotalSeconds
+                        <= Settings.Default.DiscordSettings.SpeakTimeout)
                     {
                         return;
                     }
