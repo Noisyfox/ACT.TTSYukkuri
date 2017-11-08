@@ -224,8 +224,7 @@ namespace ACT.TTSYukkuri.Discord.Models
         {
             try
             {
-                if (this.vnc != null &&
-                    !this.vnc.IsPlaying)
+                if (this.vnc != null)
                 {
                     try
                     {
