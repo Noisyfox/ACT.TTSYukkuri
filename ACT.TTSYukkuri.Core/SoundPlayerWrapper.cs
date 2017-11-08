@@ -12,11 +12,6 @@ namespace ACT.TTSYukkuri
     /// </summary>
     public static class SoundPlayerWrapper
     {
-        private static string lastPlayWaveFileMain;
-        private static DateTime lastPlayTimestampMain;
-        private static string lastPlayWaveFileSub;
-        private static DateTime lastPlayTimestampSub;
-
         public static void Play(
             string waveFile)
         {
@@ -24,16 +19,6 @@ namespace ACT.TTSYukkuri
 
             if (Settings.Default.EnabledSubDevice)
             {
-                if (waveFile == lastPlayWaveFileSub &&
-                    (DateTime.Now - lastPlayTimestampSub).TotalSeconds
-                    <= Settings.Default.GlobalSoundInterval)
-                {
-                    return;
-                }
-
-                lastPlayTimestampSub = DateTime.Now;
-                lastPlayWaveFileSub = waveFile;
-
                 SoundPlayerWrapper.PlayCore(
                     waveFile,
                     volume,
@@ -41,22 +26,15 @@ namespace ACT.TTSYukkuri
                     Settings.Default.SubDeviceID);
             }
 
-            if (waveFile == lastPlayWaveFileMain &&
-                (DateTime.Now - lastPlayTimestampMain).TotalSeconds
-                <= Settings.Default.GlobalSoundInterval)
-            {
-                return;
-            }
-
-            lastPlayTimestampMain = DateTime.Now;
-            lastPlayWaveFileMain = waveFile;
-
             SoundPlayerWrapper.PlayCore(
                 waveFile,
                 volume,
                 Settings.Default.Player,
                 Settings.Default.MainDeviceID);
         }
+
+        private static string lastPlayParameter;
+        private static DateTime lastPlayTimestamp;
 
         private static void PlayCore(
             string file,
@@ -79,6 +57,17 @@ namespace ACT.TTSYukkuri
                 Task.Run(() => DiscordClientModel.Instance.Play(file));
                 return;
             }
+
+            var playParameter = $"{deviceID}-{file}";
+            if (lastPlayParameter == playParameter &&
+                (DateTime.Now - lastPlayTimestamp).TotalSeconds
+                <= Settings.Default.GlobalSoundInterval)
+            {
+                return;
+            }
+
+            lastPlayParameter = playParameter;
+            lastPlayTimestamp = DateTime.Now;
 
             WavePlayer.Instance.Play(
                 file,
