@@ -1,19 +1,13 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using FFXIV.Framework.Common;
 
 namespace ACT.TTSYukkuri.Yukkuri
 {
-    public class AquesTalk
+    public unsafe class AquesTalk
     {
-        /// <summary>
-        /// 開発者ライセンスキー
-        /// </summary>
-        /// <remarks>
-        /// ここにAquesTalk10の開発者ライセンスキーをセットします。</remarks>
-        private static readonly string DeveloperKey = "#DEVELOPER_KEY_IS_HERE#";
-
         #region Singleton
 
         private static AquesTalk instance = new AquesTalk();
@@ -21,83 +15,79 @@ namespace ACT.TTSYukkuri.Yukkuri
 
         #endregion Singleton
 
-        private const string YukkuriLibName = "AquesTalk";
+        private const string YukkuriName = "AquesTalk";
+        private const string YukkuriDriverLibName = "AquesTalkDriver";
 
         private static readonly string YukkuriDllName = Path.Combine(
             PluginCore.Instance.PluginDirectory,
-            $@"Yukkuri\{YukkuriLibName}.dll");
+            $@"Yukkuri\{YukkuriName}.dll");
+
+        private static readonly string YukkuriDriverDllName = Path.Combine(
+            PluginCore.Instance.PluginDirectory,
+            $@"Yukkuri\{YukkuriDriverLibName}.dll");
 
         public static readonly string UserDictionaryEditor = Path.Combine(
             PluginCore.Instance.PluginDirectory,
             $@"Yukkuri\aq_dic\GenUserDic.exe");
 
-        private UnmanagedLibrary yukkuriLib;
-        private AquesTalk_SetDevKey SetDevKeyDelegate;
-        private AquesTalk_Synthe SynthesizeDelegate;
-        private AquesTalk_Synthe_Utf16 SynthesizeUTF16Delegate;
-        private AquesTalk_FreeWave FreeWaveDelegate;
+        private UnmanagedLibrary yukkuri;
+        private UnmanagedLibrary yukkuriDriver;
+        private Synthe SyntheDelegate;
+        private FreeWave FreeWaveDelegate;
 
-        private delegate int AquesTalk_SetDevKey(string key);
+        private delegate IntPtr Synthe(
+            ref AQTK_VOICE voice,
+            [MarshalAs(UnmanagedType.LPArray)] byte[] text,
+            ref int waveSize);
 
-        private delegate IntPtr AquesTalk_Synthe(ref AQTK_VOICE pParam, string koe, ref uint size);
-
-        private delegate IntPtr AquesTalk_Synthe_Utf16(ref AQTK_VOICE pParam, string koe, ref uint size);
-
-        private delegate void AquesTalk_FreeWave(IntPtr wave);
+        private delegate void FreeWave(IntPtr wave);
 
         public void Load()
         {
-            if (this.yukkuriLib == null)
+            if (this.yukkuri == null)
             {
-                this.yukkuriLib = new UnmanagedLibrary(YukkuriDllName);
-                this.IsLoadedAppKey = false;
+                this.yukkuri = new UnmanagedLibrary(YukkuriDllName);
             }
 
-            if (this.yukkuriLib == null)
+            if (this.yukkuriDriver == null)
+            {
+                this.yukkuriDriver = new UnmanagedLibrary(YukkuriDriverDllName);
+            }
+
+            if (this.yukkuriDriver == null)
             {
                 return;
             }
 
-            if (this.SetDevKeyDelegate == null)
+            if (this.SyntheDelegate == null)
             {
-                this.SetDevKeyDelegate =
-                    this.yukkuriLib.GetUnmanagedFunction<AquesTalk_SetDevKey>(nameof(AquesTalk_SetDevKey));
-            }
-
-            if (this.SynthesizeDelegate == null)
-            {
-                this.SynthesizeDelegate =
-                    this.yukkuriLib.GetUnmanagedFunction<AquesTalk_Synthe>(nameof(AquesTalk_Synthe));
-            }
-
-            if (this.SynthesizeUTF16Delegate == null)
-            {
-                this.SynthesizeUTF16Delegate =
-                    this.yukkuriLib.GetUnmanagedFunction<AquesTalk_Synthe_Utf16>(nameof(AquesTalk_Synthe_Utf16));
+                this.SyntheDelegate =
+                    this.yukkuriDriver.GetUnmanagedFunction<Synthe>(nameof(Synthe));
             }
 
             if (this.FreeWaveDelegate == null)
             {
                 this.FreeWaveDelegate =
-                    this.yukkuriLib.GetUnmanagedFunction<AquesTalk_FreeWave>(nameof(AquesTalk_FreeWave));
+                    this.yukkuriDriver.GetUnmanagedFunction<FreeWave>(nameof(FreeWave));
             }
         }
 
-        public bool IsLoadedAppKey { get; private set; }
+        public bool IsLoadedAppKey { get; private set; } = true;
 
         public void Free()
         {
-            if (this.yukkuriLib != null)
+            if (this.yukkuriDriver != null)
             {
                 this.IsLoadedAppKey = false;
 
-                this.SetDevKeyDelegate = null;
-                this.SynthesizeDelegate = null;
-                this.SynthesizeUTF16Delegate = null;
+                this.SyntheDelegate = null;
                 this.FreeWaveDelegate = null;
 
-                this.yukkuriLib.Dispose();
-                this.yukkuriLib = null;
+                this.yukkuriDriver.Dispose();
+                this.yukkuriDriver = null;
+
+                this.yukkuri.Dispose();
+                this.yukkuri = null;
             }
         }
 
@@ -106,18 +96,9 @@ namespace ACT.TTSYukkuri.Yukkuri
         /// </summary>
         /// <returns>
         /// status</returns>
-        public bool SetAppKey()
-        {
-            var result = this.SetDevKeyDelegate?.Invoke(DeveloperKey);
-            if (result != 0)
-            {
-                this.IsLoadedAppKey = false;
-                return false;
-            }
+        public bool SetAppKey() => true;
 
-            this.IsLoadedAppKey = true;
-            return true;
-        }
+        private readonly Encoding UTF16Encoding = Encoding.GetEncoding("UTF-16");
 
         public void TextToWave(
             string textToSpeak,
@@ -129,26 +110,27 @@ namespace ACT.TTSYukkuri.Yukkuri
                 return;
             }
 
-            if (this.SynthesizeDelegate == null ||
-                this.SynthesizeUTF16Delegate == null ||
+            if (this.SyntheDelegate == null ||
                 this.FreeWaveDelegate == null)
             {
                 return;
             }
 
             var wavePtr = IntPtr.Zero;
+            var waveSize = 0;
 
             try
             {
+                var chars = this.UTF16Encoding.GetBytes(textToSpeak);
+
                 // テキストを音声データに変換する
-                uint size = 0;
-                wavePtr = this.SynthesizeDelegate.Invoke(
+                wavePtr = this.SyntheDelegate?.Invoke(
                     ref voice,
-                    textToSpeak,
-                    ref size);
+                    chars,
+                    ref waveSize) ?? IntPtr.Zero;
 
                 if (wavePtr == IntPtr.Zero ||
-                    size <= 0)
+                    waveSize <= 0)
                 {
                     return;
                 }
@@ -156,8 +138,8 @@ namespace ACT.TTSYukkuri.Yukkuri
                 FileHelper.CreateDirectory(waveFileName);
 
                 // 生成したwaveデータを読み出す
-                var buff = new byte[size];
-                Marshal.Copy(wavePtr, buff, 0, (int)size);
+                var buff = new byte[waveSize];
+                Marshal.Copy(wavePtr, buff, 0, (int)waveSize);
                 using (var fs = new FileStream(waveFileName, FileMode.Create, FileAccess.Write))
                 {
                     fs.Write(buff, 0, buff.Length);
@@ -165,9 +147,10 @@ namespace ACT.TTSYukkuri.Yukkuri
             }
             finally
             {
-                if (wavePtr != IntPtr.Zero)
+                if (wavePtr != IntPtr.Zero &&
+                    waveSize != 0)
                 {
-                    this.FreeWaveDelegate.Invoke(wavePtr);
+                    this.FreeWaveDelegate?.Invoke(wavePtr);
                 }
             }
         }

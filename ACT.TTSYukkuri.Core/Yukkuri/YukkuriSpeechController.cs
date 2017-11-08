@@ -104,7 +104,7 @@ namespace ACT.TTSYukkuri.Yukkuri
         /// 変換した文字列</returns>
         private string ConvertToPhoneticByKanji2Koe(
             string textToConvert) =>
-            AqKanji2Koe.Instance.Convert(textToConvert);
+            AqKanji2Koe.Instance.ConvertUTF16(textToConvert);
 
         /// <summary>
         /// よみがなに変換する

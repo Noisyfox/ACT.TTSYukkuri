@@ -213,21 +213,13 @@
     <Compile Include="Yukkuri\AqKanji2Koe.cs" />
     <Compile Include="Yukkuri\YukkuriSpeechController.cs" />
     <Compile Include="TTSType.cs" />
-    <Compile Include="TTSYukkuriConfigPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TTSYukkuriConfigPanel.Designer.cs">
-      <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
-    </Compile>
     <Compile Include="PluginCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TTSYukkuriConfigPanel.resx">
-      <DependentUpon>TTSYukkuriConfigPanel.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="Yukkuri\AquesTalkDriver.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Yukkuri\aq_dic\GenUserDic.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

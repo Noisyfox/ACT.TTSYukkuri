@@ -4,7 +4,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 using ACT.TTSYukkuri.Config;
+using ACT.TTSYukkuri.Config.Views;
 using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
@@ -41,8 +43,6 @@ namespace ACT.TTSYukkuri
         private Logger Logger => AppLog.DefaultLogger;
 
         #endregion Logger
-
-        public TTSYukkuriConfigPanel ConfigPanel { get; private set; }
 
         public string PluginDirectory { get; private set; }
 
@@ -276,11 +276,11 @@ namespace ACT.TTSYukkuri
                 FFXIVWatcher.Initialize();
 
                 // 設定Panelを追加する
-                pluginScreenSpace.Controls.Add(
-                    this.ConfigPanel = new TTSYukkuriConfigPanel()
-                    {
-                        Dock = DockStyle.Fill
-                    });
+                pluginScreenSpace.Controls.Add(new ElementHost()
+                {
+                    Child = new ConfigBaseView(),
+                    Dock = DockStyle.Fill,
+                });
 
                 // TTSメソッドを置き換える
                 this.StartReplaceTTSMethodTimer();

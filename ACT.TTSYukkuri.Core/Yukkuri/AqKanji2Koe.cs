@@ -32,6 +32,7 @@ namespace ACT.TTSYukkuri.Yukkuri
         private AqKanji2Koe_Create createDelegate;
         private AqKanji2Koe_Release releaseDelegate;
         private AqKanji2Koe_Convert convertDelegate;
+        private AqKanji2Koe_ConvertW convertWDelegate;
         private IntPtr kanji2KoeHandle = IntPtr.Zero;
 
         private delegate IntPtr AqKanji2Koe_Create(string dic, ref int err);
@@ -39,6 +40,8 @@ namespace ACT.TTSYukkuri.Yukkuri
         private delegate void AqKanji2Koe_Release(IntPtr handle);
 
         private delegate int AqKanji2Koe_Convert(IntPtr handle, string kanji, [MarshalAs(UnmanagedType.LPArray)] byte[] koe, int koeSize);
+
+        private delegate int AqKanji2Koe_ConvertW(IntPtr handle, byte[] kanji, [MarshalAs(UnmanagedType.LPArray)] byte[] koe, int koeSize);
 
         public void Load()
         {
@@ -75,6 +78,12 @@ namespace ACT.TTSYukkuri.Yukkuri
                 this.convertDelegate =
                     this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_Convert>(nameof(AqKanji2Koe_Convert));
             }
+
+            if (this.convertWDelegate == null)
+            {
+                this.convertWDelegate =
+                    this.kanji2KoeLib.GetUnmanagedFunction<AqKanji2Koe_ConvertW>(nameof(AqKanji2Koe_ConvertW));
+            }
         }
 
         public void Free()
@@ -91,6 +100,7 @@ namespace ACT.TTSYukkuri.Yukkuri
                 this.createDelegate = null;
                 this.releaseDelegate = null;
                 this.convertDelegate = null;
+                this.convertWDelegate = null;
 
                 this.kanji2KoeLib.Dispose();
                 this.kanji2KoeLib = null;
@@ -127,6 +137,51 @@ namespace ACT.TTSYukkuri.Yukkuri
                 if (stat == 0)
                 {
                     var koe = this.ShiftJISEncoding.GetString(koeBuffer).TrimEnd('\0');
+                    if (!string.IsNullOrWhiteSpace(koe))
+                    {
+                        phonetic = koe;
+                    }
+                }
+            }
+
+            return phonetic;
+        }
+
+        private readonly Encoding UTF16Encoding = Encoding.GetEncoding("UTF-16");
+
+        /// <summary>
+        /// 漢字混じりのテキストを音声記号列にして返す
+        /// </summary>
+        /// <param name="kanjiText">
+        /// 漢字混じりのテキスト</param>
+        /// <returns>
+        /// 音声記号列（要するによみがな）</returns>
+        public string ConvertUTF16(
+            string kanjiText)
+        {
+            var phonetic = kanjiText;
+
+            if (this.kanji2KoeHandle != IntPtr.Zero)
+            {
+                var size = kanjiText.Length * 2 * 16;
+                if (size < 256)
+                {
+                    size = 256;
+                }
+
+                // UTF16でエンコードする
+                var inputChars = this.UTF16Encoding.GetBytes(phonetic);
+
+                var koeBuffer = new byte[size];
+                var stat = this.convertWDelegate?.Invoke(
+                    this.kanji2KoeHandle,
+                    inputChars,
+                    koeBuffer,
+                    size);
+
+                if (stat == 0)
+                {
+                    var koe = this.UTF16Encoding.GetString(koeBuffer).TrimEnd('\0');
                     if (!string.IsNullOrWhiteSpace(koe))
                     {
                         phonetic = koe;
