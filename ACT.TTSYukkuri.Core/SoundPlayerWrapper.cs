@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
@@ -11,9 +12,22 @@ namespace ACT.TTSYukkuri
     /// </summary>
     public static class SoundPlayerWrapper
     {
+        private static string lastPlayWaveFile;
+        private static DateTime lastPlayTimestamp;
+
         public static void Play(
             string waveFile)
         {
+            if (waveFile == lastPlayWaveFile &&
+                (DateTime.Now - lastPlayTimestamp).TotalSeconds
+                <= Settings.Default.GlobalSoundInterval)
+            {
+                return;
+            }
+
+            lastPlayTimestamp = DateTime.Now;
+            lastPlayWaveFile = waveFile;
+
             var volume = Settings.Default.WaveVolume / 100f;
 
             if (Settings.Default.EnabledSubDevice)

@@ -11,7 +11,7 @@ namespace ACT.TTSYukkuri.Config
         private string defaultServer = string.Empty;
         private ulong defaultChannelID = 0;
         private bool autoJoin = false;
-        private double speakTimeout = 0.2d;
+        private double speakInterval = 0.2d;
 
         public string Token
         {
@@ -37,10 +37,10 @@ namespace ACT.TTSYukkuri.Config
             set => this.SetProperty(ref this.autoJoin, value);
         }
 
-        public double SpeakTimeout
+        public double SpeakInterval
         {
-            get => this.speakTimeout;
-            set => this.SetProperty(ref this.speakTimeout, value);
+            get => this.speakInterval;
+            set => this.SetProperty(ref this.speakInterval, value);
         }
     }
 }
