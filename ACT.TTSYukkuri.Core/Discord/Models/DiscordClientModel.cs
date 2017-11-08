@@ -219,11 +219,20 @@ namespace ACT.TTSYukkuri.Discord.Models
             }
         }
 
+        private DateTime lastSpeakTimestamp;
+
         public async void Play(
             string wave)
         {
             try
             {
+                if ((DateTime.Now - this.lastSpeakTimestamp).TotalSeconds <= 0.2d)
+                {
+                    return;
+                }
+
+                this.lastSpeakTimestamp = DateTime.Now;
+
                 if (this.vnc != null)
                 {
                     try
