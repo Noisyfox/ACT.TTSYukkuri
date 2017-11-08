@@ -40,7 +40,7 @@
 
     <ScrollViewer
       Margin="0"
-      VerticalScrollBarVisibility="Auto"
+      VerticalScrollBarVisibility="Disabled"
       HorizontalScrollBarVisibility="Disabled">
 
       <Grid>
