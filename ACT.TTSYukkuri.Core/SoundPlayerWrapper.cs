@@ -12,32 +12,44 @@ namespace ACT.TTSYukkuri
     /// </summary>
     public static class SoundPlayerWrapper
     {
-        private static string lastPlayWaveFile;
-        private static DateTime lastPlayTimestamp;
+        private static string lastPlayWaveFileMain;
+        private static DateTime lastPlayTimestampMain;
+        private static string lastPlayWaveFileSub;
+        private static DateTime lastPlayTimestampSub;
 
         public static void Play(
             string waveFile)
         {
-            if (waveFile == lastPlayWaveFile &&
-                (DateTime.Now - lastPlayTimestamp).TotalSeconds
-                <= Settings.Default.GlobalSoundInterval)
-            {
-                return;
-            }
-
-            lastPlayTimestamp = DateTime.Now;
-            lastPlayWaveFile = waveFile;
-
             var volume = Settings.Default.WaveVolume / 100f;
 
             if (Settings.Default.EnabledSubDevice)
             {
+                if (waveFile == lastPlayWaveFileSub &&
+                    (DateTime.Now - lastPlayTimestampSub).TotalSeconds
+                    <= Settings.Default.GlobalSoundInterval)
+                {
+                    return;
+                }
+
+                lastPlayTimestampSub = DateTime.Now;
+                lastPlayWaveFileSub = waveFile;
+
                 SoundPlayerWrapper.PlayCore(
                     waveFile,
                     volume,
                     Settings.Default.Player,
                     Settings.Default.SubDeviceID);
             }
+
+            if (waveFile == lastPlayWaveFileMain &&
+                (DateTime.Now - lastPlayTimestampMain).TotalSeconds
+                <= Settings.Default.GlobalSoundInterval)
+            {
+                return;
+            }
+
+            lastPlayTimestampMain = DateTime.Now;
+            lastPlayWaveFileMain = waveFile;
 
             SoundPlayerWrapper.PlayCore(
                 waveFile,
