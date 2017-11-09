@@ -195,6 +195,12 @@ namespace ACT.TTSYukkuri.Config
         public bool AutoSync { get; private set; } = true;
 
         /// <summary>
+        /// CeVIOがアクティブか？
+        /// </summary>
+        [XmlIgnore]
+        private bool IsActive => Settings.Default.TTS == TTSType.Sasara;
+
+        /// <summary>
         /// リモートに反映する
         /// </summary>
         private void SyncRemoteModel()
@@ -210,6 +216,11 @@ namespace ACT.TTSYukkuri.Config
         /// </summary>
         public void LoadRemoteConfig()
         {
+            if (!this.IsActive)
+            {
+                return;
+            }
+
             this.talker = RemoteTTSClient.Instance.TTSModel?.GetCevioTalker();
             if (this.talker == null)
             {
@@ -256,6 +267,11 @@ namespace ACT.TTSYukkuri.Config
         public void SetCast(
             string cast)
         {
+            if (!this.IsActive)
+            {
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(cast) ||
                this.talker == null)
             {
@@ -325,8 +341,13 @@ namespace ACT.TTSYukkuri.Config
         /// <summary>
         /// ささらを設定する
         /// </summary>
-        public void SetToRemote(CevioTalkerModel remoteModel) =>
-            RemoteTTSClient.Instance.TTSModel?.SetCevioTalker(remoteModel);
+        public void SetToRemote(CevioTalkerModel remoteModel)
+        {
+            if (this.IsActive)
+            {
+                RemoteTTSClient.Instance.TTSModel?.SetCevioTalker(remoteModel);
+            }
+        }
 
         /// <summary>
         /// ささらを設定する
