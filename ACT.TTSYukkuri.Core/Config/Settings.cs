@@ -310,7 +310,7 @@ namespace ACT.TTSYukkuri.Config
         /// <summary>
         /// サウンド再生のインターバル
         /// </summary>
-        public double GlobalSoundInterval { get; set; } = 0.1d;
+        public double GlobalSoundInterval { get; set; } = 0.4d;
 
         /// <summary>
         /// 設定をロードする

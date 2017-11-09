@@ -11,7 +11,7 @@ namespace ACT.TTSYukkuri.Config
         private string defaultServer = string.Empty;
         private ulong defaultChannelID = 0;
         private bool autoJoin = false;
-        private double speakInterval = 0.2d;
+        private double speakInterval = 0.6d;
 
         public string Token
         {
