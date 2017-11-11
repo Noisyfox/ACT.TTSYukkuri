@@ -11,6 +11,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.VoiceNext;
 using DSharpPlus.VoiceNext.Codec;
+using FFXIV.Framework.Bridge;
 using FFXIV.Framework.Common;
 using NLog;
 using Prism.Mvvm;
@@ -42,12 +43,12 @@ namespace ACT.TTSYukkuri.Discord.Models
             set => this.SetProperty(ref this.connected, value);
         }
 
-        private bool joined;
+        private bool joinedVoiceChannel;
 
-        public bool Joined
+        public bool JoinedVoiceChannel
         {
-            get => this.joined;
-            set => this.SetProperty(ref this.joined, value);
+            get => this.joinedVoiceChannel;
+            set => this.SetProperty(ref this.joinedVoiceChannel, value);
         }
 
         public const string DicordCommandPrefix = "//";
@@ -56,22 +57,41 @@ namespace ACT.TTSYukkuri.Discord.Models
 
         public void Initialize()
         {
+            // Bridgeにデリゲートを登録する
+            DiscordBridge.Instance.SendMessageDelegate = this.SendMessage;
+            DiscordBridge.Instance.SendSpeakingDelegate = this.Play;
         }
 
         public void Dispose()
         {
+            // Bridgeのデリゲートを解除する
+            DiscordBridge.Instance.SendMessageDelegate = null;
+            DiscordBridge.Instance.SendSpeakingDelegate = null;
+
             this.Disconnect();
         }
 
-        private DiscordChannel selectedChannel;
+        private DiscordChannel selectedTextChannel;
 
-        public DiscordChannel SelectedChannel
+        public DiscordChannel SelectedTextChannel
         {
-            get => this.selectedChannel;
+            get => this.selectedTextChannel;
             set
             {
-                this.selectedChannel = value;
-                this.Config.DefaultChannelID = this.SelectedChannel.Id;
+                this.selectedTextChannel = value;
+                this.Config.DefaultTextChannelID = this.SelectedTextChannel.Id;
+            }
+        }
+
+        private DiscordChannel selectedVoiceChannel;
+
+        public DiscordChannel SelectedVoiceChannel
+        {
+            get => this.selectedVoiceChannel;
+            set
+            {
+                this.selectedVoiceChannel = value;
+                this.Config.DefaultVoiceChannelID = this.SelectedVoiceChannel.Id;
             }
         }
 
@@ -152,14 +172,14 @@ namespace ACT.TTSYukkuri.Discord.Models
                     this.discord = null;
 
                     this.Connected = false;
-                    this.Joined = false;
+                    this.JoinedVoiceChannel = false;
                 });
             }
         }
 
-        public async void Join()
+        public async void JoinVoiceNext()
         {
-            var chn = this.SelectedChannel;
+            var chn = this.SelectedVoiceChannel;
             if (chn == null)
             {
                 return;
@@ -188,7 +208,7 @@ namespace ACT.TTSYukkuri.Discord.Models
                 {
                     this.AppendLogLine($"Joined channel: {chn.Name}");
 
-                    this.Joined = true;
+                    this.JoinedVoiceChannel = true;
 
                     return task.Result;
                 });
@@ -209,7 +229,7 @@ namespace ACT.TTSYukkuri.Discord.Models
 
                         this.discord = null;
 
-                        this.Joined = false;
+                        this.JoinedVoiceChannel = false;
 
                         this.AppendLogLine($"Left channel.");
 
@@ -220,6 +240,24 @@ namespace ACT.TTSYukkuri.Discord.Models
         }
 
         private DateTime lastSpeakTimestamp;
+
+        public void SendMessage(
+            string message,
+            bool tts = false)
+        {
+            try
+            {
+                var chn = this.SelectedTextChannel;
+                if (chn != null)
+                {
+                    chn.SendMessageAsync(message, tts);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.AppendLogLine($"Send Message error !", ex);
+            }
+        }
 
         public async void Play(
             string wave)
@@ -269,7 +307,7 @@ namespace ACT.TTSYukkuri.Discord.Models
                 e.Exception);
 
             this.Connected = false;
-            this.Joined = false;
+            this.JoinedVoiceChannel = false;
 
             return Task.CompletedTask;
         }
@@ -288,9 +326,26 @@ namespace ACT.TTSYukkuri.Discord.Models
 
             if (e.Guild.Channels.Any())
             {
-                if (this.Config.DefaultChannelID == 0)
+                if (this.Config.DefaultTextChannelID == 0)
                 {
-                    this.SelectedChannel = (
+                    this.SelectedTextChannel = (
+                        from x in e.Guild.Channels
+                        orderby
+                        x.Type ascending,
+                        x.Id
+                        select
+                        x).FirstOrDefault();
+                }
+                else
+                {
+                    this.SelectedTextChannel = e.Guild.Channels
+                        .FirstOrDefault(x =>
+                            x.Id == this.Config.DefaultTextChannelID);
+                }
+
+                if (this.Config.DefaultVoiceChannelID == 0)
+                {
+                    this.SelectedVoiceChannel = (
                         from x in e.Guild.Channels
                         orderby
                         x.Type descending,
@@ -300,15 +355,16 @@ namespace ACT.TTSYukkuri.Discord.Models
                 }
                 else
                 {
-                    this.SelectedChannel = e.Guild.Channels
+                    this.SelectedVoiceChannel = e.Guild.Channels
                         .FirstOrDefault(x =>
-                            x.Id == this.Config.DefaultChannelID);
+                            x.Id == this.Config.DefaultVoiceChannelID);
                 }
             }
 
             this.RaisePropertyChanged(nameof(this.GuildName));
             this.RaisePropertyChanged(nameof(this.Channels));
-            this.RaisePropertyChanged(nameof(this.SelectedChannel));
+            this.RaisePropertyChanged(nameof(this.SelectedTextChannel));
+            this.RaisePropertyChanged(nameof(this.SelectedVoiceChannel));
 
             this.AppendLogLine($"Guild available: {e.Guild.Name}");
 
@@ -319,10 +375,10 @@ namespace ACT.TTSYukkuri.Discord.Models
                 this.isInit = false;
 
                 if (this.Config.AutoJoin &&
-                    this.Config.DefaultChannelID != 0 &&
-                    this.SelectedChannel != null)
+                    this.Config.DefaultVoiceChannelID != 0 &&
+                    this.SelectedVoiceChannel != null)
                 {
-                    this.Join();
+                    this.JoinVoiceNext();
                 }
             }
 

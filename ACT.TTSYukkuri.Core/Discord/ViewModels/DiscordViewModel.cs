@@ -39,13 +39,13 @@ namespace ACT.TTSYukkuri.Discord.ViewModels
             {
                 try
                 {
-                    this.View.JoinLink.IsEnabled = false;
-                    this.Model.Join();
+                    this.View.JoinVoiceChannelLink.IsEnabled = false;
+                    this.Model.JoinVoiceNext();
                     await Task.Delay(TimeSpan.FromMilliseconds(100));
                 }
                 finally
                 {
-                    this.View.JoinLink.IsEnabled = true;
+                    this.View.JoinVoiceChannelLink.IsEnabled = true;
                 }
             }));
 
@@ -54,14 +54,22 @@ namespace ACT.TTSYukkuri.Discord.ViewModels
             {
                 try
                 {
-                    this.View.LeaveLink.IsEnabled = false;
+                    this.View.LeaveTextVoiceLink.IsEnabled = false;
                     this.Model.Leave();
                     await Task.Delay(TimeSpan.FromMilliseconds(100));
                 }
                 finally
                 {
-                    this.View.LeaveLink.IsEnabled = true;
+                    this.View.LeaveTextVoiceLink.IsEnabled = true;
                 }
+            }));
+
+        private ICommand pingCommand;
+
+        public ICommand PingCommand =>
+            this.pingCommand ?? (this.pingCommand = new DelegateCommand(() =>
+            {
+                this.Model.SendMessage("ping!");
             }));
     }
 }

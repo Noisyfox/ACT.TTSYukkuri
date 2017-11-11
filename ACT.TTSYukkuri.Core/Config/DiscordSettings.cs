@@ -9,7 +9,8 @@ namespace ACT.TTSYukkuri.Config
     {
         private string token = string.Empty;
         private string defaultServer = string.Empty;
-        private ulong defaultChannelID = 0;
+        private ulong defaultTextChannelID = 0;
+        private ulong defaultVoiceChannelID = 0;
         private bool autoJoin = false;
         private double speakInterval = 0.6d;
 
@@ -25,10 +26,16 @@ namespace ACT.TTSYukkuri.Config
             set => this.SetProperty(ref this.defaultServer, value);
         }
 
-        public ulong DefaultChannelID
+        public ulong DefaultTextChannelID
         {
-            get => this.defaultChannelID;
-            set => this.SetProperty(ref this.defaultChannelID, value);
+            get => this.defaultTextChannelID;
+            set => this.SetProperty(ref this.defaultTextChannelID, value);
+        }
+
+        public ulong DefaultVoiceChannelID
+        {
+            get => this.defaultVoiceChannelID;
+            set => this.SetProperty(ref this.defaultVoiceChannelID, value);
         }
 
         public bool AutoJoin
