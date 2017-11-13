@@ -106,7 +106,7 @@ namespace ACT.TTSYukkuri.SAPI5
             // Promptを生成する
             var pb = new PromptBuilder();
             pb.AppendSsmlMarkup(
-                $"<prosody pitch =\"{this.Config.Pitch.ToXML()}\">{text}</prosody>");
+                $"<prosody pitch=\"{this.Config.Pitch.ToXML()}\">{text}</prosody>");
 
             lock (this)
             {
