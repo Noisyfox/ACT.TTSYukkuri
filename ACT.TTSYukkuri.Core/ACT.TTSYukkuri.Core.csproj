@@ -115,6 +115,7 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
@@ -137,12 +138,14 @@
     <Compile Include="Config\HOYAConfig.cs" />
     <Compile Include="Config\JobsExtension.cs" />
     <Compile Include="Config\OpenJTalkConfig.cs" />
+    <Compile Include="Config\SAPI5Configs.cs" />
     <Compile Include="Config\StatusAlertConfig.cs" />
     <Compile Include="Config\SasaraComponent.cs" />
     <Compile Include="Config\SasaraConfig.cs" />
     <Compile Include="Config\Settings.cs" />
     <Compile Include="Config\ViewModels\GeneralViewModel.cs" />
     <Compile Include="Config\ViewModels\BoyomiConfigViewModel.cs" />
+    <Compile Include="Config\ViewModels\SAPI5ConfigViewModel.cs" />
     <Compile Include="Config\ViewModels\VoiceroidConfigViewModel.cs" />
     <Compile Include="Config\ViewModels\SasaraConfigViewModel.cs" />
     <Compile Include="Config\ViewModels\HoyaConfigViewModel.cs" />
@@ -160,6 +163,9 @@
     </Compile>
     <Compile Include="Config\Views\HoyaConfigView.xaml.cs">
       <DependentUpon>HoyaConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config\Views\SAPI5ConfigView.xaml.cs">
+      <DependentUpon>SAPI5ConfigView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Config\Views\OpenJTalkConfigView.xaml.cs">
       <DependentUpon>OpenJTalkConfigView.xaml</DependentUpon>
@@ -202,6 +208,7 @@
     <Compile Include="OpenJTalk\OpenJTalkSpeechController.cs" />
     <Compile Include="resources\ILocalizable.cs" />
     <Compile Include="resources\LocalizeExtensions.cs" />
+    <Compile Include="SAPI5\SAPI5SpeechController.cs" />
     <Compile Include="Sasara\SasaraSpeechController.cs" />
     <Compile Include="SoundPlayerWrapper.cs" />
     <Compile Include="SpeechController.cs" />
@@ -371,6 +378,10 @@
     <Page Include="Config\Views\HoyaConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Config\Views\SAPI5ConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Config\Views\OpenJTalkConfigView.xaml">
       <SubType>Designer</SubType>

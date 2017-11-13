@@ -36,6 +36,11 @@ namespace ACT.TTSYukkuri
         public const string VOICEROID = "VOICEROID";
 
         /// <summary>
+        /// SAPI5
+        /// </summary>
+        public const string SAPI5 = "SAPI5";
+
+        /// <summary>
         /// コンボボックスコレクション
         /// </summary>
         public static ComboBoxItem[] ToComboBox = new ComboBoxItem[]
@@ -46,6 +51,7 @@ namespace ACT.TTSYukkuri
             new ComboBoxItem("棒読みちゃん(TCPインターフェース)", TTSType.Boyomichan),
             new ComboBoxItem("CeVIO Creative Studio", TTSType.Sasara),
             new ComboBoxItem("VOICEROID", TTSType.VOICEROID),
+            new ComboBoxItem("SAPI5", TTSType.SAPI5),
         };
     }
 

@@ -2,6 +2,7 @@ using ACT.TTSYukkuri.Boyomichan;
 using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.HOYA;
 using ACT.TTSYukkuri.OpenJTalk;
+using ACT.TTSYukkuri.SAPI5;
 using ACT.TTSYukkuri.Sasara;
 using ACT.TTSYukkuri.Voiceroid;
 using ACT.TTSYukkuri.Yukkuri;
@@ -70,6 +71,10 @@ namespace ACT.TTSYukkuri
 
                             case TTSType.VOICEROID:
                                 SpeechController.instance = new VoiceroidSpeechController();
+                                break;
+
+                            case TTSType.SAPI5:
+                                SpeechController.instance = new SAPI5SpeechController();
                                 break;
 
                             default:

@@ -77,6 +77,10 @@
   <system:String x:Key="Voiceroid_ExitVoiceroid">Shutdown VOICEROID at the end of ACT</system:String>
   <system:String x:Key="Voiceroid_DirectSpeak">Voice directly without generating WAVE</system:String>
 
+  <system:String x:Key="SAPI5_Voices">Voice</system:String>
+  <system:String x:Key="SAPI5_Volume">Volume</system:String>
+  <system:String x:Key="SAPI5_Rate">Rate</system:String>
+
   <system:String x:Key="SA_Enabled">Alert Enabled</system:String>
   <system:String x:Key="SA_Threshold">Alert Threshold</system:String>
   <system:String x:Key="SA_TTSFormat">Text to Alert</system:String>

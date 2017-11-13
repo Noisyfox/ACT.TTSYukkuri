@@ -147,6 +147,10 @@ namespace ACT.TTSYukkuri.Config.Views
                     content = new VoiceroidConfigView();
                     break;
 
+                case TTSType.SAPI5:
+                    content = new SAPI5ConfigView();
+                    break;
+
                 default:
                     return;
             }

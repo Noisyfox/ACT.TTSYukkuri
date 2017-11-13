@@ -77,6 +77,7 @@ namespace ACT.TTSYukkuri.Config
         private OpenJTalkConfig openJTalkSettings = new OpenJTalkConfig();
         private SasaraConfig sasaraSettings = new SasaraConfig();
         private VoiceroidConfig voiceroidSettings = new VoiceroidConfig();
+        private SAPI5Configs sapi5Settings = new SAPI5Configs();
         private StatusAlertConfig statusAlertSettings = new StatusAlertConfig();
         private DiscordSettings discordSettings = new DiscordSettings();
 
@@ -197,7 +198,7 @@ namespace ACT.TTSYukkuri.Config
         }
 
         [XmlIgnore]
-        public List<PlayDevice> PlayDevices => WavePlayer.EnumlateDevices(this.Player);
+        public List<PlayDevice> PlayDevices => WavePlayer.EnumerateDevices(this.Player);
 
         /// <summary>
         /// メイン再生デバイスID
@@ -287,6 +288,15 @@ namespace ACT.TTSYukkuri.Config
         {
             get => this.voiceroidSettings;
             set => this.SetProperty(ref this.voiceroidSettings, value);
+        }
+
+        /// <summary>
+        /// SAPI5の設定
+        /// </summary>
+        public SAPI5Configs SAPI5Settings
+        {
+            get => this.sapi5Settings;
+            set => this.SetProperty(ref this.sapi5Settings, value);
         }
 
         /// <summary>
