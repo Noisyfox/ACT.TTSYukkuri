@@ -12,6 +12,7 @@
   xmlns:fwcmn="clr-namespace:FFXIV.Framework.Common;assembly=FFXIV.Framework"
   xmlns:fwcnv="clr-namespace:FFXIV.Framework.WPF.Converters;assembly=FFXIV.Framework"
   xmlns:local="clr-namespace:ACT.TTSYukkuri.Config.Views"
+  xmlns:sapi="clr-namespace:ACT.TTSYukkuri.SAPI5"
   mc:Ignorable="d"
   TextOptions.TextFormattingMode="Display"
   TextOptions.TextHintingMode="Animated"
@@ -91,6 +92,19 @@
         Minimum="-10" Maximum="10"
         Width="250"
         Value="{Binding Config.Rate, Mode=TwoWay}" />
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Margin="0 3 0 0">
+      <Label Content="{DynamicResource SAPI5_Pitch}" />
+      <ComboBox
+        HorizontalAlignment="Left"
+        Margin="127 0 0 0"
+        MinWidth="110"
+        ItemsSource="{Binding PitchList, Mode=OneWay}"
+        DisplayMemberPath="Value"
+        SelectedValuePath="Key"
+        SelectedValue="{Binding Config.Pitch, Mode=TwoWay}">
+      </ComboBox>
     </StackPanel>
   </StackPanel>
 </UserControl>

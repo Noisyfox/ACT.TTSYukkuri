@@ -7,6 +7,31 @@ using ACT.TTSYukkuri.Config;
 
 namespace ACT.TTSYukkuri.SAPI5
 {
+    public enum Pitches
+    {
+        Default = 0,
+        XLow = 1,
+        Low = 2,
+        Medium = 3,
+        High = 4,
+        XHigh = 5,
+    }
+
+    public static class PitchesExtensions
+    {
+        public static string ToXML(
+            this Pitches p)
+            => new[]
+            {
+                "default",
+                "x-low",
+                "low",
+                "medium",
+                "high",
+                "x-high",
+            }[(int)p];
+    }
+
     public class SAPI5SpeechController :
         ISpeechController
     {
@@ -78,6 +103,11 @@ namespace ACT.TTSYukkuri.SAPI5
                 text,
                 this.Config.ToString());
 
+            // Promptを生成する
+            var pb = new PromptBuilder();
+            pb.AppendSsmlMarkup(
+                $"<prosody pitch =\"{this.Config.Pitch.ToXML()}\">{text}</prosody>");
+
             lock (this)
             {
                 if (!File.Exists(wave))
@@ -85,7 +115,7 @@ namespace ACT.TTSYukkuri.SAPI5
                     using (var fs = new FileStream(wave, FileMode.Create))
                     {
                         this.synthesizer.SetOutputToWaveStream(fs);
-                        this.synthesizer.Speak(text);
+                        this.synthesizer.Speak(pb);
                     }
                 }
             }

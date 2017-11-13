@@ -1,3 +1,4 @@
+using ACT.TTSYukkuri.SAPI5;
 using Prism.Mvvm;
 
 namespace ACT.TTSYukkuri.Config
@@ -8,6 +9,7 @@ namespace ACT.TTSYukkuri.Config
         private string voiceID;
         private int rate;
         private int volume = 100;
+        private Pitches pitch = Pitches.Default;
 
         public string VoiceID
         {
@@ -33,9 +35,19 @@ namespace ACT.TTSYukkuri.Config
             set => this.SetProperty(ref this.volume, value);
         }
 
+        /// <summary>
+        /// ピッチ
+        /// </summary>
+        public Pitches Pitch
+        {
+            get => this.pitch;
+            set => this.SetProperty(ref this.pitch, value);
+        }
+
         public override string ToString() =>
             $"{nameof(this.VoiceID)}:{this.VoiceID}," +
             $"{nameof(this.Rate)}:{this.Rate}," +
-            $"{nameof(this.Volume)}:{this.Volume}";
+            $"{nameof(this.Volume)}:{this.Volume}," +
+            $"{nameof(this.Pitch)}:{this.Pitch}";
     }
 }

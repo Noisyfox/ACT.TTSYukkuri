@@ -80,6 +80,7 @@
   <system:String x:Key="SAPI5_Voices">Voice</system:String>
   <system:String x:Key="SAPI5_Volume">Volume</system:String>
   <system:String x:Key="SAPI5_Rate">Rate</system:String>
+  <system:String x:Key="SAPI5_Pitch">Pitch</system:String>
 
   <system:String x:Key="SA_Enabled">Alert Enabled</system:String>
   <system:String x:Key="SA_Threshold">Alert Threshold</system:String>
