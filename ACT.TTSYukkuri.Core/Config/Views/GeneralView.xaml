@@ -58,7 +58,7 @@
   </UserControl.Resources>
 
   <ScrollViewer
-    VerticalScrollBarVisibility="Auto"
+    VerticalScrollBarVisibility="Disabled"
     HorizontalScrollBarVisibility="Disabled">
 
     <DockPanel Margin="3">
@@ -196,42 +196,46 @@
           BorderBrush="DarkSeaGreen"
           CornerRadius="2"
           Padding="8">
-          <StackPanel Orientation="Vertical">
-            <Label
-              Content="{DynamicResource General_PlayMethod}" />
-            <ComboBox
-              HorizontalAlignment="Left"
-              MinWidth="250"
-              ItemsSource="{Binding Source={StaticResource PlayMethods}, Mode=OneWay}"
-              SelectedItem="{Binding Config.Player, Mode=TwoWay}"
-              SelectionChanged="PlayMethodOnSelectionChanged" />
+          <ScrollViewer
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
+              <Label
+                Content="{DynamicResource General_PlayMethod}" />
+              <ComboBox
+                HorizontalAlignment="Left"
+                MinWidth="250"
+                ItemsSource="{Binding Source={StaticResource PlayMethods}, Mode=OneWay}"
+                SelectedItem="{Binding Config.Player, Mode=TwoWay}"
+                SelectionChanged="PlayMethodOnSelectionChanged" />
 
-            <Label
-              Margin="0 10 0 0"
-              Content="{DynamicResource General_MainPlayDevice}" />
-            <ComboBox
-              ItemsSource="{Binding Config.PlayDevices, Mode=OneWay}"
-              DisplayMemberPath="Name"
-              SelectedValuePath="ID"
-              SelectedValue="{Binding Config.MainDeviceID, Mode=TwoWay}" />
+              <Label
+                Margin="0 10 0 0"
+                Content="{DynamicResource General_MainPlayDevice}" />
+              <ComboBox
+                ItemsSource="{Binding Config.PlayDevices, Mode=OneWay}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="ID"
+                SelectedValue="{Binding Config.MainDeviceID, Mode=TwoWay}" />
 
-            <CheckBox
-              x:Name="SubDeviceCheckBox"
-              Margin="0 15 0 0"
-              Content="{DynamicResource General_EnabledSubPlayDevice}"
-              IsChecked="{Binding Config.EnabledSubDevice, Mode=TwoWay}" />
+              <CheckBox
+                x:Name="SubDeviceCheckBox"
+                Margin="0 15 0 0"
+                Content="{DynamicResource General_EnabledSubPlayDevice}"
+                IsChecked="{Binding Config.EnabledSubDevice, Mode=TwoWay}" />
 
-            <Label
-              Margin="0 5 0 0"
-              Content="{DynamicResource General_SubPlayDevice}"
-              Visibility="{Binding ElementName=SubDeviceCheckBox, Path=IsChecked, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
-            <ComboBox
-              Visibility="{Binding ElementName=SubDeviceCheckBox, Path=IsChecked, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"
-              ItemsSource="{Binding Config.PlayDevices, Mode=OneWay}"
-              DisplayMemberPath="Name"
-              SelectedValuePath="ID"
-              SelectedValue="{Binding Config.SubDeviceID, Mode=TwoWay}" />
-          </StackPanel>
+              <Label
+                Margin="0 5 0 0"
+                Content="{DynamicResource General_SubPlayDevice}"
+                Visibility="{Binding ElementName=SubDeviceCheckBox, Path=IsChecked, Mode=OneWay, Converter={StaticResource VisibilityConverter}}" />
+              <ComboBox
+                Visibility="{Binding ElementName=SubDeviceCheckBox, Path=IsChecked, Mode=OneWay, Converter={StaticResource VisibilityConverter}}"
+                ItemsSource="{Binding Config.PlayDevices, Mode=OneWay}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="ID"
+                SelectedValue="{Binding Config.SubDeviceID, Mode=TwoWay}" />
+            </StackPanel>
+          </ScrollViewer>
         </Border>
       </DockPanel>
 
