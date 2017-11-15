@@ -35,8 +35,10 @@ namespace ACT.TTSYukkuri.SAPI5
     public class SAPI5SpeechController :
         ISpeechController
     {
-        public static IReadOnlyList<InstalledVoice> EnumerateSynthesizers()
-            => (new SpeechSynthesizer()).GetInstalledVoices();
+        private static IReadOnlyList<InstalledVoice> synthesizers;
+
+        public static IReadOnlyList<InstalledVoice> Synthesizers =>
+            synthesizers ?? (synthesizers = (new SpeechSynthesizer()).GetInstalledVoices());
 
         private SAPI5Configs Config => Settings.Default.SAPI5Settings;
 
@@ -58,6 +60,10 @@ namespace ACT.TTSYukkuri.SAPI5
             32000,
             AudioBitsPerSample.Sixteen,
             AudioChannel.Mono);
+
+        private InstalledVoice GetSynthesizer(
+            string id)
+            => Synthesizers.FirstOrDefault(x => x.VoiceInfo.Id == id);
 
         /// <summary>
         /// テキストを読み上げる
@@ -87,9 +93,7 @@ namespace ACT.TTSYukkuri.SAPI5
                         // VOICEを設定する
                         if (synth.Voice.Id != this.Config.VoiceID)
                         {
-                            var voice = EnumerateSynthesizers().FirstOrDefault(x =>
-                                x.VoiceInfo.Id == this.Config.VoiceID);
-
+                            var voice = this.GetSynthesizer(this.Config.VoiceID);
                             if (voice == null)
                             {
                                 return;

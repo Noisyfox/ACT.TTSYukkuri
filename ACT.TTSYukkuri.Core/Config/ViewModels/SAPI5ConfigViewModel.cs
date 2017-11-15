@@ -9,7 +9,7 @@ namespace ACT.TTSYukkuri.Config.ViewModels
     {
         public SAPI5Configs Config => Settings.Default.SAPI5Settings;
 
-        public IReadOnlyList<InstalledVoice> Voices => SAPI5SpeechController.EnumerateSynthesizers();
+        public IReadOnlyList<InstalledVoice> Voices => SAPI5SpeechController.Synthesizers;
 
         public IReadOnlyList<KeyValuePair<Pitches, string>> PitchList => new List<KeyValuePair<Pitches, string>>()
         {
