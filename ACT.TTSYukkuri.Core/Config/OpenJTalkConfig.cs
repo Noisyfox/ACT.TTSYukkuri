@@ -25,6 +25,11 @@ namespace ACT.TTSYukkuri.Config
         private float accent = 1.0f;
         private float weight = 1.0f;
 
+        public OpenJTalkConfig()
+        {
+            this.SetRecommend();
+        }
+
         /// <summary>
         /// htvoiceの種類
         /// </summary>
@@ -136,14 +141,14 @@ namespace ACT.TTSYukkuri.Config
         {
             this.Voice = VoiceMeiNormal;
             this.Gain = 1.0f;
-            this.Volume = 0.0f;
-            this.AllPass = 0.54f;
-            this.PostFilter = 0;
-            this.Rate = 1.2f;
-            this.HalfTone = 5.0f;
+            this.Volume = 3.0f;
+            this.AllPass = 0.53f;
+            this.PostFilter = 0.3f;
+            this.Rate = 1.4f;
+            this.HalfTone = 1.0f;
             this.UnVoice = 0.0f;
-            this.Accent = 0.3f;
-            this.Weight = 0.5f;
+            this.Accent = 0.7f;
+            this.Weight = 0.1f;
         }
 
         [XmlIgnore]
