@@ -38,11 +38,6 @@ namespace ACT.TTSYukkuri.SAPI5
         public static IReadOnlyList<InstalledVoice> EnumerateSynthesizers()
             => (new SpeechSynthesizer()).GetInstalledVoices();
 
-        /// <summary>
-        /// SpeechSynthesizer
-        /// </summary>
-        private SpeechSynthesizer synthesizer;
-
         private SAPI5Configs Config => Settings.Default.SAPI5Settings;
 
         /// <summary>
@@ -50,7 +45,6 @@ namespace ACT.TTSYukkuri.SAPI5
         /// </summary>
         public void Initialize()
         {
-            this.synthesizer = new SpeechSynthesizer();
         }
 
         /// <summary>
@@ -58,8 +52,6 @@ namespace ACT.TTSYukkuri.SAPI5
         /// </summary>
         public void Free()
         {
-            this.synthesizer.Dispose();
-            this.synthesizer = null;
         }
 
         private readonly SpeechAudioFormatInfo WAVEFormat = new SpeechAudioFormatInfo(
@@ -79,43 +71,43 @@ namespace ACT.TTSYukkuri.SAPI5
                 return;
             }
 
-            // VOICEを設定する
-            if (this.synthesizer.Voice.Id !=
-                this.Config.VoiceID)
-            {
-                var voice = EnumerateSynthesizers().FirstOrDefault(x =>
-                    x.VoiceInfo.Id == this.Config.VoiceID);
-
-                if (voice == null)
-                {
-                    return;
-                }
-
-                this.synthesizer.SelectVoice(voice.VoiceInfo.Name);
-            }
-
-            this.synthesizer.Rate = this.Config.Rate;
-            this.synthesizer.Volume = this.Config.Volume;
-
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
                 Settings.Default.TTS,
                 text,
                 this.Config.ToString());
 
-            // Promptを生成する
-            var pb = new PromptBuilder();
-            pb.AppendSsmlMarkup(
-                $"<prosody pitch=\"{this.Config.Pitch.ToXML()}\">{text}</prosody>");
-
             lock (this)
             {
                 if (!File.Exists(wave))
                 {
                     using (var fs = new FileStream(wave, FileMode.Create))
+                    using (var synth = new SpeechSynthesizer())
                     {
-                        this.synthesizer.SetOutputToWaveStream(fs);
-                        this.synthesizer.Speak(pb);
+                        // VOICEを設定する
+                        if (synth.Voice.Id != this.Config.VoiceID)
+                        {
+                            var voice = EnumerateSynthesizers().FirstOrDefault(x =>
+                                x.VoiceInfo.Id == this.Config.VoiceID);
+
+                            if (voice == null)
+                            {
+                                return;
+                            }
+
+                            synth.SelectVoice(voice.VoiceInfo.Name);
+                        }
+
+                        synth.Rate = this.Config.Rate;
+                        synth.Volume = this.Config.Volume;
+
+                        // Promptを生成する
+                        var pb = new PromptBuilder();
+                        pb.AppendSsmlMarkup(
+                            $"<prosody pitch=\"{this.Config.Pitch.ToXML()}\">{text}</prosody>");
+
+                        synth.SetOutputToWaveStream(fs);
+                        synth.Speak(pb);
                     }
                 }
             }
