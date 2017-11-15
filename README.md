@@ -1,5 +1,7 @@
 ACT.TTSYukkuri
 ============
+[![Downloads](https://img.shields.io/github/downloads/anoyetta/ACT.TTSYukkuri/total.svg)](https://github.com/anoyetta/ACT.TTSYukkuri/releases)
+
 # 移行しました
 ACT.SpecialSpellTimer, ACT.TTSYukkuri, ACT.UltraScouter は配布を統合し下記のプロジェクトに移行しました。  
 **ACT.Hojoring**  
