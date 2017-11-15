@@ -57,8 +57,8 @@
   <system:String x:Key="OJT_Rate">-r 速度</system:String>
   <system:String x:Key="OJT_HalfTone">-fm 追加ハーフトーン（ピッチ）</system:String>
   <system:String x:Key="OJT_UnVoice">-u 音声/無音声の閾値</system:String>
-  <system:String x:Key="OJT_Accent">-jm 抑揚</system:String>
-  <system:String x:Key="OJT_Weight">-jf 重み</system:String>
+  <system:String x:Key="OJT_Accent">-jm 重み</system:String>
+  <system:String x:Key="OJT_Weight">-jf 抑揚</system:String>
   <system:String x:Key="OJT_SetRecommend">推奨値をセットする</system:String>
 
   <system:String x:Key="Hoya_APIKey">API Key</system:String>

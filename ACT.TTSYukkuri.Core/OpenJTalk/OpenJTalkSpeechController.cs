@@ -98,6 +98,8 @@ namespace ACT.TTSYukkuri.OpenJTalk
                 $"-x \"{dic}\"",
                 $"-m \"{voice}\"",
                 $"-ow \"{waveTemp}\"",
+                $"-s 48000",
+                $"-p 240",
                 $"-g {this.Config.Volume.ToString("N2")}",
                 $"-a {this.Config.AllPass.ToString("N2")}",
                 $"-b {this.Config.PostFilter.ToString("N2")}",

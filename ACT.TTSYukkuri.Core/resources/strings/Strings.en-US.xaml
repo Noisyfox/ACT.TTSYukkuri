@@ -57,8 +57,8 @@
   <system:String x:Key="OJT_Rate">-r Speed rate</system:String>
   <system:String x:Key="OJT_HalfTone">-fm Addtional half-tone (pitch)</system:String>
   <system:String x:Key="OJT_UnVoice">-u Voiced/Unvoiced threshold</system:String>
-  <system:String x:Key="OJT_Accent">-jm Intonation</system:String>
-  <system:String x:Key="OJT_Weight">-jf Weight</system:String>
+  <system:String x:Key="OJT_Accent">-jm Weight</system:String>
+  <system:String x:Key="OJT_Weight">-jf Intonation</system:String>
   <system:String x:Key="OJT_SetRecommend">Set recommended values</system:String>
 
   <system:String x:Key="Hoya_APIKey">API Key</system:String>
