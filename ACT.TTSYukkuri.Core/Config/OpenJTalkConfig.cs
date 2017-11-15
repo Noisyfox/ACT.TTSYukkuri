@@ -12,49 +12,138 @@ namespace ACT.TTSYukkuri.Config
     public class OpenJTalkConfig :
         BindableBase
     {
-        private string voice = "mei_normal.htsvoice";
-        public int gain = 100;
-        public int volume = 100;
-        public int speed = 100;
-        public int pitch = 0;
+        private const string VoiceMeiNormal = "mei_normal.htsvoice";
 
-        public void SetDefault()
-        {
-            var defaultConfig = new OpenJTalkConfig();
-            this.Gain = defaultConfig.Gain;
-            this.Volume = defaultConfig.Volume;
-            this.Speed = defaultConfig.Speed;
-            this.Pitch = defaultConfig.Pitch;
-        }
+        private string voice = VoiceMeiNormal;
+        private float gain = 1.0f;
+        private float volume = 1.0f;
+        private float allpass = 0.5f;
+        private float postfilter = 0.0f;
+        private float rate = 1.0f;
+        private float halftone = 0.0f;
+        private float unvoice = 0.5f;
+        private float accent = 1.0f;
+        private float weight = 1.0f;
 
+        /// <summary>
+        /// htvoiceの種類
+        /// </summary>
         public string Voice
         {
             get => this.voice;
             set => this.SetProperty(ref this.voice, value);
         }
 
-        public int Gain
+        /// <summary>
+        /// WAVEファイルの増幅率
+        /// </summary>
+        public float Gain
         {
             get => this.gain;
-            set => this.SetProperty(ref this.gain, value);
+            set => this.SetProperty(ref this.gain, (float)Math.Round(value, 2));
         }
 
-        public int Volume
+        /// <summary>
+        /// -g 音量 0 ～ 6.0
+        /// </summary>
+        public float Volume
         {
             get => this.volume;
-            set => this.SetProperty(ref this.volume, value);
+            set => this.SetProperty(ref this.volume, (float)Math.Round(value, 2));
         }
 
-        public int Speed
+        /// <summary>
+        /// -a オールパス値 0 ～ 1.0
+        /// </summary>
+        /// <remarks>
+        /// 声質
+        /// 0.5以上 → 低い声
+        /// 0.5以下 → 高い声</remarks>
+        public float AllPass
         {
-            get => this.speed;
-            set => this.SetProperty(ref this.speed, value);
+            get => this.allpass;
+            set => this.SetProperty(ref this.allpass, (float)Math.Round(value, 2));
         }
 
-        public int Pitch
+        /// <summary>
+        /// -b ポストフィルタ係数 0 ～ 1.0
+        /// </summary>
+        /// <remarks>
+        /// 揺らぎ</remarks>
+        public float PostFilter
         {
-            get => this.pitch;
-            set => this.SetProperty(ref this.pitch, value);
+            get => this.postfilter;
+            set => this.SetProperty(ref this.postfilter, (float)Math.Round(value, 2));
+        }
+
+        /// <summary>
+        /// -r スピーチ速度係数 0 ～ 2.0
+        /// </summary>
+        /// <remarks>
+        /// スピーチの速度</remarks>
+        public float Rate
+        {
+            get => this.rate;
+            set => this.SetProperty(ref this.rate, (float)Math.Round(value, 2));
+        }
+
+        /// <summary>
+        /// -fm 追加ハーフトーン -20.0 ～ +20.0
+        /// </summary>
+        /// <remarks>
+        /// 声の高さ</remarks>
+        public float HalfTone
+        {
+            get => this.halftone;
+            set => this.SetProperty(ref this.halftone, (float)Math.Round(value, 2));
+        }
+
+        /// <summary>
+        /// -u 音声/無音声の閾値 0 ～ 1
+        /// </summary>
+        public float UnVoice
+        {
+            get => this.unvoice;
+            set => this.SetProperty(ref this.unvoice, (float)Math.Round(value, 2));
+        }
+
+        /// <summary>
+        /// -jm スペクトラム系列内変動の重み 0 ～ 2.0
+        /// </summary>
+        /// <remarks>
+        /// いわゆる抑揚</remarks>
+        public float Accent
+        {
+            get => this.accent;
+            set => this.SetProperty(ref this.accent, (float)Math.Round(value, 2));
+        }
+
+        /// <summary>
+        /// -jf F0系列内変動の重み 0 ～ 2.0
+        /// </summary>
+        /// <remarks>
+        /// 声の大きさに影響する</remarks>
+        public float Weight
+        {
+            get => this.weight;
+            set => this.SetProperty(ref this.weight, (float)Math.Round(value, 2));
+        }
+
+        /// <summary>
+        /// 推奨値を設定する
+        /// </summary>
+        public void SetRecommend()
+        {
+            this.Voice = VoiceMeiNormal;
+            this.Gain = 1.0f;
+            this.Volume = 0.0f;
+            this.AllPass = 0.54f;
+            this.PostFilter = 0;
+            this.Rate = 1.2f;
+            this.HalfTone = 5.0f;
+            this.UnVoice = 0.0f;
+            this.Accent = 0.3f;
+            this.Weight = 0.5f;
         }
 
         [XmlIgnore]
@@ -88,7 +177,7 @@ namespace ACT.TTSYukkuri.Config
             }
         }
 
-        public OpenJTalkVoice[] EnumlateVoice()
+        public OpenJTalkVoice[] EnumerateVoice()
         {
             var list = new List<OpenJTalkVoice>();
 
@@ -121,10 +210,14 @@ namespace ACT.TTSYukkuri.Config
 
         public override string ToString() =>
             $"{nameof(this.Voice)}:{this.Voice}," +
-            $"{nameof(this.Gain)}:{this.Gain}," +
             $"{nameof(this.Volume)}:{this.Volume}," +
-            $"{nameof(this.Speed)}:{this.Speed}," +
-            $"{nameof(this.Pitch)}:{this.Pitch}";
+            $"{nameof(this.AllPass)}:{this.AllPass}," +
+            $"{nameof(this.PostFilter)}:{this.PostFilter}," +
+            $"{nameof(this.Rate)}:{this.Rate}," +
+            $"{nameof(this.HalfTone)}:{this.HalfTone}," +
+            $"{nameof(this.UnVoice)}:{this.UnVoice}," +
+            $"{nameof(this.Accent)}:{this.Accent}," +
+            $"{nameof(this.Weight)}:{this.Weight}";
     }
 
     [Serializable]

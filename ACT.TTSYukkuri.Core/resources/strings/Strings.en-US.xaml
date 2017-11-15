@@ -51,9 +51,15 @@
 
   <system:String x:Key="OJT_Voices">Voice</system:String>
   <system:String x:Key="OJT_Gain">Gain</system:String>
-  <system:String x:Key="OJT_Volume">Volume</system:String>
-  <system:String x:Key="OJT_Speed">Speed</system:String>
-  <system:String x:Key="OJT_Pitch">Pitch</system:String>
+  <system:String x:Key="OJT_Volume">-g Volume (dB)</system:String>
+  <system:String x:Key="OJT_AllPass">-a Tone</system:String>
+  <system:String x:Key="OJT_PostFilter">-b Postfiltering coefficient</system:String>
+  <system:String x:Key="OJT_Rate">-r Speed rate</system:String>
+  <system:String x:Key="OJT_HalfTone">-fm Addtional half-tone (pitch)</system:String>
+  <system:String x:Key="OJT_UnVoice">-u Voiced/Unvoiced threshold</system:String>
+  <system:String x:Key="OJT_Accent">-jm Intonation</system:String>
+  <system:String x:Key="OJT_Weight">-jf Weight</system:String>
+  <system:String x:Key="OJT_SetRecommend">Set recommended values</system:String>
 
   <system:String x:Key="Hoya_APIKey">API Key</system:String>
   <system:String x:Key="Hoya_Speaker">Speaker</system:String>

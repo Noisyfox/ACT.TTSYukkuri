@@ -26,6 +26,8 @@ namespace ACT.TTSYukkuri.OpenJTalk
         {
         }
 
+        private OpenJTalkConfig Config => Settings.Default.OpenJTalkSettings;
+
         /// <summary>
         /// テキストを読み上げる
         /// </summary>
@@ -45,7 +47,7 @@ namespace ACT.TTSYukkuri.OpenJTalk
             var wave = this.GetCacheFileName(
                 Settings.Default.TTS,
                 text,
-                Settings.Default.OpenJTalkSettings.ToString());
+                this.Config.ToString());
 
             lock (this)
             {
@@ -81,29 +83,30 @@ namespace ACT.TTSYukkuri.OpenJTalk
 
             var openJTalk = Path.Combine(openJTalkDir, @"open_jtalk.exe");
             var dic = Path.Combine(openJTalkDir, @"dic");
-            var voice = Path.Combine(openJTalkDir, @"voice\" + Settings.Default.OpenJTalkSettings.Voice);
+            var voice = Path.Combine(openJTalkDir, @"voice\" + this.Config.Voice);
             var waveTemp = Path.GetTempFileName();
             if (File.Exists(waveTemp))
             {
                 File.Delete(waveTemp);
             }
 
-            var volume = (float)Settings.Default.OpenJTalkSettings.Volume / 100f;
-            var speed = (float)Settings.Default.OpenJTalkSettings.Speed / 100f;
-            var pitch = (float)Settings.Default.OpenJTalkSettings.Pitch / 10f;
-
             var textFile = Path.GetTempFileName();
             File.WriteAllText(textFile, textToSpeak, Encoding.GetEncoding("Shift_JIS"));
 
             var args = new string[]
             {
-                "-x " + "\"" + dic + "\"",
-                "-m " + "\"" + voice + "\"",
-                "-ow " + "\"" + waveTemp + "\"",
-                "-g " + volume.ToString("N1"),
-                "-r " + speed.ToString("N1"),
-                "-fm " + pitch.ToString("N1"),
-                textFile
+                $"-x \"{dic}\"",
+                $"-m \"{voice}\"",
+                $"-ow \"{waveTemp}\"",
+                $"-g {this.Config.Volume.ToString("N2")}",
+                $"-a {this.Config.AllPass.ToString("N2")}",
+                $"-b {this.Config.PostFilter.ToString("N2")}",
+                $"-r {this.Config.Rate.ToString("N2")}",
+                $"-fm {this.Config.HalfTone.ToString("N2")}",
+                $"-u {this.Config.UnVoice.ToString("N2")}",
+                $"-jm {this.Config.Accent.ToString("N2")}",
+                $"-jf {this.Config.Weight.ToString("N2")}",
+                $"\"{textFile}\""
             };
 
             var pi = new ProcessStartInfo()
@@ -141,14 +144,12 @@ namespace ACT.TTSYukkuri.OpenJTalk
                 File.Delete(textFile);
             }
 
-            var gain = (float)Settings.Default.OpenJTalkSettings.Gain / 100f;
-
-            if (gain != 1.0f)
+            if (this.Config.Gain != 1.0f)
             {
                 using (var reader = new WaveFileReader(waveTemp))
                 {
                     var prov = new VolumeWaveProvider16(reader);
-                    prov.Volume = gain;
+                    prov.Volume = this.Config.Gain;
 
                     WaveFileWriter.CreateWaveFile(
                         wave,

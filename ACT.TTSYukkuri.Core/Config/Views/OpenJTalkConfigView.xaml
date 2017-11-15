@@ -49,92 +49,236 @@
       SelectedValue="{Binding Config.Voice, Mode=TwoWay}">
     </ComboBox>
 
-    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+    <!-- Gain -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_Gain}" />
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
       <Label
         Margin="0 0 0 0"
-        MinWidth="100"
-        Content="{DynamicResource OJT_Gain}" />
-      <Label
-        Margin="5 0 0 0"
         MinWidth="60"
         HorizontalContentAlignment="Right"
-        Content="{Binding ElementName=GainSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+        Content="{Binding ElementName=GainSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
       <Slider
         Margin="5 0 0 0"
         x:Name="GainSlider"
         HorizontalAlignment="Left"
         VerticalAlignment="Center"
-        SmallChange="1"
-        LargeChange="1"
-        Minimum="0" Maximum="400"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="4.00"
         Width="250"
         Value="{Binding Config.Gain, Mode=TwoWay}" />
     </StackPanel>
 
+    <!-- Volume -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_Volume}" />
     <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
       <Label
         Margin="0 0 0 0"
-        MinWidth="100"
-        Content="{DynamicResource OJT_Volume}" />
-      <Label
-        Margin="5 0 0 0"
         MinWidth="60"
         HorizontalContentAlignment="Right"
-        Content="{Binding ElementName=VolumeSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+        Content="{Binding ElementName=VolumeSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
       <Slider
         Margin="5 0 0 0"
         x:Name="VolumeSlider"
         HorizontalAlignment="Left"
         VerticalAlignment="Center"
-        SmallChange="1"
-        LargeChange="1"
-        Minimum="0" Maximum="100"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="8.00"
         Width="250"
         Value="{Binding Config.Volume, Mode=TwoWay}" />
     </StackPanel>
 
+    <!-- AllPass -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_AllPass}" />
     <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
       <Label
         Margin="0 0 0 0"
-        MinWidth="100"
-        Content="{DynamicResource OJT_Speed}" />
-      <Label
-        Margin="5 0 0 0"
         MinWidth="60"
         HorizontalContentAlignment="Right"
-        Content="{Binding ElementName=SpeedSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+        Content="{Binding ElementName=AllPassSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
       <Slider
         Margin="5 0 0 0"
-        x:Name="SpeedSlider"
+        x:Name="AllPassSlider"
         HorizontalAlignment="Left"
         VerticalAlignment="Center"
-        SmallChange="1"
-        LargeChange="1"
-        Minimum="1" Maximum="400"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="1.00"
         Width="250"
-        Value="{Binding Config.Speed, Mode=TwoWay}" />
+        Value="{Binding Config.AllPass, Mode=TwoWay}" />
     </StackPanel>
 
+    <!-- PostFilter -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_PostFilter}" />
     <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
       <Label
         Margin="0 0 0 0"
-        MinWidth="100"
-        Content="{DynamicResource OJT_Pitch}" />
-      <Label
-        Margin="5 0 0 0"
         MinWidth="60"
         HorizontalContentAlignment="Right"
-        Content="{Binding ElementName=PitchSlider, Path=Value, Mode=OneWay, StringFormat=N0}" />
+        Content="{Binding ElementName=PostFilterSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
       <Slider
         Margin="5 0 0 0"
-        x:Name="PitchSlider"
+        x:Name="PostFilterSlider"
         HorizontalAlignment="Left"
         VerticalAlignment="Center"
-        SmallChange="1"
-        LargeChange="1"
-        Minimum="-100" Maximum="100"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="1.00"
         Width="250"
-        Value="{Binding Config.Pitch, Mode=TwoWay}" />
+        Value="{Binding Config.PostFilter, Mode=TwoWay}" />
     </StackPanel>
+
+    <!-- Rate -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_Rate}" />
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=RateSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="RateSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="2.00"
+        Width="250"
+        Value="{Binding Config.Rate, Mode=TwoWay}" />
+    </StackPanel>
+
+    <!-- HalfTone -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_HalfTone}" />
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=HalfToneSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N1" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="HalfToneSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="0.10"
+        LargeChange="0.10"
+        Minimum="-20.0" Maximum="20.0"
+        Width="250"
+        Value="{Binding Config.HalfTone, Mode=TwoWay}" />
+    </StackPanel>
+
+    <!-- UnVoice -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_UnVoice}" />
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=UnVoiceSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="UnVoiceSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="1.00"
+        Width="250"
+        Value="{Binding Config.UnVoice, Mode=TwoWay}" />
+    </StackPanel>
+
+    <!-- Accent -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_Accent}" />
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=AccentSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="AccentSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="2.00"
+        Width="250"
+        Value="{Binding Config.Accent, Mode=TwoWay}" />
+    </StackPanel>
+
+    <!-- Weight -->
+    <Label
+      Margin="5 10 0 0"
+      MinWidth="100"
+      Padding="0"
+      Content="{DynamicResource OJT_Weight}" />
+    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+      <Label
+        Margin="0 0 0 0"
+        MinWidth="60"
+        HorizontalContentAlignment="Right"
+        Content="{Binding ElementName=WeightSlider, Path=Value, Mode=OneWay}"
+        ContentStringFormat="N2" />
+      <Slider
+        Margin="5 0 0 0"
+        x:Name="WeightSlider"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Center"
+        SmallChange="0.01"
+        LargeChange="0.01"
+        Minimum="0" Maximum="2.00"
+        Width="250"
+        Value="{Binding Config.Weight, Mode=TwoWay}" />
+    </StackPanel>
+
+    <TextBlock Margin="5 15 0 0" HorizontalAlignment="Left">
+        <Hyperlink
+          Command="{Binding SetRecommendCommand, Mode=OneWay}">
+          <TextBlock Text="{DynamicResource OJT_SetRecommend}" />
+        </Hyperlink>
+      </TextBlock>
   </StackPanel>
 </UserControl>

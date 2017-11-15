@@ -51,9 +51,15 @@
 
   <system:String x:Key="OJT_Voices">ボイス</system:String>
   <system:String x:Key="OJT_Gain">ゲイン</system:String>
-  <system:String x:Key="OJT_Volume">音量</system:String>
-  <system:String x:Key="OJT_Speed">スピード</system:String>
-  <system:String x:Key="OJT_Pitch">ピッチ</system:String>
+  <system:String x:Key="OJT_Volume">-g ボリューム（dB）</system:String>
+  <system:String x:Key="OJT_AllPass">-a 声質</system:String>
+  <system:String x:Key="OJT_PostFilter">-b ポストフィルタ</system:String>
+  <system:String x:Key="OJT_Rate">-r 速度</system:String>
+  <system:String x:Key="OJT_HalfTone">-fm 追加ハーフトーン（ピッチ）</system:String>
+  <system:String x:Key="OJT_UnVoice">-u 音声/無音声の閾値</system:String>
+  <system:String x:Key="OJT_Accent">-jm 抑揚</system:String>
+  <system:String x:Key="OJT_Weight">-jf 重み</system:String>
+  <system:String x:Key="OJT_SetRecommend">推奨値をセットする</system:String>
 
   <system:String x:Key="Hoya_APIKey">API Key</system:String>
   <system:String x:Key="Hoya_Speaker">話者</system:String>

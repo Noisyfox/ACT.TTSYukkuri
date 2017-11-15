@@ -31,13 +31,13 @@ open_jtalk - The Japanese TTS system "Open JTalk"
     -ot s          : filename of output trace information                    [  N/A]
     -s  i          : sampling frequency                                      [ auto][   1--    ]
     -p  i          : frame period (point)                                    [ auto][   1--    ]
-    -a  f          : all-pass constant                                       [ auto][ 0.0-- 1.0]	ê∫éø 0.55
+    -a  f          : all-pass constant                                       [ auto][ 0.0-- 1.0]  Â£∞Ë≥™ 0.55
     -b  f          : postfiltering coefficient                               [  0.0][ 0.0-- 1.0]
     -r  f          : speech speed rate                                       [  1.0][ 0.0--    ]
-    -fm f          : additional half-tone                                    [  0.0][    --    ]	âπçÇ 0.00
-    -u  f          : voiced/unvoiced threshold                               [  0.5][ 0.0-- 1.0]	ó}óg 0.5
+    -fm f          : additional half-tone                                    [  0.0][    --    ]  Èü≥È´ò 0.00
+    -u  f          : voiced/unvoiced threshold                               [  0.5][ 0.0-- 1.0]  ÊäëÊèö 0.5
     -jm f          : weight of GV for spectrum                               [  1.0][ 0.0--    ]
-    -jf f          : weight of GV for log F0                                 [  1.0][ 0.0--    ]	ê∫ó  
+    -jf f          : weight of GV for log F0                                 [  1.0][ 0.0--    ]  Â£∞Èáè 
     -g  f          : volume (dB)                                             [  0.0][    --    ]
     -z  i          : audio buffer size (if i==0, turn off)                   [    0][   0--    ]
   infile:
