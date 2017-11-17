@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using ACT.TTSYukkuri.Config;
 using ACT.TTSYukkuri.Discord.Models;
@@ -16,22 +17,23 @@ namespace ACT.TTSYukkuri.Discord.ViewModels
         public DiscordClientModel Model => DiscordClientModel.Instance;
 
         private ICommand connectCommand;
+        private ICommand disconnectCommand;
         private ICommand joinCommand;
         private ICommand leaveCommand;
+        private ICommand openHelperCommand;
 
         public ICommand ConnectCommand =>
             this.connectCommand ?? (this.connectCommand = new DelegateCommand(async () =>
             {
-                try
-                {
-                    this.View.ConnectLink.IsEnabled = false;
-                    this.Model.Connect();
-                    await Task.Delay(TimeSpan.FromMilliseconds(100));
-                }
-                finally
-                {
-                    this.View.ConnectLink.IsEnabled = true;
-                }
+                this.Model.Connect();
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
+            }));
+
+        public ICommand DisconnectCommand =>
+            this.disconnectCommand ?? (this.disconnectCommand = new DelegateCommand(async () =>
+            {
+                this.Model.Disconnect();
+                await Task.Delay(TimeSpan.FromMilliseconds(100));
             }));
 
         public ICommand JoinCommand =>
@@ -62,6 +64,14 @@ namespace ACT.TTSYukkuri.Discord.ViewModels
                 {
                     this.View.LeaveTextVoiceLink.IsEnabled = true;
                 }
+            }));
+
+        public ICommand OpenHelperCommand =>
+            this.openHelperCommand ?? (this.openHelperCommand = new DelegateCommand(() =>
+            {
+                var window = new PermissionHelperView();
+                ElementHost.EnableModelessKeyboardInterop(window);
+                window.Show();
             }));
 
         private ICommand pingCommand;

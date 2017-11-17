@@ -79,7 +79,7 @@ namespace ACT.TTSYukkuri.Discord.Models
             set
             {
                 this.selectedTextChannel = value;
-                this.Config.DefaultTextChannelID = this.SelectedTextChannel.Id;
+                this.Config.DefaultTextChannelID = value?.Id ?? 0;
             }
         }
 
@@ -91,22 +91,45 @@ namespace ACT.TTSYukkuri.Discord.Models
             set
             {
                 this.selectedVoiceChannel = value;
-                this.Config.DefaultVoiceChannelID = this.SelectedVoiceChannel.Id;
+                this.Config.DefaultVoiceChannelID = value?.Id ?? 0;
             }
         }
 
-        public string GuildName => this.guild?.Name;
+        public string GuildName => string.Join(
+            Environment.NewLine,
+            this.guilds.OrderBy(x => x.Id).Select(x => x.Name).ToArray());
 
-        public IReadOnlyList<DiscordChannel> Channels => this.guild?.Channels
-            .OrderBy(x => x.Type)
-            .ThenBy(x => x.Id)
-            .ToList();
+        public IReadOnlyList<DiscordChannel> Channels
+        {
+            get
+            {
+                var list = new List<DiscordChannel>();
+                foreach (var guild in this.guilds.OrderBy(x => x.Id))
+                {
+                    list.AddRange(guild.Channels);
+                }
+
+                return (
+                    from x in list
+                    orderby
+                    x.Type,
+                    x.Id
+                    select
+                    x).ToList();
+            }
+        }
+
+        public IReadOnlyList<DiscordChannel> TextChannels =>
+            this.Channels?.Where(x => x.Type == ChannelType.Text).ToList();
+
+        public IReadOnlyList<DiscordChannel> VoiceChannels =>
+            this.Channels?.Where(x => x.Type == ChannelType.Voice).ToList();
 
         public string Log => this.log.ToString();
 
         private StringBuilder log = new StringBuilder();
         private DiscordClient discord;
-        private DiscordGuild guild;
+        private readonly List<DiscordGuild> guilds = new List<DiscordGuild>();
         private VoiceNextClient voice;
         private VoiceNextConnection vnc;
 
@@ -153,7 +176,14 @@ namespace ACT.TTSYukkuri.Discord.Models
 
             this.voice = this.discord.UseVoiceNext(vcfg);
 
-            await this.discord.ConnectAsync();
+            try
+            {
+                await this.discord.ConnectAsync();
+            }
+            catch (Exception ex)
+            {
+                this.AppendLogLine("Connection failed.", ex);
+            }
         }
 
         public async void Disconnect()
@@ -167,12 +197,21 @@ namespace ACT.TTSYukkuri.Discord.Models
                     {
                         this.vnc.Dispose();
                         this.vnc = null;
+                        this.voice = null;
                     }
 
+                    this.guilds.Clear();
                     this.discord = null;
 
                     this.Connected = false;
                     this.JoinedVoiceChannel = false;
+
+                    this.AppendLogLine("Disconnected from Guild.");
+
+                    this.RaisePropertyChanged(nameof(this.GuildName));
+                    this.RaisePropertyChanged(nameof(this.Channels));
+                    this.RaisePropertyChanged(nameof(this.TextChannels));
+                    this.RaisePropertyChanged(nameof(this.VoiceChannels));
                 });
             }
         }
@@ -208,6 +247,7 @@ namespace ACT.TTSYukkuri.Discord.Models
                 {
                     this.AppendLogLine($"Joined channel: {chn.Name}");
 
+                    this.isInit = false;
                     this.JoinedVoiceChannel = true;
 
                     return task.Result;
@@ -225,13 +265,21 @@ namespace ACT.TTSYukkuri.Discord.Models
                         {
                             this.vnc.Dispose();
                             this.vnc = null;
+                            this.voice = null;
                         }
 
+                        this.guilds.Clear();
                         this.discord = null;
 
+                        this.Connected = false;
                         this.JoinedVoiceChannel = false;
 
                         this.AppendLogLine($"Left channel.");
+
+                        this.RaisePropertyChanged(nameof(this.GuildName));
+                        this.RaisePropertyChanged(nameof(this.Channels));
+                        this.RaisePropertyChanged(nameof(this.TextChannels));
+                        this.RaisePropertyChanged(nameof(this.VoiceChannels));
 
                         await Task.Delay(TimeSpan.FromMilliseconds(200));
                         this.Connect();
@@ -322,47 +370,29 @@ namespace ACT.TTSYukkuri.Discord.Models
         private Task GuildAvailable(
             GuildCreateEventArgs e)
         {
-            this.guild = e.Guild;
+            this.guilds.Add(e.Guild);
 
             if (e.Guild.Channels.Any())
             {
-                if (this.Config.DefaultTextChannelID == 0)
+                var ch = default(DiscordChannel);
+
+                ch = this.TextChannels.FirstOrDefault(x => x.Id == this.Config.DefaultTextChannelID);
+                if (ch != null)
                 {
-                    this.SelectedTextChannel = (
-                        from x in e.Guild.Channels
-                        orderby
-                        x.Type ascending,
-                        x.Id
-                        select
-                        x).FirstOrDefault();
-                }
-                else
-                {
-                    this.SelectedTextChannel = e.Guild.Channels
-                        .FirstOrDefault(x =>
-                            x.Id == this.Config.DefaultTextChannelID);
+                    this.SelectedTextChannel = ch;
                 }
 
-                if (this.Config.DefaultVoiceChannelID == 0)
+                ch = this.VoiceChannels.FirstOrDefault(x => x.Id == this.Config.DefaultVoiceChannelID);
+                if (ch != null)
                 {
-                    this.SelectedVoiceChannel = (
-                        from x in e.Guild.Channels
-                        orderby
-                        x.Type descending,
-                        x.Id
-                        select
-                        x).FirstOrDefault();
-                }
-                else
-                {
-                    this.SelectedVoiceChannel = e.Guild.Channels
-                        .FirstOrDefault(x =>
-                            x.Id == this.Config.DefaultVoiceChannelID);
+                    this.SelectedVoiceChannel = ch;
                 }
             }
 
             this.RaisePropertyChanged(nameof(this.GuildName));
             this.RaisePropertyChanged(nameof(this.Channels));
+            this.RaisePropertyChanged(nameof(this.TextChannels));
+            this.RaisePropertyChanged(nameof(this.VoiceChannels));
             this.RaisePropertyChanged(nameof(this.SelectedTextChannel));
             this.RaisePropertyChanged(nameof(this.SelectedVoiceChannel));
 
@@ -372,12 +402,11 @@ namespace ACT.TTSYukkuri.Discord.Models
 
             if (this.isInit)
             {
-                this.isInit = false;
-
                 if (this.Config.AutoJoin &&
                     this.Config.DefaultVoiceChannelID != 0 &&
                     this.SelectedVoiceChannel != null)
                 {
+                    this.isInit = false;
                     this.JoinVoiceNext();
                 }
             }
@@ -403,11 +432,21 @@ namespace ACT.TTSYukkuri.Discord.Models
             var text = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")}] {message}";
             if (ex != null)
             {
-                text += ex.ToString();
+                text += Environment.NewLine + ex.ToString();
             }
 
             this.log.AppendLine(text);
             this.RaisePropertyChanged(nameof(this.Log));
+
+            var log = $"[DISCORD] {message}";
+            if (ex == null)
+            {
+                this.Logger.Info(log);
+            }
+            else
+            {
+                this.Logger.Error(ex, log);
+            }
         }
     }
 }

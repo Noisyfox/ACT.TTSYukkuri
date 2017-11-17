@@ -53,14 +53,40 @@
           <Label
             Margin="0 0 0 0"
             Content="Token" />
-          <TextBox Text="{Binding Config.Token, Mode=TwoWay}" HorizontalAlignment="Left" Width="600" />
-          <TextBlock Margin="2 2 0 0">
-            <Hyperlink
-              Command="{Binding ConnectCommand}"
-              IsEnabled="{Binding Model.Connected, Converter={StaticResource BoolConverter}, Mode=OneWay}">
-              <TextBlock Name="ConnectLink">Connect</TextBlock>
-            </Hyperlink>
-          </TextBlock>
+          <TextBox
+            IsReadOnly="{Binding Model.Connected, Mode=OneWay}"
+            Text="{Binding Config.Token, Mode=TwoWay}"
+            HorizontalAlignment="Left"
+            Width="600">
+            <TextBox.Style>
+              <Style TargetType="TextBox">
+                <Setter Property="Foreground" Value="Black" />
+                <Style.Triggers>
+                  <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Foreground" Value="DimGray" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </TextBox.Style>
+          </TextBox>
+
+          <StackPanel Margin="0 2 0 0" Orientation="Horizontal">
+            <TextBlock Margin="2 0 0 0">
+              <Hyperlink
+                Command="{Binding ConnectCommand, Mode=OneWay}"
+                IsEnabled="{Binding Model.Connected, Converter={StaticResource BoolConverter}, Mode=OneWay}">
+                <TextBlock Name="ConnectLink" Text="Connect" />
+              </Hyperlink>
+            </TextBlock>
+
+            <TextBlock Margin="15 0 0 0">
+              <Hyperlink
+                Command="{Binding DisconnectCommand, Mode=OneWay}"
+                IsEnabled="{Binding Model.Connected, Mode=OneWay}">
+                <TextBlock Name="DisconnectLink" Text="Disconnect" />
+              </Hyperlink>
+            </TextBlock>
+          </StackPanel>
 
           <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
             <Label Content="Server" />
@@ -76,7 +102,8 @@
           <TextBox
             IsReadOnly="True"
             Text="{Binding Model.GuildName, Mode=OneWay}"
-            Foreground="DarkGray"
+            TextWrapping="NoWrap"
+            Foreground="DimGray"
             Width="600"
             HorizontalAlignment="Left" />
 
@@ -88,13 +115,14 @@
               Width="500"
               HorizontalAlignment="Left"
               VerticalAlignment="Center"
-              ItemsSource="{Binding Model.Channels, Mode=OneWay}"
+              ItemsSource="{Binding Model.TextChannels, Mode=OneWay}"
               SelectedItem="{Binding Model.SelectedTextChannel, Mode=TwoWay}">
               <ComboBox.ItemTemplate>
                 <DataTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Type}" />
-                    <TextBlock Text=" - " />
+                    <TextBlock Text="[" />
+                    <TextBlock Text="{Binding Guild.Name}" />
+                    <TextBlock Text="] " />
                     <TextBlock Text="{Binding Name}" />
                   </StackPanel>
                 </DataTemplate>
@@ -122,16 +150,29 @@
           <ComboBox
             Width="600"
             HorizontalAlignment="Left"
-            ItemsSource="{Binding Model.Channels, Mode=OneWay}"
+            ItemsSource="{Binding Model.VoiceChannels, Mode=OneWay}"
             SelectedItem="{Binding Model.SelectedVoiceChannel, Mode=TwoWay}"
             IsReadOnly="{Binding Model.JoinedVoiceChannel, Mode=OneWay}"
             IsHitTestVisible="{Binding Model.JoinedVoiceChannel, Converter={StaticResource BoolConverter}, Mode=OneWay}"
             IsTabStop="{Binding Model.JoinedVoiceChannel, Converter={StaticResource BoolConverter}, Mode=OneWay}">
+            <ComboBox.Style>
+              <Style TargetType="ComboBox">
+                <Style.Triggers>
+                  <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Foreground" Value="DimGray" />
+                  </Trigger>
+                  <Trigger Property="IsReadOnly" Value="False">
+                    <Setter Property="Foreground" Value="Black" />
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </ComboBox.Style>
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding Type}" />
-                  <TextBlock Text=" - " />
+                  <TextBlock Text="[" />
+                  <TextBlock Text="{Binding Guild.Name}" />
+                  <TextBlock Text="] " />
                   <TextBlock Text="{Binding Name}" />
                 </StackPanel>
               </DataTemplate>
@@ -141,7 +182,7 @@
           <StackPanel Margin="0 2 0 0" Orientation="Horizontal">
             <TextBlock Margin="2 0 0 0">
               <Hyperlink
-                Command="{Binding JoinCommand}"
+                Command="{Binding JoinCommand, Mode=OneWay}"
                 IsEnabled="{Binding Model.JoinedVoiceChannel, Converter={StaticResource BoolConverter}, Mode=OneWay}">
                 <TextBlock Name="JoinVoiceChannelLink">Join</TextBlock>
               </Hyperlink>
@@ -149,8 +190,8 @@
 
             <TextBlock Margin="15 0 0 0">
               <Hyperlink
-                Command="{Binding LeaveCommand}"
-                IsEnabled="{Binding Model.Joined, Mode=OneWay}">
+                Command="{Binding LeaveCommand, Mode=OneWay}"
+                IsEnabled="{Binding Model.JoinedVoiceChannel, Mode=OneWay}">
                 <TextBlock Name="LeaveTextVoiceLink">Leave</TextBlock>
               </Hyperlink>
             </TextBlock>
@@ -161,6 +202,12 @@
             Content="Auto join"
             VerticalContentAlignment="Center"
             IsChecked="{Binding Config.AutoJoin, Mode=TwoWay}" />
+
+          <TextBlock Margin="2 20 0 0">
+            <Hyperlink Command="{Binding OpenHelperCommand, Mode=OneWay}">
+              <TextBlock Text="Permission Helper" />
+            </Hyperlink>
+          </TextBlock>
         </StackPanel>
 
         <ScrollViewer

@@ -192,6 +192,9 @@
     <Compile Include="Discord\Views\DiscordView.xaml.cs">
       <DependentUpon>DiscordView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Discord\Views\PermissionHelperView.xaml.cs">
+      <DependentUpon>PermissionHelperView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FFXIVPluginHelper.cs" />
     <Compile Include="FFXIVWatcher.cs" />
     <Compile Include="FFXIVWatcher.FFXIVPluginWrapper.cs" />
@@ -404,6 +407,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Discord\Views\DiscordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Discord\Views\PermissionHelperView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
