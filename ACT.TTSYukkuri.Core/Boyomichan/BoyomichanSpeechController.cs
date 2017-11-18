@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using ACT.TTSYukkuri.Config;
 
 namespace ACT.TTSYukkuri.Boyomichan
@@ -12,6 +13,8 @@ namespace ACT.TTSYukkuri.Boyomichan
     public class BoyomichanSpeechController :
         ISpeechController
     {
+        #region Constants
+
         /// <summary>
         /// 棒読みちゃんサーバ
         /// </summary>
@@ -52,6 +55,8 @@ namespace ACT.TTSYukkuri.Boyomichan
         /// </summary>
         private const short BoyomiVolume = -1;
 
+        #endregion Constants
+
         private TcpClient boyomiClient;
         private string connectedServer;
         private int connectedPort;
@@ -72,6 +77,9 @@ namespace ACT.TTSYukkuri.Boyomichan
             }
         }
 
+        private string lastText;
+        private DateTime lastTextTimestamp;
+
         /// <summary>
         /// テキストを読み上げる
         /// </summary>
@@ -79,47 +87,95 @@ namespace ACT.TTSYukkuri.Boyomichan
         public void Speak(
             string text)
         {
-            try
+            Task.Run(() =>
             {
-                // 棒読みちゃんに接続する
-                this.ConnectToBoyomi();
-
-                using (var ns = this.boyomiClient.GetStream())
-                using (var bw = new BinaryWriter(ns))
+                try
                 {
-                    var messageAsBytes = Encoding.UTF8.GetBytes(text);
-
-                    bw.Write(BoyomiCommand);
-                    bw.Write(BoyomiSpeed);
-                    bw.Write(BoyomiTone);
-                    bw.Write(BoyomiVolume);
-                    bw.Write(BoyomiVoice);
-                    bw.Write(BoyomiTextEncoding);
-                    bw.Write(messageAsBytes.Length);
-                    bw.Write(messageAsBytes);
-
-                    bw.Flush();
+                    lock (this)
+                    {
+                        this.SpeakCore(text);
+                    }
                 }
-            }
-            catch (Exception ex)
+                catch (Exception ex)
+                {
+                    this.GetLogger().Error(ex, "棒読みちゃんの読上げで例外が発生しました。");
+                }
+            });
+        }
+
+        /// <summary>
+        /// テキストを読み上げる
+        /// </summary>
+        /// <param name="text">読み上げるテキスト</param>
+        private void SpeakCore(
+            string text)
+        {
+            if (this.lastText == text &&
+                (DateTime.Now - this.lastTextTimestamp).TotalSeconds
+                <= Settings.Default.GlobalSoundInterval)
             {
-                this.GetLogger().Error(ex, "棒読みちゃんの読上げで例外が発生しました。");
+                return;
+            }
+
+            this.lastText = text;
+            this.lastTextTimestamp = DateTime.Now;
+
+            // 棒読みちゃんに接続する
+            if (this.ConnectToBoyomi())
+            {
+                return;
+            }
+
+            using (var ns = this.boyomiClient.GetStream())
+            using (var bw = new BinaryWriter(ns))
+            {
+                var messageAsBytes = Encoding.UTF8.GetBytes(text);
+
+                bw.Write(BoyomiCommand);
+                bw.Write(BoyomiSpeed);
+                bw.Write(BoyomiTone);
+                bw.Write(BoyomiVolume);
+                bw.Write(BoyomiVoice);
+                bw.Write(BoyomiTextEncoding);
+                bw.Write(messageAsBytes.Length);
+                bw.Write(messageAsBytes);
+
+                bw.Flush();
             }
         }
 
-        private void ConnectToBoyomi()
+        private bool ConnectToBoyomi()
         {
-            lock (this)
+            var server = Settings.Default.BoyomiServer;
+            var port = Settings.Default.BoyomiPort;
+
+            if (string.IsNullOrEmpty(server))
             {
-                var server = Settings.Default.BoyomiServer;
-                var port = Settings.Default.BoyomiPort;
+                this.GetLogger().Error("Server name is Empty.");
+                return false;
+            }
 
-                if (server.ToLower() == "localhost")
-                {
-                    server = "127.0.0.1";
-                }
+            if (port > 65535 ||
+                port < 1)
+            {
+                this.GetLogger().Error("Port number is Invalid.");
+                return false;
+            }
 
-                if (this.boyomiClient == null)
+            if (server.ToLower() == "localhost")
+            {
+                server = "127.0.0.1";
+            }
+
+            if (this.boyomiClient == null)
+            {
+                this.boyomiClient = new TcpClient(server, port);
+                this.connectedServer = server;
+                this.connectedPort = port;
+            }
+            else
+            {
+                if (!this.boyomiClient.Connected)
                 {
                     this.boyomiClient = new TcpClient(server, port);
                     this.connectedServer = server;
@@ -127,27 +183,20 @@ namespace ACT.TTSYukkuri.Boyomichan
                 }
                 else
                 {
-                    if (!this.boyomiClient.Connected)
+                    if (this.connectedServer != server ||
+                        this.connectedPort != port)
                     {
+                        this.boyomiClient.Close();
+                        this.boyomiClient.Dispose();
+
                         this.boyomiClient = new TcpClient(server, port);
                         this.connectedServer = server;
                         this.connectedPort = port;
                     }
-                    else
-                    {
-                        if (this.connectedServer != server ||
-                            this.connectedPort != port)
-                        {
-                            this.boyomiClient.Close();
-                            this.boyomiClient.Dispose();
-
-                            this.boyomiClient = new TcpClient(server, port);
-                            this.connectedServer = server;
-                            this.connectedPort = port;
-                        }
-                    }
                 }
             }
+
+            return true;
         }
     }
 }
