@@ -43,9 +43,8 @@ namespace ACT.TTSYukkuri.Discord.Views
         private void ClientIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
             => this.ChangeCanExecuteGrantButton();
 
-        private async void GrantButton_Click(object sender, RoutedEventArgs e)
-            => await Task.Run(() =>
-                Process.Start(
-                    $@"https://discordapp.com/oauth2/authorize?client_id={this.ClientIDTextBox.Text}&scope=bot&permissions=8"));
+        private void GrantButton_Click(object sender, RoutedEventArgs e)
+            => Process.Start(
+                "https://discordapp.com/oauth2/authorize?client_id=" + this.ClientIDTextBox.Text + "&scope=bot&permissions=8");
     }
 }
