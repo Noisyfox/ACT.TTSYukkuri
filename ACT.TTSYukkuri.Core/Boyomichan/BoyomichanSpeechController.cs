@@ -57,10 +57,6 @@ namespace ACT.TTSYukkuri.Boyomichan
 
         #endregion Constants
 
-        private TcpClient boyomiClient;
-        private string connectedServer;
-        private int connectedPort;
-
         /// <summary>
         /// 初期化する
         /// </summary>
@@ -70,11 +66,6 @@ namespace ACT.TTSYukkuri.Boyomichan
 
         public void Free()
         {
-            lock (this)
-            {
-                this.boyomiClient?.Dispose();
-                this.boyomiClient = null;
-            }
         }
 
         private string lastText;
@@ -110,6 +101,25 @@ namespace ACT.TTSYukkuri.Boyomichan
         private void SpeakCore(
             string text)
         {
+            var server = Settings.Default.BoyomiServer;
+            var port = Settings.Default.BoyomiPort;
+
+            if (string.IsNullOrEmpty(server))
+            {
+                this.GetLogger().Error("Server name is Empty.");
+            }
+
+            if (port > 65535 ||
+                port < 1)
+            {
+                this.GetLogger().Error("Port number is Invalid.");
+            }
+
+            if (server.ToLower() == "localhost")
+            {
+                server = "127.0.0.1";
+            }
+
             if (this.lastText == text &&
                 (DateTime.Now - this.lastTextTimestamp).TotalSeconds
                 <= Settings.Default.GlobalSoundInterval)
@@ -120,13 +130,8 @@ namespace ACT.TTSYukkuri.Boyomichan
             this.lastText = text;
             this.lastTextTimestamp = DateTime.Now;
 
-            // 棒読みちゃんに接続する
-            if (this.ConnectToBoyomi())
-            {
-                return;
-            }
-
-            using (var ns = this.boyomiClient.GetStream())
+            using (var tcp = new TcpClient(server, port))
+            using (var ns = tcp.GetStream())
             using (var bw = new BinaryWriter(ns))
             {
                 var messageAsBytes = Encoding.UTF8.GetBytes(text);
@@ -142,61 +147,6 @@ namespace ACT.TTSYukkuri.Boyomichan
 
                 bw.Flush();
             }
-        }
-
-        private bool ConnectToBoyomi()
-        {
-            var server = Settings.Default.BoyomiServer;
-            var port = Settings.Default.BoyomiPort;
-
-            if (string.IsNullOrEmpty(server))
-            {
-                this.GetLogger().Error("Server name is Empty.");
-                return false;
-            }
-
-            if (port > 65535 ||
-                port < 1)
-            {
-                this.GetLogger().Error("Port number is Invalid.");
-                return false;
-            }
-
-            if (server.ToLower() == "localhost")
-            {
-                server = "127.0.0.1";
-            }
-
-            if (this.boyomiClient == null)
-            {
-                this.boyomiClient = new TcpClient(server, port);
-                this.connectedServer = server;
-                this.connectedPort = port;
-            }
-            else
-            {
-                if (!this.boyomiClient.Connected)
-                {
-                    this.boyomiClient = new TcpClient(server, port);
-                    this.connectedServer = server;
-                    this.connectedPort = port;
-                }
-                else
-                {
-                    if (this.connectedServer != server ||
-                        this.connectedPort != port)
-                    {
-                        this.boyomiClient.Close();
-                        this.boyomiClient.Dispose();
-
-                        this.boyomiClient = new TcpClient(server, port);
-                        this.connectedServer = server;
-                        this.connectedPort = port;
-                    }
-                }
-            }
-
-            return true;
         }
     }
 }
