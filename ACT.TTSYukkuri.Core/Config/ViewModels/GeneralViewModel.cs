@@ -47,6 +47,17 @@ namespace ACT.TTSYukkuri.Config.ViewModels
             {
                 if (Directory.Exists(SpeechControllerExtentions.CacheDirectory))
                 {
+                    var result = MessageBox.Show(
+                        "Are you sure you want to delete cached wave files?",
+                        "ACT.TTSYukkuri",
+                        MessageBoxButton.OKCancel,
+                        MessageBoxImage.Question);
+
+                    if (result != MessageBoxResult.OK)
+                    {
+                        return;
+                    }
+
                     await Task.Run(() =>
                     {
                         foreach (var file in Directory.GetFiles(
@@ -59,8 +70,8 @@ namespace ACT.TTSYukkuri.Config.ViewModels
                     });
 
                     MessageBox.Show(
-                        "Cached wave deleted.",
-                        "ACT.UltraScouter",
+                        "Cached wave files deleted.",
+                        "ACT.TTSYukkuri",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information);
                 }
