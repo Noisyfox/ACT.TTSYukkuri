@@ -18,7 +18,7 @@
   RenderOptions.BitmapScalingMode="HighQuality"
   RenderOptions.EdgeMode="Unspecified"
   Background="White"
-  FontFamily="Consolas"
+  FontFamily="Consolas, Yu Gothic UI, Meiryo UI"
   FontSize="17"
   Margin="0"
   d:DesignWidth="1024"
