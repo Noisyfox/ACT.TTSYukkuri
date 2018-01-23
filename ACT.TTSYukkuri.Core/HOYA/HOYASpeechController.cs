@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using ACT.TTSYukkuri.Config;
 using VoiceTextWebAPI.Client;
@@ -33,7 +34,7 @@ namespace ACT.TTSYukkuri.HOYA
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
                 Settings.Default.TTS,
-                text,
+                text.Replace(Environment.NewLine, "+"),
                 Settings.Default.HOYASettings.ToString());
 
             lock (this)

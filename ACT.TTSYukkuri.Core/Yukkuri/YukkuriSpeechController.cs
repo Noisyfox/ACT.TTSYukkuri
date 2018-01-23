@@ -1,11 +1,10 @@
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ACT.TTSYukkuri.Config;
 using Advanced_Combat_Tracker;
-using FFXIV.Framework.Common;
 using Microsoft.VisualBasic;
-using NLog;
 
 namespace ACT.TTSYukkuri.Yukkuri
 {
@@ -62,7 +61,7 @@ namespace ACT.TTSYukkuri.Yukkuri
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
                 Settings.Default.TTS,
-                text,
+                text.Replace(Environment.NewLine, "+"),
                 Settings.Default.YukkuriSettings.ToString());
 
             lock (this)

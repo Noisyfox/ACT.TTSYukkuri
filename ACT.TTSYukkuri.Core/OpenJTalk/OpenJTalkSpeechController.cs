@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -46,7 +47,7 @@ namespace ACT.TTSYukkuri.OpenJTalk
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
                 Settings.Default.TTS,
-                text,
+                text.Replace(Environment.NewLine, "+"),
                 this.Config.ToString());
 
             lock (this)
