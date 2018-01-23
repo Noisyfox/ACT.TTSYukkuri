@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using ACT.TTSYukkuri.Config;
 using FFXIV.Framework.TTS.Common;
@@ -37,7 +38,7 @@ namespace ACT.TTSYukkuri.Sasara
             // 現在の条件をハッシュ化してWAVEファイル名を作る
             var wave = this.GetCacheFileName(
                 Settings.Default.TTS,
-                text,
+                text.Replace(Environment.NewLine, "+"),
                 Settings.Default.SasaraSettings.ToString());
 
             lock (this)
