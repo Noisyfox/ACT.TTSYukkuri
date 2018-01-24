@@ -98,8 +98,13 @@ namespace ACT.TTSYukkuri.Voiceroid
         public async Task<string> Start()
         {
             var process = this.Config.GetSelected();
-            if (process != null &&
-                !process.InnerProcess.IsRunning)
+            if (process == null ||
+                process.InnerProcess == null)
+            {
+                return "VOICEROID not found.";
+            }
+
+            if (!process.InnerProcess.IsRunning)
             {
                 if (!string.IsNullOrEmpty(process.Path) &&
                     File.Exists(process.Path))
