@@ -43,29 +43,31 @@ namespace ACT.TTSYukkuri.Voiceroid
             // プロセス更新タイマ設定＆開始
             var updateTimer = new ReactiveTimer(TimeSpan.FromMilliseconds(100))
                 .AddTo(this.CompositeDisposable);
-            updateTimer
-                .Subscribe(async x =>
+            updateTimer?.Subscribe(async x =>
                 {
                     if (this.ProcessFactory == null)
                     {
                         return;
                     }
 
-                    await this.ProcessFactory.Update();
-                    foreach (var innerProcess in this.ProcessFactory.Processes)
+                    await this.ProcessFactory?.Update();
+                    foreach (var innerProcess in this.ProcessFactory?.Processes)
                     {
-                        var process = this.Config.Get(innerProcess.Id);
-                        if (process != null)
+                        if (innerProcess != null)
                         {
-                            if (!string.IsNullOrEmpty(innerProcess.ExecutablePath) &&
-                                File.Exists(innerProcess.ExecutablePath))
+                            var process = this.Config.Get(innerProcess.Id);
+                            if (process != null)
                             {
-                                process.Path = innerProcess.ExecutablePath;
+                                if (!string.IsNullOrEmpty(innerProcess?.ExecutablePath) &&
+                                    File.Exists(innerProcess?.ExecutablePath))
+                                {
+                                    process.Path = innerProcess?.ExecutablePath;
+                                }
                             }
                         }
                     }
-                })
-                .AddTo(this.CompositeDisposable);
+                }).AddTo(this.CompositeDisposable);
+
             updateTimer.Start();
         }
 
@@ -102,7 +104,7 @@ namespace ACT.TTSYukkuri.Voiceroid
                 if (!string.IsNullOrEmpty(process.Path) &&
                     File.Exists(process.Path))
                 {
-                    await process.InnerProcess.Run(process.Path);
+                    await process?.InnerProcess?.Run(process.Path);
                 }
             }
 
