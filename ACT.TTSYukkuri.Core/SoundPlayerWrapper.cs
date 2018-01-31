@@ -7,30 +7,62 @@ using FFXIV.Framework.Common;
 
 namespace ACT.TTSYukkuri
 {
+    public enum PlayDevices
+    {
+        Both = 0,
+        Main = 1,
+        Sub = 2
+    }
+
     /// <summary>
     /// DirectXでサウンドを再生する
     /// </summary>
     public static class SoundPlayerWrapper
     {
         public static void Play(
-            string waveFile)
+            string waveFile,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             var volume = Settings.Default.WaveVolume / 100f;
 
-            if (Settings.Default.EnabledSubDevice)
+            switch (playDevice)
             {
-                SoundPlayerWrapper.PlayCore(
-                    waveFile,
-                    volume,
-                    Settings.Default.Player,
-                    Settings.Default.SubDeviceID);
-            }
+                case PlayDevices.Both:
+                    if (Settings.Default.EnabledSubDevice)
+                    {
+                        SoundPlayerWrapper.PlayCore(
+                            waveFile,
+                            volume,
+                            Settings.Default.Player,
+                            Settings.Default.SubDeviceID);
+                    }
 
-            SoundPlayerWrapper.PlayCore(
-                waveFile,
-                volume,
-                Settings.Default.Player,
-                Settings.Default.MainDeviceID);
+                    SoundPlayerWrapper.PlayCore(
+                        waveFile,
+                        volume,
+                        Settings.Default.Player,
+                        Settings.Default.MainDeviceID);
+                    break;
+
+                case PlayDevices.Main:
+                    SoundPlayerWrapper.PlayCore(
+                        waveFile,
+                        volume,
+                        Settings.Default.Player,
+                        Settings.Default.MainDeviceID);
+                    break;
+
+                case PlayDevices.Sub:
+                    if (Settings.Default.EnabledSubDevice)
+                    {
+                        SoundPlayerWrapper.PlayCore(
+                            waveFile,
+                            volume,
+                            Settings.Default.Player,
+                            Settings.Default.SubDeviceID);
+                    }
+                    break;
+            }
         }
 
         private static string lastPlayParameter;

@@ -26,7 +26,7 @@ namespace ACT.TTSYukkuri
         /// TTSに話してもらう
         /// </summary>
         /// <param name="text">読上げるテキスト</param>
-        void Speak(string text);
+        void Speak(string text, PlayDevices playDevice = PlayDevices.Both);
     }
 
     public static class SpeechControllerExtentions
@@ -48,17 +48,18 @@ namespace ACT.TTSYukkuri
         public static void SpeakWithDelay(
             this ISpeechController speechController,
             string text,
-            int delay)
+            int delay,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             if (delay == 0)
             {
-                speechController.Speak(text);
+                speechController.Speak(text, playDevice);
                 return;
             }
 
             var timer = new Timer(new TimerCallback((state) =>
             {
-                speechController.Speak(text);
+                speechController.Speak(text, playDevice);
                 (state as Timer).Dispose();
             }));
 

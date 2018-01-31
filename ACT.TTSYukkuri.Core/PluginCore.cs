@@ -10,6 +10,7 @@ using ACT.TTSYukkuri.Config.Views;
 using ACT.TTSYukkuri.Discord.Models;
 using ACT.TTSYukkuri.TTSServer;
 using Advanced_Combat_Tracker;
+using FFXIV.Framework.Bridge;
 using FFXIV.Framework.Common;
 using NLog;
 
@@ -43,10 +44,6 @@ namespace ACT.TTSYukkuri
         private Logger Logger => AppLog.DefaultLogger;
 
         #endregion Logger
-
-        public string PluginDirectory { get; private set; }
-
-        private Label PluginStatusLabel;
 
         #region Replace TTS Method
 
@@ -124,39 +121,43 @@ namespace ACT.TTSYukkuri
 
         #endregion Replace TTS Method
 
+        #region Play Method
+
+        public void PlaySound(string wave, int volume) => this.PlaySound(wave, volume, PlayDevices.Both);
+
         public void PlaySound(
             string wave,
-            int volume)
+            int volume,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             if (!File.Exists(wave))
             {
                 return;
             }
 
-            Task.Run(() => SoundPlayerWrapper.Play(wave));
+            Task.Run(() => SoundPlayerWrapper.Play(wave, playDevice));
         }
 
-        /// <summary>
-        /// テキストを読上げる
-        /// </summary>
-        /// <param name="textToSpeak">読上げるテキスト</param>
+        public void Speak(string message) => this.Speak(message, PlayDevices.Both);
+
         public void Speak(
-            string textToSpeak)
+            string message,
+            PlayDevices playDevice = PlayDevices.Both)
         {
-            if (string.IsNullOrWhiteSpace(textToSpeak))
+            if (string.IsNullOrWhiteSpace(message))
             {
                 return;
             }
 
             // ファイルじゃない（TTS）？
-            if (!textToSpeak.EndsWith(".wav"))
+            if (!message.EndsWith(".wav"))
             {
-                Task.Run(() => this.SpeakTTS(textToSpeak));
+                Task.Run(() => this.SpeakTTS(message));
                 return;
             }
 
             // waveファイルとして再生する
-            var wave = textToSpeak;
+            var wave = message;
             if (!File.Exists(wave))
             {
                 var dirs = new string[]
@@ -180,12 +181,9 @@ namespace ACT.TTSYukkuri
             this.PlaySound(wave, 0);
         }
 
-        /// <summary>
-        /// TTSを読上げる
-        /// </summary>
-        /// <param name="textToSpeak">読上げるテキスト</param>
         private void SpeakTTS(
-            string textToSpeak)
+            string textToSpeak,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             const string waitCommand = "/wait";
 
@@ -194,7 +192,7 @@ namespace ACT.TTSYukkuri
                 // waitなし？
                 if (!textToSpeak.StartsWith(waitCommand))
                 {
-                    SpeechController.Default.Speak(textToSpeak);
+                    SpeechController.Default.Speak(textToSpeak, playDevice);
                 }
                 else
                 {
@@ -204,7 +202,7 @@ namespace ACT.TTSYukkuri
                     if (values.Length < 2)
                     {
                         // 普通に読上げて終わる
-                        SpeechController.Default.Speak(textToSpeak);
+                        SpeechController.Default.Speak(textToSpeak, playDevice);
                         return;
                     }
 
@@ -217,14 +215,15 @@ namespace ACT.TTSYukkuri
                     if (!int.TryParse(delayAsText, out delay))
                     {
                         // 普通に読上げて終わる
-                        SpeechController.Default.Speak(textToSpeak);
+                        SpeechController.Default.Speak(textToSpeak, playDevice);
                         return;
                     }
 
                     // ディレイをかけて読上げる
                     SpeechController.Default.SpeakWithDelay(
                         message,
-                        delay);
+                        delay,
+                        playDevice);
                 }
             }
             catch (Exception ex)
@@ -232,6 +231,12 @@ namespace ACT.TTSYukkuri
                 this.Logger.Error(ex, "SpeakTTS で例外が発生しました。");
             }
         }
+
+        #endregion Play Method
+
+        public string PluginDirectory { get; private set; }
+
+        private Label PluginStatusLabel;
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         public void InitPlugin(
@@ -289,6 +294,12 @@ namespace ACT.TTSYukkuri
                 DiscordClientModel.Instance.Initialize();
                 DiscordClientModel.Instance.Connect(true);
 
+                // Bridgeにメソッドを登録する
+                PlayBridge.Instance.PlayMainDeviceDelegate =
+                    new PlayBridge.PlayMainDevice(message => this.Speak(message, PlayDevices.Main));
+                PlayBridge.Instance.PlaySubDeviceDelegate =
+                    new PlayBridge.PlaySubDevice(message => this.Speak(message, PlayDevices.Sub));
+
                 // アップデートを確認する
                 Task.Run(() =>
                 {
@@ -325,6 +336,10 @@ namespace ACT.TTSYukkuri
 
                 // TTSコントローラを開放する
                 SpeechController.Default.Free();
+
+                // Bridgeにメソッドを解除する
+                PlayBridge.Instance.PlayMainDeviceDelegate = null;
+                PlayBridge.Instance.PlayMainDeviceDelegate = null;
 
                 // Discordを終了する
                 DiscordClientModel.Instance.Dispose();

@@ -76,7 +76,8 @@ namespace ACT.TTSYukkuri.Boyomichan
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
         public void Speak(
-            string text)
+            string text,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             Task.Run(() =>
             {

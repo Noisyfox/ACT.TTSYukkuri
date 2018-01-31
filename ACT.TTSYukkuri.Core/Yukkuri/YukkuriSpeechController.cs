@@ -51,7 +51,8 @@ namespace ACT.TTSYukkuri.Yukkuri
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
         public void Speak(
-            string text)
+            string text,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -91,7 +92,7 @@ namespace ACT.TTSYukkuri.Yukkuri
             }
 
             // 再生する
-            SoundPlayerWrapper.Play(wave);
+            SoundPlayerWrapper.Play(wave, playDevice);
         }
 
         /// <summary>

@@ -116,7 +116,9 @@ namespace ACT.TTSYukkuri
         /// TTSに話してもらう
         /// </summary>
         /// <param name="text">読上げるテキスト</param>
-        public void Speak(string text) =>
-            SpeechController.instance.Speak(text);
+        public void Speak(
+            string text,
+            PlayDevices playDevice = PlayDevices.Both)
+            => SpeechController.instance.Speak(text, playDevice);
     }
 }

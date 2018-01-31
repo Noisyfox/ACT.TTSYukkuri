@@ -121,7 +121,8 @@ namespace ACT.TTSYukkuri.Voiceroid
         /// </summary>
         /// <param name="text">読み上げるテキスト</param>
         public async void Speak(
-            string text)
+            string text,
+            PlayDevices playDevice = PlayDevices.Both)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
