@@ -74,6 +74,8 @@ namespace ACT.TTSYukkuri
             TabPage pluginScreenSpace,
             Label pluginStatusText)
         {
+            Assembly.Load("FFXIV.Framework");
+
             PluginCore.Instance.InitPlugin(
                 this,
                 pluginScreenSpace,
