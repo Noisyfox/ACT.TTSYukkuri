@@ -150,9 +150,10 @@ namespace ACT.TTSYukkuri
             }
 
             // ファイルじゃない（TTS）？
-            if (!message.EndsWith(".wav"))
+            if (!message.EndsWith(".wav") &&
+                !message.EndsWith(".wave"))
             {
-                Task.Run(() => this.SpeakTTS(message));
+                Task.Run(() => this.SpeakTTS(message, playDevice));
                 return;
             }
 
@@ -178,7 +179,7 @@ namespace ACT.TTSYukkuri
             }
 
             // Volumeはダミーなので0で指定する
-            this.PlaySound(wave, 0);
+            this.PlaySound(wave, 0, playDevice);
         }
 
         private void SpeakTTS(
