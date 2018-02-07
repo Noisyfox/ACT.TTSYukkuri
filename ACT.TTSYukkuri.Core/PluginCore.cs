@@ -340,7 +340,7 @@ namespace ACT.TTSYukkuri
 
                 // Bridgeにメソッドを解除する
                 PlayBridge.Instance.PlayMainDeviceDelegate = null;
-                PlayBridge.Instance.PlayMainDeviceDelegate = null;
+                PlayBridge.Instance.PlaySubDeviceDelegate = null;
 
                 // Discordを終了する
                 DiscordClientModel.Instance.Dispose();
