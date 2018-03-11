@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using ACT.TTSYukkuri.Config;
 using VoiceTextWebAPI.Client;
 
@@ -78,7 +79,13 @@ namespace ACT.TTSYukkuri.HOYA
                 Volume = Settings.Default.HOYASettings.Volume,
                 Speed = Settings.Default.HOYASettings.Speed,
                 Pitch = Settings.Default.HOYASettings.Pitch,
+                Format = Format.WAV,
             };
+
+            ServicePointManager.SecurityProtocol =
+                SecurityProtocolType.SystemDefault |
+                SecurityProtocolType.Tls11 |
+                SecurityProtocolType.Tls12;
 
             var waveData = client.GetVoice(textToSpeak);
 

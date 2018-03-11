@@ -205,6 +205,7 @@
     <Compile Include="HOYA\HOYASpeechController.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\Emotion.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\EmotionLevel.cs" />
+    <Compile Include="HOYA\VoiceTextWebAPI.Client\Format.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\Speaker.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\VoiceTextClient.cs" />
     <Compile Include="HOYA\VoiceTextWebAPI.Client\VoiceTextErrorResponse.cs" />

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace VoiceTextWebAPI.Client
 {
-    public enum EmotionLevel
+    public enum Format
     {
-        Default = 0,
-        Low = 1,
-        High = 2
+        WAV,
+        OGG,
+        AAC
     }
 }

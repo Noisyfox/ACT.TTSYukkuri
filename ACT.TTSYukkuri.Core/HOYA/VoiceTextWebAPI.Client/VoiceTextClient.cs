@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -11,21 +11,35 @@ namespace VoiceTextWebAPI.Client
 {
     public class VoiceTextClient
     {
-        public Speaker Speaker { get; set; } = Speaker.Haruka;
+        public Speaker Speaker { get; set; }
 
-        public Emotion Emotion { get; set; } = Emotion.Default;
+        public Emotion Emotion { get; set; }
 
-        public EmotionLevel EmotionLevel { get; set; } = EmotionLevel.Default;
+        public EmotionLevel EmotionLevel { get; set; }
 
-        public int Pitch { get; set; } = 100;
+        public int Pitch { get; set; }
 
-        public int Speed { get; set; } = 100;
+        public int Speed { get; set; }
 
-        public int Volume { get; set; } = 100;
+        public int Volume { get; set; }
 
-        public string APIKey { get; set; } = string.Empty;
+        public Format Format { get; set; }
 
-        public Uri APIEndPoint { get; set; } = new Uri("https://api.voicetext.jp/v1/tts");
+        public string APIKey { get; set; }
+
+        public Uri APIEndPoint { get; set; }
+
+        public VoiceTextClient()
+        {
+            this.APIEndPoint = new Uri("https://api.voicetext.jp/v1/tts");
+            this.Speaker = Speaker.Haruka;
+            this.Emotion = Emotion.Default;
+            this.EmotionLevel = EmotionLevel.Default;
+            this.Pitch = 100;
+            this.Speed = 100;
+            this.Volume = 100;
+            this.Format = Format.WAV;
+        }
 
         public byte[] GetVoice(string text)
         {
@@ -69,6 +83,7 @@ namespace VoiceTextWebAPI.Client
                 {"pitch", this.Pitch.ToString()},
                 {"speed", this.Speed.ToString()},
                 {"volume", this.Volume.ToString()},
+                {"format", this.Format.ToString().ToLower()},
             };
             if (this.Emotion != Emotion.Default)
             {
@@ -86,7 +101,7 @@ namespace VoiceTextWebAPI.Client
         private static void ThrowVoiceTextException(HttpResponseMessage response)
         {
             var errResponse = new DataContractJsonSerializer(typeof(VoiceTextErrorResponse)).ReadObject(response.Content.ReadAsStreamAsync().Result) as VoiceTextErrorResponse;
-            throw new VoiceTextException(errResponse.Error.Message, response.StatusCode);
+            throw new VoiceTextException(errResponse.error.message, response.StatusCode);
         }
     }
 }
